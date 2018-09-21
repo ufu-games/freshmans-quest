@@ -28,8 +28,8 @@ public class CharacterBehavior : MonoBehaviour {
 		RCPositionLeft.y = this.transform.position.y - (this.transform.lossyScale.y/2);
 		RCPositionRight.x = this.transform.position.x + ((this.transform.lossyScale.x/2)-0.2f);
 		RCPositionRight.y = this.transform.position.y - (this.transform.lossyScale.y/2);
-		RaycastHit2D[] rcLeft = Physics2D.RaycastAll(RCPositionLeft,Vector2.down,0.2f); // Da cast num raycast de cada ponta de baixo do Player
-		RaycastHit2D[] rcRight = Physics2D.RaycastAll(RCPositionRight,Vector2.down,0.2f);
+		RaycastHit2D[] rcLeft = Physics2D.RaycastAll(RCPositionLeft,Vector2.down,0.05f); // Da cast num raycast de cada ponta de baixo do Player
+		RaycastHit2D[] rcRight = Physics2D.RaycastAll(RCPositionRight,Vector2.down,0.05f);
 		foreach(RaycastHit2D hit in rcLeft){
 			if(hit.collider.gameObject.layer == 9 && !justJumped){// Se o raycast acertar, e o personagem não acabou de pular, isGrounded true
 				isGrounded = true;
@@ -56,7 +56,7 @@ public class CharacterBehavior : MonoBehaviour {
 	private IEnumerator Jump(){
 		isGrounded = false;
 		justJumped = true;
-		rb.AddForce(new Vector2(0,(Mathf.Sqrt(JumpHeight*2*rb.gravityScale*Physics2D.gravity.magnitude)*rb.mass)),ForceMode2D.Impulse);
+		rb.AddForce(new Vector2(0,(Mathf.Sqrt(JumpHeight*2*rb.gravityScale*Physics2D.gravity.magnitude)*rb.mass))/Time.deltaTime);
 		yield return new WaitForSeconds(0.5f);
 		justJumped = false;
 	}
