@@ -15,6 +15,7 @@ public class CharacterBehavior : MonoBehaviour {
 	private Vector2 RCPositionLeft, RCPositionRight;
 	private Vector2 dragVector;
 	private bool canAttack;
+	private Animator m_animator;
 	public enum Direction {Left, Right};
 
 	void Start () {
@@ -23,13 +24,14 @@ public class CharacterBehavior : MonoBehaviour {
 		isGrounded = false;
 		canAttack = true;
 		dragVector = new Vector2((1 - HorizontalDrag),1f);
+		m_animator = GetComponent<Animator>();
 	}
 
 	void Update () {
-		RCPositionLeft.x = this.transform.position.x - ((this.transform.lossyScale.x/2)-0.2f);
-		RCPositionLeft.y = this.transform.position.y - (this.transform.lossyScale.y/2);
-		RCPositionRight.x = this.transform.position.x + ((this.transform.lossyScale.x/2)-0.2f);
-		RCPositionRight.y = this.transform.position.y - (this.transform.lossyScale.y/2);
+		RCPositionLeft.x = this.transform.position.x - ((this.GetComponent<BoxCollider2D>().size.x/2)-0.2f);
+		RCPositionLeft.y = this.transform.position.y - (this.GetComponent<BoxCollider2D>().size.y/2);
+		RCPositionRight.x = this.transform.position.x + ((this.GetComponent<BoxCollider2D>().size.x/2)-0.2f);
+		RCPositionRight.y = this.transform.position.y - (this.GetComponent<BoxCollider2D>().size.y/2);
 		RaycastHit2D[] rcLeft = Physics2D.RaycastAll(RCPositionLeft,Vector2.down,0.2f); // Da cast num raycast de cada ponta de baixo do Player
 		RaycastHit2D[] rcRight = Physics2D.RaycastAll(RCPositionRight,Vector2.down,0.2f);
 		foreach(RaycastHit2D hit in rcLeft){
@@ -58,6 +60,24 @@ public class CharacterBehavior : MonoBehaviour {
 		}
 		dragVector.x = 1 - HorizontalDrag;
 		rb.velocity *= dragVector;
+		AnimationLogic();
+	}
+
+	private void AnimationLogic() {
+		if(myDirection == Direction.Right) {
+			transform.localScale = new Vector3(1f, transform.localScale.y, transform.localScale.z);
+		} else {
+			transform.localScale = new Vector3(-1f, transform.localScale.y, transform.localScale.z);
+		}
+
+	if(Mathf.Abs(rb.velocity.y) > 0.1f) {
+		m_animator.Play("Jump");
+	} else
+		if(Mathf.Abs(rb.velocity.x) > 0.1) {
+			m_animator.Play("Running");
+		} else {
+			m_animator.Play("Idle");
+		}
 	}
 
 	private IEnumerator Jump(){
@@ -74,13 +94,13 @@ public class CharacterBehavior : MonoBehaviour {
 		if(myDirection == Direction.Left){
 		  attack = (GameObject) Instantiate(Resources.Load("PlayerMeleeAttack"),rb.transform);
 			attack.transform.position = rb.transform.position;
-			attack.transform.position += (Vector3) Vector2.left;
+			attack.transform.position += (Vector3) Vector2.left*1.5f;
 			attack.GetComponent<DamageTrigger>().damage = MeleeAttackDamage;
 			attack.GetComponent<DamageTrigger>().targets.Add(10);
 		} else {
 			attack = (GameObject) Instantiate(Resources.Load("PlayerMeleeAttack"),rb.transform);
 			attack.transform.position = rb.transform.position;
-			attack.transform.position += (Vector3) Vector2.right;
+			attack.transform.position += (Vector3) Vector2.right*1.5f;
 			attack.GetComponent<DamageTrigger>().damage = MeleeAttackDamage;
 			attack.GetComponent<DamageTrigger>().targets.Add(10);
 		}
