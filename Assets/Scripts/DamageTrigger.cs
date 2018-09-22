@@ -11,12 +11,5 @@ public class DamageTrigger : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
-	void OnTriggerEnter(Collider other) {
-		Debug.Log("hmm");
-		if(other.gameObject.name == "Player"){
-			other.gameObject.GetComponent<HealthManager>().TakeDamage(this.damage);
-		}
 	}
 }

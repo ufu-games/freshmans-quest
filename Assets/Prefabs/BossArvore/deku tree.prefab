@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4674303779164488}
   - component: {fileID: 212402591111409662}
   - component: {fileID: 50835641020623382}
+  - component: {fileID: 114963196958151890}
   m_Layer: 0
   m_Name: deku tree
   m_TagString: Untagged
@@ -61,6 +62,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &114963196958151890
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1974340602528354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f5d9654500f9d14398111e58a218baa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  galho: {fileID: 1772635258453544, guid: 0df0b8bee2cf23c4999d54cf27d0d602, type: 2}
 --- !u!212 &212402591111409662
 SpriteRenderer:
   m_ObjectHideFlags: 1
