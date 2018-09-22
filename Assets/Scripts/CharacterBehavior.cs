@@ -7,15 +7,21 @@ public class CharacterBehavior : MonoBehaviour {
 	public float JumpHeight;
 	public float Velocity;
 	public float HorizontalDrag;
+	public Direction myDirection = Direction.Right;
+	public float MeleeAttackCooldown;
+	public float MeleeAttackDamage;
 	private Rigidbody2D rb;
 	private bool isGrounded, justJumped;
 	private Vector2 RCPositionLeft, RCPositionRight;
 	private Vector2 dragVector;
+	private bool canAttack;
+	public enum Direction {Left, Right};
 
 	void Start () {
 		rb = this.GetComponent<Rigidbody2D>();
 		justJumped = false;
 		isGrounded = false;
+		canAttack = true;
 		dragVector = new Vector2((1 - HorizontalDrag),1f);
 	}
 
@@ -36,14 +42,19 @@ public class CharacterBehavior : MonoBehaviour {
 				isGrounded = true;
 			}
 		}
-		if(Input.GetKeyDown(KeyCode.Space) && isGrounded){
+		if(Input.GetKeyDown(KeyCode.I) && isGrounded){
 			StartCoroutine(Jump());
 		}
 		if(Input.GetKey(KeyCode.A)){
 			rb.AddForce(Vector2.left * Velocity);
+			myDirection = Direction.Left;
 		}
 		if(Input.GetKey(KeyCode.D)){
 			rb.AddForce(Vector2.right * Velocity);
+			myDirection = Direction.Right;
+		}
+		if(Input.GetKeyDown(KeyCode.O) && canAttack){
+			StartCoroutine(MeleeAttack());
 		}
 		dragVector.x = 1 - HorizontalDrag;
 		rb.velocity *= dragVector;
@@ -55,5 +66,27 @@ public class CharacterBehavior : MonoBehaviour {
 		rb.AddForce(new Vector2(0,(Mathf.Sqrt(JumpHeight*2*rb.gravityScale*Physics2D.gravity.magnitude)*rb.mass)),ForceMode2D.Impulse);
 		yield return new WaitForSeconds(0.5f);
 		justJumped = false;
+	}
+
+	private IEnumerator MeleeAttack(){
+		canAttack = false;
+		GameObject attack;
+		if(myDirection == Direction.Left){
+		  attack = (GameObject) Instantiate(Resources.Load("PlayerMeleeAttack"),rb.transform);
+			attack.transform.position = rb.transform.position;
+			attack.transform.position += (Vector3) Vector2.left;
+			attack.GetComponent<DamageTrigger>().damage = MeleeAttackDamage;
+			attack.GetComponent<DamageTrigger>().targets.Add(10);
+		} else {
+			attack = (GameObject) Instantiate(Resources.Load("PlayerMeleeAttack"),rb.transform);
+			attack.transform.position = rb.transform.position;
+			attack.transform.position += (Vector3) Vector2.right;
+			attack.GetComponent<DamageTrigger>().damage = MeleeAttackDamage;
+			attack.GetComponent<DamageTrigger>().targets.Add(10);
+		}
+		yield return new WaitForSeconds(1f);
+		Destroy(attack.gameObject,0);
+		yield return new WaitForSeconds(MeleeAttackCooldown);
+		canAttack = true;
 	}
 }

@@ -8,17 +8,22 @@ public class HealthManager : MonoBehaviour {
 	public float invulnerabilityTime;
 	// Use this for initialization
 	void Start () {
-		
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 	public void TakeDamage(float damage){
 		if(this.invulnerable == false){
 			this.invulnerable = true;
-			this.Hp -= damage;
+			if(Hp - damage <= 0){
+				Hp = 0;
+				Destroy(this.gameObject);
+			} else {
+				this.Hp -= damage;
+			}
 			StartCoroutine(InvulnerabilityTimer());
 
 		}

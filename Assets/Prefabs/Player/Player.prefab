@@ -23,8 +23,6 @@ GameObject:
   - component: {fileID: 61029037601146302}
   - component: {fileID: 50759115112289626}
   - component: {fileID: 114221977411848056}
-  - component: {fileID: 114407087346451670}
-  - component: {fileID: 114935420035860300}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -103,34 +101,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JumpHeight: 3
   Velocity: 10
-  HorizontalDrag: 0
---- !u!114 &114407087346451670
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1048577819645928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78daee3f716517e4195573d01d1f8d1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Hp: 3
-  TimeInvulnerable: 1
-  invulnerable: 0
---- !u!114 &114935420035860300
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1048577819645928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e733e6889766964ba3ee1e861b26443, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Hp: 0
-  invulnerabilityTime: 0
 --- !u!212 &212895702776482470
 SpriteRenderer:
   m_ObjectHideFlags: 1
