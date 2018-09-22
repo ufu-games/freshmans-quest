@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212804253035201180}
   - component: {fileID: 114446081490240362}
   - component: {fileID: 61154854762039932}
+  - component: {fileID: 114138535386935984}
   m_Layer: 0
   m_Name: galho
   m_TagString: DamageSource
@@ -67,6 +68,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 9.6, y: 1.6683478}
   m_EdgeRadius: 0
+--- !u!114 &114138535386935984
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1772635258453544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7ca19cc034edca44a1ae7cc425ec620, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
 --- !u!114 &114446081490240362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -79,10 +92,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tree: {fileID: 1974340602528354, guid: 2843809aba45aa64e8376d8aa1604365, type: 2}
-  speed: 30
+  normalSpeed: 0
   angrySpeed: 20
   damage: 1
+  orientation: 1
   offset: {x: 0.7, y: -2.4, z: 0}
+  fastSpeedTime: 0
 --- !u!212 &212804253035201180
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -117,7 +132,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: e6268169411359f4eb580caf855d8856, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

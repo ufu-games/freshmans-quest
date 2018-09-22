@@ -32,4 +32,10 @@ public class HealthManager : MonoBehaviour {
 		yield return new WaitForSeconds (this.invulnerabilityTime);
 		this.invulnerable = false;
 	}
+	void OnTriggerStay2D(Collider2D other) {
+		
+		if(other.gameObject.tag == "DamageSource"){
+			TakeDamage(other.gameObject.GetComponent<DamageTrigger>().damage);
+		}
+	}
 }
