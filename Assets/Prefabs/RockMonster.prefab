@@ -21,14 +21,13 @@ GameObject:
   - component: {fileID: 4699280089140714}
   - component: {fileID: 212039360992183648}
   - component: {fileID: 114174051590338110}
-  - component: {fileID: 61528675778570328}
   - component: {fileID: 50020982912961776}
   - component: {fileID: 61148990224325442}
-  - component: {fileID: 114562258903170174}
   - component: {fileID: 95087809121245628}
+  - component: {fileID: 61619990832031454}
   m_Layer: 0
   m_Name: RockMonster
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -40,8 +39,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1613077607790292}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -120.06, y: 1.65, z: -2.28}
-  m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -2.28}
+  m_LocalScale: {x: 0.53, y: 0.53, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -91,7 +90,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.4088068, y: 3.001289}
   m_EdgeRadius: 0
---- !u!61 &61528675778570328
+--- !u!61 &61619990832031454
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,7 +102,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.37193382, y: -0.2277329}
+  m_Offset: {x: -0.059938192, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -114,7 +113,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.9971054, y: 3.092938}
+  m_Size: {x: 3.6798763, y: 3.52}
   m_EdgeRadius: 0
 --- !u!95 &95087809121245628
 Animator:
@@ -125,7 +124,7 @@ Animator:
   m_GameObject: {fileID: 1613077607790292}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5c4f2245d96cd024fab284250ec722c6, type: 2}
+  m_Controller: {fileID: 9100000, guid: 7e39ef9fab5f246d7a1848a65ea00ff5, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -148,20 +147,6 @@ MonoBehaviour:
   player: {fileID: 0}
   walkingDistance: 12
   smoothTime: 2
---- !u!114 &114562258903170174
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1613077607790292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 245365206af63a048a2f669a8a5c9f90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  walkingDistance: 10
-  smoothTime: 10
 --- !u!212 &212039360992183648
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -194,8 +179,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -2116528955
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ad0a2d07192d16243ba7a53b71dcf946, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

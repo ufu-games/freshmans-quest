@@ -13,26 +13,38 @@ public class GroundEnemyBehavior : MonoBehaviour {
     public float smoothTime = 10.0f;
     //Vector3 used to store the velocity of the enemy
     private Vector3 smoothVelocity = Vector3.zero;
-    //Call every frame
+    private float m_originalScale;
+    private Animator m_animator;
+
+    void Start() {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        m_originalScale = transform.localScale.x;
+        m_animator = GetComponent<Animator>();
+    }
     void Update()
     {
-        //Look at the player
-        //transform.LookAt(player);
+        if((player.position.x - transform.position.x) > 0) {
+            transform.localScale = new Vector3(-m_originalScale, transform.localScale.y, transform.localScale.z);
+        } else {
+            transform.localScale = new Vector3(m_originalScale, transform.localScale.y, transform.localScale.z);
+        }
+
         //Calculate distance between player
         float distance = Vector3.Distance(transform.position, player.position);
         //If the distance is smaller than the walkingDistance
         if (distance < walkingDistance)
         {
+            m_animator.Play("Running");
             //Move the enemy towards the player with smoothdamp
             transform.position = Vector3.SmoothDamp(transform.position, player.position, ref smoothVelocity, smoothTime);
+        } else {
+            m_animator.Play("Idle");
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // You probably want a check here to make sure you're hitting a zombie
-        // Note that this is not the best method for doing so.
-        if (collision.gameObject.name == "Player")
-            Application.LoadLevel(Application.loadedLevel);
+        if (collision.tag == "Player") {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
-
 }

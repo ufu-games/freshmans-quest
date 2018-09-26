@@ -17,6 +17,7 @@ public class CharacterBehavior : MonoBehaviour {
 	private bool canAttack;
 	private Animator m_animator;
 	public enum Direction {Left, Right};
+	private float m_originalScale;
 
 	void Start () {
 		rb = this.GetComponent<Rigidbody2D>();
@@ -25,6 +26,7 @@ public class CharacterBehavior : MonoBehaviour {
 		canAttack = true;
 		dragVector = new Vector2((1 - HorizontalDrag),1f);
 		m_animator = GetComponent<Animator>();
+		m_originalScale = transform.localScale.x;
 	}
 
 	void Update () {
@@ -65,18 +67,18 @@ public class CharacterBehavior : MonoBehaviour {
 
 	private void AnimationLogic() {
 		if(myDirection == Direction.Right) {
-			transform.localScale = new Vector3(1f, transform.localScale.y, transform.localScale.z);
+			transform.localScale = new Vector3(m_originalScale, transform.localScale.y, transform.localScale.z);
 		} else {
-			transform.localScale = new Vector3(-1f, transform.localScale.y, transform.localScale.z);
+			transform.localScale = new Vector3(-m_originalScale, transform.localScale.y, transform.localScale.z);
 		}
 
-	if(Mathf.Abs(rb.velocity.y) > 0.1f) {
-		m_animator.Play("Jump");
-	} else
-		if(Mathf.Abs(rb.velocity.x) > 0.1) {
-			m_animator.Play("Running");
-		} else {
-			m_animator.Play("Idle");
+		if(Mathf.Abs(rb.velocity.y) > 0.1f) {
+			m_animator.Play("Jump");
+		} else
+			if(Mathf.Abs(rb.velocity.x) > 0.1) {
+				m_animator.Play("Running");
+			} else {
+				m_animator.Play("Idle");
 		}
 	}
 

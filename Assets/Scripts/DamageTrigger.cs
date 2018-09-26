@@ -18,6 +18,8 @@ public class DamageTrigger : MonoBehaviour {
 		if(targets.Contains(other.gameObject.layer)){
 			other.gameObject.GetComponent<HealthManager>().TakeDamage(this.damage);
 			Debug.Log("pego");
+		} else if(other.tag == "Enemy") {
+			Destroy(other.gameObject);
 		}
 	}
 }
