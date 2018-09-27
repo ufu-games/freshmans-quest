@@ -8,6 +8,7 @@ public class HealthManager : MonoBehaviour {
 	private bool invulnerable = false;
 	public float invulnerabilityTime;
 	public Vector2 knockbackForce = new Vector2(5f, 5f);
+	public bool isEnemy;
 	private SpriteRenderer m_spriteRenderer;
 	private Rigidbody2D m_rigidbody;
 
@@ -21,7 +22,6 @@ public class HealthManager : MonoBehaviour {
 			this.invulnerable = true;
 			if(Hp - damage <= 0){
 				Hp = 0;
-				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 			} else {
 				this.Hp -= damage;
 			}
@@ -30,7 +30,14 @@ public class HealthManager : MonoBehaviour {
 	}
 
 	public void Knockback() {
-		Vector2 knockDirection = new Vector2(-Mathf.Sign(transform.localScale.x) * knockbackForce.x, knockbackForce.y);
+		int multiplyFactor = -1;
+
+		// a escala padrao do inimigo nao esta na mesma direcao que a escala do personagem
+		if(isEnemy) {
+			multiplyFactor = 1;
+		}
+
+		Vector2 knockDirection = new Vector2(multiplyFactor * Mathf.Sign(transform.localScale.x) * knockbackForce.x, knockbackForce.y);
 
 		m_rigidbody.velocity = knockDirection;
 	}
@@ -43,12 +50,7 @@ public class HealthManager : MonoBehaviour {
 			yield return null;
 		}
 		if(m_spriteRenderer) m_spriteRenderer.enabled = true;
+
 		this.invulnerable = false;
-	}
-	void OnTriggerStay2D(Collider2D other) {
-		if(other.tag == "Enemy" || other.tag == "DamageSource"){
-			Knockback();
-			TakeDamage(1);
-		}
 	}
 }

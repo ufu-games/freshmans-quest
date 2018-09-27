@@ -11,7 +11,8 @@ public class DamageTrigger : MonoBehaviour {
 			other.gameObject.GetComponent<HealthManager>().TakeDamage(this.damage);
 			Debug.Log("pego");
 		} else if(other.tag == "Enemy") {
-			Destroy(other.gameObject);
+			other.gameObject.GetComponent<HealthManager>().Knockback();
+			other.gameObject.GetComponent<HealthManager>().TakeDamage(1);
 		}
 	}
 }

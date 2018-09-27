@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CharacterBehavior : MonoBehaviour {
 
@@ -19,6 +20,7 @@ public class CharacterBehavior : MonoBehaviour {
 	public enum Direction {Left, Right};
 	private float m_originalScale;
 	private bool m_isAttacking;
+	private HealthManager m_healthManager;
 
 	void Start () {
 		rb = this.GetComponent<Rigidbody2D>();
@@ -28,9 +30,14 @@ public class CharacterBehavior : MonoBehaviour {
 		dragVector = new Vector2((1 - HorizontalDrag),1f);
 		m_animator = GetComponent<Animator>();
 		m_originalScale = transform.localScale.x;
+		m_healthManager = GetComponent<HealthManager>();
 	}
 
 	void Update () {
+
+		if(m_healthManager.Hp <= 0) {
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		}
 
 		RCPositionLeft.x = this.transform.position.x - ((this.GetComponent<BoxCollider2D>().size.x/2)-0.2f);
 		RCPositionLeft.y = this.transform.position.y - (this.GetComponent<BoxCollider2D>().size.y/2);
@@ -115,5 +122,12 @@ public class CharacterBehavior : MonoBehaviour {
 		Destroy(attack.gameObject,0);
 		yield return new WaitForSeconds(MeleeAttackCooldown);
 		canAttack = true;
+	}
+
+	void OnTriggerStay2D(Collider2D other) {
+		if((other.tag == "Enemy" || other.tag == "DamageSource") && !m_isAttacking) {
+			m_healthManager.Knockback();
+			m_healthManager.TakeDamage(1);
+		}
 	}
 }

@@ -15,14 +15,21 @@ public class GroundEnemyBehavior : MonoBehaviour {
     private Vector3 smoothVelocity = Vector3.zero;
     private float m_originalScale;
     private Animator m_animator;
+    private HealthManager m_healthManager;
 
     void Start() {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         m_originalScale = transform.localScale.x;
         m_animator = GetComponent<Animator>();
+        m_healthManager = GetComponent<HealthManager>();
     }
     void Update()
     {
+
+        if(m_healthManager.Hp <= 0) {
+            Destroy(gameObject);
+        }
+        
         if((player.position.x - transform.position.x) > 0) {
             transform.localScale = new Vector3(-m_originalScale, transform.localScale.y, transform.localScale.z);
         } else {
