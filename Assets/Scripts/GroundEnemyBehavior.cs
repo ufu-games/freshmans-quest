@@ -29,22 +29,14 @@ public class GroundEnemyBehavior : MonoBehaviour {
             transform.localScale = new Vector3(m_originalScale, transform.localScale.y, transform.localScale.z);
         }
 
-        //Calculate distance between player
         float distance = Vector3.Distance(transform.position, player.position);
-        //If the distance is smaller than the walkingDistance
+        
         if (distance < walkingDistance)
         {
             m_animator.Play("Running");
-            //Move the enemy towards the player with smoothdamp
             transform.position = Vector3.SmoothDamp(transform.position, player.position, ref smoothVelocity, smoothTime);
         } else {
             m_animator.Play("Idle");
-        }
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Player") {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
