@@ -18,6 +18,7 @@ public class CharacterBehavior : MonoBehaviour {
 	private Animator m_animator;
 	public enum Direction {Left, Right};
 	private float m_originalScale;
+	private bool m_isAttacking;
 
 	void Start () {
 		rb = this.GetComponent<Rigidbody2D>();
@@ -30,6 +31,7 @@ public class CharacterBehavior : MonoBehaviour {
 	}
 
 	void Update () {
+
 		RCPositionLeft.x = this.transform.position.x - ((this.GetComponent<BoxCollider2D>().size.x/2)-0.2f);
 		RCPositionLeft.y = this.transform.position.y - (this.GetComponent<BoxCollider2D>().size.y/2);
 		RCPositionRight.x = this.transform.position.x + ((this.GetComponent<BoxCollider2D>().size.x/2)-0.2f);
@@ -46,14 +48,14 @@ public class CharacterBehavior : MonoBehaviour {
 				isGrounded = true;
 			}
 		}
-		if(Input.GetKeyDown(KeyCode.I) && isGrounded){
+		if(Input.GetKeyDown(KeyCode.I) && isGrounded && !m_isAttacking){
 			StartCoroutine(Jump());
 		}
-		if(Input.GetKey(KeyCode.A)){
+		if(Input.GetKey(KeyCode.A) && !m_isAttacking){
 			rb.AddForce(Vector2.left * Velocity);
 			myDirection = Direction.Left;
 		}
-		if(Input.GetKey(KeyCode.D)){
+		if(Input.GetKey(KeyCode.D) && !m_isAttacking){
 			rb.AddForce(Vector2.right * Velocity);
 			myDirection = Direction.Right;
 		}
@@ -72,13 +74,14 @@ public class CharacterBehavior : MonoBehaviour {
 			transform.localScale = new Vector3(-m_originalScale, transform.localScale.y, transform.localScale.z);
 		}
 
-		if(Mathf.Abs(rb.velocity.y) > 0.1f) {
+		if(Mathf.Abs(rb.velocity.y) > 0.1f && !m_isAttacking) {
 			m_animator.Play("Jump");
-		} else
-			if(Mathf.Abs(rb.velocity.x) > 0.1) {
-				m_animator.Play("Running");
-			} else {
-				m_animator.Play("Idle");
+		} else if(m_isAttacking) {
+			m_animator.Play("Attack");
+		} else if(Mathf.Abs(rb.velocity.x) > 0.1) {
+			m_animator.Play("Running");
+		} else {
+			m_animator.Play("Idle");
 		}
 	}
 
@@ -93,20 +96,22 @@ public class CharacterBehavior : MonoBehaviour {
 	private IEnumerator MeleeAttack(){
 		canAttack = false;
 		GameObject attack;
+		m_isAttacking = true;
 		if(myDirection == Direction.Left){
 		  attack = (GameObject) Instantiate(Resources.Load("PlayerMeleeAttack"),rb.transform);
 			attack.transform.position = rb.transform.position;
-			attack.transform.position += (Vector3) Vector2.left*1.5f;
+			attack.transform.position += (Vector3) Vector2.left*1.125f;
 			attack.GetComponent<DamageTrigger>().damage = MeleeAttackDamage;
 			attack.GetComponent<DamageTrigger>().targets.Add(10);
 		} else {
 			attack = (GameObject) Instantiate(Resources.Load("PlayerMeleeAttack"),rb.transform);
 			attack.transform.position = rb.transform.position;
-			attack.transform.position += (Vector3) Vector2.right*1.5f;
+			attack.transform.position += (Vector3) Vector2.right*1.125f;
 			attack.GetComponent<DamageTrigger>().damage = MeleeAttackDamage;
 			attack.GetComponent<DamageTrigger>().targets.Add(10);
 		}
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(.33f);
+		m_isAttacking = false;
 		Destroy(attack.gameObject,0);
 		yield return new WaitForSeconds(MeleeAttackCooldown);
 		canAttack = true;
