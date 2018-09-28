@@ -13,7 +13,7 @@ public class CharacterBehavior : MonoBehaviour {
 	public float MeleeAttackDamage;
 	private Rigidbody2D rb;
 	private bool isGrounded, justJumped;
-	private Vector2 RCPositionLeft, RCPositionRight;
+	private Vector2 RCPositionLeft, RCPositionRight, RCPositionCenter;
 	private Vector2 dragVector;
 	private bool canAttack;
 	private Animator m_animator;
@@ -41,12 +41,20 @@ public class CharacterBehavior : MonoBehaviour {
 
 		RCPositionLeft.x = this.transform.position.x - ((this.GetComponent<BoxCollider2D>().size.x/2)-0.2f);
 		RCPositionLeft.y = this.transform.position.y - (this.GetComponent<BoxCollider2D>().size.y/2);
+		RCPositionCenter.x = this.transform.position.x;
+		RCPositionCenter.y = this.transform.position.y - (this.GetComponent<BoxCollider2D>().size.y/2);
 		RCPositionRight.x = this.transform.position.x + ((this.GetComponent<BoxCollider2D>().size.x/2)-0.2f);
 		RCPositionRight.y = this.transform.position.y - (this.GetComponent<BoxCollider2D>().size.y/2);
-		RaycastHit2D[] rcLeft = Physics2D.RaycastAll(RCPositionLeft,Vector2.down,0.2f); // Da cast num raycast de cada ponta de baixo do Player
-		RaycastHit2D[] rcRight = Physics2D.RaycastAll(RCPositionRight,Vector2.down,0.2f);
+		RaycastHit2D[] rcLeft = Physics2D.RaycastAll(RCPositionLeft,Vector2.down,0.05f); // Da cast num raycast de cada ponta de baixo do Player
+		RaycastHit2D[] rcCenter = Physics2D.RaycastAll(RCPositionCenter,Vector2.down,0.05f);
+		RaycastHit2D[] rcRight = Physics2D.RaycastAll(RCPositionRight,Vector2.down,0.05f);
 		foreach(RaycastHit2D hit in rcLeft){
 			if(hit.collider.gameObject.layer == 9 && !justJumped){// Se o raycast acertar, e o personagem não acabou de pular, isGrounded true
+				isGrounded = true;
+			}
+		}
+		foreach(RaycastHit2D hit in rcCenter){
+			if(hit.collider.gameObject.layer == 9 && !justJumped){
 				isGrounded = true;
 			}
 		}
