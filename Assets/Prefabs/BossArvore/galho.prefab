@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+  targets: 
 --- !u!114 &114446081490240362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -92,11 +93,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tree: {fileID: 1974340602528354, guid: 2843809aba45aa64e8376d8aa1604365, type: 2}
-  normalSpeed: 0
+  normalSpeed: 10
   angrySpeed: 20
   damage: 1
   orientation: 1
-  offset: {x: 0.7, y: -2.4, z: 0}
   fastSpeedTime: 0
 --- !u!212 &212804253035201180
 SpriteRenderer:

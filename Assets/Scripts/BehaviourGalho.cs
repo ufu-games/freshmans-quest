@@ -10,12 +10,14 @@ public class BehaviourGalho : MonoBehaviour {
 	private float speed;
 	public float damage;
 	public int orientation = 1;
-	public Vector3 offset;
 	public float fastSpeedTime;
+
+	private Vector3 offset;
 
     // Use this for initialization
     void Start () {
-		this.RotationCenter = this.Tree.transform.position + this.offset;
+		this.offset = new Vector3(0,GetComponent<BoxCollider2D>().bounds.size.y/2,0);
+		this.RotationCenter = this.Tree.transform.position - this.offset;
 		this.speed = normalSpeed;
 	}
 	
