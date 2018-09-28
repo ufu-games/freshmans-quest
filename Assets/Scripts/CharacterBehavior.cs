@@ -55,18 +55,23 @@ public class CharacterBehavior : MonoBehaviour {
 				isGrounded = true;
 			}
 		}
-		if(Input.GetKeyDown(KeyCode.I) && isGrounded && !m_isAttacking){
+
+        bool jump = Input.GetButtonDown("Jump");
+        float horizontal = Input.GetAxis("Horizontal");
+        bool attack = Input.GetButtonDown("Fire1");
+
+        if ((Input.GetKeyDown(KeyCode.I) || jump) && isGrounded && !m_isAttacking){
 			StartCoroutine(Jump());
 		}
-		if(Input.GetKey(KeyCode.A) && !m_isAttacking){
+		if((Input.GetKey(KeyCode.A) || horizontal == -1) && !m_isAttacking){
 			rb.AddForce(Vector2.left * Velocity);
 			myDirection = Direction.Left;
 		}
-		if(Input.GetKey(KeyCode.D) && !m_isAttacking){
+		if((Input.GetKey(KeyCode.D) || horizontal == 1)&& !m_isAttacking){
 			rb.AddForce(Vector2.right * Velocity);
 			myDirection = Direction.Right;
 		}
-		if(Input.GetKeyDown(KeyCode.O) && canAttack){
+		if((Input.GetKeyDown(KeyCode.O) || attack) && canAttack){
 			StartCoroutine(MeleeAttack());
 		}
 		dragVector.x = 1 - HorizontalDrag;
