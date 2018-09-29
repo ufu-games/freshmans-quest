@@ -16,9 +16,10 @@ public class BehaviourGalho : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		this.offset = new Vector3(0,GetComponent<BoxCollider2D>().bounds.size.y/2,0);
+		this.offset = new Vector3(0,0.8f,0);
 		this.RotationCenter = this.Tree.transform.position - this.offset;
 		this.speed = normalSpeed;
+        Debug.Log(offset);
 	}
 	
 	// Update is called once per frame

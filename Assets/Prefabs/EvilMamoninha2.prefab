@@ -20,14 +20,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4282874193772766}
   - component: {fileID: 212275234006478352}
-  - component: {fileID: 114011903941037742}
   - component: {fileID: 50349752074198582}
   - component: {fileID: 61852776219857598}
-  - component: {fileID: 95130080828264142}
   - component: {fileID: 61389413602044550}
   - component: {fileID: 114994977282336912}
-  m_Layer: 0
-  m_Name: RockMonster 1
+  - component: {fileID: 114278854145510976}
+  m_Layer: 11
+  m_Name: EvilMamoninha2
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,8 +39,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1329848311109788}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.54, y: -4.54, z: -2.28}
-  m_LocalScale: {x: 0.53, y: 0.53, z: 1}
+  m_LocalPosition: {x: -89.43833, y: -9.095671, z: 0.37625003}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -53,7 +52,7 @@ Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1329848311109788}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -82,7 +81,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.56, y: 3.52}
+    oldSize: {x: 4, y: 4}
     newSize: {x: 0.2, y: 0.2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -107,7 +106,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.56, y: 3.52}
+    oldSize: {x: 4, y: 4}
     newSize: {x: 0.2, y: 0.2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -116,25 +115,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.4088068, y: 3.001289}
   m_EdgeRadius: 0
---- !u!95 &95130080828264142
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1329848311109788}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7e39ef9fab5f246d7a1848a65ea00ff5, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114011903941037742
+--- !u!114 &114278854145510976
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -142,12 +123,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1329848311109788}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 245365206af63a048a2f669a8a5c9f90, type: 3}
+  m_Script: {fileID: 11500000, guid: 661f38ffe7236cf43b4ba4918962ef4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  walkingDistance: 12
-  smoothTime: 2
+  damage: 100
 --- !u!114 &114994977282336912
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -164,6 +143,7 @@ MonoBehaviour:
   invulnerabilityTime: 0.5
   knockbackForce: {x: 5, y: 2.5}
   isEnemy: 1
+  healthUI: {fileID: 0}
 --- !u!212 &212275234006478352
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -199,7 +179,7 @@ SpriteRenderer:
   m_SortingLayerID: -2116528955
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ad0a2d07192d16243ba7a53b71dcf946, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d1ccee864c7571f4c8b2484fbe5c9c37, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -13,7 +13,7 @@ public class pauseController : MonoBehaviour {
 
 	void Update () {
 
-		if (Input.GetKeyDown (KeyCode.Escape)) 
+		if (Input.GetButtonDown("Pause")) 
 			pause = !pause;
 
 
@@ -28,10 +28,10 @@ public class pauseController : MonoBehaviour {
 		}
 
 	}
-	public void continuar (){
-		pause = false;
-	}
-	public void sair(){
-		Application.Quit ();
-	}
+	//public void continuar (){
+	//	pause = false;
+	//}
+	//public void sair(){
+	//	Application.Quit ();
+	//}
 }
