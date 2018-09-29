@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class TreeBehaviour : MonoBehaviour {
 	public GameObject galho;
-	// Use this for initialization
-	void Start () {
-		
-	}
+    private HealthManager m_healthManager;
+    // Use this for initialization
+    void Start () {
+        m_healthManager = GetComponent<HealthManager>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if (this.m_healthManager.Hp <= 0)
+            Destroy(gameObject);
 	}
 
 	public void changeOrientation(){
@@ -21,4 +23,9 @@ public class TreeBehaviour : MonoBehaviour {
 	public void fastRotation(){
 		this.galho.GetComponent<BehaviourGalho>().SetHighSpeed();
 	}
+
+    public void UpSpeed()
+    {
+        this.galho.GetComponent<BehaviourGalho>().UpSpeed();
+    }
 }
