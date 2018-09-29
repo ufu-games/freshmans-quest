@@ -145,9 +145,10 @@ public class CharacterBehavior : MonoBehaviour {
 	}
 
 	void OnTriggerStay2D(Collider2D other) {
-		if((other.tag == "Enemy" || other.tag == "DamageSource") && !m_isAttacking) {
+		if((other.tag == "Enemy" || other.tag == "DamageSource") && !m_isAttacking && !m_healthManager.GetInvunerability()) {
+			CameraScript.instance.ShakeCamera(.5f);
 			m_healthManager.Knockback();
-			m_healthManager.TakeDamage(1);
+			m_healthManager.TakeDamage(other.gameObject.GetComponent<EnemyData>().getDamage());
 		}
 	}
 }
