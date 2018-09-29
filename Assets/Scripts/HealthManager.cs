@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class HealthManager : MonoBehaviour {
+	public AudioClip wasHitClip;
 	public float Hp;
 	private bool invulnerable = false;
 	public float invulnerabilityTime;
@@ -19,6 +20,7 @@ public class HealthManager : MonoBehaviour {
 
 	public void TakeDamage(float damage){
 		if(this.invulnerable == false){
+			if(wasHitClip) SoundManager.instance.PlaySfx(wasHitClip);
 			this.invulnerable = true;
 			if(Hp - damage <= 0){
 				Hp = 0;

@@ -11,6 +11,11 @@ public class CharacterBehavior : MonoBehaviour {
 	public Direction myDirection = Direction.Right;
 	public float MeleeAttackCooldown;
 	public float MeleeAttackDamage;
+	
+	[Header("Audios")]
+	public AudioClip attackSound;
+	public AudioClip jumpSound;
+
 	private Rigidbody2D rb;
 	private bool isGrounded, justJumped;
 	private Vector2 RCPositionLeft, RCPositionRight, RCPositionCenter;
@@ -106,6 +111,7 @@ public class CharacterBehavior : MonoBehaviour {
 	}
 
 	private IEnumerator Jump(){
+		if(jumpSound) SoundManager.instance.PlaySfx(jumpSound);
 		isGrounded = false;
 		justJumped = true;
 		rb.AddForce(new Vector2(0,(Mathf.Sqrt(JumpHeight*2*rb.gravityScale*Physics2D.gravity.magnitude)*rb.mass)),ForceMode2D.Impulse);
@@ -115,6 +121,7 @@ public class CharacterBehavior : MonoBehaviour {
 
 	private IEnumerator MeleeAttack(){
 		canAttack = false;
+		if(attackSound) SoundManager.instance.PlaySfx(attackSound);
 		GameObject attack;
 		m_isAttacking = true;
 		if(myDirection == Direction.Left){
