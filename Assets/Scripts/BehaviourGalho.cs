@@ -19,7 +19,6 @@ public class BehaviourGalho : MonoBehaviour {
 		this.offset = new Vector3(0,0.8f,0);
 		this.RotationCenter = this.Tree.transform.position - this.offset;
 		this.speed = normalSpeed;
-        Debug.Log(offset);
 	}
 	
 	// Update is called once per frame
@@ -35,4 +34,10 @@ public class BehaviourGalho : MonoBehaviour {
 		yield return new WaitForSeconds (this.fastSpeedTime);
 		this.speed = normalSpeed;
 	}
+
+    public void UpSpeed()
+    {
+        this.orientation = this.orientation + 1;
+        Debug.Log(this.orientation);
+    }
 }

@@ -16,10 +16,12 @@ public class HealthManager : MonoBehaviour {
 
     public Image healthUI;
     private HeartSystem healthUISystem;
+    private TreeBehaviour behaviourBoss;
 
 	void Start() {
 		m_spriteRenderer = GetComponent<SpriteRenderer>();
 		m_rigidbody = GetComponent<Rigidbody2D>();
+        behaviourBoss = GetComponent<TreeBehaviour>();
         if (this.healthUI)
             this.healthUISystem = this.healthUI.GetComponent<HeartSystem>();
 	}
@@ -36,6 +38,8 @@ public class HealthManager : MonoBehaviour {
             if (this.healthUISystem || !isEnemy){
                 this.healthUISystem.attHearts((int)this.Hp);
             }
+            if (this.behaviourBoss)
+                this.behaviourBoss.UpSpeed();
 			StartCoroutine(InvulnerabilityTimer());
 		}
 	}
@@ -64,4 +68,9 @@ public class HealthManager : MonoBehaviour {
 
 		this.invulnerable = false;
 	}
+
+    public bool GetInvunerability()
+    {
+        return this.invulnerable;
+    }
 }
