@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour {
 	public AudioClip wasHitClip;
@@ -13,20 +14,28 @@ public class HealthManager : MonoBehaviour {
 	private SpriteRenderer m_spriteRenderer;
 	private Rigidbody2D m_rigidbody;
 
+    public Image healthUI;
+    private HeartSystem healthUISystem;
+
 	void Start() {
 		m_spriteRenderer = GetComponent<SpriteRenderer>();
 		m_rigidbody = GetComponent<Rigidbody2D>();
+        if (this.healthUI)
+            this.healthUISystem = this.healthUI.GetComponent<HeartSystem>();
 	}
 
-	public void TakeDamage(float damage){
-		if(this.invulnerable == false){
-			if(wasHitClip) SoundManager.instance.PlaySfx(wasHitClip);
-			this.invulnerable = true;
-			if(Hp - damage <= 0){
-				Hp = 0;
-			} else {
-				this.Hp -= damage;
-			}
+    public void TakeDamage(float damage) {
+        if (this.invulnerable == false) {
+            if (wasHitClip) SoundManager.instance.PlaySfx(wasHitClip);
+            this.invulnerable = true;
+            if (Hp - damage <= 0) {
+                Hp = 0;
+            } else {
+                this.Hp -= damage;
+            }
+            if (this.healthUISystem || !isEnemy){
+                this.healthUISystem.attHearts((int)this.Hp);
+            }
 			StartCoroutine(InvulnerabilityTimer());
 		}
 	}
