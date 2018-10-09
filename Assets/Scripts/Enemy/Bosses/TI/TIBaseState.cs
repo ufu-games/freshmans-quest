@@ -4,16 +4,10 @@ using UnityEngine;
 
 public abstract class TIBaseState : MonoBehaviour{
 
-	void ButtonPressed(int i){
-		
-	}
+	public void ButtonPressed(int i){}
 
-	void Create(){
+	public void Create(){}
 
-	}
-
-	void MyDestroy(){
-
-	}
+	public void MyDestroy(){}
 
 }

@@ -8,9 +8,14 @@ public class TILogicGame : TIBaseState {
 	private int QuestionNumber;
 	private bool Pressed1 = false;
 	private bool Pressed2 = false;
-	private float x_offset_timer = -2f;
-	private float y_offset_timer = 2f;
+	private float x_offset_timer;
+	private float y_offset_timer;
 	private bool isLampOn;
+
+	public TILogicGame(float x_offset, float y_offset){
+		x_offset_timer = x_offset;
+		y_offset_timer = y_offset;
+	}
 
 	void ButtonPressed(int i){
 		if(i == 1){
@@ -25,7 +30,7 @@ public class TILogicGame : TIBaseState {
 
 	void Create () {
 		ani = GetComponent<Animator>();
-		//ani.Play("LogicInitialAnimation");
+		ani.Play("LogicInitialAnimation");
 		StartCoroutine(Flow());
 	}
 
@@ -36,10 +41,10 @@ public class TILogicGame : TIBaseState {
 	public IEnumerator Flow(){
 		yield return new WaitForSeconds(1f);
 		if(Random.Range(0,2) == 0) {
-			//ani.Play("LogicQuestion1"); //questão 1, se a luz estiver acessa, faça
+			ani.Play("LogicQuestion1"); //questão 1, se a luz estiver acessa, faça
 			QuestionNumber = 1;
 		} else {
-			//ani.Play("LogicQuestion2"); //questão 2, se a luz estiver apagada, faça
+			ani.Play("LogicQuestion2"); //questão 2, se a luz estiver apagada, faça
 			QuestionNumber = 2;
 		}
 		GameObject timer = (GameObject) Instantiate(Resources.Load("TILogicTimer"),this.transform);
@@ -84,6 +89,5 @@ public class TILogicGame : TIBaseState {
 			}
 		}
 		yield return new WaitForSeconds(1f);
-		MyDestroy();
 	}
 }
