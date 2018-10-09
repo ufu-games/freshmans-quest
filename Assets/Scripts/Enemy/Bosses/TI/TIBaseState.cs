@@ -4,7 +4,15 @@ using UnityEngine;
 
 public abstract class TIBaseState : MonoBehaviour{
 
-	void MyUpdate () {
+	void ButtonPressed(int i){
+		
+	}
+
+	void Create(){
+
+	}
+
+	void MyDestroy(){
 
 	}
 
