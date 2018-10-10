@@ -27,6 +27,7 @@ public class HealthManager : MonoBehaviour {
 	}
 
     public void TakeDamage(float damage) {
+		Debug.Log("Take Damage: " + this.invulnerable);
         if (this.invulnerable == false) {
             if (wasHitClip) SoundManager.instance.PlaySfx(wasHitClip);
             this.invulnerable = true;
@@ -35,7 +36,7 @@ public class HealthManager : MonoBehaviour {
             } else {
                 this.Hp -= damage;
             }
-            if (this.healthUISystem || !isEnemy){
+            if (this.healthUISystem && !isEnemy){
                 this.healthUISystem.attHearts((int)this.Hp);
             }
             if (this.behaviourBoss)
