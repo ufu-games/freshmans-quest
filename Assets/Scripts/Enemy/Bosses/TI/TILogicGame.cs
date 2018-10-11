@@ -14,7 +14,7 @@ public class TILogicGame : TIBaseState {
 
 	public TILogicGame(float x_offset, float y_offset){
 		x_offset_timer = x_offset;
-		y_offset_timer = y_offset;
+		x_offset_timer = y_offset;
 	}
 
 	void ButtonPressed(int i){
@@ -30,6 +30,7 @@ public class TILogicGame : TIBaseState {
 
 	void Create () {
 		ani = GetComponent<Animator>();
+		GetComponent<TIBossBehavior>().FaceTextDeactivate();
 		ani.Play("LogicInitialAnimation");
 		StartCoroutine(Flow());
 	}
@@ -89,5 +90,6 @@ public class TILogicGame : TIBaseState {
 			}
 		}
 		yield return new WaitForSeconds(1f);
+		GetComponent<TIBossBehavior>().FaceTextActivate();
 	}
 }
