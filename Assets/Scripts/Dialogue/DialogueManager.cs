@@ -53,14 +53,12 @@ public class DialogueManager : MonoBehaviour {
 		} else {
 			Debug.LogWarning("O Dialogue Manager está presente na cena mas não há DialogNodeCanvas adicionado!");
 		}
-	}
 
-	void Start() {
 		m_sentences = new Queue<string>();
 		m_dialogues = new Queue<Dialogue>();
 		dialogueObject.SetActive(false);
 		
-		if(keyboardInput) {
+		if(keyboardInput && continueButton) {
 			continueButton.SetActive(false);
 		}
 	}
@@ -79,7 +77,7 @@ public class DialogueManager : MonoBehaviour {
 
 	public void StartDialogue(Dialogue dialogue) {
 		dialogueObject.SetActive(true);
-		nameText.text = dialogue.characterName;
+		if(nameText) nameText.text = dialogue.characterName;
 		if(this.dialogImage && dialogue.characterSprite) dialogImage.sprite = dialogue.characterSprite;
 		m_sentences.Clear();
 
