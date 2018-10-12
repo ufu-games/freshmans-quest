@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4406155826804704}
   - component: {fileID: 114638008359558044}
+  - component: {fileID: 114233893560660434}
   m_Layer: 0
   m_Name: CM vcam1
   m_TagString: Untagged
@@ -55,6 +56,7 @@ GameObject:
   - component: {fileID: 4143862744474918}
   - component: {fileID: 114389151391381520}
   - component: {fileID: 114437033842505884}
+  - component: {fileID: 114549920055461708}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -69,7 +71,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1728434700802616}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.00000023841858, y: -2.5500004, z: -10}
+  m_LocalPosition: {x: -0.00000047683716, y: -2.5500004, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4406155826804704}
@@ -150,6 +152,19 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1728434700802616}
   m_Enabled: 1
+--- !u!114 &114233893560660434
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1066295306244516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1d996c40caa470680d6c013f6dcdfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleAmplitude: 0
+  shakeAmplitude: 3
 --- !u!114 &114389151391381520
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -200,6 +215,21 @@ MonoBehaviour:
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 100
+--- !u!114 &114549920055461708
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1933469725776052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 3
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!114 &114638008359558044
 MonoBehaviour:
   m_ObjectHideFlags: 1

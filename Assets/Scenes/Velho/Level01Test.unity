@@ -3689,7 +3689,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4119891488998658, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -7.2
+      value: -7.2000003
       objectReference: {fileID: 0}
     - target: {fileID: 4119891488998658, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 2}
       propertyPath: m_LocalPosition.y
@@ -21116,6 +21116,24 @@ Transform:
   m_Father: {fileID: 992702521}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1372609509 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1728434700802616, guid: 632ec8bd2927498469e0fd10a1d85c86,
+    type: 2}
+  m_PrefabInternal: {fileID: 277679693}
+--- !u!114 &1372609510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1372609509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1d996c40caa470680d6c013f6dcdfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleAmplitude: 0
+  shakeAmplitude: 3
 --- !u!1001 &1375346464
 Prefab:
   m_ObjectHideFlags: 0
