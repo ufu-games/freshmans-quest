@@ -45,7 +45,9 @@ public class TIBossBehavior : MonoBehaviour {
 	public void ButtonDeactivate(int i){
 
 	}
-
+	public void ButtonPressed(int i){
+		this.MyState.ButtonPressed(i);
+	}
 	public void FaceTextActivate(){
 		isTextVisible = true;
 		FaceText.enabled = true;

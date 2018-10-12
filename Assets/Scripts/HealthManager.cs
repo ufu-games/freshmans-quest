@@ -40,7 +40,7 @@ public class HealthManager : MonoBehaviour {
                 this.healthUISystem.attHearts((int)this.Hp);
             }
             if (this.behaviourBoss)
-                this.behaviourBoss.UpSpeed();
+//                this.behaviourBoss.UpSpeed();
 			StartCoroutine(InvulnerabilityTimer());
 		}
 	}
