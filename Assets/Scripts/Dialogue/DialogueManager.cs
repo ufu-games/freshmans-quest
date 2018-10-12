@@ -28,6 +28,8 @@ public class DialogueManager : MonoBehaviour {
 	[Header("Configuration")]
 	[Tooltip("If true, checks for 'SUBMIT' input instead of rendering a Continue button on screen")]
 	public bool keyboardInput = true;
+	public bool nextSceneWhenDialogueEnds = false;
+	
 
 
 	private Queue<string> m_sentences;
@@ -38,7 +40,6 @@ public class DialogueManager : MonoBehaviour {
 	void Awake() {
 		if(instance == null) {
 			instance = this;
-			DontDestroyOnLoad(gameObject);
 		} else {
 			Destroy(gameObject);
 		}
@@ -186,6 +187,9 @@ public class DialogueManager : MonoBehaviour {
 			StartDialogue(m_dialogues.Dequeue());
 		} else {
 			dialogueObject.SetActive(false);
+			if(nextSceneWhenDialogueEnds) {
+				LevelManagement.LevelManager.instance.LoadNextLevel();
+			}
 		}
 	}	
 }
