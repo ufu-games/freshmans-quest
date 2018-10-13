@@ -30,6 +30,7 @@ public class TIBossBehavior : MonoBehaviour {
 		FaceText.color = TextColor;
 		FaceText.fontSize = TextSize;
 		m_text_offset = new Vector3(FaceTextXOffset,FaceTextYOffset,0);
+		ButtonDeactivate(1);
 	}
 
 	void Update () {
@@ -39,10 +40,11 @@ public class TIBossBehavior : MonoBehaviour {
 	}
 
 	public void ButtonActivate(int i, string buttontext){
-
+		this.Buttons[i].SetActive(true);
 	}
 
 	public void ButtonDeactivate(int i){
+		this.Buttons[i].SetActive(false);
 
 	}
 	public void ButtonPressed(int i){
