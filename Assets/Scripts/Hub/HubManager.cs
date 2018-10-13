@@ -9,6 +9,7 @@ public class HubManager : MonoBehaviour {
 	public GameObject playerReference;
 	public float transitionTime = 0.2f;
 	public Text pressToPlayText;
+	public AudioClip hubMusic;
 	private int m_playerPositionOnChallenges;
 	private bool m_isMoving;
 	private bool m_isShowingDialogue;
@@ -18,6 +19,7 @@ public class HubManager : MonoBehaviour {
 		playerReference.transform.position = challengesPositions[0].positionOnMap;
 		m_playerPositionOnChallenges = 0;
 		pressToPlayText.text = "";
+		SoundManager.instance.ChangeMusic(hubMusic);
 		m_isMoving = false;
 	}
 

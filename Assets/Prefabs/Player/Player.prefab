@@ -22,9 +22,10 @@ GameObject:
   - component: {fileID: 212784989718246348}
   - component: {fileID: 61343389186190594}
   - component: {fileID: 50409152484338620}
-  - component: {fileID: 114365527434482266}
   - component: {fileID: 114495660662413376}
   - component: {fileID: 95338717370658990}
+  - component: {fileID: 114715631540079370}
+  - component: {fileID: 114306318740557262}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -39,7 +40,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1233750439695320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.65, z: 0}
+  m_LocalPosition: {x: 0, y: -6.69, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -52,7 +53,7 @@ Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1233750439695320}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -77,18 +78,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.064907074}
+  m_Offset: {x: 0, y: -0.12783605}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.335, y: 3.3325}
+    oldSize: {x: 1.605, y: 3.895}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 3.293438}
+  m_Size: {x: 1, y: 3.678924}
   m_EdgeRadius: 0.03
 --- !u!95 &95338717370658990
 Animator:
@@ -108,7 +109,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114365527434482266
+--- !u!114 &114306318740557262
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,17 +117,57 @@ MonoBehaviour:
   m_GameObject: {fileID: 1233750439695320}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0889446e0e75be64698711735bfa2d56, type: 3}
+  m_Script: {fileID: 11500000, guid: 55b41e8e2aaa84364a9d6f1882659618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  JumpHeight: 4.5
-  Velocity: 60
-  HorizontalDrag: 0.1
-  myDirection: 1
-  MeleeAttackCooldown: 0.1
-  MeleeAttackDamage: 1
-  attackSound: {fileID: 0}
-  jumpSound: {fileID: 0}
+  ignoreOneWayPlatformsThisFrame: 0
+  _skinWidth: 0.02
+  platformMask:
+    serializedVersion: 2
+    m_Bits: 512
+  triggerMask:
+    serializedVersion: 2
+    m_Bits: 512000
+  oneWayPlatformMask:
+    serializedVersion: 2
+    m_Bits: 0
+  slopeLimit: 30
+  jumpingThreshold: 0.07
+  slopeSpeedMultiplier:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -90
+      value: 1.5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 90
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  totalHorizontalRays: 5
+  totalVerticalRays: 3
 --- !u!114 &114495660662413376
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -144,6 +185,26 @@ MonoBehaviour:
   knockbackForce: {x: 15, y: 10}
   isEnemy: 0
   healthUI: {fileID: 0}
+--- !u!114 &114715631540079370
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1233750439695320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fd66fcb756454e9b9b88a07f4874b2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runSpeed: 6
+  groundDamping: 20
+  gravity: -25
+  inAirDamping: 5
+  jumpHeight: 4
+  jumpPressedRememberTime: 0.15
+  groundedRememberTime: 0.15
+  cutJumpHeight: 0.35
+  hurtClip: {fileID: 8300000, guid: ecc392a1b11bc40e0a2ef3957a9b7376, type: 3}
 --- !u!212 &212784989718246348
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -177,9 +238,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -426845297
-  m_SortingLayer: 3
+  m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6df1b152060b9f74281bb2592dc43377, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c29ba90778acd43619695e0ece3e6881, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

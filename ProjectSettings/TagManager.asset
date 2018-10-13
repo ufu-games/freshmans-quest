@@ -22,11 +22,11 @@ TagManager:
   - Mamona
   - BossLayer
   - GalhoLayer
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Hazard
+  - JumpingPlatform
+  - DaliCheckpoint
+  - DaliFinalCheckpoint
+  - TriggerLayer
   - 
   - 
   - 
@@ -46,6 +46,12 @@ TagManager:
     locked: 0
   - name: Background
     uniqueID: 1641097801
+    locked: 0
+  - name: Foreground
+    uniqueID: 3533883753
+    locked: 0
+  - name: Platforms
+    uniqueID: 2856448173
     locked: 0
   - name: Enemy
     uniqueID: 2178438341
