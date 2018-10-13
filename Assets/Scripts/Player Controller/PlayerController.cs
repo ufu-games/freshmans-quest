@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour {
 	public float cutJumpHeight = 0.35f;
 	private float m_jumpPressedRemember;
 	private float m_groundedRemember;
+	[Header("Audio Handling")]
+	public AudioClip hurtClip;
 
 
 	[HideInInspector]
@@ -63,6 +65,7 @@ public class PlayerController : MonoBehaviour {
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("BossLayer") ||
 		col.gameObject.layer == LayerMask.NameToLayer("Hazard")) {
+			if(hurtClip) SoundManager.instance.PlaySfx(hurtClip);
 			daliLevel.ResetPlayer();
 		} else if(col.gameObject.layer == LayerMask.NameToLayer("DaliCheckpoint")) {
 			daliLevel.PassedCheckpoint(transform.position);

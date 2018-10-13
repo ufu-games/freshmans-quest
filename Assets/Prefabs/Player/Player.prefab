@@ -40,7 +40,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1233750439695320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.9, z: 0}
+  m_LocalPosition: {x: 0, y: -6.69, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -127,7 +127,7 @@ MonoBehaviour:
     m_Bits: 512
   triggerMask:
     serializedVersion: 2
-    m_Bits: 249856
+    m_Bits: 512000
   oneWayPlatformMask:
     serializedVersion: 2
     m_Bits: 0
@@ -204,6 +204,7 @@ MonoBehaviour:
   jumpPressedRememberTime: 0.15
   groundedRememberTime: 0.15
   cutJumpHeight: 0.35
+  hurtClip: {fileID: 8300000, guid: ecc392a1b11bc40e0a2ef3957a9b7376, type: 3}
 --- !u!212 &212784989718246348
 SpriteRenderer:
   m_ObjectHideFlags: 1

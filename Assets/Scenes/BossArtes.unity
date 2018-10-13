@@ -187,6 +187,7 @@ MonoBehaviour:
     - Bom, isso foi estranho.
     - "Enfim, vou indo porque tenho que dar uma aula no pr\xF3ximo hor\xE1rio."
     dialogueClip: {fileID: 0}
+  daliBossMusic: {fileID: 8300000, guid: 9b54cda393ac14275a1e2927a8136918, type: 3}
 --- !u!1 &25518487
 GameObject:
   m_ObjectHideFlags: 0
@@ -5321,7 +5322,7 @@ Prefab:
     - target: {fileID: 82996249460041628, guid: 720d40a98bc0b4e29a754eec4f71b470,
         type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 720d40a98bc0b4e29a754eec4f71b470, type: 2}
@@ -57399,11 +57400,6 @@ Prefab:
     - target: {fileID: 4563930203491430, guid: 934d19a4a796b7444a99b8013da28b0f, type: 2}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114306318740557262, guid: 934d19a4a796b7444a99b8013da28b0f,
-        type: 2}
-      propertyPath: triggerMask.m_Bits
-      value: 512000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 934d19a4a796b7444a99b8013da28b0f, type: 2}

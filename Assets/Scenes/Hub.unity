@@ -244,6 +244,7 @@ MonoBehaviour:
   playerReference: {fileID: 1252323753}
   transitionTime: 0.2
   pressToPlayText: {fileID: 598329852}
+  hubMusic: {fileID: 8300000, guid: aecd14fe604404d08b52d19b5112965d, type: 3}
 --- !u!1 &598329850
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,7 +362,7 @@ Prefab:
     - target: {fileID: 82996249460041628, guid: 720d40a98bc0b4e29a754eec4f71b470,
         type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 720d40a98bc0b4e29a754eec4f71b470, type: 2}

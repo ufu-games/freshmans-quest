@@ -7,12 +7,14 @@ public class DaliLevelManager : MonoBehaviour {
 	public GameObject playerReference;
 	public GameObject daliReference;
 	public Dialogue[] endLevelDialogue;
+	public AudioClip daliBossMusic;
 
 	private Vector2 m_lastCheckpoint;
 	private bool m_isPlayingDialogue = false;
 
 	void Start() {
 		m_lastCheckpoint = Vector2.zero;
+		SoundManager.instance.ChangeMusic(daliBossMusic);
 	}
 
 	public void PassedCheckpoint(Vector2 position) {
