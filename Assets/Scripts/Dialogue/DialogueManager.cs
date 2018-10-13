@@ -29,6 +29,8 @@ public class DialogueManager : MonoBehaviour {
 	[Tooltip("If true, checks for 'SUBMIT' input instead of rendering a Continue button on screen")]
 	public bool keyboardInput = true;
 	public bool nextSceneWhenDialogueEnds = false;
+	[HideInInspector]
+	public bool isShowingDialogue;
 	
 
 
@@ -81,11 +83,13 @@ public class DialogueManager : MonoBehaviour {
 		if(nameText) nameText.text = dialogue.characterName;
 		if(this.dialogImage && dialogue.characterSprite) dialogImage.sprite = dialogue.characterSprite;
 		m_sentences.Clear();
+		if(dialogue.dialogueClip) SoundManager.instance.PlaySfx(dialogue.dialogueClip);
 
 		foreach(string sentence in dialogue.sentences) {
 			m_sentences.Enqueue(sentence);
 		}
 
+		isShowingDialogue = true;
 		DisplayNextSentence();
 	}
 
@@ -131,9 +135,9 @@ public class DialogueManager : MonoBehaviour {
 				fetchingDialogue = false;
 				break;
 			} else if(dialogNode is DialogStartNode) {
-				dialogues.Add(new Dialogue(dialogNode.CharacterName, dialogNode.CharacterPotrait, dialogNode.DialogLine));
+				dialogues.Add(new Dialogue(dialogNode.CharacterName, dialogNode.CharacterPotrait, dialogNode.DialogLine, dialogNode.SoundDialog));
 			} else if(dialogNode is DialogNode) {
-				dialogues.Add(new Dialogue(dialogNode.CharacterName, dialogNode.CharacterPotrait, dialogNode.DialogLine));
+				dialogues.Add(new Dialogue(dialogNode.CharacterName, dialogNode.CharacterPotrait, dialogNode.DialogLine, dialogNode.SoundDialog));
 			} else if(dialogNode is DialogMultiOptionsNode) {
 				Debug.LogError("Dialogo com Opções ainda não implementado!!!");
 				fetchingDialogue = false;
@@ -186,6 +190,7 @@ public class DialogueManager : MonoBehaviour {
 		if(m_dialogues.Count > 0) {
 			StartDialogue(m_dialogues.Dequeue());
 		} else {
+			isShowingDialogue = false;
 			dialogueObject.SetActive(false);
 			if(nextSceneWhenDialogueEnds) {
 				LevelManagement.LevelManager.instance.LoadNextLevel();

@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Name: Introducao
   m_EditorClassIdentifier: 
   editorStates:
-  - {fileID: 114767588387361322}
+  - {fileID: 114226987961905148}
   saveName: Introducao
   savePath: Assets/Scripts/Dialogue/Saves/Introducao.asset
   livesInScene: 0
   nodes:
-  - {fileID: 114319910616789584}
-  - {fileID: 114403311520916308}
-  - {fileID: 114144334190686916}
-  - {fileID: 114956165892929214}
-  - {fileID: 114945534081320264}
-  - {fileID: 114994336631776720}
-  - {fileID: 114559478232949390}
-  - {fileID: 114148852697532226}
+  - {fileID: 114257687014994284}
+  - {fileID: 114824574979828244}
+  - {fileID: 114445275212917670}
+  - {fileID: 114807906863853346}
+  - {fileID: 114868558631433130}
+  - {fileID: 114086099486441948}
+  - {fileID: 114245837793190084}
+  - {fileID: 114488885246564586}
   Name: Dialog
---- !u!114 &114058004619045598
+--- !u!114 &114017994602420580
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -37,16 +37,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
   m_Name: From Previous
   m_EditorClassIdentifier: 
-  body: {fileID: 114956165892929214}
+  body: {fileID: 114086099486441948}
   direction: 1
   maxConnectionCount: 0
   styleID: DialogForward
   _connections:
-  - {fileID: 114523568622967678}
+  - {fileID: 114768280779259120}
   side: 4
   sidePosition: 30
   sideOffset: 0
---- !u!114 &114144334190686916
+--- !u!114 &114086099486441948
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57,16 +57,93 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dd8e00a3d3c91a4cbd303bf65049f72, type: 3}
   m_Name: Dialog Node
   m_EditorClassIdentifier: 
-  position: {x: 2748.8894, y: 111.64986}
+  position: {x: 3344.8147, y: 619.5249}
+  dynamicConnectionPorts: []
+  backgroundColor: {r: 1, g: 1, b: 1, a: 1}
+  CharacterName: Dhamires
+  CharacterPotrait: {fileID: 0}
+  DialogLine: He didn't receive it well and used his thesis about biochemical mutations
+    against the university!
+  SoundDialog: {fileID: 8300000, guid: d2ef72eb440d94316b852b08d4e7820f, type: 3}
+  fromPreviousIN: {fileID: 114017994602420580}
+  toNextOUT: {fileID: 114493244869794278}
+--- !u!114 &114130076808603840
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
+  m_Name: From Previous
+  m_EditorClassIdentifier: 
+  body: {fileID: 114807906863853346}
+  direction: 1
+  maxConnectionCount: 0
+  styleID: DialogForward
+  _connections:
+  - {fileID: 114186171658406570}
+  side: 4
+  sidePosition: 30
+  sideOffset: 0
+--- !u!114 &114186171658406570
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
+  m_Name: To Next
+  m_EditorClassIdentifier: 
+  body: {fileID: 114445275212917670}
+  direction: 2
+  maxConnectionCount: 1
+  styleID: DialogForward
+  _connections:
+  - {fileID: 114130076808603840}
+  side: 2
+  sidePosition: 30
+  sideOffset: 0
+--- !u!114 &114226987961905148
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6ab6487237ff124ea4c2aa5de9ce3fb, type: 3}
+  m_Name: MainEditorState
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 0}
+  parentEditor: {fileID: 0}
+  selectedNode: {fileID: 0}
+  panOffset: {x: -3334.5894, y: -728.76984}
+  zoom: 4
+--- !u!114 &114245837793190084
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dd8e00a3d3c91a4cbd303bf65049f72, type: 3}
+  m_Name: Dialog Node
+  m_EditorClassIdentifier: 
+  position: {x: 3733.1794, y: 32.68988}
   dynamicConnectionPorts: []
   backgroundColor: {r: 1, g: 1, b: 1, a: 1}
   CharacterName: Professor Azambuja
   CharacterPotrait: {fileID: 0}
-  DialogLine: Upon finding a professor, our main character learned what happened.
-  SoundDialog: {fileID: 0}
-  fromPreviousIN: {fileID: 114240053150006208}
-  toNextOUT: {fileID: 114523568622967678}
---- !u!114 &114148852697532226
+  DialogLine: Our main character and the professor then did a deal, a fair deal.
+  SoundDialog: {fileID: 8300000, guid: d2ef72eb440d94316b852b08d4e7820f, type: 3}
+  fromPreviousIN: {fileID: 114777092499962124}
+  toNextOUT: {fileID: 114796892924227078}
+--- !u!114 &114257687014994284
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -81,53 +158,13 @@ MonoBehaviour:
   dynamicConnectionPorts: []
   backgroundColor: {r: 0.2003901, g: 1, b: 0, a: 1}
   CharacterName: Dhamires
-  CharacterPotrait: {fileID: 21300000, guid: 4b36b96e525a94979b69fd623b503637, type: 3}
+  CharacterPotrait: {fileID: 21300000, guid: 6d5ea90d27e67416583105f6d38466d8, type: 3}
   DialogLine: Our main character was at her house, casually texting her friends when
     she received some terrible news.
   SoundDialog: {fileID: 0}
-  toNextOUT: {fileID: 114306295842683536}
+  toNextOUT: {fileID: 114600648260450448}
   DialogID: 1
---- !u!114 &114178843220689190
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
-  m_Name: To Next
-  m_EditorClassIdentifier: 
-  body: {fileID: 114956165892929214}
-  direction: 2
-  maxConnectionCount: 1
-  styleID: DialogForward
-  _connections:
-  - {fileID: 114228021200082110}
-  side: 2
-  sidePosition: 30
-  sideOffset: 0
---- !u!114 &114205687236615374
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
-  m_Name: To Next
-  m_EditorClassIdentifier: 
-  body: {fileID: 114319910616789584}
-  direction: 2
-  maxConnectionCount: 1
-  styleID: DialogForward
-  _connections:
-  - {fileID: 114804528451015338}
-  side: 2
-  sidePosition: 30
-  sideOffset: 0
---- !u!114 &114228021200082110
+--- !u!114 &114280369247881588
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,16 +175,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
   m_Name: From Previous
   m_EditorClassIdentifier: 
-  body: {fileID: 114945534081320264}
+  body: {fileID: 114868558631433130}
   direction: 1
   maxConnectionCount: 0
   styleID: DialogForward
   _connections:
-  - {fileID: 114178843220689190}
+  - {fileID: 114935077593941516}
   side: 4
   sidePosition: 30
   sideOffset: 0
---- !u!114 &114240053150006208
+--- !u!114 &114335123443603110
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,57 +195,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
   m_Name: From Previous
   m_EditorClassIdentifier: 
-  body: {fileID: 114144334190686916}
+  body: {fileID: 114824574979828244}
   direction: 1
   maxConnectionCount: 0
   styleID: DialogForward
   _connections:
-  - {fileID: 114753394507144486}
+  - {fileID: 114600648260450448}
   side: 4
   sidePosition: 30
   sideOffset: 0
---- !u!114 &114306295842683536
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
-  m_Name: To Next
-  m_EditorClassIdentifier: 
-  body: {fileID: 114148852697532226}
-  direction: 2
-  maxConnectionCount: 1
-  styleID: DialogForward
-  _connections:
-  - {fileID: 114607795906016388}
-  side: 2
-  sidePosition: 30
-  sideOffset: 0
---- !u!114 &114319910616789584
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dd8e00a3d3c91a4cbd303bf65049f72, type: 3}
-  m_Name: Dialog Node
-  m_EditorClassIdentifier: 
-  position: {x: 1616.8396, y: 9.239899}
-  dynamicConnectionPorts: []
-  backgroundColor: {r: 1, g: 1, b: 1, a: 1}
-  CharacterName: Dhamires
-  CharacterPotrait: {fileID: 0}
-  DialogLine: She was graded D when she needed a C. She would need to leave her house
-    and go to the university.
-  SoundDialog: {fileID: 0}
-  fromPreviousIN: {fileID: 114607795906016388}
-  toNextOUT: {fileID: 114205687236615374}
---- !u!114 &114403311520916308
+--- !u!114 &114445275212917670
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -227,70 +223,10 @@ MonoBehaviour:
   DialogLine: But something happened, everything was weird, the arts building was
     melting, the engineering building was flying and the biology one looked like a
     jungle.
-  SoundDialog: {fileID: 0}
-  fromPreviousIN: {fileID: 114804528451015338}
-  toNextOUT: {fileID: 114753394507144486}
---- !u!114 &114406995903904638
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
-  m_Name: To Next
-  m_EditorClassIdentifier: 
-  body: {fileID: 114945534081320264}
-  direction: 2
-  maxConnectionCount: 1
-  styleID: DialogForward
-  _connections:
-  - {fileID: 114981297282949602}
-  side: 2
-  sidePosition: 30
-  sideOffset: 0
---- !u!114 &114441292166391026
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
-  m_Name: To Next
-  m_EditorClassIdentifier: 
-  body: {fileID: 114994336631776720}
-  direction: 2
-  maxConnectionCount: 1
-  styleID: DialogForward
-  _connections:
-  - {fileID: 114892630131132054}
-  side: 2
-  sidePosition: 30
-  sideOffset: 0
---- !u!114 &114523568622967678
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
-  m_Name: To Next
-  m_EditorClassIdentifier: 
-  body: {fileID: 114144334190686916}
-  direction: 2
-  maxConnectionCount: 1
-  styleID: DialogForward
-  _connections:
-  - {fileID: 114058004619045598}
-  side: 2
-  sidePosition: 30
-  sideOffset: 0
---- !u!114 &114559478232949390
+  SoundDialog: {fileID: 8300000, guid: d2ef72eb440d94316b852b08d4e7820f, type: 3}
+  fromPreviousIN: {fileID: 114990674254816802}
+  toNextOUT: {fileID: 114186171658406570}
+--- !u!114 &114488885246564586
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -308,30 +244,10 @@ MonoBehaviour:
   CharacterPotrait: {fileID: 0}
   DialogLine: Our main character would end all this and deal with Jim, and then the
     professor would grade her with a C.
-  SoundDialog: {fileID: 0}
-  fromPreviousIN: {fileID: 114892630131132054}
-  toNextOUT: {fileID: 114781936811052882}
---- !u!114 &114607795906016388
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
-  m_Name: From Previous
-  m_EditorClassIdentifier: 
-  body: {fileID: 114319910616789584}
-  direction: 1
-  maxConnectionCount: 0
-  styleID: DialogForward
-  _connections:
-  - {fileID: 114306295842683536}
-  side: 4
-  sidePosition: 30
-  sideOffset: 0
---- !u!114 &114753394507144486
+  SoundDialog: {fileID: 8300000, guid: d2ef72eb440d94316b852b08d4e7820f, type: 3}
+  fromPreviousIN: {fileID: 114982925637484518}
+  toNextOUT: {fileID: 114906856500787438}
+--- !u!114 &114493244869794278
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -342,32 +258,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
   m_Name: To Next
   m_EditorClassIdentifier: 
-  body: {fileID: 114403311520916308}
+  body: {fileID: 114086099486441948}
   direction: 2
   maxConnectionCount: 1
   styleID: DialogForward
   _connections:
-  - {fileID: 114240053150006208}
+  - {fileID: 114777092499962124}
   side: 2
   sidePosition: 30
   sideOffset: 0
---- !u!114 &114767588387361322
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6ab6487237ff124ea4c2aa5de9ce3fb, type: 3}
-  m_Name: MainEditorState
-  m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
-  parentEditor: {fileID: 0}
-  selectedNode: {fileID: 114148852697532226}
-  panOffset: {x: -2302.5894, y: -656.76984}
-  zoom: 4
---- !u!114 &114781936811052882
+--- !u!114 &114600648260450448
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -378,15 +278,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
   m_Name: To Next
   m_EditorClassIdentifier: 
-  body: {fileID: 114559478232949390}
+  body: {fileID: 114257687014994284}
   direction: 2
   maxConnectionCount: 1
   styleID: DialogForward
-  _connections: []
+  _connections:
+  - {fileID: 114335123443603110}
   side: 2
   sidePosition: 30
   sideOffset: 0
---- !u!114 &114804528451015338
+--- !u!114 &114768280779259120
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
+  m_Name: To Next
+  m_EditorClassIdentifier: 
+  body: {fileID: 114868558631433130}
+  direction: 2
+  maxConnectionCount: 1
+  styleID: DialogForward
+  _connections:
+  - {fileID: 114017994602420580}
+  side: 2
+  sidePosition: 30
+  sideOffset: 0
+--- !u!114 &114777092499962124
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -397,16 +318,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
   m_Name: From Previous
   m_EditorClassIdentifier: 
-  body: {fileID: 114403311520916308}
+  body: {fileID: 114245837793190084}
   direction: 1
   maxConnectionCount: 0
   styleID: DialogForward
   _connections:
-  - {fileID: 114205687236615374}
+  - {fileID: 114493244869794278}
   side: 4
   sidePosition: 30
   sideOffset: 0
---- !u!114 &114892630131132054
+--- !u!114 &114796892924227078
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -415,18 +336,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
-  m_Name: From Previous
+  m_Name: To Next
   m_EditorClassIdentifier: 
-  body: {fileID: 114559478232949390}
-  direction: 1
-  maxConnectionCount: 0
+  body: {fileID: 114245837793190084}
+  direction: 2
+  maxConnectionCount: 1
   styleID: DialogForward
   _connections:
-  - {fileID: 114441292166391026}
-  side: 4
+  - {fileID: 114982925637484518}
+  side: 2
   sidePosition: 30
   sideOffset: 0
---- !u!114 &114945534081320264
+--- !u!114 &114807906863853346
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -437,17 +358,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dd8e00a3d3c91a4cbd303bf65049f72, type: 3}
   m_Name: Dialog Node
   m_EditorClassIdentifier: 
-  position: {x: 3344.8147, y: 619.5249}
+  position: {x: 2748.8894, y: 111.64986}
+  dynamicConnectionPorts: []
+  backgroundColor: {r: 1, g: 1, b: 1, a: 1}
+  CharacterName: Professor Azambuja
+  CharacterPotrait: {fileID: 0}
+  DialogLine: Upon finding a professor, our main character learned what happened.
+  SoundDialog: {fileID: 8300000, guid: d2ef72eb440d94316b852b08d4e7820f, type: 3}
+  fromPreviousIN: {fileID: 114130076808603840}
+  toNextOUT: {fileID: 114935077593941516}
+--- !u!114 &114824574979828244
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dd8e00a3d3c91a4cbd303bf65049f72, type: 3}
+  m_Name: Dialog Node
+  m_EditorClassIdentifier: 
+  position: {x: 1616.8396, y: 9.239899}
   dynamicConnectionPorts: []
   backgroundColor: {r: 1, g: 1, b: 1, a: 1}
   CharacterName: Dhamires
   CharacterPotrait: {fileID: 0}
-  DialogLine: He didn't receive it well and used his thesis about biochemical mutations
-    against the university!
-  SoundDialog: {fileID: 0}
-  fromPreviousIN: {fileID: 114228021200082110}
-  toNextOUT: {fileID: 114406995903904638}
---- !u!114 &114956165892929214
+  DialogLine: She was graded D when she needed a C. She would need to leave her house
+    and go to the university.
+  SoundDialog: {fileID: 8300000, guid: d2ef72eb440d94316b852b08d4e7820f, type: 3}
+  fromPreviousIN: {fileID: 114335123443603110}
+  toNextOUT: {fileID: 114904768287225216}
+--- !u!114 &114868558631433130
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -464,10 +405,69 @@ MonoBehaviour:
   CharacterName: Professor Azambuja
   CharacterPotrait: {fileID: 0}
   DialogLine: Jim, a PhD candidate, got his thesis rejected due to ethical reasons.
-  SoundDialog: {fileID: 0}
-  fromPreviousIN: {fileID: 114058004619045598}
-  toNextOUT: {fileID: 114178843220689190}
---- !u!114 &114981297282949602
+  SoundDialog: {fileID: 8300000, guid: d2ef72eb440d94316b852b08d4e7820f, type: 3}
+  fromPreviousIN: {fileID: 114280369247881588}
+  toNextOUT: {fileID: 114768280779259120}
+--- !u!114 &114904768287225216
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
+  m_Name: To Next
+  m_EditorClassIdentifier: 
+  body: {fileID: 114824574979828244}
+  direction: 2
+  maxConnectionCount: 1
+  styleID: DialogForward
+  _connections:
+  - {fileID: 114990674254816802}
+  side: 2
+  sidePosition: 30
+  sideOffset: 0
+--- !u!114 &114906856500787438
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
+  m_Name: To Next
+  m_EditorClassIdentifier: 
+  body: {fileID: 114488885246564586}
+  direction: 2
+  maxConnectionCount: 1
+  styleID: DialogForward
+  _connections: []
+  side: 2
+  sidePosition: 30
+  sideOffset: 0
+--- !u!114 &114935077593941516
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
+  m_Name: To Next
+  m_EditorClassIdentifier: 
+  body: {fileID: 114807906863853346}
+  direction: 2
+  maxConnectionCount: 1
+  styleID: DialogForward
+  _connections:
+  - {fileID: 114280369247881588}
+  side: 2
+  sidePosition: 30
+  sideOffset: 0
+--- !u!114 &114982925637484518
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -478,16 +478,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
   m_Name: From Previous
   m_EditorClassIdentifier: 
-  body: {fileID: 114994336631776720}
+  body: {fileID: 114488885246564586}
   direction: 1
   maxConnectionCount: 0
   styleID: DialogForward
   _connections:
-  - {fileID: 114406995903904638}
+  - {fileID: 114796892924227078}
   side: 4
   sidePosition: 30
   sideOffset: 0
---- !u!114 &114994336631776720
+--- !u!114 &114990674254816802
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -495,15 +495,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dd8e00a3d3c91a4cbd303bf65049f72, type: 3}
-  m_Name: Dialog Node
+  m_Script: {fileID: 11500000, guid: 017e2c7fd038ecb46b317c1e003f31dc, type: 3}
+  m_Name: From Previous
   m_EditorClassIdentifier: 
-  position: {x: 3733.1794, y: 32.68988}
-  dynamicConnectionPorts: []
-  backgroundColor: {r: 1, g: 1, b: 1, a: 1}
-  CharacterName: Professor Azambuja
-  CharacterPotrait: {fileID: 0}
-  DialogLine: Our main character and the professor then did a deal, a fair deal.
-  SoundDialog: {fileID: 0}
-  fromPreviousIN: {fileID: 114981297282949602}
-  toNextOUT: {fileID: 114441292166391026}
+  body: {fileID: 114445275212917670}
+  direction: 1
+  maxConnectionCount: 0
+  styleID: DialogForward
+  _connections:
+  - {fileID: 114904768287225216}
+  side: 4
+  sidePosition: 30
+  sideOffset: 0
