@@ -34,7 +34,14 @@ public class PlayerController : MonoBehaviour {
 
 		// listen to some events for illustration purposes
 		m_controller.onControllerCollidedEvent += onControllerCollider;
-		m_controller.onTriggerEnterEvent += onTriggerEnterEvent;
+
+		if(GameObject.Find("DaliLevelManager")) {
+			Debug.Log("Esta na fight do Dali!");
+			m_controller.onTriggerEnterEvent += DaliBossTriggerEnterEvent;
+		} else {
+			m_controller.onTriggerEnterEvent += onTriggerEnterEvent;
+		}
+
 		m_controller.onTriggerExitEvent += onTriggerExitEvent;
 	}
 
@@ -51,9 +58,25 @@ public class PlayerController : MonoBehaviour {
 		Debug.Log( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );
 	}
 
+	void DaliBossTriggerEnterEvent(Collider2D col) {
+		DaliLevelManager daliLevel = FindObjectOfType<DaliLevelManager>();
 
-	void onTriggerEnterEvent( Collider2D col )
-	{
+		if(col.gameObject.layer == LayerMask.NameToLayer("BossLayer") ||
+		col.gameObject.layer == LayerMask.NameToLayer("Hazard")) {
+			daliLevel.ResetPlayer();
+		} else if(col.gameObject.layer == LayerMask.NameToLayer("DaliCheckpoint")) {
+			daliLevel.PassedCheckpoint(transform.position);
+		} else if(col.gameObject.layer == LayerMask.NameToLayer("DaliFinalCheckpoint")) {
+			daliLevel.PassedCheckpoint(transform.position);
+			daliLevel.EndOfLevel();
+		} else if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
+			m_velocity.y = Mathf.Sqrt( 5f * jumpHeight * -gravity );
+			m_animator.Play( "Jump" );
+		}
+	}
+
+
+	void onTriggerEnterEvent( Collider2D col ) {
 		Debug.Log( "onTriggerEnterEvent: " + col.gameObject.name );
 	}
 
@@ -73,6 +96,7 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		Move();
+		AnimationLogic();
 		Jump();
 
 		var smoothedMovementFactor = m_controller.isGrounded ? groundDamping : inAirDamping;
@@ -93,29 +117,30 @@ public class PlayerController : MonoBehaviour {
 		m_velocity = m_controller.velocity;
 	}
 
+	private void AnimationLogic() {
+		if(Mathf.Abs(m_velocity.y) > Mathf.Epsilon) {
+			m_animator.Play("Jump");
+		} else if(Mathf.Abs(normalizedHorizontalSpeed) > 0 && m_controller.isGrounded) {
+			m_animator.Play("Running");
+		} else {
+			m_animator.Play("Idle");
+		}
+	}
+
 	private void Move() {
 		if( Input.GetKey( KeyCode.RightArrow ) ) {
 			normalizedHorizontalSpeed = 1;
 			if( transform.localScale.x < 0f ) {
 				transform.localScale = new Vector3( -transform.localScale.x, transform.localScale.y, transform.localScale.z );
 			}
-
-			if( m_controller.isGrounded )
-				m_animator.Play( "Running" );
 		}
 		else if( Input.GetKey( KeyCode.LeftArrow ) ) {
 			normalizedHorizontalSpeed = -1;
 			if( transform.localScale.x > 0f ) {
 				transform.localScale = new Vector3( -transform.localScale.x, transform.localScale.y, transform.localScale.z );
 			}
-			if( m_controller.isGrounded ) {
-				m_animator.Play("Runnning");
-			}
 		} else {
 			normalizedHorizontalSpeed = 0;
-			if( m_controller.isGrounded ) {
-				m_animator.Play( "Idle" );
-			}
 		}
 	}
 
@@ -133,7 +158,8 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 
-		if( (m_groundedRemember > 0) && (m_jumpPressedRemember > 0) ) {
+		// WALL JUMP
+		if( ((m_groundedRemember > 0) || ((m_controller.collisionState.right || m_controller.collisionState.left) && !m_controller.isGrounded)) && (m_jumpPressedRemember > 0) ) {
 			m_jumpPressedRemember = 0;
 			m_groundedRemember = 0;
 
