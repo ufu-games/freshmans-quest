@@ -127,7 +127,7 @@ MonoBehaviour:
     m_Bits: 512
   triggerMask:
     serializedVersion: 2
-    m_Bits: 512000
+    m_Bits: 573440
   oneWayPlatformMask:
     serializedVersion: 2
     m_Bits: 0
@@ -198,9 +198,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runSpeed: 6
   groundDamping: 20
-  gravity: -25
-  inAirDamping: 5
-  jumpHeight: 4
+  goingUpGravity: -25
+  goingDownGravity: -25
+  inAirDamping: 20
+  jumpHeight: 6.5
   jumpPressedRememberTime: 0.15
   groundedRememberTime: 0.15
   cutJumpHeight: 0.35

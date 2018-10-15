@@ -8,7 +8,9 @@ public class PlayerController : MonoBehaviour {
 	public float groundDamping = 20f; // how fast do we change direction? higher means faster
 	
 	[Header("Jump Handling")]
-	public float gravity = -25f;
+	public float goingUpGravity = -25f;
+	public float goingDownGravity = -50f;
+	private float gravity;
 	public float inAirDamping = 5f;
 	public float jumpHeight = 3f;
 	public float jumpPressedRememberTime = 0.15f;
@@ -27,6 +29,14 @@ public class PlayerController : MonoBehaviour {
 	private Animator m_animator;
 	private RaycastHit2D m_lastControllerColliderHit;
 	private Vector3 m_velocity;
+	
+	// Dialogue Handling
+	// se tiver dialogo rolando na tela, bloquear o input do player...
+	private bool m_isShowingDialogue;
+
+
+	// OnCollision, OnTrigger, etc... - Have some kind of API (i.e. Interact, ...)
+	// easily extendable
 
 
 	void Awake()
@@ -45,6 +55,7 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		m_controller.onTriggerExitEvent += onTriggerExitEvent;
+		gravity = goingUpGravity;
 	}
 
 
@@ -61,18 +72,27 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void DaliBossTriggerEnterEvent(Collider2D col) {
-		DaliLevelManager daliLevel = FindObjectOfType<DaliLevelManager>();
 
-		if(col.gameObject.layer == LayerMask.NameToLayer("BossLayer") ||
-		col.gameObject.layer == LayerMask.NameToLayer("Hazard")) {
-			if(hurtClip) SoundManager.instance.PlaySfx(hurtClip);
-			daliLevel.ResetPlayer();
-		} else if(col.gameObject.layer == LayerMask.NameToLayer("DaliCheckpoint")) {
-			daliLevel.PassedCheckpoint(transform.position);
-		} else if(col.gameObject.layer == LayerMask.NameToLayer("DaliFinalCheckpoint")) {
-			daliLevel.PassedCheckpoint(transform.position);
-			daliLevel.EndOfLevel();
-		} else if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
+		// Interfaces
+		IDangerous dangerousInteraction = col.gameObject.GetComponent<IDangerous>();
+		IInteractable interaction = col.gameObject.GetComponent<IInteractable>();
+		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
+
+		if(dangerousInteraction != null) {
+			if(hurtClip) { SoundManager.instance.PlaySfx(hurtClip); }
+			dangerousInteraction.InteractWithPlayer(this.GetComponent<Collider2D>());
+		}
+
+		if(interaction != null) {
+			interaction.Interact();
+		}
+
+		if(showDialogue != null) {
+			showDialogue.ShowDialogue();
+			m_isShowingDialogue = true;
+		}
+
+		if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
 			m_velocity.y = Mathf.Sqrt( 5f * jumpHeight * -gravity );
 			m_animator.Play( "Jump" );
 		}
@@ -95,7 +115,15 @@ public class PlayerController : MonoBehaviour {
 	{
 		if(m_controller.isGrounded) {
 			m_groundedRemember = groundedRememberTime;
+			gravity = goingUpGravity;
 			m_velocity.y = 0;
+		}
+
+		if(m_isShowingDialogue) {
+			m_animator.Play("Idle");
+			m_velocity = Vector2.zero;
+			if(!DialogueManager.instance.isShowingDialogue) m_isShowingDialogue = false;
+			return;
 		}
 
 		Move();
@@ -104,10 +132,11 @@ public class PlayerController : MonoBehaviour {
 
 		var smoothedMovementFactor = m_controller.isGrounded ? groundDamping : inAirDamping;
 		// mudar aqui, usar lerp no futuro
+
 		m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
 
+		// velocity verlet for y velocity
 		m_velocity.y += gravity * Time.deltaTime;
-
 		
 		// ignora as "one way platforms" por um frame (para cair delas)
 		if( m_controller.isGrounded && Input.GetKey( KeyCode.DownArrow ) )
@@ -116,7 +145,11 @@ public class PlayerController : MonoBehaviour {
 			m_controller.ignoreOneWayPlatformsThisFrame = true;
 		}
 
-		m_controller.move( m_velocity * Time.deltaTime );
+		// applying velocity verlet on delta position for y axis
+		// standard euler on x axis
+		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime) + (.5f * gravity * (Time.deltaTime * Time.deltaTime)));
+		
+		m_controller.move( deltaPosition );
 		m_velocity = m_controller.velocity;
 	}
 
@@ -157,8 +190,12 @@ public class PlayerController : MonoBehaviour {
 
 		if(Input.GetKeyUp(KeyCode.UpArrow)) {
 			if(m_velocity.y > 0) {
-				m_velocity.y += cutJumpHeight;
+				m_velocity.y = m_velocity.y * cutJumpHeight;
 			}
+		}
+
+		if(m_velocity.y < 0) {
+			gravity = goingDownGravity;
 		}
 
 		// WALL JUMP
