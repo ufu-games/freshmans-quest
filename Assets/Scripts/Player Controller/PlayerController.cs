@@ -46,15 +46,9 @@ public class PlayerController : MonoBehaviour {
 
 		// listen to some events for illustration purposes
 		m_controller.onControllerCollidedEvent += onControllerCollider;
-
-		if(GameObject.Find("DaliLevelManager")) {
-			Debug.Log("Esta na fight do Dali!");
-			m_controller.onTriggerEnterEvent += DaliBossTriggerEnterEvent;
-		} else {
-			m_controller.onTriggerEnterEvent += onTriggerEnterEvent;
-		}
-
+		m_controller.onTriggerEnterEvent += onTriggerEnterEvent;
 		m_controller.onTriggerExitEvent += onTriggerExitEvent;
+		
 		gravity = goingUpGravity;
 	}
 
@@ -71,7 +65,8 @@ public class PlayerController : MonoBehaviour {
 		Debug.Log( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );
 	}
 
-	void DaliBossTriggerEnterEvent(Collider2D col) {
+	void onTriggerEnterEvent(Collider2D col) {
+		Debug.Log( "onTriggerEnterEvent: " + col.gameObject.name );
 
 		// Interfaces
 		IDangerous dangerousInteraction = col.gameObject.GetComponent<IDangerous>();
@@ -96,11 +91,6 @@ public class PlayerController : MonoBehaviour {
 			m_velocity.y = Mathf.Sqrt( 5f * jumpHeight * -gravity );
 			m_animator.Play( "Jump" );
 		}
-	}
-
-
-	void onTriggerEnterEvent( Collider2D col ) {
-		Debug.Log( "onTriggerEnterEvent: " + col.gameObject.name );
 	}
 
 
