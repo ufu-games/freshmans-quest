@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DaliLevelManager : MonoBehaviour {
 
+	public static DaliLevelManager instance;
 	public GameObject playerReference;
 	public GameObject daliReference;
 	public Dialogue[] endLevelDialogue;
@@ -11,6 +12,12 @@ public class DaliLevelManager : MonoBehaviour {
 
 	private Vector2 m_lastCheckpoint;
 	private bool m_isPlayingDialogue = false;
+
+	void Awake() {
+		if(instance == null) {
+			instance = this;
+		}
+	}
 
 	void Start() {
 		m_lastCheckpoint = Vector2.zero;
@@ -23,6 +30,9 @@ public class DaliLevelManager : MonoBehaviour {
 
 	public void EndOfLevel() {
 		daliReference.GetComponent<BossArtes>().StopBoss();
+	}
+
+	public void ShowFinalDialogue() {
 		m_isPlayingDialogue = true;
 		DialogueManager.instance.StartDialogue(endLevelDialogue);
 	}

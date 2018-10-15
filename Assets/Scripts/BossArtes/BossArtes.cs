@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossArtes : MonoBehaviour {
+public class BossArtes : MonoBehaviour, IDangerous {
 
 	public float startingX = -10.5f;
 	private float m_distanceToPlayer;
@@ -89,5 +89,9 @@ public class BossArtes : MonoBehaviour {
 			m_animator.Play("Attack");
 			StartCoroutine(Dash());
 		}
+	}
+
+	void IDangerous.InteractWithPlayer(Collider2D player) {
+		DaliLevelManager.instance.ResetPlayer();
 	}
 }
