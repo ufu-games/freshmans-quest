@@ -113,6 +113,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Update()
 	{
+
 		if(m_controller.isGrounded) {
 			m_groundedRemember = groundedRememberTime;
 			m_gravity = goingUpGravity;
@@ -133,8 +134,7 @@ public class PlayerController : MonoBehaviour {
 		WallJump();
 
 		var smoothedMovementFactor = m_controller.isGrounded ? groundDamping : inAirDamping;
-		// mudar aqui, usar lerp no futuro
-
+		// mudar aqui, nao usar lerp no futuro
 		m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
 
 		// velocity verlet for y velocity
@@ -149,6 +149,7 @@ public class PlayerController : MonoBehaviour {
 
 		// applying velocity verlet on delta position for y axis
 		// standard euler on x axis
+		// heap allocation = bad
 		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime) + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime)));
 		
 		m_controller.move( deltaPosition );
@@ -156,7 +157,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void AnimationLogic() {
-		if(Mathf.Abs(m_velocity.y) > Mathf.Epsilon) {
+		if(m_isOnWall) {
+			m_animator.Play("Wall");
+		} else if(Mathf.Abs(m_velocity.y) > Mathf.Epsilon) {
 			m_animator.Play("Jump");
 		} else if(Mathf.Abs(normalizedHorizontalSpeed) > 0 && m_controller.isGrounded) {
 			m_animator.Play("Running");
@@ -166,19 +169,11 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Move() {
-		if( Input.GetKey( KeyCode.RightArrow ) ) {
-			normalizedHorizontalSpeed = 1;
-			if( transform.localScale.x < 0f ) {
-				transform.localScale = new Vector3( -transform.localScale.x, transform.localScale.y, transform.localScale.z );
-			}
-		}
-		else if( Input.GetKey( KeyCode.LeftArrow ) ) {
-			normalizedHorizontalSpeed = -1;
-			if( transform.localScale.x > 0f ) {
-				transform.localScale = new Vector3( -transform.localScale.x, transform.localScale.y, transform.localScale.z );
-			}
-		} else {
-			normalizedHorizontalSpeed = 0;
+		float horizontalMovement = Input.GetAxisRaw("Horizontal");
+		normalizedHorizontalSpeed = horizontalMovement;
+
+		if(horizontalMovement != 0) {
+			transform.localScale = new Vector3(Mathf.Sign(horizontalMovement) * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
 		}
 	}
 
@@ -186,11 +181,11 @@ public class PlayerController : MonoBehaviour {
 		m_groundedRemember -= Time.deltaTime;
 		m_jumpPressedRemember -= Time.deltaTime;
 
-		if(Input.GetKeyDown(KeyCode.UpArrow)) {
+		if(Input.GetButtonDown("Jump")) {
 			m_jumpPressedRemember = jumpPressedRememberTime;
 		}
 
-		if(Input.GetKeyUp(KeyCode.UpArrow)) {
+		if(Input.GetButtonUp("Jump")) {
 			if(m_velocity.y > 0) {
 				m_velocity.y = m_velocity.y * cutJumpHeight;
 			}
@@ -201,7 +196,6 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		// REGULAR JUMP
-		// || ((m_controller.collisionState.right || m_controller.collisionState.left) && !m_controller.isGrounded))
 		if( ( (m_groundedRemember > 0) && (m_jumpPressedRemember > 0) ) ) {
 			m_jumpPressedRemember = 0;
 			m_groundedRemember = 0;
@@ -214,7 +208,7 @@ public class PlayerController : MonoBehaviour {
 	private void Float() {
 		if(m_velocity.y >= 0) return;
 
-		if(Input.GetKey(KeyCode.UpArrow)) {
+		if(Input.GetButton("Jump")) {
 			m_gravity = floatingGravity;
 		} else {
 			m_gravity = goingDownGravity;
@@ -225,8 +219,8 @@ public class PlayerController : MonoBehaviour {
 		if(m_controller.isGrounded) return;
 
 		// Stick to Wall
-		if(((m_controller.collisionState.right && Input.GetKey(KeyCode.RightArrow)) ||
-			(m_controller.collisionState.left && Input.GetKey(KeyCode.LeftArrow)))) {
+		if(((m_controller.collisionState.right && (normalizedHorizontalSpeed == 1)) ||
+			(m_controller.collisionState.left && (normalizedHorizontalSpeed == - 1) ))) {
 				m_isOnWall = true;
 				if(m_velocity.y < 0) m_gravity = onWallGravity;
 			} else {
@@ -234,7 +228,7 @@ public class PlayerController : MonoBehaviour {
 			}
 		
 		// Wall Jump
-		if((m_controller.collisionState.right || m_controller.collisionState.left) && Input.GetKeyDown(KeyCode.UpArrow)) {
+		if((m_controller.collisionState.right || m_controller.collisionState.left) && Input.GetButtonDown("Jump")) {
 			m_gravity = goingUpGravity;
 			m_velocity.x = wallJumpVelocity.x * Mathf.Sign(transform.localScale.x);
 			m_velocity.y = Mathf.Sqrt(2f * wallJumpVelocity.y * -m_gravity);
