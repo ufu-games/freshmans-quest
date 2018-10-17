@@ -8,17 +8,22 @@ public class TIBossBehavior : MonoBehaviour {
 	public GameObject[] Buttons;
 	public TIBaseState MyState;
 	public int HP = 3;
+	[HideInInspector]
 	public bool isDead = false;
 	public float timeBetweenStages = 2f;
 	private Camera m_cam;
 	[Header("--Face Text--")]
 	public Text FaceText;
 	public float FaceTextXOffset = 1f;
-	public float FaceTextYOffset = 1f;
+	public float FaceTextYOffset = -1f;
 	public int TextSize = 65;
+	[HideInInspector]
 	public bool isTextVisible = true;
 	public Color TextColor = Color.white;
+	[Range(0f,360f)]
+	public float Rotation = 270f;
 	private Vector3 m_text_offset;
+	private Vector3 m_text_rotation;
 	[Header("--Logic Game--")]
 	public float TimerXOffset = -4f;
 	public float TimerYOffset = 2f;
@@ -30,13 +35,15 @@ public class TIBossBehavior : MonoBehaviour {
 		FaceText.color = TextColor;
 		FaceText.fontSize = TextSize;
 		m_text_offset = new Vector3(FaceTextXOffset,FaceTextYOffset,0);
+		m_text_rotation = new Vector3(FaceText.rectTransform.rotation.x,FaceText.rectTransform.rotation.y,Rotation);
 		ButtonDeactivate(1);
 	}
 
 	void Update () {
-		m_text_offset.x = FaceTextXOffset;
-		m_text_offset.y = FaceTextYOffset;
-		FaceText.rectTransform.position = m_cam.WorldToScreenPoint(this.transform.position + m_text_offset);
+		Update_facetext_position();
+		if(Input.GetKeyDown(KeyCode.T)){
+			DealDMGBoss(1);
+		}
 	}
 
 	public void ButtonActivate(int i, string buttontext){
@@ -78,18 +85,22 @@ public class TIBossBehavior : MonoBehaviour {
 
 	public IEnumerator Death(){
 		FaceTextXOffset -= 0.2f;
-		SetFaceText("°O°");
+		Update_facetext_position();
+		SetFaceText(">:(");
 		yield return new WaitForSeconds(1f);
 		FaceTextXOffset += 0.2f;
+		Update_facetext_position();
 		isDead = true;
 		SetFaceText("XP");
 	}
 
 	public IEnumerator TakeDamage(){
 		FaceTextXOffset -= 0.2f;
-		SetFaceText("°O°");
+		Update_facetext_position();
+		SetFaceText(">:(");
 		yield return new WaitForSeconds(1f);
 		FaceTextXOffset += 0.2f;
+		Update_facetext_position();
 		SetFaceText(":D");
 		yield return new WaitForSeconds(timeBetweenStages);
 		MyState.MyDestroy();
@@ -115,5 +126,12 @@ public class TIBossBehavior : MonoBehaviour {
 
 	public void SetFaceText(string line1, string line2){
 		FaceText.text = line1 + "\n" + line2;
+	}
+
+	public void Update_facetext_position(){
+		m_text_offset.x = FaceTextXOffset;
+		m_text_offset.y = FaceTextYOffset;
+		FaceText.rectTransform.position = m_cam.WorldToScreenPoint(this.transform.position + m_text_offset);
+		FaceText.rectTransform.rotation = Quaternion.Euler(0,0,Rotation);
 	}
 }
