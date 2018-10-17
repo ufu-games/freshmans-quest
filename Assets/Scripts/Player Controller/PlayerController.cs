@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
+	[Space(5)]
 	[Header("Movement Handling")]
 	public float runSpeed = 8f;
 	public float groundDamping = 20f; // how fast do we change direction? higher means faster
@@ -10,7 +11,8 @@ public class PlayerController : MonoBehaviour {
 	[Header("Jump Handling")]
 	public float goingUpGravity = -25f;
 	public float goingDownGravity = -50f;
-	private float gravity;
+	public float floatingGravity = -10f;
+	private float m_gravity;
 	public float inAirDamping = 5f;
 	public float jumpHeight = 3f;
 	public float jumpPressedRememberTime = 0.15f;
@@ -18,6 +20,14 @@ public class PlayerController : MonoBehaviour {
 	public float cutJumpHeight = 0.35f;
 	private float m_jumpPressedRemember;
 	private float m_groundedRemember;
+	
+	[Space(5)]
+	[Header("Wall Jump Handling")]
+	public float onWallGravity = -5f;
+	public Vector2 wallJumpVelocity = new Vector2(-5f, 5f);
+	private bool m_isOnWall;
+	
+	[Space(5)]
 	[Header("Audio Handling")]
 	public AudioClip hurtClip;
 
@@ -49,7 +59,7 @@ public class PlayerController : MonoBehaviour {
 		m_controller.onTriggerEnterEvent += onTriggerEnterEvent;
 		m_controller.onTriggerExitEvent += onTriggerExitEvent;
 		
-		gravity = goingUpGravity;
+		m_gravity = goingUpGravity;
 	}
 
 
@@ -88,7 +98,7 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
-			m_velocity.y = Mathf.Sqrt( 5f * jumpHeight * -gravity );
+			m_velocity.y = Mathf.Sqrt( 5f * jumpHeight * -m_gravity );
 			m_animator.Play( "Jump" );
 		}
 	}
@@ -105,7 +115,7 @@ public class PlayerController : MonoBehaviour {
 	{
 		if(m_controller.isGrounded) {
 			m_groundedRemember = groundedRememberTime;
-			gravity = goingUpGravity;
+			m_gravity = goingUpGravity;
 			m_velocity.y = 0;
 		}
 
@@ -119,6 +129,8 @@ public class PlayerController : MonoBehaviour {
 		Move();
 		AnimationLogic();
 		Jump();
+		Float();
+		WallJump();
 
 		var smoothedMovementFactor = m_controller.isGrounded ? groundDamping : inAirDamping;
 		// mudar aqui, usar lerp no futuro
@@ -126,7 +138,7 @@ public class PlayerController : MonoBehaviour {
 		m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
 
 		// velocity verlet for y velocity
-		m_velocity.y += gravity * Time.deltaTime;
+		m_velocity.y += m_gravity * Time.deltaTime;
 		
 		// ignora as "one way platforms" por um frame (para cair delas)
 		if( m_controller.isGrounded && Input.GetKey( KeyCode.DownArrow ) )
@@ -137,7 +149,7 @@ public class PlayerController : MonoBehaviour {
 
 		// applying velocity verlet on delta position for y axis
 		// standard euler on x axis
-		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime) + (.5f * gravity * (Time.deltaTime * Time.deltaTime)));
+		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime) + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime)));
 		
 		m_controller.move( deltaPosition );
 		m_velocity = m_controller.velocity;
@@ -184,17 +196,48 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 
-		if(m_velocity.y < 0) {
-			gravity = goingDownGravity;
+		if(m_velocity.y < 0 && !m_isOnWall) {
+			m_gravity = goingDownGravity;
 		}
 
-		// WALL JUMP
-		if( ((m_groundedRemember > 0) || ((m_controller.collisionState.right || m_controller.collisionState.left) && !m_controller.isGrounded)) && (m_jumpPressedRemember > 0) ) {
+		// REGULAR JUMP
+		// || ((m_controller.collisionState.right || m_controller.collisionState.left) && !m_controller.isGrounded))
+		if( ( (m_groundedRemember > 0) && (m_jumpPressedRemember > 0) ) ) {
 			m_jumpPressedRemember = 0;
 			m_groundedRemember = 0;
 
-			m_velocity.y = Mathf.Sqrt( 2f * jumpHeight * -gravity );
+			m_velocity.y = Mathf.Sqrt( 2f * jumpHeight * -m_gravity );
 			m_animator.Play( "Jump" );
+		}
+	}
+
+	private void Float() {
+		if(m_velocity.y >= 0) return;
+
+		if(Input.GetKey(KeyCode.UpArrow)) {
+			m_gravity = floatingGravity;
+		} else {
+			m_gravity = goingDownGravity;
+		}
+	}
+
+	private void WallJump() {
+		if(m_controller.isGrounded) return;
+
+		// Stick to Wall
+		if(((m_controller.collisionState.right && Input.GetKey(KeyCode.RightArrow)) ||
+			(m_controller.collisionState.left && Input.GetKey(KeyCode.LeftArrow)))) {
+				m_isOnWall = true;
+				if(m_velocity.y < 0) m_gravity = onWallGravity;
+			} else {
+				m_isOnWall = false;
+			}
+		
+		// Wall Jump
+		if((m_controller.collisionState.right || m_controller.collisionState.left) && Input.GetKeyDown(KeyCode.UpArrow)) {
+			m_gravity = goingUpGravity;
+			m_velocity.x = wallJumpVelocity.x * Mathf.Sign(transform.localScale.x);
+			m_velocity.y = Mathf.Sqrt(2f * wallJumpVelocity.y * -m_gravity);
 		}
 	}
 }
