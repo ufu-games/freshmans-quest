@@ -106,8 +106,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 
-	void onTriggerExitEvent( Collider2D col )
-	{
+	void onTriggerExitEvent( Collider2D col ) {
 		Debug.Log( "onTriggerExitEvent: " + col.gameObject.name );
 	}
 
@@ -115,8 +114,6 @@ public class PlayerController : MonoBehaviour {
 
 	void Update()
 	{
-		Debug.Log("m_isOnWall: " + m_isOnWall);
-
 		if(m_controller.isGrounded) {
 			m_groundedRemember = groundedRememberTime;
 			m_gravity = goingUpGravity;
