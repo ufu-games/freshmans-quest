@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
 	public float goingUpGravity = -25f;
 	public float goingDownGravity = -50f;
 	public float floatingGravity = -10f;
+	public float maxNegativeVerticalVelocity = -10f;
 	private float m_gravity;
 	public float inAirDamping = 5f;
 	public float jumpHeight = 3f;
@@ -114,6 +115,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Update()
 	{
+		Debug.Log("m_isOnWall: " + m_isOnWall);
 
 		if(m_controller.isGrounded) {
 			m_groundedRemember = groundedRememberTime;
@@ -148,6 +150,12 @@ public class PlayerController : MonoBehaviour {
 			m_controller.ignoreOneWayPlatformsThisFrame = true;
 		}
 
+		
+		// limiting vertical velocity
+		if(m_velocity.y < maxNegativeVerticalVelocity) {
+			m_velocity.y = maxNegativeVerticalVelocity;
+		}
+
 		// applying velocity verlet on delta position for y axis
 		// standard euler on x axis
 		// heap allocation = bad
@@ -176,7 +184,7 @@ public class PlayerController : MonoBehaviour {
 	private void Move() {
 		float horizontalMovement = Input.GetAxisRaw("Horizontal");
 		normalizedHorizontalSpeed = horizontalMovement;
-
+		
 		if(horizontalMovement != 0) {
 			transform.localScale = new Vector3(Mathf.Sign(horizontalMovement) * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
 		}
@@ -223,11 +231,14 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void WallJump() {
-		if(m_controller.isGrounded) return;
+		if(m_controller.isGrounded) {
+			m_isOnWall = false;
+			return;
+		}
 
 		// Stick to Wall
 		if(((m_controller.collisionState.right && (normalizedHorizontalSpeed == 1)) ||
-			(m_controller.collisionState.left && (normalizedHorizontalSpeed == - 1) ))) {
+			(m_controller.collisionState.left && (normalizedHorizontalSpeed == -1) ))) {
 				m_isOnWall = true;
 				if(m_velocity.y < 0) m_gravity = onWallGravity;
 			} else {
