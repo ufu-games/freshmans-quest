@@ -32,10 +32,17 @@ public class TIBossBehavior : MonoBehaviour {
 	public float QuestionTextYOffset = 2f;
 	public int QuestionTextSize = 30;
 	public Color QuestionColor = Color.white;
-
+	[Header("--Pong--")]
+	public Vector2 BossBarOffset;
+	public Vector2 PlayerBarOffset;
+	public Vector2 BallOffset;
+	public float BarSpeed;
+	public float BallSpeed;
+ 
 	void Start () {
 		MyState = new TIGenius();
 		m_cam = Camera.main;
+		Physics2D.IgnoreLayerCollision(GameObject.Find("Player").gameObject.layer, 17 ,true);
 		SetFaceText(":D");
 		FaceText.color = TextColor;
 		m_text_offset = new Vector3(FaceTextXOffset,FaceTextYOffset,0);
@@ -51,14 +58,12 @@ public class TIBossBehavior : MonoBehaviour {
 			DealDMGBoss(1);
 		}
 		if(Input.GetKeyDown(KeyCode.E)) {
-			MyState = gameObject.AddComponent<TILogicGame>() as TILogicGame;
-			GetComponent<TILogicGame>().x_offset_timer = TimerXOffset;
-			GetComponent<TILogicGame>().y_offset_timer = TimerYOffset;
-			GetComponent<TILogicGame>().qtext = QuestionText;
-			GetComponent<TILogicGame>().q_x_offset = QuestionTextXOffset;
-			GetComponent<TILogicGame>().q_y_offset = QuestionTextYOffset;
-			GetComponent<TILogicGame>().qsize = QuestionTextSize;
-			GetComponent<TILogicGame>().qcolor = QuestionColor;
+			MyState = gameObject.AddComponent<TIPong>() as TIPong;
+			GetComponent<TIPong>().bossbar_offset = BossBarOffset;
+			GetComponent<TIPong>().playerbar_offset = PlayerBarOffset;
+			GetComponent<TIPong>().bar_speed = BarSpeed;
+			GetComponent<TIPong>().ball_speed = BallSpeed;
+			GetComponent<TIPong>().ball_offset = BallOffset;
 			MyState.Create();
 		}
 
@@ -77,6 +82,11 @@ public class TIBossBehavior : MonoBehaviour {
 	public void ButtonPressed(int i){
 		this.MyState.ButtonPressed(i);
 	}
+
+	public void ButtonUnpressed(int i){
+		this.MyState.ButtonUnpressed(i);
+	}
+
 	public void FaceTextActivate(){
 		isTextVisible = true;
 		FaceText.enabled = true;
@@ -130,6 +140,11 @@ public class TIBossBehavior : MonoBehaviour {
 				break;
 			case 1:
 				MyState = gameObject.AddComponent<TIPong>() as TIPong;
+				GetComponent<TIPong>().bossbar_offset = BossBarOffset;
+				GetComponent<TIPong>().playerbar_offset = PlayerBarOffset;
+				GetComponent<TIPong>().bar_speed = BarSpeed;
+				GetComponent<TIPong>().ball_speed = BallSpeed;
+				GetComponent<TIPong>().ball_offset = BallOffset;
 				break;
 			case 2:
 				MyState = gameObject.AddComponent<TILogicGame>() as TILogicGame;

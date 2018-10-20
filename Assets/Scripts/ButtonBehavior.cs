@@ -22,5 +22,6 @@ public class ButtonBehavior : MonoBehaviour {
     {
         float step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, targetU.position, step);
+        Boss.GetComponent<TIBossBehavior>().ButtonUnpressed(Index);
     }
 }
