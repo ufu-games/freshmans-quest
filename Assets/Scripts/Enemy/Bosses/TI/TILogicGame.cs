@@ -34,6 +34,7 @@ public class TILogicGame : TIBaseState {
 	}
 
 	public override void Create () {
+		Debug.Log("jjjjjj");
 		ani = GetComponent<Animator>();
 		GetComponent<TIBossBehavior>().FaceTextDeactivate();
 		timer = (GameObject) Instantiate(Resources.Load("TILogicTimer"));
