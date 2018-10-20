@@ -40,7 +40,7 @@ public class TIBossBehavior : MonoBehaviour {
 	public float BallSpeed;
  
 	void Start () {
-		MyState = new TIGenius();
+		
 		m_cam = Camera.main;
 		Physics2D.IgnoreLayerCollision(GameObject.Find("Player").gameObject.layer, 17 ,true);
 		SetFaceText(":D");
@@ -64,6 +64,10 @@ public class TIBossBehavior : MonoBehaviour {
 			GetComponent<TIPong>().bar_speed = BarSpeed;
 			GetComponent<TIPong>().ball_speed = BallSpeed;
 			GetComponent<TIPong>().ball_offset = BallOffset;
+			MyState.Create();
+		}
+		if(Input.GetKeyDown(KeyCode.R)) {
+			MyState = gameObject.AddComponent<TIGenius>() as TIGenius;
 			MyState.Create();
 		}
 

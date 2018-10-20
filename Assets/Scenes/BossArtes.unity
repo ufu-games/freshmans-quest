@@ -5387,6 +5387,7 @@ GameObject:
   - component: {fileID: 254416899}
   - component: {fileID: 254416900}
   - component: {fileID: 254416902}
+  - component: {fileID: 254416901}
   m_Layer: 19
   m_Name: Boss
   m_TagString: Enemy
@@ -5487,6 +5488,26 @@ CircleCollider2D:
   m_Offset: {x: -2.6158593, y: -0.48289368}
   serializedVersion: 2
   m_Radius: 4.9802384
+--- !u!50 &254416901
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 254416896}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!95 &254416902
 Animator:
   serializedVersion: 3

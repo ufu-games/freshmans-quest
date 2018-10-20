@@ -10,8 +10,9 @@ public class TIGenius : TIBaseState {
 	private int currentPosition;
 	private bool missed;
 
-	public void ButtonPressed(int i){
-		if(i != sequence[currentPosition]){
+	public override void ButtonPressed(int i){
+		Debug.Log("asd");
+		if((i == 1 && sequence[currentPosition] == 1) || (i == 3 && sequence[currentPosition] == 0)){
 			waitingPlayer = false;
 			this.missed = true;
 		} else{
@@ -22,6 +23,7 @@ public class TIGenius : TIBaseState {
 	public IEnumerator Flow(){
 		int j;
 		for(int i=3;i<9;i+=2){
+			this.missed = false;
 			for(j = 0; j < i; j++){
 				if(this.sequence[j] == 0){
 					ani.Play("Genius0");
@@ -36,11 +38,11 @@ public class TIGenius : TIBaseState {
 			this.waitingPlayer = true;
 			this.currentPosition = 0;
 			while(waitingPlayer){
-				if(missed == true || currentPosition >= i){
+				if(this.missed == true || currentPosition >= i){
 					waitingPlayer = false;
-				}
+				}else yield return null;
 			}
-			if(missed){
+			if(this.missed){
 				GetComponent<TIBossBehavior>().DealDMGPlayer(1);
 				i -= 2;
 			}
@@ -49,17 +51,21 @@ public class TIGenius : TIBaseState {
 			GetComponent<TIBossBehavior>().DealDMGBoss(1);
 		}
 	}
-	public void Create(){
+	public override void Create(){
+		Debug.Log("Genius");
 		this.ani = GetComponent<Animator>();
 		GetComponent<TIBossBehavior>().FaceTextDeactivate();
 		ani.Play("LogicInitialAnimation");
 		this.missed = false;
 		this.sequence = new int[7];
 		for(int i=0;i<7;i++){
+			
 			this.sequence[i] = Random.Range(0,2);
 		}
+		GetComponent<TIBossBehavior>().ButtonActivate(1,Color.red);
+		GetComponent<TIBossBehavior>().ButtonActivate(3,Color.red);
 		StartCoroutine(Flow());
 	}
 
-	public void MyDestroy(){}
+	public override void MyDestroy(){}
 }
