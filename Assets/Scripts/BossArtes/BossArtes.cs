@@ -94,4 +94,11 @@ public class BossArtes : MonoBehaviour, IDangerous {
 	void IDangerous.InteractWithPlayer(Collider2D player) {
 		DaliLevelManager.instance.ResetPlayer();
 	}
+
+	void OnTriggerEnter2D(Collider2D other) {
+		if(other.gameObject.layer == LayerMask.NameToLayer("Hazard")) {
+			Debug.Log("Collided with Hazard, boss should die");
+		}
+	}
+
 }
