@@ -34,7 +34,7 @@ public class TIBossBehavior : MonoBehaviour {
 	public Color QuestionColor = Color.white;
 
 	void Start () {
-		MyState = new TIGenius();
+		
 		m_cam = Camera.main;
 		SetFaceText(":D");
 		FaceText.color = TextColor;
@@ -59,6 +59,10 @@ public class TIBossBehavior : MonoBehaviour {
 			GetComponent<TILogicGame>().q_y_offset = QuestionTextYOffset;
 			GetComponent<TILogicGame>().qsize = QuestionTextSize;
 			GetComponent<TILogicGame>().qcolor = QuestionColor;
+			MyState.Create();
+		}
+		if(Input.GetKeyDown(KeyCode.R)) {
+			MyState = gameObject.AddComponent<TIGenius>() as TIGenius;
 			MyState.Create();
 		}
 
