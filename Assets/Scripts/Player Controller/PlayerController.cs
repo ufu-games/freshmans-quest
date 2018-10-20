@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour {
 	public float cutJumpHeight = 0.35f;
 	private float m_jumpPressedRemember;
 	private float m_groundedRemember;
+	private bool m_floating;
 	
 	[Space(5)]
 	[Header("Wall Jump Handling")]
@@ -160,7 +161,11 @@ public class PlayerController : MonoBehaviour {
 		if(m_isOnWall) {
 			m_animator.Play("Wall");
 		} else if(Mathf.Abs(m_velocity.y) > Mathf.Epsilon) {
-			m_animator.Play("Jump");
+			if(m_floating) {
+				m_animator.Play("Floating");
+			} else {
+				m_animator.Play("Jump");
+			}
 		} else if(Mathf.Abs(normalizedHorizontalSpeed) > 0 && m_controller.isGrounded) {
 			m_animator.Play("Running");
 		} else {
@@ -209,8 +214,10 @@ public class PlayerController : MonoBehaviour {
 		if(m_velocity.y >= 0) return;
 
 		if(Input.GetButton("Jump")) {
+			m_floating = true;
 			m_gravity = floatingGravity;
 		} else {
+			m_floating = false;
 			m_gravity = goingDownGravity;
 		}
 	}

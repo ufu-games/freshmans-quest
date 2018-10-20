@@ -27,16 +27,22 @@ public class TIBossBehavior : MonoBehaviour {
 	[Header("--Logic Game--")]
 	public float TimerXOffset = -4f;
 	public float TimerYOffset = 2f;
+	public Text QuestionText;
+	public float QuestionTextXOffset = -3f;
+	public float QuestionTextYOffset = 2f;
+	public int QuestionTextSize = 30;
+	public Color QuestionColor = Color.white;
 
 	void Start () {
 		MyState = new TIGenius();
 		m_cam = Camera.main;
 		SetFaceText(":D");
 		FaceText.color = TextColor;
-		FaceText.fontSize = TextSize;
 		m_text_offset = new Vector3(FaceTextXOffset,FaceTextYOffset,0);
 		m_text_rotation = new Vector3(FaceText.rectTransform.rotation.x,FaceText.rectTransform.rotation.y,Rotation);
-		ButtonDeactivate(1);
+		for(int i = 0;i<5;i++){
+			ButtonDeactivate(i);
+		}
 	}
 
 	void Update () {
@@ -44,13 +50,27 @@ public class TIBossBehavior : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.T)){
 			DealDMGBoss(1);
 		}
+		if(Input.GetKeyDown(KeyCode.E)) {
+			MyState = gameObject.AddComponent<TILogicGame>() as TILogicGame;
+			GetComponent<TILogicGame>().x_offset_timer = TimerXOffset;
+			GetComponent<TILogicGame>().y_offset_timer = TimerYOffset;
+			GetComponent<TILogicGame>().qtext = QuestionText;
+			GetComponent<TILogicGame>().q_x_offset = QuestionTextXOffset;
+			GetComponent<TILogicGame>().q_y_offset = QuestionTextYOffset;
+			GetComponent<TILogicGame>().qsize = QuestionTextSize;
+			GetComponent<TILogicGame>().qcolor = QuestionColor;
+			MyState.Create();
+		}
+
 	}
 
-	public void ButtonActivate(int i, string buttontext){
+	public void ButtonActivate(int i, Color color){
 		this.Buttons[i].SetActive(true);
+		this.Buttons[i].GetComponent<SpriteRenderer>().color = color;
 	}
 
 	public void ButtonDeactivate(int i){
+		this.Buttons[i].GetComponent<SpriteRenderer>().color = Color.white;
 		this.Buttons[i].SetActive(false);
 
 	}
@@ -102,17 +122,24 @@ public class TIBossBehavior : MonoBehaviour {
 		FaceTextXOffset += 0.2f;
 		Update_facetext_position();
 		SetFaceText(":D");
-		yield return new WaitForSeconds(timeBetweenStages);
 		MyState.MyDestroy();
+		yield return new WaitForSeconds(timeBetweenStages);
 		switch (Random.Range(0,3)) {
 			case 0:
-				MyState = new TIGenius();
+				MyState = gameObject.AddComponent<TIGenius>() as TIGenius;
 				break;
 			case 1:
-				MyState = new TIPong();
+				MyState = gameObject.AddComponent<TIPong>() as TIPong;
 				break;
 			case 2:
-				MyState = new TILogicGame(TimerXOffset,TimerYOffset);
+				MyState = gameObject.AddComponent<TILogicGame>() as TILogicGame;
+				GetComponent<TILogicGame>().x_offset_timer = TimerXOffset;
+				GetComponent<TILogicGame>().y_offset_timer = TimerYOffset;
+				GetComponent<TILogicGame>().qtext = QuestionText;
+				GetComponent<TILogicGame>().q_x_offset = QuestionTextXOffset;
+				GetComponent<TILogicGame>().q_y_offset = QuestionTextYOffset;
+				GetComponent<TILogicGame>().qsize = QuestionTextSize;
+				GetComponent<TILogicGame>().qcolor = QuestionColor;
 				break;
 			default:
 				break;
@@ -133,5 +160,6 @@ public class TIBossBehavior : MonoBehaviour {
 		m_text_offset.y = FaceTextYOffset;
 		FaceText.rectTransform.position = m_cam.WorldToScreenPoint(this.transform.position + m_text_offset);
 		FaceText.rectTransform.rotation = Quaternion.Euler(0,0,Rotation);
+		FaceText.fontSize = TextSize;
 	}
 }

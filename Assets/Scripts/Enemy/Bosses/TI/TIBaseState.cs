@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class TIBaseState : MonoBehaviour{
+public class TIBaseState : MonoBehaviour{
 
-	public void ButtonPressed(int i){}
+	public virtual void ButtonPressed(int i){}
 
-	public void Create(){}
+	public virtual void Create(){}
 
-	public void MyDestroy(){}
+	public virtual void MyDestroy(){}
 
 }
