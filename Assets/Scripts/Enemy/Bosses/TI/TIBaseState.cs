@@ -5,6 +5,8 @@ using UnityEngine;
 public class TIBaseState : MonoBehaviour{
 
 	public virtual void ButtonPressed(int i){}
+	
+	public virtual void ButtonUnpressed(int i){}
 
 	public virtual void Create(){}
 
