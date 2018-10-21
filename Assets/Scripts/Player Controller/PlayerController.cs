@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour {
 	private float normalizedHorizontalSpeed = 0;
 
 	private Prime31.CharacterController2D m_controller;
+	public Transform m_playerSprite;
 	private Animator m_animator;
 	private RaycastHit2D m_lastControllerColliderHit;
 	private Vector3 m_velocity;
@@ -46,6 +47,11 @@ public class PlayerController : MonoBehaviour {
 	// se tiver dialogo rolando na tela, bloquear o input do player...
 	private bool m_isShowingDialogue;
 
+	// Scale Juicing
+	private Vector2 m_originalScale;
+	private Vector2 m_goingUpScaleMultiplier = new Vector2(0.8f, 1.2f);
+	private Vector2 m_groundingScaleMultiplier = new Vector2(1.2f, 0.8f);
+
 
 	// OnCollision, OnTrigger, etc... - Have some kind of API (i.e. Interact, ...)
 	// easily extendable
@@ -53,13 +59,16 @@ public class PlayerController : MonoBehaviour {
 
 	void Awake()
 	{
-		m_animator = GetComponent<Animator>();
+		m_animator = GetComponentInChildren<Animator>();
+
 		m_controller = GetComponent<Prime31.CharacterController2D>();
 
 		// listen to some events for illustration purposes
 		m_controller.onControllerCollidedEvent += onControllerCollider;
 		m_controller.onTriggerEnterEvent += onTriggerEnterEvent;
 		m_controller.onTriggerExitEvent += onTriggerExitEvent;
+		
+		m_originalScale = m_playerSprite.localScale;
 		
 		m_gravity = goingUpGravity;
 	}
@@ -118,6 +127,11 @@ public class PlayerController : MonoBehaviour {
 			m_groundedRemember = groundedRememberTime;
 			m_gravity = goingUpGravity;
 			m_velocity.y = 0;
+
+			// became grounded this frame
+			if(!m_controller.collisionState.wasGroundedLastFrame) {
+				StartCoroutine(ChangeScale(m_playerSprite.localScale * m_groundingScaleMultiplier));
+			}
 		}
 
 		if(m_isShowingDialogue) {
@@ -138,7 +152,14 @@ public class PlayerController : MonoBehaviour {
 		m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
 
 		// velocity verlet for y velocity
-		m_velocity.y += m_gravity * Time.deltaTime;
+		m_velocity.y += (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime)));
+
+		// limiting vertical velocity
+		if(m_velocity.y < maxNegativeVerticalVelocity && !m_floating) {
+			m_velocity.y = maxNegativeVerticalVelocity;
+		} else if(m_velocity.y < (maxNegativeVerticalVelocity / 2f) && m_floating) {
+			m_velocity.y = (maxNegativeVerticalVelocity / 2f);
+		}
 		
 		// ignora as "one way platforms" por um frame (para cair delas)
 		if( m_controller.isGrounded && Input.GetKey( KeyCode.DownArrow ) )
@@ -147,19 +168,19 @@ public class PlayerController : MonoBehaviour {
 			m_controller.ignoreOneWayPlatformsThisFrame = true;
 		}
 
-		
-		// limiting vertical velocity
-		if(m_velocity.y < maxNegativeVerticalVelocity) {
-			m_velocity.y = maxNegativeVerticalVelocity;
-		}
-
 		// applying velocity verlet on delta position for y axis
 		// standard euler on x axis
 		// heap allocation = bad
-		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime) + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime)));
+		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
 		
 		m_controller.move( deltaPosition );
 		m_velocity = m_controller.velocity;
+	}
+
+	private IEnumerator ChangeScale(Vector2 scale) {
+		m_playerSprite.localScale = scale;
+		yield return new WaitForSeconds(0.075f);
+		m_playerSprite.localScale = new Vector3(Mathf.Sign(m_playerSprite.localScale.x) * Mathf.Abs(m_originalScale.x), m_originalScale.y, m_playerSprite.localScale.z);
 	}
 
 	private void AnimationLogic() {
@@ -183,7 +204,7 @@ public class PlayerController : MonoBehaviour {
 		normalizedHorizontalSpeed = horizontalMovement;
 		
 		if(horizontalMovement != 0) {
-			transform.localScale = new Vector3(Mathf.Sign(horizontalMovement) * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+			m_playerSprite.localScale = new Vector3(Mathf.Sign(horizontalMovement) * Mathf.Abs(m_playerSprite.localScale.x), m_playerSprite.localScale.y, m_playerSprite.localScale.z);
 		}
 	}
 
@@ -211,6 +232,8 @@ public class PlayerController : MonoBehaviour {
 			m_groundedRemember = 0;
 
 			m_velocity.y = Mathf.Sqrt( 2f * jumpHeight * -m_gravity );
+			
+			StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
 			m_animator.Play( "Jump" );
 		}
 	}
@@ -236,6 +259,8 @@ public class PlayerController : MonoBehaviour {
 		// Stick to Wall
 		if(((m_controller.collisionState.right && (normalizedHorizontalSpeed == 1)) ||
 			(m_controller.collisionState.left && (normalizedHorizontalSpeed == -1) ))) {
+				// wasn't on wall last frame
+				if(!m_isOnWall) StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
 				m_isOnWall = true;
 				if(m_velocity.y < 0) m_gravity = onWallGravity;
 			} else {
@@ -244,8 +269,9 @@ public class PlayerController : MonoBehaviour {
 		
 		// Wall Jump
 		if((m_controller.collisionState.right || m_controller.collisionState.left) && Input.GetButtonDown("Jump")) {
+			StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
 			m_gravity = goingUpGravity;
-			m_velocity.x = wallJumpVelocity.x * Mathf.Sign(transform.localScale.x);
+			m_velocity.x = wallJumpVelocity.x * Mathf.Sign(m_playerSprite.localScale.x);
 			m_velocity.y = Mathf.Sqrt(2f * wallJumpVelocity.y * -m_gravity);
 		}
 	}
