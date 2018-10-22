@@ -12,10 +12,9 @@ public class PlayerController : MonoBehaviour {
 	public float goingUpGravity = -25f;
 	public float goingDownGravity = -50f;
 	public float floatingGravity = -10f;
-	public float maxNegativeVerticalVelocity = -10f;
 	private float m_gravity;
 	public float inAirDamping = 5f;
-	public float jumpHeight = 3f;
+	public float jumpHeight = 5f;
 	public float jumpPressedRememberTime = 0.15f;
 	public float groundedRememberTime = 0.15f;
 	public float cutJumpHeight = 0.35f;
@@ -28,6 +27,10 @@ public class PlayerController : MonoBehaviour {
 	public float onWallGravity = -5f;
 	public Vector2 wallJumpVelocity = new Vector2(-5f, 5f);
 	private bool m_isOnWall;
+
+	[Space(5)]
+	[Header("Other Parameters")]
+	public float jumpingPlatformMultiplier = 2.5f;
 	
 	[Space(5)]
 	[Header("Audio Handling")]
@@ -109,8 +112,9 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
-			m_velocity.y = Mathf.Sqrt( 5f * jumpHeight * -m_gravity );
+			m_velocity.y = Mathf.Sqrt( jumpingPlatformMultiplier * 2f * jumpHeight * -m_gravity );
 			m_animator.Play( "Jump" );
+			StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
 		}
 	}
 
@@ -152,14 +156,9 @@ public class PlayerController : MonoBehaviour {
 		m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
 
 		// velocity verlet for y velocity
-		m_velocity.y += (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime)));
-
-		// limiting vertical velocity
-		if(m_velocity.y < maxNegativeVerticalVelocity && !m_floating) {
-			m_velocity.y = maxNegativeVerticalVelocity;
-		} else if(m_velocity.y < (maxNegativeVerticalVelocity / 2f) && m_floating) {
-			m_velocity.y = (maxNegativeVerticalVelocity / 2f);
-		}
+		// m_velocity.y += (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime)));
+		// limiting gravity
+		m_velocity.y = Mathf.Max(m_gravity, m_velocity.y + (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime))));
 		
 		// ignora as "one way platforms" por um frame (para cair delas)
 		if( m_controller.isGrounded && Input.GetKey( KeyCode.DownArrow ) )
@@ -265,14 +264,15 @@ public class PlayerController : MonoBehaviour {
 				if(m_velocity.y < 0) m_gravity = onWallGravity;
 			} else {
 				m_isOnWall = false;
+				
 			}
 		
 		// Wall Jump
 		if((m_controller.collisionState.right || m_controller.collisionState.left) && Input.GetButtonDown("Jump")) {
-			StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
-			m_gravity = goingUpGravity;
 			m_velocity.x = wallJumpVelocity.x * Mathf.Sign(m_playerSprite.localScale.x);
+			m_gravity = goingUpGravity;
 			m_velocity.y = Mathf.Sqrt(2f * wallJumpVelocity.y * -m_gravity);
+			StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
 		}
 	}
 }

@@ -68,7 +68,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1233750439695320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.9, y: -9.25, z: 0}
+  m_LocalPosition: {x: 0, y: -6.69, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4148326263093062}
@@ -107,7 +107,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.13671589}
+  m_Offset: {x: 0.017800003, y: -0.13671589}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -118,7 +118,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7513695, y: 3.2349415}
+  m_Size: {x: 0.7869695, y: 3.2349415}
   m_EdgeRadius: 0.1
 --- !u!95 &95262648386362486
 Animator:
@@ -230,14 +230,14 @@ MonoBehaviour:
   goingUpGravity: -25
   goingDownGravity: -60
   floatingGravity: -5
-  maxNegativeVerticalVelocity: -30
   inAirDamping: 5
-  jumpHeight: 6.5
+  jumpHeight: 5
   jumpPressedRememberTime: 0.15
   groundedRememberTime: 0.15
   cutJumpHeight: 0.35
-  onWallGravity: 0
+  onWallGravity: -1
   wallJumpVelocity: {x: -25, y: 6.5}
+  jumpingPlatformMultiplier: 1.5
   hurtClip: {fileID: 8300000, guid: ecc392a1b11bc40e0a2ef3957a9b7376, type: 3}
   m_playerSprite: {fileID: 4148326263093062}
 --- !u!212 &212508962720427898
