@@ -33,6 +33,10 @@ public class PlayerController : MonoBehaviour {
 	public float jumpingPlatformMultiplier = 2.5f;
 	
 	[Space(5)]
+	[Header("Particle Effects")]
+	public ParticleSystem landingParticles;
+	
+	[Space(5)]
 	[Header("Audio Handling")]
 	public AudioClip hurtClip;
 
@@ -134,6 +138,7 @@ public class PlayerController : MonoBehaviour {
 
 			// became grounded this frame
 			if(!m_controller.collisionState.wasGroundedLastFrame) {
+				Instantiate(landingParticles, transform.position + Vector3.down, Quaternion.identity).Play();
 				StartCoroutine(ChangeScale(m_playerSprite.localScale * m_groundingScaleMultiplier));
 			}
 		}

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BossArtes : MonoBehaviour, IDangerous {
 
-	public float startingX = -10.5f;
 	private float m_distanceToPlayer;
 	public float minDashTime = 4f;
 	public float maxDashTime = 6f;
