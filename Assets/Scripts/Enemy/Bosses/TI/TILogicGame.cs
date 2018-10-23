@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public class TILogicGame : TIBaseState {
 	private bool Pressed3 = false;
 	public float x_offset_timer;
 	public float y_offset_timer;
-	public Text qtext;
+	public TextMeshProUGUI qtext;
 	public float q_x_offset;
 	public float q_y_offset;
 	public int qsize;
