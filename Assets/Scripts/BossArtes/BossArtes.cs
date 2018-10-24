@@ -40,7 +40,6 @@ public class BossArtes : MonoBehaviour, IDangerous {
 	public float lerpVelocity = 5f;
 
 	private EDaliBossStates m_bossState;
-	private float m_distanceToPlayer;
 	private float m_timeToNextDash;
 	private float m_dashDistance;
 	private float offscreenY = -11.5f;
@@ -58,25 +57,18 @@ public class BossArtes : MonoBehaviour, IDangerous {
 		m_animator = GetComponent<Animator>();
 		ResetBoss();
 
-		Debug.Log("Main Camera pixel width: " + Camera.main.pixelWidth);
-		Debug.Log("Main Camera scaled pixel width: " + Camera.main.scaledPixelWidth);
-		Debug.Log("?: " + Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0f)));
-
 		m_bossState = EDaliBossStates.timedDash;
 	}
 
 	public void ResetBoss() {
-		m_distanceToPlayer = Mathf.Abs(transform.position.x - playerReference.transform.position.x);
-		m_timeToNextDash = Random.Range(minDashTime, maxDashTime);
-		m_isDashing = false;
-		m_isLocked = false;
+		transform.position = Camera.main.ScreenToWorldPoint(new Vector3(25f, -500f, 10f));
+		m_timeToNextDash = Time.time + Random.Range(minDashTime, maxDashTime);
+		m_bossState = EDaliBossStates.timedDash;
 	}
 
 	public void StopBoss() {
 		StopAllCoroutines();
-		canDash = false;
-		m_isDashing = false;
-		m_isLocked = false;
+		m_bossState = EDaliBossStates.dummy;
 	}
 
 	private IEnumerator FlashBoss() {
@@ -101,13 +93,13 @@ public class BossArtes : MonoBehaviour, IDangerous {
 	private IEnumerator Dash() {
 		yield return null;
 
-		while(transform.position.x < (playerReference.transform.position.x + (5*m_distanceToPlayer))) {
+		while(transform.position.x < (playerReference.transform.position.x + (100f))) {
 			transform.position = new Vector3(transform.position.x + dashVelocity, transform.position.y, transform.position.z);
 			yield return null;
 		}
 
 		m_animator.Play("Idle");
-		transform.position = Camera.main.ScreenToWorldPoint(new Vector3(25f, -100f, 10f));
+		transform.position = Camera.main.ScreenToWorldPoint(new Vector3(25f, -500f, 10f));
 		m_bossState = EDaliBossStates.recovering;
 		yield return new WaitForSeconds(waitTimeAfterDash);
 		m_timeToNextDash = Time.time + Random.Range(minDashTime, maxDashTime);

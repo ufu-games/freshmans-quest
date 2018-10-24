@@ -37,9 +37,16 @@ public class DaliLevelManager : MonoBehaviour {
 		DialogueManager.instance.StartDialogue(endLevelDialogue);
 	}
 
+	private IEnumerator WaitFadeOut() {
+		yield return new WaitForSeconds(0.5f);
+		LevelManagement.LevelManager.instance.FadeOut(.25f);
+	}
+
 	public void ResetPlayer() {
+		LevelManagement.LevelManager.instance.FadeIn(.1f);
 		playerReference.transform.position = m_lastCheckpoint;
 		Camera.main.transform.position = m_lastCheckpoint;
+		StartCoroutine(WaitFadeOut());
 	}
 
 	private IEnumerator GoToHub() {

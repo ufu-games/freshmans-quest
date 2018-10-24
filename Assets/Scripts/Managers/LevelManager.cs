@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
 namespace LevelManagement {
 	public class LevelManager : MonoBehaviour {
 		public static LevelManager instance;
+		public MaskableGraphic blackScreenToFade;
+		public float fadeDuration = .1f;
 
 		void Awake() {
 			if(instance == null) {
@@ -15,6 +18,10 @@ namespace LevelManagement {
 			} else {
 				Destroy(gameObject);
 			}
+		}
+
+		void Start() {
+			FadeOut(fadeDuration);
 		}
 
 		public void ReloadLevel() { SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); }
@@ -40,6 +47,24 @@ namespace LevelManagement {
 			}
 		}
 
+		// =============================================================================
+		// =============================================================================
+		// 							FADE IN / FADE OUT
+		// =============================================================================
+		// =============================================================================
+		private void Fade(float targetAlpha, float duration) {
+			blackScreenToFade.CrossFadeAlpha(targetAlpha, duration, true);
+		}
+
+		public void FadeOut(float duration) {
+			blackScreenToFade.canvasRenderer.SetAlpha(1f);
+			Fade(0f, duration);
+		}
+
+		public void FadeIn(float duration) {
+			blackScreenToFade.canvasRenderer.SetAlpha(0f);
+			Fade(1f, duration);
+		}
 
 	}
 }
