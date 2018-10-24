@@ -20,8 +20,8 @@ public class DaliLevelManager : MonoBehaviour {
 	}
 
 	void Start() {
-		m_lastCheckpoint = Vector2.zero;
 		SoundManager.instance.ChangeMusic(daliBossMusic);
+		m_lastCheckpoint = playerReference.transform.position;
 	}
 
 	public void PassedCheckpoint(Vector2 position) {
@@ -39,6 +39,7 @@ public class DaliLevelManager : MonoBehaviour {
 
 	public void ResetPlayer() {
 		playerReference.transform.position = m_lastCheckpoint;
+		Camera.main.transform.position = m_lastCheckpoint;
 	}
 
 	private IEnumerator GoToHub() {
