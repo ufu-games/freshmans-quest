@@ -120,8 +120,11 @@ public class BossArtes : MonoBehaviour, IDangerous {
 		m_bossState = state;
 	}
 
+	// used on following player state
 	public void ResetBossPosition() {
 		transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0f)).x + xAxisOffset, playerReference.transform.position.y, transform.position.z);
+		transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+		m_followPlayerPosition = Vector2.zero;
 		m_bossState = EDaliBossStates.dummy;
 		StartCoroutine(ChangeStateAfter(EDaliBossStates.followingPlayer, 2f));
 	}
@@ -140,11 +143,17 @@ public class BossArtes : MonoBehaviour, IDangerous {
 	}
 
 	private void FollowPlayer() {
-		if(m_followPlayerPosition == null) m_followPlayerPosition = playerReference.transform.position;
+		if(m_followPlayerPosition == null || m_followPlayerPosition == Vector2.zero) m_followPlayerPosition = playerReference.transform.position;
 		
 		
 		if(Vector2.Distance(transform.position, m_followPlayerPosition) < distanceToChangeFollowingPosition) {
 			m_followPlayerPosition = playerReference.transform.position;
+		}
+
+		if(m_followPlayerPosition.x < transform.position.x) {
+			transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+		} else {
+			transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
 		}
 		
 		transform.position = Vector3.Lerp(transform.position, m_followPlayerPosition, Time.deltaTime * followVelocity);
