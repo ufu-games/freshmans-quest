@@ -642,7 +642,7 @@ Prefab:
     - target: {fileID: 114786163368753942, guid: 632ec8bd2927498469e0fd10a1d85c86,
         type: 2}
       propertyPath: m_DefaultBlend.m_Style
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114437033842505884, guid: 632ec8bd2927498469e0fd10a1d85c86,
         type: 2}
@@ -683,6 +683,21 @@ Prefab:
         type: 2}
       propertyPath: m_LookaheadIgnoreY
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114437033842505884, guid: 632ec8bd2927498469e0fd10a1d85c86,
+        type: 2}
+      propertyPath: m_XDamping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114786163368753942, guid: 632ec8bd2927498469e0fd10a1d85c86,
+        type: 2}
+      propertyPath: m_UpdateMethod
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114786163368753942, guid: 632ec8bd2927498469e0fd10a1d85c86,
+        type: 2}
+      propertyPath: m_DefaultBlend.m_Time
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 2}
@@ -5608,8 +5623,11 @@ MonoBehaviour:
   waitBeforeDash: 1.5
   waitTimeAfterDash: 2
   playerReference: {fileID: 2122452393}
+  initialState: 1
   xAxisOffset: 2.4
   lerpVelocity: 7.5
+  distanceToChangeFollowingPosition: 0.25
+  followVelocity: 2
   canDash: 1
 --- !u!58 &254416900
 CircleCollider2D:

@@ -4,6 +4,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/*
+	Level Manager
+	Como utilizar: LevelManagement.LevelManager.instance.nomeDaFuncao
+	               (namespace)  (classe)    (instancia) (função)
+	Funções que podem ser utilizadas:
+
+	ReloadLevel()
+		- Recarrega o Level Atual
+		Ex: LevelManagement.LevelManager.instance.ReloadLevel();
+	LoadNextLevel()
+		- Carrega a próxima cena na build, se a cena atual for a útlima, carrega a primeira cena.
+		Ex: LevelManagement.LevelManager.instance.LoadNextLevel();
+	LoadLevel(string)
+		- Carrega a cena com o nome passado por parâmetro.
+		Ex: LevelManagement.LevelManager.instance.LoadLevel("Hub");
+	LoadLevel(int)
+		- Carrega a cena com o indice passado por parâmetro
+		Ex: LevelManagement.LevelManager.instance.LoadLevel(2);
+ */
+
 
 namespace LevelManagement {
 	public class LevelManager : MonoBehaviour {
