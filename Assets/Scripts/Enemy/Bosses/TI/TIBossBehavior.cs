@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ public class TIBossBehavior : MonoBehaviour {
 	public float timeBetweenStages = 2f;
 	private Camera m_cam;
 	[Header("--Face Text--")]
-	public Text FaceText;
+	public TextMeshProUGUI FaceText;
 	public float FaceTextXOffset = 1f;
 	public float FaceTextYOffset = -1f;
 	public int TextSize = 65;
@@ -27,7 +28,7 @@ public class TIBossBehavior : MonoBehaviour {
 	[Header("--Logic Game--")]
 	public float TimerXOffset = -4f;
 	public float TimerYOffset = 2f;
-	public Text QuestionText;
+	public TextMeshProUGUI QuestionText;
 	public float QuestionTextXOffset = -3f;
 	public float QuestionTextYOffset = 2f;
 	public int QuestionTextSize = 30;
@@ -42,6 +43,15 @@ public class TIBossBehavior : MonoBehaviour {
 	void Start () {
 		
 		m_cam = Camera.main;
+		MyState = null;
+		foreach(TextMeshProUGUI text in FindObjectsOfType<TextMeshProUGUI>()){
+			if(text.name == "Question Text"){
+				QuestionText = text;
+			}
+			if(text.name == "Face Text"){
+				FaceText = text;
+			}
+		}
 		Physics2D.IgnoreLayerCollision(GameObject.Find("Player").gameObject.layer, 17 ,true);
 		SetFaceText(":D");
 		FaceText.color = TextColor;
@@ -136,7 +146,9 @@ public class TIBossBehavior : MonoBehaviour {
 		FaceTextXOffset += 0.2f;
 		Update_facetext_position();
 		SetFaceText(":D");
-		MyState.MyDestroy();
+		if(MyState != null) {
+			MyState.MyDestroy();
+		}
 		yield return new WaitForSeconds(timeBetweenStages);
 		switch (Random.Range(0,3)) {
 			case 0:

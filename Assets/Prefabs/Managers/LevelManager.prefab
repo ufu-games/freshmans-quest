@@ -34,7 +34,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1293861181122492}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 224.50461, y: 31.440489, z: 4.340993}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -51,3 +51,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53f8dfcd4922944688c978b3319de604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blackScreenToFade: {fileID: 0}
+  fadeDuration: 0.25
