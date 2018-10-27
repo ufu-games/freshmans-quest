@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour {
 	public float onWallGravity = -5f;
 	public Vector2 wallJumpVelocity = new Vector2(-5f, 5f);
 	private bool m_isOnWall;
+	private bool getingOffWall = false;
 
 	[Space(5)]
 	[Header("Other Parameters")]
@@ -158,7 +159,7 @@ public class PlayerController : MonoBehaviour {
 
 		var smoothedMovementFactor = m_controller.isGrounded ? groundDamping : inAirDamping;
 		// mudar aqui, nao usar lerp no futuro
-		m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
+		if(!m_isOnWall)m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
 
 		// velocity verlet for y velocity
 		// m_velocity.y += (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime)));
@@ -204,11 +205,19 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Move() {
+		
 		float horizontalMovement = Input.GetAxisRaw("Horizontal");
 		normalizedHorizontalSpeed = horizontalMovement;
 		
 		if(horizontalMovement != 0) {
-			m_playerSprite.localScale = new Vector3(Mathf.Sign(horizontalMovement) * Mathf.Abs(m_playerSprite.localScale.x), m_playerSprite.localScale.y, m_playerSprite.localScale.z);
+			if(!m_isOnWall) m_playerSprite.localScale = new Vector3(Mathf.Sign(horizontalMovement) * Mathf.Abs(m_playerSprite.localScale.x), m_playerSprite.localScale.y, m_playerSprite.localScale.z);
+		}
+		if(m_isOnWall){
+			if(m_controller.isColliding(Vector2.right)){
+					m_playerSprite.localScale = new Vector3(Mathf.Abs(m_playerSprite.localScale.x), m_playerSprite.localScale.y, m_playerSprite.localScale.z);
+			} else{
+					m_playerSprite.localScale = new Vector3(-1 * Mathf.Abs(m_playerSprite.localScale.x), m_playerSprite.localScale.y, m_playerSprite.localScale.z);
+			}
 		}
 	}
 
@@ -243,12 +252,11 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Float() {
-		if(m_velocity.y >= 0) return;
-
+		if(m_velocity.y >= 0) return;	
 		if(Input.GetButton("Jump")) {
 			m_floating = true;
 			m_gravity = floatingGravity;
-		} else {
+		} else if(!m_isOnWall) {
 			m_floating = false;
 			m_gravity = goingDownGravity;
 		}
@@ -259,26 +267,43 @@ public class PlayerController : MonoBehaviour {
 			m_isOnWall = false;
 			return;
 		}
-
+		
 		// Stick to Wall
-		if(((m_controller.collisionState.right && (normalizedHorizontalSpeed == 1)) ||
-			(m_controller.collisionState.left && (normalizedHorizontalSpeed == -1) ))) {
+		if(!m_isOnWall && ( (m_controller.isColliding(Vector2.left) && Input.GetAxisRaw("Horizontal") != 1) ||
+							(m_controller.isColliding(Vector2.right)&& Input.GetAxisRaw("Horizontal") != -1))) {
 				// wasn't on wall last frame
 				if(!m_isOnWall) StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
 				m_isOnWall = true;
-				if(m_velocity.y < 0) m_gravity = onWallGravity;
-			} else {
+				StopCoroutine("letGoOfWall");
+				getingOffWall  = false;
+			} else if(((m_controller.isColliding(Vector2.left) && (Input.GetAxisRaw("Horizontal") == 1)) ||
+					   (m_controller.isColliding(Vector2.right) && (Input.GetAxisRaw("Horizontal") == -1))) && m_isOnWall){
+				if(!getingOffWall){
+					StartCoroutine(letGoOfWall());
+					getingOffWall  = true;
+				}
+			} else if(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)){
+				StopCoroutine("letGoOfWall");
+				getingOffWall = false;
+			} else{
+				StopCoroutine("letGoOfWall");
+				getingOffWall = false;
 				m_isOnWall = false;
-				
 			}
-		
+		if(m_isOnWall && m_velocity.y <= 0)m_gravity = onWallGravity;
 		// Wall Jump
-		if((m_controller.collisionState.right || m_controller.collisionState.left) && Input.GetButtonDown("Jump")) {
-			m_velocity.x = wallJumpVelocity.x * Mathf.Sign(m_playerSprite.localScale.x);
+		if(m_isOnWall && Input.GetButtonDown("Jump")) {
+			m_isOnWall = false;
+			int jumpDirection =  m_controller.isColliding(Vector2.left) ? -1:1;
+			m_velocity.x = wallJumpVelocity.x * jumpDirection;
 			m_gravity = goingUpGravity;
 			m_velocity.y = Mathf.Sqrt(2f * wallJumpVelocity.y * -m_gravity);
 			StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
 		}
+	}
+	private IEnumerator letGoOfWall(){
+		yield return new WaitForSeconds(0.5f);
+		m_isOnWall = false;
 	}
 }
 
