@@ -77,11 +77,15 @@ namespace LevelManagement {
 		}
 
 		public void FadeOut(float duration) {
+			if(blackScreenToFade == null) return;
+			
 			blackScreenToFade.canvasRenderer.SetAlpha(1f);
 			Fade(0f, duration);
 		}
 
 		public void FadeIn(float duration) {
+			if(blackScreenToFade == null) return;
+
 			blackScreenToFade.canvasRenderer.SetAlpha(0f);
 			Fade(1f, duration);
 		}

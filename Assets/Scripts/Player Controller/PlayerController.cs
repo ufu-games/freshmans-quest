@@ -290,9 +290,11 @@ public class PlayerController : MonoBehaviour {
 				getingOffWall = false;
 				m_isOnWall = false;
 			}
-		if(m_isOnWall && m_velocity.y <= 0)m_gravity = onWallGravity;
+		if(m_isOnWall && m_velocity.y <= 0) m_gravity = onWallGravity;
+
 		// Wall Jump
 		if(m_isOnWall && Input.GetButtonDown("Jump")) {
+			StopCoroutine("letGoOfWall");
 			m_isOnWall = false;
 			int jumpDirection =  m_controller.isColliding(Vector2.left) ? -1:1;
 			m_velocity.x = wallJumpVelocity.x * jumpDirection;
@@ -303,6 +305,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	private IEnumerator letGoOfWall(){
 		yield return new WaitForSeconds(0.5f);
+		m_velocity.x = (wallJumpVelocity.x / 2f) * (m_controller.isColliding(Vector2.left) ? -1:1);
 		m_isOnWall = false;
 	}
 }
