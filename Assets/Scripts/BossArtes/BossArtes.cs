@@ -122,11 +122,12 @@ public class BossArtes : MonoBehaviour, IDangerous {
 
 	// used on following player state
 	public void ResetBossPosition() {
+		EDaliBossStates previousState = m_bossState;
 		transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0f)).x + xAxisOffset, playerReference.transform.position.y, transform.position.z);
 		transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
 		m_followPlayerPosition = Vector2.zero;
 		m_bossState = EDaliBossStates.dummy;
-		StartCoroutine(ChangeStateAfter(EDaliBossStates.followingPlayer, 2f));
+		StartCoroutine(ChangeStateAfter(previousState, 2f));
 	}
 
 	private void TrackPlayer(bool trackYAxis = true) {
