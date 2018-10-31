@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class DaliHazards : MonoBehaviour, IDangerous {
 	void IDangerous.InteractWithPlayer(Collider2D player) {
-		DaliLevelManager.instance.ResetPlayer();
+		StartCoroutine(DaliLevelManager.instance.ResetPlayer());
 	}
 }

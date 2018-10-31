@@ -11,6 +11,21 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1233750439695320}
   m_IsPrefabAsset: 1
+--- !u!1 &1045317019159742
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4401963078034022}
+  m_Layer: 8
+  m_Name: Camera Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1233750439695320
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,6 +76,19 @@ Transform:
   m_Father: {fileID: 4563930203491430}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4401963078034022
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1045317019159742}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4563930203491430}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4563930203491430
 Transform:
   m_ObjectHideFlags: 1
@@ -68,10 +96,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1233750439695320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -6.69, z: 0}
+  m_LocalPosition: {x: -2.9, y: -7.5, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4148326263093062}
+  - {fileID: 4401963078034022}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -225,10 +254,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fd66fcb756454e9b9b88a07f4874b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 6
+  runSpeed: 9
   groundDamping: 20
   goingUpGravity: -25
-  goingDownGravity: -60
+  goingDownGravity: -80
   floatingGravity: -5
   inAirDamping: 5
   jumpHeight: 5
@@ -237,10 +266,13 @@ MonoBehaviour:
   cutJumpHeight: 0.35
   onWallGravity: -1
   wallJumpVelocity: {x: -25, y: 6.5}
-  jumpingPlatformMultiplier: 1.5
+  jumpingPlatformMultiplier: 2.5
   landingParticles: {fileID: 198417699065630864, guid: 5941734cbb31c479fbbe5fb46ba4283f,
     type: 2}
   hurtClip: {fileID: 8300000, guid: ecc392a1b11bc40e0a2ef3957a9b7376, type: 3}
+  movementOffset: 2.5
+  movementSpeed: 0.3
+  targetOffset: {x: 0, y: 0.5}
   m_playerSprite: {fileID: 4148326263093062}
 --- !u!212 &212508962720427898
 SpriteRenderer:

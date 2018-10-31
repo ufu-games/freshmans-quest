@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour {
 	private float m_jumpPressedRemember;
 	private float m_groundedRemember;
 	private bool m_floating;
+	private GameObject m_camTarget;
 	
 	[Space(5)]
 	[Header("Wall Jump Handling")]
@@ -40,7 +41,15 @@ public class PlayerController : MonoBehaviour {
 	[Space(5)]
 	[Header("Audio Handling")]
 	public AudioClip hurtClip;
-
+	
+	[Space(5)]
+	[Header("Cam Target")]
+	public float movementOffset = 2;
+	public float movementSpeed = 0.2f;
+	public Vector2 targetOffset = new Vector2(0f,1f);
+	private float m_initialY;
+	private bool justjumped = false;
+	private	bool inSmallJump = true;
 
 	[HideInInspector]
 	private float normalizedHorizontalSpeed = 0;
@@ -79,6 +88,8 @@ public class PlayerController : MonoBehaviour {
 		m_originalScale = m_playerSprite.localScale;
 		
 		m_gravity = goingUpGravity;
+
+		m_camTarget = GameObject.Find("Camera Target"); 
 	}
 
 
@@ -208,6 +219,27 @@ public class PlayerController : MonoBehaviour {
 		
 		float horizontalMovement = Input.GetAxisRaw("Horizontal");
 		normalizedHorizontalSpeed = horizontalMovement;
+		
+		if(Mathf.Abs(m_velocity.y) <= 0.01f){
+			m_camTarget.transform.position = transform.position + (Vector3)targetOffset;
+			m_initialY = m_camTarget.transform.position.y;
+			if(!justjumped) {
+				inSmallJump = true;
+			}
+		} else {
+			if(m_velocity.y > 0 && m_camTarget.transform.position.y <= transform.position.y + targetOffset.y + movementOffset && m_camTarget.transform.position.y > m_initialY + 4f) {
+				m_camTarget.transform.position += Vector3.up*movementSpeed;
+				inSmallJump = false;
+				justjumped = true;
+			}
+			if(m_camTarget.transform.position.y < m_initialY - 0.01f) {
+				inSmallJump = false;
+			}
+			if(m_velocity.y < 0 && m_camTarget.transform.position.y >= transform.position.y + targetOffset.y - movementOffset && !inSmallJump) {
+				m_camTarget.transform.position += Vector3.down*movementSpeed;
+				justjumped = false;
+			}
+		}
 		
 		if(horizontalMovement != 0) {
 			if(!m_isOnWall) m_playerSprite.localScale = new Vector3(Mathf.Sign(horizontalMovement) * Mathf.Abs(m_playerSprite.localScale.x), m_playerSprite.localScale.y, m_playerSprite.localScale.z);
