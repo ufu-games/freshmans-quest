@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
+	
+	[Space(5)]
+	[Header("General Configuration")]
+	public bool hasWallJump = false;
+	public bool hasFloat = false;
+
 	[Space(5)]
 	[Header("Movement Handling")]
 	public float runSpeed = 8f;
@@ -165,8 +171,8 @@ public class PlayerController : MonoBehaviour {
 		Move();
 		AnimationLogic();
 		Jump();
-		Float();
-		WallJump();
+		if(hasFloat) Float();
+		if(hasWallJump) WallJump();
 
 		var smoothedMovementFactor = m_controller.isGrounded ? groundDamping : inAirDamping;
 		// mudar aqui, nao usar lerp no futuro
