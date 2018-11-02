@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour {
 	private Vector2 m_originalScale;
 	private Vector2 m_goingUpScaleMultiplier = new Vector2(0.8f, 1.2f);
 	private Vector2 m_groundingScaleMultiplier = new Vector2(1.2f, 0.8f);
-
+	public GameObject obj;
 
 	// OnCollision, OnTrigger, etc... - Have some kind of API (i.e. Interact, ...)
 	// easily extendable
@@ -221,18 +221,20 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void AnimationLogic() {
-		if(m_isOnWall) {
-			m_animator.Play("Wall");
-		} else if(Mathf.Abs(m_velocity.y) > Mathf.Epsilon) {
-			if(m_floating) {
-				m_animator.Play("Floating");
+		if(gameObject.activeSelf){
+			if(m_isOnWall) {
+				m_animator.Play("Wall");
+			} else if(Mathf.Abs(m_velocity.y) > Mathf.Epsilon) {
+				if(m_floating) {
+					m_animator.Play("Floating");
+				} else {
+					m_animator.Play("Jump");
+				}
+			} else if(Mathf.Abs(normalizedHorizontalSpeed) > 0 && m_controller.isGrounded) {
+				m_animator.Play("Running");
 			} else {
-				m_animator.Play("Jump");
+				m_animator.Play("Idle");
 			}
-		} else if(Mathf.Abs(normalizedHorizontalSpeed) > 0 && m_controller.isGrounded) {
-			m_animator.Play("Running");
-		} else {
-			m_animator.Play("Idle");
 		}
 	}
 
@@ -248,7 +250,7 @@ public class PlayerController : MonoBehaviour {
 				inSmallJump = true;
 			}
 		} else {
-			if(m_velocity.y > 0 && m_camTarget.transform.position.y <= transform.position.y + targetOffset.y + movementOffset && m_camTarget.transform.position.y > m_initialY + 4f) {
+			if(m_velocity.y > 0 && m_camTarget.transform.position.y <= transform.position.y + targetOffset.y + movementOffset && m_camTarget.transform.position.y > m_initialY + 1f) {
 				m_camTarget.transform.position += Vector3.up*movementSpeed;
 				inSmallJump = false;
 				justjumped = true;
@@ -327,7 +329,7 @@ public class PlayerController : MonoBehaviour {
 				// wasn't on wall last frame
 				if(!m_isOnWall) StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
 				m_isOnWall = true;
-				StopCoroutine("letGoOfWall");
+				StopCoroutine(letGoOfWall());
 				getingOffWall  = false;
 			} else if(((m_controller.isColliding(Vector2.left) && (Input.GetAxisRaw("Horizontal") == 1)) ||
 					   (m_controller.isColliding(Vector2.right) && (Input.GetAxisRaw("Horizontal") == -1))) && m_isOnWall){
@@ -336,10 +338,10 @@ public class PlayerController : MonoBehaviour {
 					getingOffWall  = true;
 				}
 			} else if(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)){
-				StopCoroutine("letGoOfWall");
+				StopCoroutine(letGoOfWall());
 				getingOffWall = false;
 			} else{
-				StopCoroutine("letGoOfWall");
+				StopCoroutine(letGoOfWall());
 				getingOffWall = false;
 				m_isOnWall = false;
 			}
@@ -347,7 +349,7 @@ public class PlayerController : MonoBehaviour {
 
 		// Wall Jump
 		if(m_isOnWall && Input.GetButtonDown("Jump")) {
-			StopCoroutine("letGoOfWall");
+			StopCoroutine(letGoOfWall());
 			m_isOnWall = false;
 			int jumpDirection =  m_controller.isColliding(Vector2.left) ? -1:1;
 			m_velocity.x = wallJumpVelocity.x * jumpDirection;
