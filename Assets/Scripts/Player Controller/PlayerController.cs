@@ -134,12 +134,19 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
-			m_jumpPressedRemember = 0;
+            float rotationAngle = col.gameObject.transform.eulerAngles.z;
+            float maxVelocity = Mathf.Sqrt(jumpingPlatformMultiplier * 2f * jumpHeight * -m_gravity);
+
+            m_jumpPressedRemember = 0;
 			m_groundedRemember = 0;
 			m_gravity = goingUpGravity;
-			m_velocity.y = Mathf.Sqrt( jumpingPlatformMultiplier * 2f * jumpHeight * -m_gravity );
-			
-			Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
+
+            m_velocity.y = Mathf.Cos(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
+            m_velocity.x = -Mathf.Sin(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
+
+
+
+            Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
 		
 			m_controller.move( deltaPosition );
 
