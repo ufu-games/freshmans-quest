@@ -50,9 +50,10 @@ public class PlayerController : MonoBehaviour {
 	
 	[Space(5)]
 	[Header("Cam Target")]
-	public float movementOffset = 2;
-	public float movementSpeed = 0.2f;
-	public Vector2 targetOffset = new Vector2(0f,1f);
+	public float movementOffset = 1;
+	public float movementSpeedUpwards = 0.1f;
+	public float movementSpeedDownwards = 0.4f;
+	public Vector2 targetOffset = new Vector2(0f,0.25f);
 	private float m_initialY;
 	private bool justjumped = false;
 	private	bool inSmallJump = true;
@@ -74,7 +75,6 @@ public class PlayerController : MonoBehaviour {
 	private Vector2 m_originalScale;
 	private Vector2 m_goingUpScaleMultiplier = new Vector2(0.8f, 1.2f);
 	private Vector2 m_groundingScaleMultiplier = new Vector2(1.2f, 0.8f);
-	public GameObject obj;
 
 	// OnCollision, OnTrigger, etc... - Have some kind of API (i.e. Interact, ...)
 	// easily extendable
@@ -184,6 +184,7 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		Move();
+		CamTargetHandling();
 		AnimationLogic();
 		Jump();
 		if(hasFloat) Float();
@@ -242,27 +243,6 @@ public class PlayerController : MonoBehaviour {
 		
 		float horizontalMovement = Input.GetAxisRaw("Horizontal");
 		normalizedHorizontalSpeed = horizontalMovement;
-		
-		if(Mathf.Abs(m_velocity.y) <= 0.01f){
-			m_camTarget.transform.position = transform.position + (Vector3)targetOffset;
-			m_initialY = m_camTarget.transform.position.y;
-			if(!justjumped) {
-				inSmallJump = true;
-			}
-		} else {
-			if(m_velocity.y > 0 && m_camTarget.transform.position.y <= transform.position.y + targetOffset.y + movementOffset && m_camTarget.transform.position.y > m_initialY + 1f) {
-				m_camTarget.transform.position += Vector3.up*movementSpeed;
-				inSmallJump = false;
-				justjumped = true;
-			}
-			if(m_camTarget.transform.position.y < m_initialY - 0.01f) {
-				inSmallJump = false;
-			}
-			if(m_velocity.y < 0 && m_camTarget.transform.position.y >= transform.position.y + targetOffset.y - movementOffset && !inSmallJump) {
-				m_camTarget.transform.position += Vector3.down*movementSpeed;
-				justjumped = false;
-			}
-		}
 		
 		if(horizontalMovement != 0) {
 			if(!m_isOnWall) m_playerSprite.localScale = new Vector3(Mathf.Sign(horizontalMovement) * Mathf.Abs(m_playerSprite.localScale.x), m_playerSprite.localScale.y, m_playerSprite.localScale.z);
@@ -358,10 +338,42 @@ public class PlayerController : MonoBehaviour {
 			StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
 		}
 	}
+
+	private void CamTargetHandling(){
+		if(Mathf.Abs(m_velocity.y) <= 0.01f){
+			m_camTarget.transform.position = transform.position + (Vector3)targetOffset;
+			m_initialY = m_camTarget.transform.position.y;
+			if(!justjumped) {
+				inSmallJump = true;
+			}
+		} else {
+			if(m_velocity.y > 0 && m_camTarget.transform.position.y <= transform.position.y + targetOffset.y + movementOffset && m_camTarget.transform.position.y > m_initialY + 1f) {
+				m_camTarget.transform.position += Vector3.up*movementSpeedUpwards;
+				inSmallJump = false;
+				justjumped = true;
+			}
+			if(m_camTarget.transform.position.y < m_initialY - 0.01f) {
+				inSmallJump = false;
+			}
+			if(m_velocity.y < 0 && m_camTarget.transform.position.y >= transform.position.y + targetOffset.y - movementOffset && !inSmallJump) {
+				m_camTarget.transform.position += Vector3.down*movementSpeedDownwards;
+				justjumped = false;
+			}
+		}
+	}
+
 	private IEnumerator letGoOfWall(){
 		yield return new WaitForSeconds(0.5f);
 		m_velocity.x = (wallJumpVelocity.x / 2f) * (m_controller.isColliding(Vector2.left) ? -1:1);
 		m_isOnWall = false;
+	}
+
+	public void StopMovement(){
+		m_velocity = new Vector3(0f,0f,0f);
+	}
+
+	public Vector3 GetVelocity(){
+		return m_velocity;
 	}
 }
 

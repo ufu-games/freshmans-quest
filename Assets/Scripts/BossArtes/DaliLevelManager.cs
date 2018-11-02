@@ -61,6 +61,7 @@ public class DaliLevelManager : MonoBehaviour {
 		LevelManagement.LevelManager.instance.FadeIn(.1f);
 		playerReference.SetActive(false);
 		yield return new WaitForSeconds(0.1f);
+		playerReference.GetComponent<PlayerController>().StopMovement();
 		playerReference.transform.position = m_lastCheckpoint;
 		Camera.main.transform.position = m_lastCheckpoint;
 		if(daliReference.activeSelf) daliReference.GetComponent<BossArtes>().ResetBossPosition();
