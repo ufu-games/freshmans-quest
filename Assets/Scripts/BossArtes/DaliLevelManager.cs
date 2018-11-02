@@ -60,10 +60,11 @@ public class DaliLevelManager : MonoBehaviour {
 	public IEnumerator ResetPlayer(){
 		LevelManagement.LevelManager.instance.FadeIn(.1f);
 		playerReference.SetActive(false);
-		yield return new WaitForSeconds(.1f);
+		yield return new WaitForSeconds(0.1f);
 		playerReference.transform.position = m_lastCheckpoint;
 		Camera.main.transform.position = m_lastCheckpoint;
-		daliReference.GetComponent<BossArtes>().ResetBossPosition();
+		if(daliReference.activeSelf) daliReference.GetComponent<BossArtes>().ResetBossPosition();
 		StartCoroutine(WaitFadeOut());
+		yield return null;
 	}
 }
