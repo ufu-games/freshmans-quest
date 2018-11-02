@@ -134,7 +134,15 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
+			m_jumpPressedRemember = 0;
+			m_groundedRemember = 0;
+			m_gravity = goingUpGravity;
 			m_velocity.y = Mathf.Sqrt( jumpingPlatformMultiplier * 2f * jumpHeight * -m_gravity );
+			
+			Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
+		
+			m_controller.move( deltaPosition );
+
 			m_animator.Play( "Jump" );
 			StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
 		}
@@ -156,7 +164,7 @@ public class PlayerController : MonoBehaviour {
 
 			// became grounded this frame
 			if(!m_controller.collisionState.wasGroundedLastFrame) {
-				Instantiate(landingParticles, transform.position + Vector3.down, Quaternion.identity).Play();
+				Instantiate(landingParticles, transform.position + (Vector3.down / 4f), Quaternion.identity).Play();
 				StartCoroutine(ChangeScale(m_playerSprite.localScale * m_groundingScaleMultiplier));
 			}
 		}

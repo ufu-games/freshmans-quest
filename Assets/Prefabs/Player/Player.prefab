@@ -96,7 +96,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1233750439695320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.9, y: -7.5, z: 0}
+  m_LocalPosition: {x: -3.034, y: -7.345, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4148326263093062}
@@ -136,7 +136,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.017800003, y: -0.13671589}
+  m_Offset: {x: 0.017800093, y: -0.033409595}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -147,7 +147,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7869695, y: 3.2349415}
+  m_Size: {x: 0.5098796, y: 0.93949413}
   m_EdgeRadius: 0.1
 --- !u!95 &95262648386362486
 Animator:
@@ -254,19 +254,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fd66fcb756454e9b9b88a07f4874b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 9
-  groundDamping: 20
+  hasWallJump: 0
+  hasFloat: 0
+  runSpeed: 3
+  groundDamping: 10
   goingUpGravity: -25
-  goingDownGravity: -80
-  floatingGravity: -5
+  goingDownGravity: -20
+  floatingGravity: -1
   inAirDamping: 5
-  jumpHeight: 5
+  jumpHeight: 1
   jumpPressedRememberTime: 0.15
   groundedRememberTime: 0.15
   cutJumpHeight: 0.35
   onWallGravity: -1
-  wallJumpVelocity: {x: -25, y: 6.5}
-  jumpingPlatformMultiplier: 2.5
+  wallJumpVelocity: {x: -5, y: 0.5}
+  jumpingPlatformMultiplier: 2
   landingParticles: {fileID: 198417699065630864, guid: 5941734cbb31c479fbbe5fb46ba4283f,
     type: 2}
   hurtClip: {fileID: 8300000, guid: ecc392a1b11bc40e0a2ef3957a9b7376, type: 3}
@@ -309,7 +311,7 @@ SpriteRenderer:
   m_SortingLayerID: -426845297
   m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c29ba90778acd43619695e0ece3e6881, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 065174cd32dca4951b136388f2d504d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
