@@ -50,9 +50,10 @@ public class PlayerController : MonoBehaviour {
 	
 	[Space(5)]
 	[Header("Cam Target")]
-	public float movementOffset = 1;
+	public float movementOffsetUpwards = 1;
+	public float movementOffsetDownwards = 2;
 	public float movementSpeedUpwards = 0.1f;
-	public float movementSpeedDownwards = 0.4f;
+	public float movementSpeedDownwards = 0.8f;
 	public Vector2 targetOffset = new Vector2(0f,0.25f);
 	private float m_initialY;
 	private bool justjumped = false;
@@ -143,8 +144,6 @@ public class PlayerController : MonoBehaviour {
 
             m_velocity.y = Mathf.Cos(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
             m_velocity.x = -Mathf.Sin(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
-
-
 
             Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
 		
@@ -340,23 +339,26 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void CamTargetHandling(){
-		if(Mathf.Abs(m_velocity.y) <= 0.01f){
+		if(m_controller.isGrounded){
 			m_camTarget.transform.position = transform.position + (Vector3)targetOffset;
-			m_initialY = m_camTarget.transform.position.y;
+			m_initialY = m_camTarget.transform.position.y + 1.0f;
 			if(!justjumped) {
 				inSmallJump = true;
 			}
 		} else {
-			if(m_velocity.y > 0 && m_camTarget.transform.position.y <= transform.position.y + targetOffset.y + movementOffset && m_camTarget.transform.position.y > m_initialY + 1f) {
+			if(m_velocity.y > 0 && m_camTarget.transform.position.y <= transform.position.y + targetOffset.y + movementOffsetUpwards && m_camTarget.transform.position.y > m_initialY) {
 				m_camTarget.transform.position += Vector3.up*movementSpeedUpwards;
+				print("up");
 				inSmallJump = false;
 				justjumped = true;
+				m_initialY = m_camTarget.transform.position.y;
 			}
 			if(m_camTarget.transform.position.y < m_initialY - 0.01f) {
 				inSmallJump = false;
 			}
-			if(m_velocity.y < 0 && m_camTarget.transform.position.y >= transform.position.y + targetOffset.y - movementOffset && !inSmallJump) {
+			if(m_velocity.y < 0 && m_camTarget.transform.position.y >= transform.position.y + targetOffset.y - movementOffsetDownwards && !inSmallJump) {
 				m_camTarget.transform.position += Vector3.down*movementSpeedDownwards;
+				print("down");
 				justjumped = false;
 			}
 		}
