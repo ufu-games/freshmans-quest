@@ -93,8 +93,8 @@ public class PlayerController : MonoBehaviour {
 		
 		m_gravity = goingUpGravity;
 
-		Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().Follow = this.transform;
-		m_cam = Camera.main.GetComponentInChildren<CinemachineFramingTransposer>();
+	//	Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().Follow = this.transform;
+	//	m_cam = Camera.main.GetComponentInChildren<CinemachineFramingTransposer>();
 	}
 
 
