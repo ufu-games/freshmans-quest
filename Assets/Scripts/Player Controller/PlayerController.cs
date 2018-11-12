@@ -29,7 +29,6 @@ public class PlayerController : MonoBehaviour {
 	private float m_jumpPressedRemember;
 	private float m_groundedRemember;
 	private bool m_floating;
-	private GameObject m_camTarget;
 	
 	[Space(5)]
 	[Header("Wall Jump Handling")]
@@ -75,6 +74,10 @@ public class PlayerController : MonoBehaviour {
 	private bool isInCanon = false;
 	private bool m_isSlipping = false;
 
+	//Breakable Wall Handling
+	[HideInInspector]
+	public Vector3 m_velocityLastFrame;
+
 	void Awake()
 	{
 		m_animator = GetComponentInChildren<Animator>();
@@ -90,6 +93,7 @@ public class PlayerController : MonoBehaviour {
 		
 		m_gravity = goingUpGravity;
 
+		Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().Follow = this.transform;
 		m_cam = Camera.main.GetComponentInChildren<CinemachineFramingTransposer>();
 	}
 
@@ -107,9 +111,14 @@ public class PlayerController : MonoBehaviour {
 
 		m_isSlipping = hit.transform.gameObject.layer == LayerMask.NameToLayer("Slippery") && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right));
 
+		if(hit.collider.tag == "BreakableWall") {
+			hit.collider.gameObject.GetComponent<BreakableWallBehavior>().Collision(hit.point);
+		}
+		
 		// bail out on plain old ground hits cause they arent very interesting
 		if( hit.normal.y == 1f )
 			return;
+
 
 		// logs any collider hits if uncommented. it gets noisy so it is commented out for the demo
 		//Debug.Log( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );
@@ -194,6 +203,8 @@ public class PlayerController : MonoBehaviour {
 			if(!DialogueManager.instance.isShowingDialogue) m_isShowingDialogue = false;
 			return;
 		}
+
+		m_velocityLastFrame = m_velocity;
 
 		Move();
 		CamHandling();
@@ -379,6 +390,10 @@ public class PlayerController : MonoBehaviour {
 
 	public void StopMovement(){
 		m_velocity = new Vector3(0f,0f,0f);
+	}
+
+	public void SetMovement(Vector3 vect) {
+		m_velocity = vect;
 	}
 
 	public Vector3 GetVelocity(){
