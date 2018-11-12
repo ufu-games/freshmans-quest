@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
 	[Header("Movement Handling")]
 	public float runSpeed = 8f;
 	public float groundDamping = 20f; // how fast do we change direction? higher means faster
+	public float slippingFactor = 2f;
 	
 	[Header("Jump Handling")]
 	public float goingUpGravity = -25f;
@@ -28,7 +29,6 @@ public class PlayerController : MonoBehaviour {
 	private float m_jumpPressedRemember;
 	private float m_groundedRemember;
 	private bool m_floating;
-	private GameObject m_camTarget;
 	
 	[Space(5)]
 	[Header("Wall Jump Handling")]
@@ -70,10 +70,15 @@ public class PlayerController : MonoBehaviour {
 	private Vector2 m_goingUpScaleMultiplier = new Vector2(0.8f, 1.2f);
 	private Vector2 m_groundingScaleMultiplier = new Vector2(1.2f, 0.8f);
 
-	// OnCollision, OnTrigger, etc... - Have some kind of API (i.e. Interact, ...)
 	// easily extendable
 	private bool isInCannon = false;
 	private CannonBehaviour Cannon;
+	private bool m_isSlipping = false;
+
+	//Breakable Wall Handling
+	[HideInInspector]
+	public Vector3 m_velocityLastFrame;
+
 	void Awake()
 	{
 		m_animator = GetComponentInChildren<Animator>();
@@ -89,6 +94,7 @@ public class PlayerController : MonoBehaviour {
 		
 		m_gravity = goingUpGravity;
 
+		Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().Follow = this.transform;
 		m_cam = Camera.main.GetComponentInChildren<CinemachineFramingTransposer>();
 	}
 
@@ -97,12 +103,27 @@ public class PlayerController : MonoBehaviour {
 
 	void onControllerCollider( RaycastHit2D hit )
 	{
+		// if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Slippery") && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)) ) {
+		// 	m_velocity.x = runSpeed * slippingFactor;
+		// 	m_isSlipping = true;
+		// } else {
+		// 	m_isSlipping = false;
+		// }
+
+		m_isSlipping = hit.transform.gameObject.layer == LayerMask.NameToLayer("Slippery") && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right));
+
+		if(hit.collider.tag == "BreakableWall") {
+			hit.collider.gameObject.GetComponent<BreakableWallBehavior>().Collision(hit.point);
+		}
+		
 		// bail out on plain old ground hits cause they arent very interesting
 		if( hit.normal.y == 1f )
 			return;
 
+
 		// logs any collider hits if uncommented. it gets noisy so it is commented out for the demo
 		//Debug.Log( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );
+		
 	}
 
 	void onTriggerEnterEvent(Collider2D col) {
@@ -188,6 +209,8 @@ public class PlayerController : MonoBehaviour {
 			return;
 		}
 
+		m_velocityLastFrame = m_velocity;
+
 		Move();
 		CamHandling();
 		AnimationLogic();
@@ -204,10 +227,15 @@ public class PlayerController : MonoBehaviour {
 
 		var smoothedMovementFactor = m_controller.isGrounded ? groundDamping : inAirDamping;
 		// mudar aqui, nao usar lerp no futuro
-		if(!m_isOnWall)m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
+		if(m_isSlipping) {
+			m_velocity.x = Mathf.Lerp(m_velocity.x, normalizedHorizontalSpeed * runSpeed * slippingFactor, Time.deltaTime * smoothedMovementFactor);
+		} else if(!m_isOnWall) {
+			m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
+		}
 
 		// velocity verlet for y velocity
 		// m_velocity.y += (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime)));
+		
 		// limiting gravity
 		m_velocity.y = Mathf.Max(m_gravity, m_velocity.y + (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime))));
 		
@@ -252,7 +280,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Move() {
-		
+		if(m_isSlipping && Mathf.Abs(m_velocity.x) >= runSpeed) return;
+
 		float horizontalMovement = Input.GetAxisRaw("Horizontal");
 		normalizedHorizontalSpeed = horizontalMovement;
 		
@@ -352,6 +381,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void CamHandling(){
+		if(!m_cam) return;
+
 		if(m_controller.isGrounded) {
 			m_cam.m_DeadZoneHeight = 0.02f;
 			m_cam.m_ScreenY = 0.6f;
@@ -371,6 +402,10 @@ public class PlayerController : MonoBehaviour {
 
 	public void StopMovement(){
 		m_velocity = new Vector3(0f,0f,0f);
+	}
+
+	public void SetMovement(Vector3 vect) {
+		m_velocity = vect;
 	}
 
 	public Vector3 GetVelocity(){
