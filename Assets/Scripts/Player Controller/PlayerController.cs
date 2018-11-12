@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour {
 
 	// OnCollision, OnTrigger, etc... - Have some kind of API (i.e. Interact, ...)
 	// easily extendable
-
+	private bool isInCanon = false;
 
 	void Awake()
 	{
@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour {
 			return;
 
 		// logs any collider hits if uncommented. it gets noisy so it is commented out for the demo
-		Debug.Log( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );
+		//Debug.Log( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );
 	}
 
 	void onTriggerEnterEvent(Collider2D col) {
@@ -137,21 +137,30 @@ public class PlayerController : MonoBehaviour {
 		if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
             float rotationAngle = col.gameObject.transform.eulerAngles.z;
             float maxVelocity = Mathf.Sqrt(jumpingPlatformMultiplier * 2f * jumpHeight * -m_gravity);
-
-            m_jumpPressedRemember = 0;
-			m_groundedRemember = 0;
-			m_gravity = goingUpGravity;
-
-            m_velocity.y = Mathf.Cos(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
-            m_velocity.x = -Mathf.Sin(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
-
-            Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
-		
-			m_controller.move( deltaPosition );
-
-			m_animator.Play( "Jump" );
-			StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
+			this.getsThrownTo(rotationAngle, maxVelocity);
+            
 		}
+
+		if(col.gameObject.layer == LayerMask.NameToLayer("Canon")){
+			Debug.Log("entrou no canhao");
+			isInCanon = true;
+			this.transform.position = col.gameObject.transform.position;
+		}
+	}
+	public void getsThrownTo(float rotationAngle, float maxVelocity){
+		m_jumpPressedRemember = 0;
+		m_groundedRemember = 0;
+		m_gravity = goingUpGravity;
+
+		m_velocity.y = Mathf.Cos(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
+		m_velocity.x = -Mathf.Sin(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
+
+		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
+	
+		m_controller.move( deltaPosition );
+
+		m_animator.Play( "Jump" );
+		StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
 	}
 
 
@@ -348,7 +357,7 @@ public class PlayerController : MonoBehaviour {
 		} else {
 			if(m_velocity.y > 0 && m_camTarget.transform.position.y <= transform.position.y + targetOffset.y + movementOffsetUpwards && m_camTarget.transform.position.y > m_initialY) {
 				m_camTarget.transform.position += Vector3.up*movementSpeedUpwards;
-				print("up");
+				//print("up");
 				inSmallJump = false;
 				justjumped = true;
 				m_initialY = m_camTarget.transform.position.y;
@@ -358,7 +367,7 @@ public class PlayerController : MonoBehaviour {
 			}
 			if(m_velocity.y < 0 && m_camTarget.transform.position.y >= transform.position.y + targetOffset.y - movementOffsetDownwards && !inSmallJump) {
 				m_camTarget.transform.position += Vector3.down*movementSpeedDownwards;
-				print("down");
+				//print("down");
 				justjumped = false;
 			}
 		}
