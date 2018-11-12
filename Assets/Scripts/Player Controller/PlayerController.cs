@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
@@ -48,16 +49,8 @@ public class PlayerController : MonoBehaviour {
 	[Header("Audio Handling")]
 	public AudioClip hurtClip;
 	
-	[Space(5)]
-	[Header("Cam Target")]
-	public float movementOffsetUpwards = 1;
-	public float movementOffsetDownwards = 2;
-	public float movementSpeedUpwards = 0.1f;
-	public float movementSpeedDownwards = 0.8f;
-	public Vector2 targetOffset = new Vector2(0f,0.25f);
-	private float m_initialY;
-	private bool justjumped = false;
-	private	bool inSmallJump = true;
+	//Camera Handling
+	private CinemachineFramingTransposer m_cam;
 
 	[HideInInspector]
 	private float normalizedHorizontalSpeed = 0;
@@ -96,7 +89,7 @@ public class PlayerController : MonoBehaviour {
 		
 		m_gravity = goingUpGravity;
 
-		m_camTarget = GameObject.Find("Camera Target"); 
+		m_cam = Camera.main.GetComponentInChildren<CinemachineFramingTransposer>();
 	}
 
 
@@ -192,7 +185,7 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		Move();
-		CamTargetHandling();
+		CamHandling();
 		AnimationLogic();
 		Jump();
 		if(hasFloat) Float();
@@ -347,29 +340,15 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	private void CamTargetHandling(){
-		if(m_controller.isGrounded){
-			m_camTarget.transform.position = transform.position + (Vector3)targetOffset;
-			m_initialY = m_camTarget.transform.position.y + 1.0f;
-			if(!justjumped) {
-				inSmallJump = true;
-			}
+	private void CamHandling(){
+		if(m_controller.isGrounded) {
+			m_cam.m_DeadZoneHeight = 0.02f;
+			m_cam.m_ScreenY = 0.6f;
+			m_cam.m_YDamping = 0.8f;
 		} else {
-			if(m_velocity.y > 0 && m_camTarget.transform.position.y <= transform.position.y + targetOffset.y + movementOffsetUpwards && m_camTarget.transform.position.y > m_initialY) {
-				m_camTarget.transform.position += Vector3.up*movementSpeedUpwards;
-				//print("up");
-				inSmallJump = false;
-				justjumped = true;
-				m_initialY = m_camTarget.transform.position.y;
-			}
-			if(m_camTarget.transform.position.y < m_initialY - 0.01f) {
-				inSmallJump = false;
-			}
-			if(m_velocity.y < 0 && m_camTarget.transform.position.y >= transform.position.y + targetOffset.y - movementOffsetDownwards && !inSmallJump) {
-				m_camTarget.transform.position += Vector3.down*movementSpeedDownwards;
-				//print("down");
-				justjumped = false;
-			}
+			m_cam.m_DeadZoneHeight = 0.2f;
+			m_cam.m_ScreenY = 0.5f;
+			m_cam.m_YDamping = 0.1f;
 		}
 	}
 
