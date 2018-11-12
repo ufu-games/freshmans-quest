@@ -71,7 +71,8 @@ public class PlayerController : MonoBehaviour {
 	private Vector2 m_groundingScaleMultiplier = new Vector2(1.2f, 0.8f);
 
 	// easily extendable
-	private bool isInCanon = false;
+	private bool isInCannon = false;
+	private CannonBehaviour Cannon;
 	private bool m_isSlipping = false;
 
 	//Breakable Wall Handling
@@ -154,10 +155,13 @@ public class PlayerController : MonoBehaviour {
             
 		}
 
-		if(col.gameObject.layer == LayerMask.NameToLayer("Canon")){
+		if(col.gameObject.layer == LayerMask.NameToLayer("Cannon")){
 			Debug.Log("entrou no canhao");
-			isInCanon = true;
+			isInCannon = true;
 			this.transform.position = col.gameObject.transform.position;
+			m_velocity = Vector2.zero;
+			this.Cannon = col.gameObject.GetComponent<CannonBehaviour>();
+			this.Cannon.setActive(true);
 		}
 	}
 	public void getsThrownTo(float rotationAngle, float maxVelocity){
@@ -185,6 +189,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Update()
 	{
+		
 		if(m_controller.isGrounded) {
 			m_groundedRemember = groundedRememberTime;
 			m_gravity = goingUpGravity;
@@ -209,9 +214,16 @@ public class PlayerController : MonoBehaviour {
 		Move();
 		CamHandling();
 		AnimationLogic();
-		Jump();
+		if(!isInCannon)Jump();
 		if(hasFloat) Float();
 		if(hasWallJump) WallJump();
+		
+		if(isInCannon && Input.GetButtonDown("Jump")){
+			isInCannon = false;
+			var angleCannon = Cannon.getAngle();
+			getsThrownTo(Cannon.getAngle(), Cannon.getThrowMultiplier());
+			Cannon.setActive(false);
+		}
 
 		var smoothedMovementFactor = m_controller.isGrounded ? groundDamping : inAirDamping;
 		// mudar aqui, nao usar lerp no futuro
@@ -239,7 +251,7 @@ public class PlayerController : MonoBehaviour {
 		// heap allocation = bad
 		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
 		
-		m_controller.move( deltaPosition );
+		if(!isInCannon) m_controller.move( deltaPosition );
 		m_velocity = m_controller.velocity;
 	}
 
