@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour {
 	[Header("Movement Handling")]
 	public float runSpeed = 8f;
 	public float groundDamping = 20f; // how fast do we change direction? higher means faster
+	public float slippingFactor = 2f;
 	
 	[Header("Jump Handling")]
 	public float goingUpGravity = -25f;
@@ -27,7 +29,6 @@ public class PlayerController : MonoBehaviour {
 	private float m_jumpPressedRemember;
 	private float m_groundedRemember;
 	private bool m_floating;
-	private GameObject m_camTarget;
 	
 	[Space(5)]
 	[Header("Wall Jump Handling")]
@@ -48,16 +49,8 @@ public class PlayerController : MonoBehaviour {
 	[Header("Audio Handling")]
 	public AudioClip hurtClip;
 	
-	[Space(5)]
-	[Header("Cam Target")]
-	public float movementOffsetUpwards = 1;
-	public float movementOffsetDownwards = 2;
-	public float movementSpeedUpwards = 0.1f;
-	public float movementSpeedDownwards = 0.8f;
-	public Vector2 targetOffset = new Vector2(0f,0.25f);
-	private float m_initialY;
-	private bool justjumped = false;
-	private	bool inSmallJump = true;
+	//Camera Handling
+	private CinemachineFramingTransposer m_cam;
 
 	[HideInInspector]
 	private float normalizedHorizontalSpeed = 0;
@@ -77,9 +70,13 @@ public class PlayerController : MonoBehaviour {
 	private Vector2 m_goingUpScaleMultiplier = new Vector2(0.8f, 1.2f);
 	private Vector2 m_groundingScaleMultiplier = new Vector2(1.2f, 0.8f);
 
-	// OnCollision, OnTrigger, etc... - Have some kind of API (i.e. Interact, ...)
 	// easily extendable
+	private bool isInCanon = false;
+	private bool m_isSlipping = false;
 
+	//Breakable Wall Handling
+	[HideInInspector]
+	public Vector3 m_velocityLastFrame;
 
 	void Awake()
 	{
@@ -96,7 +93,8 @@ public class PlayerController : MonoBehaviour {
 		
 		m_gravity = goingUpGravity;
 
-		m_camTarget = GameObject.Find("Camera Target"); 
+		Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().Follow = this.transform;
+		m_cam = Camera.main.GetComponentInChildren<CinemachineFramingTransposer>();
 	}
 
 
@@ -104,12 +102,27 @@ public class PlayerController : MonoBehaviour {
 
 	void onControllerCollider( RaycastHit2D hit )
 	{
+		// if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Slippery") && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)) ) {
+		// 	m_velocity.x = runSpeed * slippingFactor;
+		// 	m_isSlipping = true;
+		// } else {
+		// 	m_isSlipping = false;
+		// }
+
+		m_isSlipping = hit.transform.gameObject.layer == LayerMask.NameToLayer("Slippery") && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right));
+
+		if(hit.collider.tag == "BreakableWall") {
+			hit.collider.gameObject.GetComponent<BreakableWallBehavior>().Collision(hit.point);
+		}
+		
 		// bail out on plain old ground hits cause they arent very interesting
 		if( hit.normal.y == 1f )
 			return;
 
+
 		// logs any collider hits if uncommented. it gets noisy so it is commented out for the demo
-		Debug.Log( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );
+		//Debug.Log( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );
+		
 	}
 
 	void onTriggerEnterEvent(Collider2D col) {
@@ -137,21 +150,30 @@ public class PlayerController : MonoBehaviour {
 		if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
             float rotationAngle = col.gameObject.transform.eulerAngles.z;
             float maxVelocity = Mathf.Sqrt(jumpingPlatformMultiplier * 2f * jumpHeight * -m_gravity);
-
-            m_jumpPressedRemember = 0;
-			m_groundedRemember = 0;
-			m_gravity = goingUpGravity;
-
-            m_velocity.y = Mathf.Cos(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
-            m_velocity.x = -Mathf.Sin(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
-
-            Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
-		
-			m_controller.move( deltaPosition );
-
-			m_animator.Play( "Jump" );
-			StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
+			this.getsThrownTo(rotationAngle, maxVelocity);
+            
 		}
+
+		if(col.gameObject.layer == LayerMask.NameToLayer("Canon")){
+			Debug.Log("entrou no canhao");
+			isInCanon = true;
+			this.transform.position = col.gameObject.transform.position;
+		}
+	}
+	public void getsThrownTo(float rotationAngle, float maxVelocity){
+		m_jumpPressedRemember = 0;
+		m_groundedRemember = 0;
+		m_gravity = goingUpGravity;
+
+		m_velocity.y = Mathf.Cos(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
+		m_velocity.x = -Mathf.Sin(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
+
+		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
+	
+		m_controller.move( deltaPosition );
+
+		m_animator.Play( "Jump" );
+		StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
 	}
 
 
@@ -182,8 +204,10 @@ public class PlayerController : MonoBehaviour {
 			return;
 		}
 
+		m_velocityLastFrame = m_velocity;
+
 		Move();
-		CamTargetHandling();
+		CamHandling();
 		AnimationLogic();
 		Jump();
 		if(hasFloat) Float();
@@ -191,10 +215,15 @@ public class PlayerController : MonoBehaviour {
 
 		var smoothedMovementFactor = m_controller.isGrounded ? groundDamping : inAirDamping;
 		// mudar aqui, nao usar lerp no futuro
-		if(!m_isOnWall)m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
+		if(m_isSlipping) {
+			m_velocity.x = Mathf.Lerp(m_velocity.x, normalizedHorizontalSpeed * runSpeed * slippingFactor, Time.deltaTime * smoothedMovementFactor);
+		} else if(!m_isOnWall) {
+			m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
+		}
 
 		// velocity verlet for y velocity
 		// m_velocity.y += (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime)));
+		
 		// limiting gravity
 		m_velocity.y = Mathf.Max(m_gravity, m_velocity.y + (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime))));
 		
@@ -239,7 +268,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Move() {
-		
+		if(m_isSlipping && Mathf.Abs(m_velocity.x) >= runSpeed) return;
+
 		float horizontalMovement = Input.GetAxisRaw("Horizontal");
 		normalizedHorizontalSpeed = horizontalMovement;
 		
@@ -338,29 +368,17 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	private void CamTargetHandling(){
-		if(m_controller.isGrounded){
-			m_camTarget.transform.position = transform.position + (Vector3)targetOffset;
-			m_initialY = m_camTarget.transform.position.y + 1.0f;
-			if(!justjumped) {
-				inSmallJump = true;
-			}
+	private void CamHandling(){
+		if(!m_cam) return;
+
+		if(m_controller.isGrounded) {
+			m_cam.m_DeadZoneHeight = 0.02f;
+			m_cam.m_ScreenY = 0.6f;
+			m_cam.m_YDamping = 0.8f;
 		} else {
-			if(m_velocity.y > 0 && m_camTarget.transform.position.y <= transform.position.y + targetOffset.y + movementOffsetUpwards && m_camTarget.transform.position.y > m_initialY) {
-				m_camTarget.transform.position += Vector3.up*movementSpeedUpwards;
-				print("up");
-				inSmallJump = false;
-				justjumped = true;
-				m_initialY = m_camTarget.transform.position.y;
-			}
-			if(m_camTarget.transform.position.y < m_initialY - 0.01f) {
-				inSmallJump = false;
-			}
-			if(m_velocity.y < 0 && m_camTarget.transform.position.y >= transform.position.y + targetOffset.y - movementOffsetDownwards && !inSmallJump) {
-				m_camTarget.transform.position += Vector3.down*movementSpeedDownwards;
-				print("down");
-				justjumped = false;
-			}
+			m_cam.m_DeadZoneHeight = 0.2f;
+			m_cam.m_ScreenY = 0.5f;
+			m_cam.m_YDamping = 0.1f;
 		}
 	}
 
@@ -372,6 +390,10 @@ public class PlayerController : MonoBehaviour {
 
 	public void StopMovement(){
 		m_velocity = new Vector3(0f,0f,0f);
+	}
+
+	public void SetMovement(Vector3 vect) {
+		m_velocity = vect;
 	}
 
 	public Vector3 GetVelocity(){

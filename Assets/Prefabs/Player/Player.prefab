@@ -11,21 +11,6 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1233750439695320}
   m_IsPrefabAsset: 1
---- !u!1 &1045317019159742
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4401963078034022}
-  m_Layer: 8
-  m_Name: Camera Target
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1233750439695320
 GameObject:
   m_ObjectHideFlags: 0
@@ -76,19 +61,6 @@ Transform:
   m_Father: {fileID: 4563930203491430}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4401963078034022
-Transform:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1045317019159742}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4563930203491430}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4563930203491430
 Transform:
   m_ObjectHideFlags: 1
@@ -96,11 +68,10 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1233750439695320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.034, y: -7.345, z: 0}
+  m_LocalPosition: {x: -2.8, y: -6.2, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4148326263093062}
-  - {fileID: 4401963078034022}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -136,7 +107,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.017800093, y: -0.033409595}
+  m_Offset: {x: 0.02120328, y: -0.043619633}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -147,8 +118,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5098796, y: 0.93949413}
-  m_EdgeRadius: 0.1
+  m_Size: {x: 0.4758458, y: 0.91907406}
+  m_EdgeRadius: 0
 --- !u!95 &95262648386362486
 Animator:
   serializedVersion: 3
@@ -268,12 +239,14 @@ MonoBehaviour:
   cutJumpHeight: 0.35
   onWallGravity: -1
   wallJumpVelocity: {x: -5, y: 0.5}
-  jumpingPlatformMultiplier: 2
+  jumpingPlatformMultiplier: 3
   landingParticles: {fileID: 198417699065630864, guid: 5941734cbb31c479fbbe5fb46ba4283f,
     type: 2}
   hurtClip: {fileID: 8300000, guid: ecc392a1b11bc40e0a2ef3957a9b7376, type: 3}
-  movementOffset: 2.5
-  movementSpeed: 0.3
+  movementOffsetUpwards: 0.3
+  movementOffsetDownwards: 1.5
+  movementSpeedUpwards: 0.001
+  movementSpeedDownwards: 0.005
   targetOffset: {x: 0, y: 0.5}
   m_playerSprite: {fileID: 4148326263093062}
 --- !u!212 &212508962720427898
