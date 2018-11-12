@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
 	[Header("Movement Handling")]
 	public float runSpeed = 8f;
 	public float groundDamping = 20f; // how fast do we change direction? higher means faster
+	public float slippingFactor = 2f;
 	
 	[Header("Jump Handling")]
 	public float goingUpGravity = -25f;
@@ -70,9 +71,9 @@ public class PlayerController : MonoBehaviour {
 	private Vector2 m_goingUpScaleMultiplier = new Vector2(0.8f, 1.2f);
 	private Vector2 m_groundingScaleMultiplier = new Vector2(1.2f, 0.8f);
 
-	// OnCollision, OnTrigger, etc... - Have some kind of API (i.e. Interact, ...)
 	// easily extendable
 	private bool isInCanon = false;
+	private bool m_isSlipping = false;
 
 	void Awake()
 	{
@@ -97,12 +98,22 @@ public class PlayerController : MonoBehaviour {
 
 	void onControllerCollider( RaycastHit2D hit )
 	{
+		// if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Slippery") && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)) ) {
+		// 	m_velocity.x = runSpeed * slippingFactor;
+		// 	m_isSlipping = true;
+		// } else {
+		// 	m_isSlipping = false;
+		// }
+
+		m_isSlipping = hit.transform.gameObject.layer == LayerMask.NameToLayer("Slippery") && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right));
+
 		// bail out on plain old ground hits cause they arent very interesting
 		if( hit.normal.y == 1f )
 			return;
 
 		// logs any collider hits if uncommented. it gets noisy so it is commented out for the demo
 		//Debug.Log( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );
+		
 	}
 
 	void onTriggerEnterEvent(Collider2D col) {
@@ -193,10 +204,15 @@ public class PlayerController : MonoBehaviour {
 
 		var smoothedMovementFactor = m_controller.isGrounded ? groundDamping : inAirDamping;
 		// mudar aqui, nao usar lerp no futuro
-		if(!m_isOnWall)m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
+		if(m_isSlipping) {
+			m_velocity.x = Mathf.Lerp(m_velocity.x, normalizedHorizontalSpeed * runSpeed * slippingFactor, Time.deltaTime * smoothedMovementFactor);
+		} else if(!m_isOnWall) {
+			m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
+		}
 
 		// velocity verlet for y velocity
 		// m_velocity.y += (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime)));
+		
 		// limiting gravity
 		m_velocity.y = Mathf.Max(m_gravity, m_velocity.y + (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime))));
 		
@@ -241,7 +257,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Move() {
-		
+		if(m_isSlipping && Mathf.Abs(m_velocity.x) >= runSpeed) return;
+
 		float horizontalMovement = Input.GetAxisRaw("Horizontal");
 		normalizedHorizontalSpeed = horizontalMovement;
 		
@@ -341,6 +358,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void CamHandling(){
+		if(!m_cam) return;
+
 		if(m_controller.isGrounded) {
 			m_cam.m_DeadZoneHeight = 0.02f;
 			m_cam.m_ScreenY = 0.6f;
