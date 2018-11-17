@@ -225,13 +225,17 @@ public class PlayerController : MonoBehaviour {
 			Cannon.setActive(false);
 		}
 
-		var smoothedMovementFactor = m_controller.isGrounded ? groundDamping : inAirDamping;
+		float t_groundDamping = m_isSlipping ? groundDamping * 7 : groundDamping;
+		var smoothedMovementFactor = m_controller.isGrounded ? t_groundDamping : inAirDamping;
+
+		m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
+
 		// mudar aqui, nao usar lerp no futuro
-		if(m_isSlipping) {
-			m_velocity.x = Mathf.Lerp(m_velocity.x, normalizedHorizontalSpeed * runSpeed * slippingFactor, Time.deltaTime * smoothedMovementFactor);
-		} else if(!m_isOnWall) {
-			m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
-		}
+		// if(m_isSlipping) {
+		// 	m_velocity.x = Mathf.Lerp(m_velocity.x, normalizedHorizontalSpeed * runSpeed * slippingFactor, Time.deltaTime * smoothedMovementFactor);
+		// } else if(!m_isOnWall) {
+		// 	// m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
+		// }
 
 		// velocity verlet for y velocity
 		// m_velocity.y += (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime)));
