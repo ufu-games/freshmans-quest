@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour {
 	private bool m_isSlipping = false;
 
 	//Breakable Wall Handling
-	[HideInInspector]
+	[ReadOnly]
 	public Vector3 m_velocityLastFrame;
 
 	void Awake()
@@ -161,6 +161,7 @@ public class PlayerController : MonoBehaviour {
 			this.transform.position = col.gameObject.transform.position;
 			m_velocity = Vector2.zero;
 			this.Cannon = col.gameObject.GetComponent<CannonBehaviour>();
+			Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.OrthographicSize *= this.Cannon.zoomOutMultiplier;
 			this.Cannon.setActive(true);
 		}
 	}
@@ -178,6 +179,9 @@ public class PlayerController : MonoBehaviour {
 
 		m_animator.Play( "Jump" );
 		StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
+
+		if(isInCannon)
+			Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.OrthographicSize /= this.Cannon.zoomOutMultiplier;
 	}
 
 
@@ -219,9 +223,9 @@ public class PlayerController : MonoBehaviour {
 		if(hasWallJump) WallJump();
 		
 		if(isInCannon && Input.GetButtonDown("Jump")){
-			isInCannon = false;
 			var angleCannon = Cannon.getAngle();
 			getsThrownTo(Cannon.getAngle(), Cannon.getThrowMultiplier());
+			isInCannon = false;
 			Cannon.setActive(false);
 		}
 

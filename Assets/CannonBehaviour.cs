@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CannonBehaviour : MonoBehaviour {
 	public float throwMultiplier;
+	public float zoomOutMultiplier = 1.2f;
 	public bool active = false;
 	public bool UseAnalogic;
 	// Use this for initialization
