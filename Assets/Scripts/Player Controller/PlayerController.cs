@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour {
 	private bool m_isSlipping = false;
 
 	//Breakable Wall Handling
-	[HideInInspector]
+	[ReadOnly]
 	public Vector3 m_velocityLastFrame;
 
 	void Awake()
@@ -94,8 +94,12 @@ public class PlayerController : MonoBehaviour {
 		
 		m_gravity = goingUpGravity;
 
-		Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().Follow = this.transform;
-		m_cam = Camera.main.GetComponentInChildren<CinemachineFramingTransposer>();
+		if(Camera.main.GetComponentInChildren<CinemachineVirtualCamera>()) {
+			Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().Follow = this.transform;
+			m_cam = Camera.main.GetComponentInChildren<CinemachineFramingTransposer>();
+		} else {
+			Debug.LogWarning("Não há Cinemachine presente na cena! A Cãmera não seguirá o personagem.");
+		}
 	}
 
 
@@ -103,13 +107,6 @@ public class PlayerController : MonoBehaviour {
 
 	void onControllerCollider( RaycastHit2D hit )
 	{
-		// if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Slippery") && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)) ) {
-		// 	m_velocity.x = runSpeed * slippingFactor;
-		// 	m_isSlipping = true;
-		// } else {
-		// 	m_isSlipping = false;
-		// }
-
 		m_isSlipping = hit.transform.gameObject.layer == LayerMask.NameToLayer("Slippery") && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right));
 
 		if(hit.collider.tag == "BreakableWall") {
@@ -120,10 +117,8 @@ public class PlayerController : MonoBehaviour {
 		if( hit.normal.y == 1f )
 			return;
 
-
 		// logs any collider hits if uncommented. it gets noisy so it is commented out for the demo
-		//Debug.Log( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );
-		
+		//Debug.Log( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );		
 	}
 
 	void onTriggerEnterEvent(Collider2D col) {
@@ -161,9 +156,11 @@ public class PlayerController : MonoBehaviour {
 			this.transform.position = col.gameObject.transform.position;
 			m_velocity = Vector2.zero;
 			this.Cannon = col.gameObject.GetComponent<CannonBehaviour>();
+			Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.OrthographicSize *= this.Cannon.zoomOutMultiplier;
 			this.Cannon.setActive(true);
 		}
 	}
+
 	public void getsThrownTo(float rotationAngle, float maxVelocity){
 		m_jumpPressedRemember = 0;
 		m_groundedRemember = 0;
@@ -178,6 +175,9 @@ public class PlayerController : MonoBehaviour {
 
 		m_animator.Play( "Jump" );
 		StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
+
+		if(isInCannon)
+			Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.OrthographicSize /= this.Cannon.zoomOutMultiplier;
 	}
 
 
@@ -219,9 +219,9 @@ public class PlayerController : MonoBehaviour {
 		if(hasWallJump) WallJump();
 		
 		if(isInCannon && Input.GetButtonDown("Jump")){
-			isInCannon = false;
 			var angleCannon = Cannon.getAngle();
 			getsThrownTo(Cannon.getAngle(), Cannon.getThrowMultiplier());
+			isInCannon = false;
 			Cannon.setActive(false);
 		}
 
@@ -412,4 +412,3 @@ public class PlayerController : MonoBehaviour {
 		return m_velocity;
 	}
 }
-

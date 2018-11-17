@@ -10,7 +10,7 @@ public class BreakableWallBehavior : MonoBehaviour {
 	public float PlayerDamping = 50f;
 	private PlayerController m_player;
 	private BoxCollider2D m_bc;
-	private float gap = 0.01f;
+	private float gap = 0.5f;
 
 	void Start () {
 		m_player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
@@ -20,9 +20,10 @@ public class BreakableWallBehavior : MonoBehaviour {
 	public void Collision(Vector2 point){
 		bool Collided = false;
 		Vector3 vect;
+		Debug.DrawLine(point,point+Vector2.up*0.01f,Color.white,5);
 		vect.z = 0;
 		if((point.y >= this.transform.position.y + m_bc.size.y/2 - gap && point.y <= this.transform.position.y + m_bc.size.y/2 + gap)  || (point.y >= this.transform.position.y - m_bc.size.y/2 - gap && point.y <= this.transform.position.y - m_bc.size.y/2 + gap)) {
-			if(Mathf.Abs(m_player.m_velocityLastFrame.y) > MinimumVelocityToBreak){
+			if(Mathf.Abs(m_player.m_velocityLastFrame.y) >= MinimumVelocityToBreak){
 				vect.x = m_player.m_velocityLastFrame.x;
 				vect.y = m_player.m_velocityLastFrame.y*PlayerDamping/100;
 				Collided = true;
