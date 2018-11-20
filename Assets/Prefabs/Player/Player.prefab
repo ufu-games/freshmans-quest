@@ -68,8 +68,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1233750439695320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8, y: -6.2, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalPosition: {x: -2.8, y: -4.84, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4148326263093062}
   m_Father: {fileID: 0}
@@ -153,7 +153,7 @@ MonoBehaviour:
   _skinWidth: 0.02
   platformMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 2097664
   triggerMask:
     serializedVersion: 2
     m_Bits: 1622016
@@ -225,15 +225,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fd66fcb756454e9b9b88a07f4874b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasWallJump: 0
+  hasWallJump: 1
   hasFloat: 0
-  runSpeed: 3
-  groundDamping: 10
-  goingUpGravity: -25
-  goingDownGravity: -20
+  runSpeed: 7
+  groundDamping: 15
+  slippingFactor: 2
+  goingUpGravity: -70
+  goingDownGravity: -40
   floatingGravity: -1
-  inAirDamping: 5
-  jumpHeight: 1
+  inAirDamping: 10
+  jumpHeight: 1.8
   jumpPressedRememberTime: 0.15
   groundedRememberTime: 0.15
   cutJumpHeight: 0.35
@@ -244,6 +245,7 @@ MonoBehaviour:
     type: 2}
   hurtClip: {fileID: 8300000, guid: ecc392a1b11bc40e0a2ef3957a9b7376, type: 3}
   m_playerSprite: {fileID: 4148326263093062}
+  m_velocityLastFrame: {x: 0, y: 0, z: 0}
 --- !u!212 &212508962720427898
 SpriteRenderer:
   m_ObjectHideFlags: 1

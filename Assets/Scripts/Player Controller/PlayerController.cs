@@ -94,18 +94,18 @@ public class PlayerController : MonoBehaviour {
 		
 		m_gravity = goingUpGravity;
 
-		if(Camera.main.GetComponentInChildren<CinemachineVirtualCamera>()) {
-			Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().Follow = this.transform;
-			m_cam = Camera.main.GetComponentInChildren<CinemachineFramingTransposer>();
-		} else {
-			Debug.LogWarning("Não há Cinemachine presente na cena! A Cãmera não seguirá o personagem.");
-		}
-	}
+        /*		if(Camera.main.GetComponentInChildren<CinemachineVirtualCamera>()) {
+                    Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().Follow = this.transform;
+                    m_cam = Camera.main.GetComponentInChildren<CinemachineFramingTransposer>();
+                } else {
+                    Debug.LogWarning("Não há Cinemachine presente na cena! A Cãmera não seguirá o personagem.");
+                } */
+    }
 
 
-	#region Event Listeners
+    #region Event Listeners
 
-	void onControllerCollider( RaycastHit2D hit )
+    void onControllerCollider( RaycastHit2D hit )
 	{
 		m_isSlipping = hit.transform.gameObject.layer == LayerMask.NameToLayer("Slippery") && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right));
 
