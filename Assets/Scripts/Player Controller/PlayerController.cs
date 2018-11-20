@@ -11,6 +11,11 @@ public class PlayerController : MonoBehaviour {
 	public bool hasFloat = false;
 
 	[Space(5)]
+	[Header("Collectables")]
+	public float PizzaCollected = 0;
+	public float HomeworkCollected = 0;
+
+	[Space(5)]
 	[Header("Movement Handling")]
 	public float runSpeed = 8f;
 	public float groundDamping = 20f; // how fast do we change direction? higher means faster

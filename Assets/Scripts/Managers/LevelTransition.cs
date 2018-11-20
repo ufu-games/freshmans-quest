@@ -33,6 +33,7 @@ public class LevelTransition : MonoBehaviour {
 		if(m_cam == null) {
 			print("Camera não encontrada na cena, A transição de telas não funcionará");
 		} else {
+			m_cam.gameObject.GetComponent<CinemachineVirtualCamera>().Follow = m_player.transform;
 			m_cam.m_BoundingShape2D = InitialScreen;
 			m_cam.InvalidatePathCache();
 
