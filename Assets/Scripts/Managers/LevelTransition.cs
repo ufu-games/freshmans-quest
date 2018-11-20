@@ -34,6 +34,8 @@ public class LevelTransition : MonoBehaviour {
 			print("Camera não encontrada na cena, A transição de telas não funcionará");
 		} else {
 			m_cam.gameObject.GetComponent<CinemachineVirtualCamera>().Follow = m_player.transform;
+			m_cam.m_ConfineScreenEdges = true;
+			m_cam.m_Damping = 0;
 			m_cam.m_BoundingShape2D = InitialScreen;
 			m_cam.InvalidatePathCache();
 
@@ -76,28 +78,28 @@ public class LevelTransition : MonoBehaviour {
 	public IEnumerator Transition(int dir){
 		switch(dir) {
 			case 0:
-				if(m_nowCoordinate.y-1 < 0){
+				if(m_nowCoordinate.y-1 < 0 || Level.rows[m_nowCoordinate.y-1].row[m_nowCoordinate.x] == null){
 					print("Direção invalida!");
 					yield break;
 				}
 				m_nowCoordinate.y--;
 				break;
 			case 1:
-				if(m_nowCoordinate.x+1 >= SizeX){
+				if(m_nowCoordinate.x+1 >= SizeX  || Level.rows[m_nowCoordinate.y].row[m_nowCoordinate.x+1] == null){
 					print("Direção invalida!");
 					yield break;
 				}
 				m_nowCoordinate.x++;
 				break;
 			case 2:
-				if(m_nowCoordinate.y+1 >= SizeY){
+				if(m_nowCoordinate.y+1 >= SizeY || Level.rows[m_nowCoordinate.y+1].row[m_nowCoordinate.x] == null){
 					print("Direção invalida!");
 					yield break;
 				}
 				m_nowCoordinate.y++;
 				break;
 			case 3:
-				if(m_nowCoordinate.x-1 < 0){
+				if(m_nowCoordinate.x-1 < 0 || Level.rows[m_nowCoordinate.y].row[m_nowCoordinate.x-1] == null){
 					print("Direção invalida!");
 					yield break;
 				}
@@ -112,7 +114,7 @@ public class LevelTransition : MonoBehaviour {
 		m_nowCollider = Level.rows[m_nowCoordinate.y].row[m_nowCoordinate.x];
 		m_cam.m_BoundingShape2D = m_nowCollider;
 		m_cam.InvalidatePathCache();
-		m_cam.m_Damping = 2f;
+		m_cam.m_Damping = TransitionDamping;
 		yield return new WaitForSeconds(TransitionDuration);
 		m_cam.m_Damping = 0;
 		m_player.GetComponent<PlayerController>().enabled = true;
