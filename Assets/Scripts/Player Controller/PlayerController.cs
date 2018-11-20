@@ -99,12 +99,11 @@ public class PlayerController : MonoBehaviour {
 		
 		m_gravity = goingUpGravity;
 
-        /*		if(Camera.main.GetComponentInChildren<CinemachineVirtualCamera>()) {
-                    Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().Follow = this.transform;
-                    m_cam = Camera.main.GetComponentInChildren<CinemachineFramingTransposer>();
-                } else {
-                    Debug.LogWarning("Não há Cinemachine presente na cena! A Cãmera não seguirá o personagem.");
-                } */
+        if(Camera.main.GetComponentInChildren<CinemachineVirtualCamera>()) {
+			m_cam = Camera.main.GetComponentInChildren<CinemachineFramingTransposer>();
+        } else {
+			Debug.LogWarning("Não há Cinemachine presente na cena! A Cãmera não seguirá o personagem.");
+		} 
     }
 
 
@@ -135,7 +134,7 @@ public class PlayerController : MonoBehaviour {
 		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
 
 		if(dangerousInteraction != null) {
-			if(hurtClip) { SoundManager.instance.PlaySfx(hurtClip); }
+			if(hurtClip && SoundManager.instance) { SoundManager.instance.PlaySfx(hurtClip); }
 			dangerousInteraction.InteractWithPlayer(this.GetComponent<Collider2D>());
 		}
 

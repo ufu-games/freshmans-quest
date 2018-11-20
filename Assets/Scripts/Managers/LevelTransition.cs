@@ -22,6 +22,7 @@ public class LevelTransition : MonoBehaviour {
 	public Vector2Int m_nowCoordinate;
 	private GameObject m_player;
 	private CinemachineConfiner m_cam;
+	private CheckpointSystemBehavior m_check;
 	private bool Transitioning = false;
 
 	void Start () {
@@ -44,6 +45,10 @@ public class LevelTransition : MonoBehaviour {
 		if(m_nowCollider == null){
 			print("Initial Screen vazia, A transição de telas não funcionará");
 			this.enabled = false;
+		}
+		m_check = GameObject.FindGameObjectWithTag("Checkpoint System").GetComponent<CheckpointSystemBehavior>();
+		if(m_check == null) {
+			print("Checkpoint System não encontrada na cena, Os perigos da cena não funcionarão");
 		}
 		for(int i=0;i<SizeX;i++){
 			for(int j=0;j<SizeY;j++){
@@ -119,6 +124,7 @@ public class LevelTransition : MonoBehaviour {
 		m_cam.m_Damping = 0;
 		m_player.GetComponent<PlayerController>().enabled = true;
 		yield return new WaitForSeconds(0.5f);
+		m_check.LastCheckpoint = m_player.transform.position;
 		Transitioning = false;
 	}
 }
