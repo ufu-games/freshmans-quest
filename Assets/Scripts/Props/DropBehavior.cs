@@ -25,7 +25,7 @@ public class DropBehavior : MonoBehaviour {
 			transform.position += vect;
 		}
 		foreach(RaycastHit2D hit in Physics2D.RaycastAll(transform.position + Vector3.down*boxCollider.size.y/2,Vector2.down,Velocity)) {
-			if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Platform") && !Stopped) {
+			if((hit.collider.gameObject.layer == LayerMask.NameToLayer("Platform") || hit.collider.gameObject.layer == LayerMask.NameToLayer("Slippery")) && !Stopped) {
 				Stopped = true;
 				m_ani.Play("Death");
 				StartCoroutine(waitForDestroy());
