@@ -6,10 +6,6 @@ using Cinemachine;
 
 public class LevelTransition : MonoBehaviour {
 
-	private const int SizeX = 7;
-	private const int SizeY = 7;
-
-	public ArrayLayout Level;
 	public PolygonCollider2D InitialScreen;
 	public float TransitionDuration = 1.5f;
 	public float TransitionDamping = 2f;
@@ -18,12 +14,14 @@ public class LevelTransition : MonoBehaviour {
 
 	[ReadOnly]
 	public PolygonCollider2D m_nowCollider;
-	[ReadOnly]
-	public Vector2Int m_nowCoordinate;
-	private GameObject m_player;
-	private CinemachineConfiner m_cam;
-	private CheckpointSystemBehavior m_check;
-	private bool Transitioning = false;
+	[HideInInspector]
+	public GameObject m_player;
+	[HideInInspector]
+	public CinemachineConfiner m_cam;
+	[HideInInspector]
+	public bool Transitioning = false;
+	[HideInInspector]
+	public CheckpointSystemBehavior m_check;
 
 	void Start () {
 		m_player = GameObject.FindGameObjectWithTag("Player");
@@ -50,73 +48,11 @@ public class LevelTransition : MonoBehaviour {
 		if(m_check == null) {
 			print("Checkpoint System não encontrada na cena, Os perigos da cena não funcionarão");
 		}
-		for(int i=0;i<SizeX;i++){
-			for(int j=0;j<SizeY;j++){
-				if(Level.rows[j].row[i] == InitialScreen){
-					m_nowCoordinate.x = i;
-					m_nowCoordinate.y = j;
-				}
-			}
-		}
-	}
-	
-	void Update () {
-		if(m_player != null && m_cam != null){
-			if(!m_nowCollider.bounds.Contains(m_player.transform.position) && !Transitioning) {
-				if(m_player.transform.position.y  >  m_nowCollider.bounds.center.y + m_nowCollider.bounds.size.y/2){
-					StartCoroutine(Transition(0));
-				}
-				if(m_player.transform.position.x  >  m_nowCollider.bounds.center.x + m_nowCollider.bounds.size.x/2){
-					StartCoroutine(Transition(1));
-				}
-				if(m_player.transform.position.y  <  m_nowCollider.bounds.center.y - m_nowCollider.bounds.size.y/2){
-					StartCoroutine(Transition(2));
-				}
-				if(m_player.transform.position.x  <  m_nowCollider.bounds.center.x - m_nowCollider.bounds.size.x/2){
-					StartCoroutine(Transition(3));
-				}
-			}
-		}
 	}
 
-	//Direção começa com 0 no norte e segue no sentido horario
-	public IEnumerator Transition(int dir){
-		switch(dir) {
-			case 0:
-				if(m_nowCoordinate.y-1 < 0 || Level.rows[m_nowCoordinate.y-1].row[m_nowCoordinate.x] == null){
-					print("Direção invalida!");
-					yield break;
-				}
-				m_nowCoordinate.y--;
-				break;
-			case 1:
-				if(m_nowCoordinate.x+1 >= SizeX  || Level.rows[m_nowCoordinate.y].row[m_nowCoordinate.x+1] == null){
-					print("Direção invalida!");
-					yield break;
-				}
-				m_nowCoordinate.x++;
-				break;
-			case 2:
-				if(m_nowCoordinate.y+1 >= SizeY || Level.rows[m_nowCoordinate.y+1].row[m_nowCoordinate.x] == null){
-					print("Direção invalida!");
-					yield break;
-				}
-				m_nowCoordinate.y++;
-				break;
-			case 3:
-				if(m_nowCoordinate.x-1 < 0 || Level.rows[m_nowCoordinate.y].row[m_nowCoordinate.x-1] == null){
-					print("Direção invalida!");
-					yield break;
-				}
-				m_nowCoordinate.x--;
-				break;
-			default:
-				print("Direção invalida!");
-				yield break;
-		}
+	public IEnumerator Transition(){
 		m_player.GetComponent<PlayerController>().enabled = false;
 		Transitioning = true;
-		m_nowCollider = Level.rows[m_nowCoordinate.y].row[m_nowCoordinate.x];
 		m_cam.m_BoundingShape2D = m_nowCollider;
 		m_cam.InvalidatePathCache();
 		m_cam.m_Damping = TransitionDamping;

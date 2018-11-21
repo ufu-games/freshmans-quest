@@ -51,70 +51,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1979ba67474c2343819ce3f6fc8b4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Level:
-    rows:
-    - row:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - row:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - row:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - row:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - row:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - row:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - row:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
   InitialScreen: {fileID: 0}
-  TransitionDuration: 1.5
-  TransitionDamping: 2
+  TransitionDuration: 0.8
+  TransitionDamping: 0.5
   Nota: "Quanto menor o TransitionDamping mais rapido a camera ira se mover para a
     nova tela.\nCrie Polygon Collider 2D e coloque eles nas areas que voc\xEA quer
     que seja cada tela, depois coloque em \"InitialScreen\" o Polygon Collider 2D
     que indica a primeira tela."
   m_nowCollider: {fileID: 0}
-  m_nowCoordinate: {x: 0, y: 0}
+  m_player: {fileID: 0}
+  m_cam: {fileID: 0}
+  Transitioning: 0
+  m_check: {fileID: 0}
