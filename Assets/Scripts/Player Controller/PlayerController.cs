@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour {
 	[Header("Movement Handling")]
 	public float runSpeed = 8f;
 	public float groundDamping = 20f; // how fast do we change direction? higher means faster
-	public float slippingFactor = 2f;
+	public float slippingFrictionMultiplier = .1f;
 	
 	[Header("Jump Handling")]
 	public float goingUpGravity = -25f;
@@ -229,20 +229,12 @@ public class PlayerController : MonoBehaviour {
 			Cannon.setActive(false);
 		}
 
-		float t_groundDamping = m_isSlipping ? groundDamping * 7 : groundDamping;
+		float t_groundDamping = m_isSlipping ? (groundDamping * slippingFrictionMultiplier) : groundDamping;
 		var smoothedMovementFactor = m_controller.isGrounded ? t_groundDamping : inAirDamping;
 
-		m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
-
-		// mudar aqui, nao usar lerp no futuro
-		// if(m_isSlipping) {
-		// 	m_velocity.x = Mathf.Lerp(m_velocity.x, normalizedHorizontalSpeed * runSpeed * slippingFactor, Time.deltaTime * smoothedMovementFactor);
-		// } else if(!m_isOnWall) {
-		// 	// m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
-		// }
-
-		// velocity verlet for y velocity
-		// m_velocity.y += (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime)));
+		if(!m_isOnWall) {
+			m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
+		}
 		
 		// limiting gravity
 		m_velocity.y = Mathf.Max(m_gravity, m_velocity.y + (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime))));
@@ -288,15 +280,14 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Move() {
-		if(m_isSlipping && Mathf.Abs(m_velocity.x) >= runSpeed) return;
-
 		float horizontalMovement = Input.GetAxisRaw("Horizontal");
 		normalizedHorizontalSpeed = horizontalMovement;
 		
 		if(horizontalMovement != 0) {
 			if(!m_isOnWall) m_playerSprite.localScale = new Vector3(Mathf.Sign(horizontalMovement) * Mathf.Abs(m_playerSprite.localScale.x), m_playerSprite.localScale.y, m_playerSprite.localScale.z);
 		}
-		if(m_isOnWall){
+
+		if(m_isOnWall) {
 			if(m_controller.isColliding(Vector2.right)){
 					m_playerSprite.localScale = new Vector3(Mathf.Abs(m_playerSprite.localScale.x), m_playerSprite.localScale.y, m_playerSprite.localScale.z);
 			} else{
