@@ -68,7 +68,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1233750439695320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.42, y: -9.33, z: 0}
+  m_LocalPosition: {x: 31.6, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4148326263093062}
@@ -227,9 +227,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasWallJump: 1
   hasFloat: 0
+  PizzaCollected: 0
+  HomeworkCollected: 0
   runSpeed: 7
   groundDamping: 15
-  slippingFactor: 2
+  slippingFrictionMultiplier: 0.1
   goingUpGravity: -70
   goingDownGravity: -40
   floatingGravity: -1
@@ -244,6 +246,13 @@ MonoBehaviour:
   landingParticles: {fileID: 198417699065630864, guid: 5941734cbb31c479fbbe5fb46ba4283f,
     type: 2}
   hurtClip: {fileID: 8300000, guid: ecc392a1b11bc40e0a2ef3957a9b7376, type: 3}
+  stepClips:
+  - {fileID: 8300000, guid: 4cea7f97648b647c29ea2d1780888c4a, type: 3}
+  - {fileID: 8300000, guid: 851bea01e990242f0a1eb7c210e5541c, type: 3}
+  - {fileID: 8300000, guid: 2a8ac63d7c4b64575bca137b0bfcf543, type: 3}
+  - {fileID: 8300000, guid: d2176a6b6bffe44109b2ba1c456d781a, type: 3}
+  - {fileID: 8300000, guid: 53ef73605fcbb4e979bcb2e1c1f707e1, type: 3}
+  - {fileID: 8300000, guid: 49f4b34e0092443a09b2b90560c884cc, type: 3}
   m_playerSprite: {fileID: 4148326263093062}
   m_velocityLastFrame: {x: 0, y: 0, z: 0}
 --- !u!212 &212508962720427898

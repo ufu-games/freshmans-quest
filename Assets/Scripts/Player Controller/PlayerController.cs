@@ -53,6 +53,8 @@ public class PlayerController : MonoBehaviour {
 	[Space(5)]
 	[Header("Audio Handling")]
 	public AudioClip hurtClip;
+	public AudioClip[] stepClips;
+	public AudioClip jumpingClip;
 	
 	//Camera Handling
 	private CinemachineFramingTransposer m_cam;
@@ -202,6 +204,9 @@ public class PlayerController : MonoBehaviour {
 			// became grounded this frame
 			if(!m_controller.collisionState.wasGroundedLastFrame) {
 				Instantiate(landingParticles, transform.position + (Vector3.down / 4f), Quaternion.identity).Play();
+				if(SoundManager.instance && stepClips.Length > 0) {
+					SoundManager.instance.PlaySfx(stepClips[Random.Range(0, stepClips.Length)]);
+				}
 				StartCoroutine(ChangeScale(m_playerSprite.localScale * m_groundingScaleMultiplier));
 			}
 		}
@@ -321,6 +326,10 @@ public class PlayerController : MonoBehaviour {
 
 			m_velocity.y = Mathf.Sqrt( 2f * jumpHeight * -m_gravity );
 			
+			if(SoundManager.instance && jumpingClip) {
+				SoundManager.instance.PlaySfx(jumpingClip);
+			}
+
 			StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
 			m_animator.Play( "Jump" );
 		}
@@ -365,7 +374,10 @@ public class PlayerController : MonoBehaviour {
 				getingOffWall = false;
 				m_isOnWall = false;
 			}
-		if(m_isOnWall && m_velocity.y <= 0) m_gravity = onWallGravity;
+		
+		if(m_isOnWall && m_velocity.y <= 0) {
+			m_gravity = onWallGravity;
+		}
 
 		// Wall Jump
 		if(m_isOnWall && Input.GetButtonDown("Jump")) {
@@ -375,6 +387,11 @@ public class PlayerController : MonoBehaviour {
 			m_velocity.x = wallJumpVelocity.x * jumpDirection;
 			m_gravity = goingUpGravity;
 			m_velocity.y = Mathf.Sqrt(2f * wallJumpVelocity.y * -m_gravity);
+			
+			if(SoundManager.instance && jumpingClip) {
+				SoundManager.instance.PlaySfx(jumpingClip);
+			}
+
 			StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
 		}
 	}
