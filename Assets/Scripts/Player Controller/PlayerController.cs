@@ -189,6 +189,7 @@ public class PlayerController : MonoBehaviour {
 
 	void onTriggerExitEvent( Collider2D col ) {
 		Debug.Log( "onTriggerExitEvent: " + col.gameObject.name );
+		m_playerSprite.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 0.0f);
 	}
 
 	#endregion
@@ -426,5 +427,9 @@ public class PlayerController : MonoBehaviour {
 
 	public Vector3 GetVelocity(){
 		return m_velocity;
+	}
+
+	public void ActivateSillouette() {
+		m_playerSprite.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 1.0f);
 	}
 }

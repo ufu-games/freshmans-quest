@@ -2018,6 +2018,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 212508962720427898, guid: 934d19a4a796b7444a99b8013da28b0f,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3e89d453db0a4452e8c59192dfa64de0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 934d19a4a796b7444a99b8013da28b0f, type: 2}
   m_IsPrefabAsset: 0
@@ -13384,7 +13389,9 @@ GameObject:
   - component: {fileID: 1512261391}
   - component: {fileID: 1512261393}
   - component: {fileID: 1512261392}
-  m_Layer: 0
+  - component: {fileID: 1512261394}
+  - component: {fileID: 1512261395}
+  m_Layer: 19
   m_Name: "Cen\xE1rio"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13436,8 +13443,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 623578615
-  m_SortingLayer: 6
+  m_SortingLayerID: -1438519123
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -14352,6 +14359,30 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1512261394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1512261390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2109aff4a3bd4ff4a7a76443647b12e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!19719996 &1512261395
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1512261390}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
 --- !u!1 &1614018793
 GameObject:
   m_ObjectHideFlags: 0
