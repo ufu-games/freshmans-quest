@@ -62,7 +62,10 @@ public class LevelTransition : MonoBehaviour {
 		m_cam.m_Damping = 0;
 		m_player.GetComponent<PlayerController>().enabled = true;
 		yield return new WaitForSeconds(0.5f);
-		m_check.LastCheckpoint = m_player.transform.position;
+        if(m_check != null)
+        {
+		    m_check.LastCheckpoint = m_player.transform.position;
+        }
 		Transitioning = false;
 	}
 }

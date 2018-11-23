@@ -23,7 +23,7 @@ public class ScreenTransition : MonoBehaviour, IInteractable {
     {
         if (level.m_player != null && level.m_cam != null && level.m_check != null && Enabled)
         {
-            if (!level.m_nowCollider.bounds.Contains(level.m_player.transform.position) && !level.Transitioning && !level.m_check.JustSpawned)
+            if (!level.Transitioning && !level.m_check.JustSpawned)
             {
                 level.m_nowCollider = this.GetComponent<PolygonCollider2D>();
                 StartCoroutine(level.Transition());
@@ -31,7 +31,7 @@ public class ScreenTransition : MonoBehaviour, IInteractable {
         }
         if (level.m_player != null && level.m_cam != null && level.m_check == null && Enabled)
         {
-            if (!level.m_nowCollider.bounds.Contains(level.m_player.transform.position) && !level.Transitioning)
+            if (!level.Transitioning)
             {
                 level.m_nowCollider = this.GetComponent<PolygonCollider2D>();
                 StartCoroutine(level.Transition());
