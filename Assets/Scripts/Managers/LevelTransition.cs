@@ -44,10 +44,12 @@ public class LevelTransition : MonoBehaviour {
 			print("Initial Screen vazia, A transição de telas não funcionará");
 			this.enabled = false;
 		}
-		m_check = GameObject.FindGameObjectWithTag("Checkpoint System").GetComponent<CheckpointSystemBehavior>();
+		GameObject check = GameObject.FindGameObjectWithTag("Checkpoint System");
 		if(m_check == null) {
 			print("Checkpoint System não encontrada na cena, Os perigos da cena não funcionarão");
-		}
+		} else {
+            m_check = check.GetComponent<CheckpointSystemBehavior>();
+        }
 	}
 
 	public IEnumerator Transition(){
