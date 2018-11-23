@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour {
 			m_cam = Camera.main.GetComponentInChildren<CinemachineFramingTransposer>();
         } else {
 			Debug.LogWarning("Não há Cinemachine presente na cena! A Cãmera não seguirá o personagem.");
-		} 
+		}  
     }
 
 
