@@ -134,6 +134,7 @@ public class PlayerController : MonoBehaviour {
 		IDangerous dangerousInteraction = col.gameObject.GetComponent<IDangerous>();
 		IInteractable interaction = col.gameObject.GetComponent<IInteractable>();
 		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
+		INonHarmfulInteraction nonHarmfulInteraction = col.gameObject.GetComponent<INonHarmfulInteraction>();
 
 		if(dangerousInteraction != null) {
 			if(hurtClip && SoundManager.instance) { SoundManager.instance.PlaySfx(hurtClip); }
@@ -147,6 +148,10 @@ public class PlayerController : MonoBehaviour {
 		if(showDialogue != null) {
 			showDialogue.ShowDialogue();
 			m_isShowingDialogue = true;
+		}
+
+		if(nonHarmfulInteraction != null) {
+			nonHarmfulInteraction.InteractWithPlayer(this.GetComponent<Collider2D>());
 		}
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {

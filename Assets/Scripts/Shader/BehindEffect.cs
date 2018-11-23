@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BehindEffect : MonoBehaviour, IDangerous {
+public class BehindEffect : MonoBehaviour, INonHarmfulInteraction {
 
-	void IDangerous.InteractWithPlayer(Collider2D player) {
+	void INonHarmfulInteraction.InteractWithPlayer(Collider2D player) {
 		player.transform.GetComponent<PlayerController>().ActivateSillouette();
 	}
 }
