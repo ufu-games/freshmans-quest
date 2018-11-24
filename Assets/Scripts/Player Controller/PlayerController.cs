@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour {
 	public Vector2 wallJumpVelocity = new Vector2(-5f, 5f);
 	private bool m_isOnWall;
 	private bool getingOffWall = false;
+	private bool m_skipMoveOnUpdateThisFrame = false;
 
 	[Space(5)]
 	[Header("Other Parameters")]
@@ -158,7 +159,7 @@ public class PlayerController : MonoBehaviour {
             float rotationAngle = col.gameObject.transform.eulerAngles.z;
             float maxVelocity = Mathf.Sqrt(jumpingPlatformMultiplier * 2f * jumpHeight * -m_gravity);
 			this.getsThrownTo(rotationAngle, maxVelocity);
-            
+			m_skipMoveOnUpdateThisFrame = true;
 		}
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("Cannon")){
@@ -262,8 +263,10 @@ public class PlayerController : MonoBehaviour {
 		// heap allocation = bad
 		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
 		
-		if(!isInCannon) m_controller.move( deltaPosition );
+		if(!isInCannon || !m_skipMoveOnUpdateThisFrame) m_controller.move( deltaPosition );
 		m_velocity = m_controller.velocity;
+
+		m_skipMoveOnUpdateThisFrame = true;
 	}
 
 	private IEnumerator ChangeScale(Vector2 scale) {
