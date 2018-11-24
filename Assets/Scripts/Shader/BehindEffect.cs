@@ -5,6 +5,6 @@ using UnityEngine;
 public class BehindEffect : MonoBehaviour, INonHarmfulInteraction {
 
 	void INonHarmfulInteraction.InteractWithPlayer(Collider2D player) {
-		player.transform.GetComponent<PlayerController>().ActivateSillouette();
+		player.transform.GetComponent<PlayerController>().ToggleSillouette();
 	}
 }
