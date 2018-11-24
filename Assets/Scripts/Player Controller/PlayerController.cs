@@ -375,7 +375,7 @@ public class PlayerController : MonoBehaviour {
 				// wasn't on wall last frame
 				if(!m_isOnWall) StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
 				m_isOnWall = true;
-				StopCoroutine(letGoOfWall());
+				// StopCoroutine(letGoOfWall());
 				getingOffWall  = false;
 			} else if(((m_controller.isColliding(Vector2.left) && (Input.GetAxisRaw("Horizontal") == 1))) ||
 					   (m_controller.isColliding(Vector2.right) && Input.GetAxisRaw("Horizontal") == -1) && m_isOnWall){
@@ -398,7 +398,7 @@ public class PlayerController : MonoBehaviour {
 
 		// Wall Jump
 		if((m_isOnWall || (!m_controller.isGrounded && (m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)) )) && Input.GetButtonDown("Jump")) {
-			StopCoroutine(letGoOfWall());
+			// StopCoroutine(letGoOfWall());
 			m_isOnWall = false;
 			int jumpDirection =  m_controller.isColliding(Vector2.left) ? -1 : 1;
 			m_velocity.x = wallJumpVelocity.x * jumpDirection;
@@ -429,9 +429,15 @@ public class PlayerController : MonoBehaviour {
 
 	private IEnumerator letGoOfWall(){
 		yield return new WaitForSeconds(leftGoOffWalDelay);
-		m_velocity.x = (wallJumpVelocity.x / 2f) * (m_controller.isColliding(Vector2.left) ? -1:1);
-		m_isOnWall = false;
-		m_gravity = goingDownGravity;
+
+		// checking if it wasn't handled somewhere else
+		Debug.Log("Let Go Of Wall: " + m_isOnWall);
+
+		if(m_isOnWall) {
+			m_velocity.x = (wallJumpVelocity.x / 2f) * (m_controller.isColliding(Vector2.left) ? -1:1);
+			m_isOnWall = false;
+			m_gravity = goingDownGravity;
+		}
 	}
 
 	public void StopMovement(){
