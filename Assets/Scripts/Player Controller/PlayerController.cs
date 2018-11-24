@@ -196,7 +196,11 @@ public class PlayerController : MonoBehaviour {
 
 	void onTriggerExitEvent( Collider2D col ) {
 		Debug.Log( "onTriggerExitEvent: " + col.gameObject.name );
-		m_playerSprite.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 0.0f);
+		INonHarmfulInteraction nonHarmfulInteraction = col.gameObject.GetComponent<INonHarmfulInteraction>();
+
+		if(nonHarmfulInteraction != null) {
+			nonHarmfulInteraction.InteractWithPlayer(this.GetComponent<Collider2D>());
+		}
 	}
 
 	#endregion
@@ -366,15 +370,15 @@ public class PlayerController : MonoBehaviour {
 		}
 		
 		// Stick to Wall
-		if(!m_isOnWall && ( (m_controller.isColliding(Vector2.left) && Input.GetButton("StickToWall")) ||
-							(m_controller.isColliding(Vector2.right)&& Input.GetButton("StickToWall")))) {
+		if(!m_isOnWall && ( (m_controller.isColliding(Vector2.left) && Input.GetAxisRaw("Horizontal") != 1) ||
+							(m_controller.isColliding(Vector2.right) && Input.GetAxisRaw("Horizontal") != -1))) {
 				// wasn't on wall last frame
 				if(!m_isOnWall) StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
 				m_isOnWall = true;
 				StopCoroutine(letGoOfWall());
 				getingOffWall  = false;
-			} else if(((m_controller.isColliding(Vector2.left) && Input.GetButton("StickToWall"))) ||
-					   (m_controller.isColliding(Vector2.right) && Input.GetButton("StickToWall")) && m_isOnWall){
+			} else if(((m_controller.isColliding(Vector2.left) && (Input.GetAxisRaw("Horizontal") == 1))) ||
+					   (m_controller.isColliding(Vector2.right) && Input.GetAxisRaw("Horizontal") == -1) && m_isOnWall){
 				if(!getingOffWall){
 					StartCoroutine(letGoOfWall());
 					getingOffWall  = true;
@@ -444,5 +448,16 @@ public class PlayerController : MonoBehaviour {
 
 	public void ActivateSillouette() {
 		m_playerSprite.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 1.0f);
+	}
+
+	public void ToggleSillouette() {
+		float value = m_playerSprite.GetComponent<SpriteRenderer>().material.GetFloat("_FlashAmount");
+
+		if(value > 0) {
+			m_playerSprite.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 0.0f);
+		} else if(value == 0) {
+			m_playerSprite.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 1.0f);
+		}		
+		
 	}
 }
