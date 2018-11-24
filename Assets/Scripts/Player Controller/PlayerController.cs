@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour {
 	public float jumpPressedRememberTime = 0.15f;
 	public float groundedRememberTime = 0.15f;
 	public float cutJumpHeight = 0.35f;
+	public float leftGoOffWalDelay = 2f;
 	private float m_jumpPressedRemember;
 	private float m_groundedRemember;
 	private bool m_floating;
@@ -364,17 +365,16 @@ public class PlayerController : MonoBehaviour {
 			return;
 		}
 		
-		
 		// Stick to Wall
-		if(!m_isOnWall && ( (m_controller.isColliding(Vector2.left) && Input.GetAxisRaw("Horizontal") != 1) ||
-							(m_controller.isColliding(Vector2.right)&& Input.GetAxisRaw("Horizontal") != -1))) {
+		if(!m_isOnWall && ( (m_controller.isColliding(Vector2.left) && Input.GetKey(KeyCode.Q)) ||
+							(m_controller.isColliding(Vector2.right)&& Input.GetKey(KeyCode.Q)))) {
 				// wasn't on wall last frame
 				if(!m_isOnWall) StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
 				m_isOnWall = true;
 				StopCoroutine(letGoOfWall());
 				getingOffWall  = false;
-			} else if(((m_controller.isColliding(Vector2.left) && (Input.GetAxisRaw("Horizontal") == 1)) ||
-					   (m_controller.isColliding(Vector2.right) && (Input.GetAxisRaw("Horizontal") == -1))) && m_isOnWall){
+			} else if(((m_controller.isColliding(Vector2.left) && Input.GetKey(KeyCode.Q))) ||
+					   (m_controller.isColliding(Vector2.right) && (Input.GetKey(KeyCode.Q))) && m_isOnWall){
 				if(!getingOffWall){
 					StartCoroutine(letGoOfWall());
 					getingOffWall  = true;
@@ -393,10 +393,10 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		// Wall Jump
-		if(m_isOnWall && Input.GetButtonDown("Jump")) {
+		if((m_isOnWall || (!m_controller.isGrounded && (m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)) )) && Input.GetButtonDown("Jump")) {
 			StopCoroutine(letGoOfWall());
 			m_isOnWall = false;
-			int jumpDirection =  m_controller.isColliding(Vector2.left) ? -1:1;
+			int jumpDirection =  m_controller.isColliding(Vector2.left) ? -1 : 1;
 			m_velocity.x = wallJumpVelocity.x * jumpDirection;
 			m_gravity = goingUpGravity;
 			m_velocity.y = Mathf.Sqrt(2f * wallJumpVelocity.y * -m_gravity);
@@ -424,7 +424,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private IEnumerator letGoOfWall(){
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(leftGoOffWalDelay);
 		m_velocity.x = (wallJumpVelocity.x / 2f) * (m_controller.isColliding(Vector2.left) ? -1:1);
 		m_isOnWall = false;
 	}
