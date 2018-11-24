@@ -16,7 +16,6 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 		if(playerReference == null || levelManager == null) {
 			print("Player ou LevelManager não encontrado, o Sistema de checkpoint não funcionará");
 		}
-		LastCheckpoint = playerReference.transform.position;
 	}
 
 	public void ResetPlayer(){

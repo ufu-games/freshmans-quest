@@ -10,6 +10,7 @@ public class ScreenTransition : MonoBehaviour, IInteractable {
 
 	void Awake(){
 		StartCoroutine(Delay());
+		GetComponentInChildren<SpriteRenderer>().enabled = false;
 	}
 
 	void Start(){
@@ -21,26 +22,37 @@ public class ScreenTransition : MonoBehaviour, IInteractable {
 
     public void Interact()
     {
-        if (level.m_player != null && level.m_cam != null && level.m_check != null && Enabled)
-        {
-            if (!level.Transitioning && !level.m_check.JustSpawned)
-            {
+        if (level.m_player != null && level.m_cam != null && Enabled) {
+			
+			bool Allowed;
+			if(level.m_check) {
+				if(level.m_check.JustSpawned) {
+					Allowed = false;
+				} else {
+					Allowed = true;
+				}
+				level.m_check.LastCheckpoint = GetSpawnPoint();
+			} else {
+				Allowed = true;
+			}
+            if (!level.Transitioning && Allowed) {
                 level.m_nowCollider = this.GetComponent<PolygonCollider2D>();
                 StartCoroutine(level.Transition());
             }
-        }
-        if (level.m_player != null && level.m_cam != null && level.m_check == null && Enabled)
-        {
-            if (!level.Transitioning)
-            {
-                level.m_nowCollider = this.GetComponent<PolygonCollider2D>();
-                StartCoroutine(level.Transition());
-            }
-
         }
     }
 	public IEnumerator Delay(){
 		yield return new WaitForSeconds(.5f);
 		Enabled = true;
+	}
+
+	public Vector2 GetSpawnPoint(){
+		List<Vector2> l = new List<Vector2>();
+		foreach(Transform t in GetComponentsInChildren<Transform>()) {
+			if(t != transform){
+				return t.position;
+			}
+		}
+		return transform.position;
 	}
 }
