@@ -427,6 +427,7 @@ public class PlayerController : MonoBehaviour {
 		yield return new WaitForSeconds(leftGoOffWalDelay);
 		m_velocity.x = (wallJumpVelocity.x / 2f) * (m_controller.isColliding(Vector2.left) ? -1:1);
 		m_isOnWall = false;
+		m_gravity = goingDownGravity;
 	}
 
 	public void StopMovement(){
