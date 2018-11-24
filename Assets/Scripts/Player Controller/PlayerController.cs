@@ -252,6 +252,9 @@ public class PlayerController : MonoBehaviour {
 		m_velocity.y = Mathf.Max(m_gravity, m_velocity.y + (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime))));
 		
 		// ignora as "one way platforms" por um frame (para cair delas)
+		// ISSO AQUI DÁ UM BUG
+		// SE VC SEGURAR PRA BAIXO E PULAR, O PERSONAGEM DÁ UM PULÃO
+		// A PARTIR DE AGORA ISSO É UMA FEATURE
 		if( m_controller.isGrounded && Input.GetKey( KeyCode.DownArrow ) )
 		{
 			m_velocity.y *= 3f;
@@ -360,6 +363,7 @@ public class PlayerController : MonoBehaviour {
 			m_isOnWall = false;
 			return;
 		}
+		
 		
 		// Stick to Wall
 		if(!m_isOnWall && ( (m_controller.isColliding(Vector2.left) && Input.GetAxisRaw("Horizontal") != 1) ||
