@@ -366,15 +366,15 @@ public class PlayerController : MonoBehaviour {
 		}
 		
 		// Stick to Wall
-		if(!m_isOnWall && ( (m_controller.isColliding(Vector2.left) && Input.GetKey(KeyCode.Q)) ||
-							(m_controller.isColliding(Vector2.right)&& Input.GetKey(KeyCode.Q)))) {
+		if(!m_isOnWall && ( (m_controller.isColliding(Vector2.left) && Input.GetButton("StickToWall")) ||
+							(m_controller.isColliding(Vector2.right)&& Input.GetButton("StickToWall")))) {
 				// wasn't on wall last frame
 				if(!m_isOnWall) StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
 				m_isOnWall = true;
 				StopCoroutine(letGoOfWall());
 				getingOffWall  = false;
-			} else if(((m_controller.isColliding(Vector2.left) && Input.GetKey(KeyCode.Q))) ||
-					   (m_controller.isColliding(Vector2.right) && (Input.GetKey(KeyCode.Q))) && m_isOnWall){
+			} else if(((m_controller.isColliding(Vector2.left) && Input.GetButton("StickToWall"))) ||
+					   (m_controller.isColliding(Vector2.right) && Input.GetButton("StickToWall")) && m_isOnWall){
 				if(!getingOffWall){
 					StartCoroutine(letGoOfWall());
 					getingOffWall  = true;
