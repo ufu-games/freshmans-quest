@@ -1,7 +1,11 @@
 ﻿using System;
 using NodeEditorFramework;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// This node has one entry and one exit, it is just to display something, then move on
 /// </summary>
@@ -26,6 +30,7 @@ public class DialogNode : BaseDialogNode
 
 	private Vector2 scroll;
 
+#if UNITY_EDITOR
 	protected override void OnCreate ()
 	{
 		CharacterName = "Character Name";
@@ -60,6 +65,7 @@ public class DialogNode : BaseDialogNode
 		}
 		GUILayout.EndHorizontal();
 	}
+#endif
 
 	public override BaseDialogNode Input(int inputValue)
 	{

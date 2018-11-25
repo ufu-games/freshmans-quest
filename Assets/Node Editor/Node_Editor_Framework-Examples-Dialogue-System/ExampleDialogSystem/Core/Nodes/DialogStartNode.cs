@@ -1,7 +1,11 @@
 ﻿using System;
 using NodeEditorFramework;
-using UnityEditor;
 using UnityEngine;
+
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 /// <summary>
 /// A node to start a dialog, note that the ID must be entered and be unique
@@ -23,6 +27,9 @@ public class DialogStartNode : BaseDialogNode
 	private Vector2 scroll;
 	public int DialogID;
 
+
+
+#if UNITY_EDITOR
 	protected override void OnCreate ()
 	{
 		base.OnCreate ();
@@ -64,6 +71,7 @@ public class DialogStartNode : BaseDialogNode
 		}
 		GUILayout.EndHorizontal();
 	}
+#endif
 
 	// 
 	public override BaseDialogNode Input(int inputValue)
