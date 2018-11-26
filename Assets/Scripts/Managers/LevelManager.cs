@@ -36,6 +36,7 @@ namespace LevelManagement {
 				instance = this;
 				DontDestroyOnLoad(gameObject);
 				blackScreenToFade.gameObject.SetActive(true);
+				blackScreenToFade.GetComponent<Image>().enabled = true;
 				blackScreenToFade.color = new Color(blackScreenToFade.color.r,blackScreenToFade.color.g,blackScreenToFade.color.b,1);
 			} else {
 				Destroy(gameObject);
