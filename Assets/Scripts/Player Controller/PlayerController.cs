@@ -369,39 +369,66 @@ public class PlayerController : MonoBehaviour {
 			return;
 		}
 		
-		// Stick to Wall
-		if(!m_isOnWall && ( (m_controller.isColliding(Vector2.left) && Input.GetAxisRaw("Horizontal") != 1) ||
-							(m_controller.isColliding(Vector2.right) && Input.GetAxisRaw("Horizontal") != -1))) {
-				// wasn't on wall last frame
-				if(!m_isOnWall) StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
-				m_isOnWall = true;
-				// StopCoroutine(letGoOfWall());
-				getingOffWall  = false;
-			} else if(((m_controller.isColliding(Vector2.left) && (Input.GetAxisRaw("Horizontal") == 1))) ||
-					   (m_controller.isColliding(Vector2.right) && Input.GetAxisRaw("Horizontal") == -1) && m_isOnWall){
-				if(!getingOffWall){
-					StartCoroutine(letGoOfWall());
-					getingOffWall  = true;
-				}
-			} else if(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)){
-				StopCoroutine(letGoOfWall());
-				getingOffWall = false;
-			} else{
-				StopCoroutine(letGoOfWall());
-				getingOffWall = false;
-				m_isOnWall = false;
+		// Stick To Wall
+		// is not on wall AND
+		// is pressing the trigger AND
+		// is colliding on left or right
+		if(!m_isOnWall 
+			&& 
+			Input.GetButton("StickToWall")
+			&&
+			(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)))
+		{
+			// wasn't on wall last frame
+			if(!m_isOnWall) StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
+			m_isOnWall = true;
+			getingOffWall  = false;
+		} else if(
+			// is on wall AND
+			// is not pressing AND
+			// is colliding
+			m_isOnWall
+			&&
+			!Input.GetButton("StickToWall")
+			&&
+			(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right))
+			)
+		{
+			if(!getingOffWall){
+				StartCoroutine(letGoOfWall());
+				getingOffWall = true;
 			}
+		} else if(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)) {
+			// is colliding with something
+			// Debug.Log("reached the coliding else");
+			StopCoroutine(letGoOfWall());
+			getingOffWall = false;
+		} else{
+			// Debug.Log("reached the final else");
+			StopCoroutine(letGoOfWall());
+			getingOffWall = false;
+			m_isOnWall = false;
+		}
 		
+		// processing gravity
 		if(m_isOnWall && m_velocity.y <= 0) {
-			m_gravity = onWallGravity;
+			if(Input.GetButton("StickToWall")) {
+				// ALMOST zero gravity
+				m_gravity = -.15f;
+			} else {
+				m_gravity = onWallGravity;
+			}
 		}
 
-		// Wall Jump
-		if((m_isOnWall || (!m_controller.isGrounded && (m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)) )) && Input.GetButtonDown("Jump")) {
-			// StopCoroutine(letGoOfWall());
+		// EFFECTIVELY JUMPING OFF WALL
+		// if is on wall AND
+		// is pressing the jump button
+		if(m_isOnWall 
+			&& 
+			Input.GetButtonDown("Jump")
+			) {
 			m_isOnWall = false;
-			int jumpDirection =  m_controller.isColliding(Vector2.left) ? -1 : 1;
-			m_velocity.x = wallJumpVelocity.x * jumpDirection;
+			m_velocity.x = wallJumpVelocity.x * (m_controller.isColliding(Vector2.left) ? -1 : 1);
 			m_gravity = goingUpGravity;
 			m_velocity.y = Mathf.Sqrt(2f * wallJumpVelocity.y * -m_gravity);
 			
@@ -410,6 +437,17 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
+		}
+	}
+	
+	private IEnumerator letGoOfWall(){
+		yield return new WaitForSeconds(leftGoOffWalDelay);
+
+		if(m_isOnWall && !Input.GetButton("StickToWall")) {
+			Debug.Log("Droping from wall");
+			m_velocity.x = (wallJumpVelocity.x / 2f) * (m_controller.isColliding(Vector2.left) ? -1:1);
+			m_isOnWall = false;
+			m_gravity = goingDownGravity;
 		}
 	}
 
@@ -424,19 +462,6 @@ public class PlayerController : MonoBehaviour {
 			m_cam.m_DeadZoneHeight = 0.2f;
 			m_cam.m_ScreenY = 0.5f;
 			m_cam.m_YDamping = 0.1f;
-		}
-	}
-
-	private IEnumerator letGoOfWall(){
-		yield return new WaitForSeconds(leftGoOffWalDelay);
-
-		// checking if it wasn't handled somewhere else
-		Debug.Log("Let Go Of Wall: " + m_isOnWall);
-
-		if(m_isOnWall) {
-			m_velocity.x = (wallJumpVelocity.x / 2f) * (m_controller.isColliding(Vector2.left) ? -1:1);
-			m_isOnWall = false;
-			m_gravity = goingDownGravity;
 		}
 	}
 
