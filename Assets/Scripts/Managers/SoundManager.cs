@@ -26,4 +26,24 @@ public class SoundManager : MonoBehaviour {
 	public void PlaySfx(AudioClip clip) {
 		sfxSource.PlayOneShot(clip);
 	}
+
+	public void PlayContinuousSfx(AudioClip clip, GameObject audioPlayer) {
+		StartCoroutine(ContinuousSfxCoroutine(clip,audioPlayer));
+	}
+
+	private IEnumerator ContinuousSfxCoroutine(AudioClip clip, GameObject audioPlayer) {
+		AudioSource Source = audioPlayer.AddComponent<AudioSource>();
+		Source.clip = clip;
+		Source.rolloffMode = AudioRolloffMode.Linear;
+		Source.loop = true;
+		Source.volume = 0.005f;
+		Source.spatialBlend = 1;
+		Source.minDistance = 2;
+		Source.maxDistance = 6;
+		Source.Play();
+		while(audioPlayer) {
+			yield return null;
+		}
+		Destroy(Source);
+	}
 }
