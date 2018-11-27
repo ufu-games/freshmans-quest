@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScreenTransition : MonoBehaviour, IInteractable {
+public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInteraction {
 
 	private LevelTransition level;
 	[HideInInspector]
@@ -23,24 +23,18 @@ public class ScreenTransition : MonoBehaviour, IInteractable {
     public void Interact()
     {
         if (level.m_player != null && level.m_cam != null && Enabled) {
-			
-			bool Allowed;
-			if(level.m_check) {
-				if(level.m_check.JustSpawned) {
-					Allowed = false;
-				} else {
-					Allowed = true;
-				}
-				level.m_check.LastCheckpoint = GetSpawnPoint();
-			} else {
-				Allowed = true;
-			}
-            if (!level.Transitioning && Allowed) {
-                level.m_nowCollider = this.GetComponent<PolygonCollider2D>();
-                StartCoroutine(level.Transition());
-            }
+			level.InColliders.Add(GetComponent<PolygonCollider2D>());
         }
     }
+
+	public void InteractWithPlayer(Collider2D col){ //Isso é chamado na entrada e na saida, quero filtrar e pegar somente a saida
+		if(!col.IsTouching(GetComponent<PolygonCollider2D>())) {	
+			if(level.m_player && level.m_cam && Enabled) {
+				level.InColliders.Remove(GetComponent<PolygonCollider2D>());
+			}
+		}
+	}
+
 	public IEnumerator Delay(){
 		yield return new WaitForSeconds(.5f);
 		Enabled = true;

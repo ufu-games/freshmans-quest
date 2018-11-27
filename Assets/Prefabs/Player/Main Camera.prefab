@@ -38,7 +38,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4119891488998658}
   - component: {fileID: 20591783606155818}
-  - component: {fileID: 81834966791052806}
   - component: {fileID: 114786163368753942}
   m_Layer: 0
   m_Name: Main Camera
@@ -72,7 +71,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1728434700802616}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8, y: -6.2, z: -10}
+  m_LocalPosition: {x: -11.24, y: 4.0200005, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4406155826804704}
@@ -115,7 +114,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.0754717, g: 0.07282504, b: 0.05802777, a: 0}
+  m_BackGroundColor: {r: 0.05829476, g: 0.06487882, b: 0.09433961, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -146,13 +145,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &81834966791052806
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1728434700802616}
-  m_Enabled: 1
 --- !u!114 &114229673272237800
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -168,7 +160,7 @@ MonoBehaviour:
   m_BoundingVolume: {fileID: 0}
   m_BoundingShape2D: {fileID: 0}
   m_ConfineScreenEdges: 1
-  m_Damping: 2.5
+  m_Damping: 0
 --- !u!114 &114233893560660434
 MonoBehaviour:
   m_ObjectHideFlags: 1
