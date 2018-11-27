@@ -52,14 +52,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InitialScreen: {fileID: 0}
-  TransitionDuration: 0.8
+  TransitionDuration: 0.5
   TransitionDamping: 0.5
-  Nota: "Quanto menor o TransitionDamping mais rapido a camera ira se mover para a
-    nova tela.\nCrie Polygon Collider 2D e coloque eles nas areas que voc\xEA quer
-    que seja cada tela, depois coloque em \"InitialScreen\" o Polygon Collider 2D
+  Notas: "Quanto menor o TransitionDamping mais rapido a camera ira se mover para
+    a nova tela.\nCrie Screens (\xC9 um prefab) e coloque eles como filho desse LevelTransition
+    e edite os seus Polygon Colliders 2D, depois coloque em \"InitialScreen\" a Screeen
     que indica a primeira tela."
   m_nowCollider: {fileID: 0}
   m_player: {fileID: 0}
   m_cam: {fileID: 0}
   Transitioning: 0
   m_check: {fileID: 0}
+  InColliders: []
