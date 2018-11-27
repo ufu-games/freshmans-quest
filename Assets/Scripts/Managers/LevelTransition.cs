@@ -49,6 +49,10 @@ public class LevelTransition : MonoBehaviour {
 		if(m_nowCollider == null){
 			print("Initial Screen vazia, A transição de telas não funcionará");
 			this.enabled = false;
+		} else {
+			if(!InColliders.Contains(m_nowCollider)) {
+				InColliders.Add(m_nowCollider);
+			}
 		}
 		
 		GameObject check = GameObject.FindGameObjectWithTag("Checkpoint System");

@@ -22,7 +22,7 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 
     public void Interact()
     {
-        if (level.m_player != null && level.m_cam != null && Enabled) {
+        if (level.m_player != null && level.m_cam != null && Enabled && !level.InColliders.Contains(GetComponent<PolygonCollider2D>())) {
 			level.InColliders.Add(GetComponent<PolygonCollider2D>());
         }
     }
