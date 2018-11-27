@@ -7,10 +7,21 @@ public class CollectableBehavior : MonoBehaviour, IInteractable {
 	public float Value;
 	public TypeOfCollectable Type;
 	public AudioClip collectedClip;
+	public AudioClip continuousClip;
 	private float followTime = .65f;
 	private float smoothFollow = 2f;
 
 	public enum TypeOfCollectable{Pizza, Homework};
+
+	void Start() {
+		if(!continuousClip) {
+			print("Falta o AudioClip Continuo do Coletável " + this.name);
+		} else {
+			if(SoundManager.instance) {
+				SoundManager.instance.PlayContinuousSfx(continuousClip,this.gameObject);
+			}
+		}
+	}
 
 	private IEnumerator DestroyCollectableRoutine(PlayerController playerReference) {
 		float timeSpent = 0;

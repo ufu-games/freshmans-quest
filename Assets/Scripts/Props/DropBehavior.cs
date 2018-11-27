@@ -17,12 +17,13 @@ public class DropBehavior : MonoBehaviour {
 		vect.x = 0;
 		vect.y = -Velocity;
 		vect.z = 0;
+		StartCoroutine(Lifetime());
 	}
 	
 	void Update () {
 		if(!Stopped) {
 			vect.y = -Velocity;
-			transform.position += vect;
+			transform.position += vect * 60 * Time.deltaTime;
 		}
 		foreach(RaycastHit2D hit in Physics2D.RaycastAll(transform.position + Vector3.down*boxCollider.size.y/2,Vector2.down,Velocity)) {
 			if((hit.collider.gameObject.layer == LayerMask.NameToLayer("Platform") || hit.collider.gameObject.layer == LayerMask.NameToLayer("Slippery")) && !Stopped) {
@@ -35,6 +36,11 @@ public class DropBehavior : MonoBehaviour {
 
 	private IEnumerator waitForDestroy() {
 		yield return new WaitForSeconds(0.18f);
+		Destroy(this.gameObject);
+	}
+
+	private IEnumerator Lifetime() {
+		yield return new WaitForSeconds(20);
 		Destroy(this.gameObject);
 	}
 }
