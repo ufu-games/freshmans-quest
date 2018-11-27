@@ -114,8 +114,8 @@ Camera:
   m_GameObject: {fileID: 1728434700802616}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 4
-  m_BackGroundColor: {r: 0.99215686, g: 0.90588236, b: 0.42352942, a: 0}
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.0754717, g: 0.07282504, b: 0.05802777, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -130,7 +130,7 @@ Camera:
   far clip plane: 5008.81
   field of view: 40
   orthographic: 1
-  orthographic size: 2
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -268,7 +268,7 @@ MonoBehaviour:
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 40
-    OrthographicSize: 2
+    OrthographicSize: 7
     NearClipPlane: 0.1
     FarClipPlane: 5008.81
     Dutch: 0
