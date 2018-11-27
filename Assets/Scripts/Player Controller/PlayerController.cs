@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour {
 
     void onControllerCollider( RaycastHit2D hit )
 	{
-		m_isSlipping = hit.transform.gameObject.layer == LayerMask.NameToLayer("Slippery") && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right));
+		m_isSlipping = hit.transform.gameObject.tag == "Slippery" && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right));
 
 		if(hit.collider.tag == "BreakableWall") {
 			hit.collider.gameObject.GetComponent<BreakableWallBehavior>().Collision(hit.point);
