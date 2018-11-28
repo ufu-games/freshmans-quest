@@ -197,9 +197,14 @@ public class PlayerController : MonoBehaviour {
 	void onTriggerExitEvent( Collider2D col ) {
 		Debug.Log( "onTriggerExitEvent: " + col.gameObject.name );
 		INonHarmfulInteraction nonHarmfulInteraction = col.gameObject.GetComponent<INonHarmfulInteraction>();
+		IInteractableLeaveTrigger interactWhenLeft = col.gameObject.GetComponent<IInteractableLeaveTrigger>();
 
 		if(nonHarmfulInteraction != null) {
 			nonHarmfulInteraction.InteractWithPlayer(this.GetComponent<Collider2D>());
+		}
+
+		if(interactWhenLeft != null) {
+			interactWhenLeft.Interact();
 		}
 	}
 

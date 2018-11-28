@@ -186,7 +186,7 @@ public class DialogueManager : MonoBehaviour {
 		m_isTypingSentence = false;
 	}
 
-	void EndDialog() {
+	public void EndDialog() {
 		if(m_dialogues.Count > 0) {
 			StartDialogue(m_dialogues.Dequeue());
 		} else {
