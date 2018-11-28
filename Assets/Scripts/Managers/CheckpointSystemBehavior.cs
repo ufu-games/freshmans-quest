@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CheckpointSystemBehavior : MonoBehaviour {
 
+	[ReadOnly]
 	public Vector2 LastCheckpoint = Vector2.zero;
 	[HideInInspector]
 	public bool JustSpawned = false;
