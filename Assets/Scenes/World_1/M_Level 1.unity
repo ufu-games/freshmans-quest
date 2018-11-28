@@ -6247,7 +6247,7 @@ Prefab:
         type: 2}
       propertyPath: InitialScreen
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 869794541}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c2dffc23926dab43a00a436e9671333, type: 2}
   m_IsPrefabAsset: 0
@@ -8591,11 +8591,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 212508962720427898, guid: 934d19a4a796b7444a99b8013da28b0f,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 3e89d453db0a4452e8c59192dfa64de0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 934d19a4a796b7444a99b8013da28b0f, type: 2}
   m_IsPrefabAsset: 0
@@ -11344,6 +11339,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &869794541 stripped
+PolygonCollider2D:
+  m_CorrespondingSourceObject: {fileID: 60870196345645482, guid: cb10be46dda711745bb201c749ac5a1a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1176431399}
 --- !u!1001 &876638063
 Prefab:
   m_ObjectHideFlags: 0
@@ -24940,17 +24940,17 @@ Prefab:
     - target: {fileID: 68253590618736912, guid: 28948dbb97867b14da84c77aa4fb4bfc,
         type: 2}
       propertyPath: m_Points.Array.data[16].x
-      value: -29.05299
+      value: -29.04715
       objectReference: {fileID: 0}
     - target: {fileID: 68253590618736912, guid: 28948dbb97867b14da84c77aa4fb4bfc,
         type: 2}
       propertyPath: m_Points.Array.data[16].y
-      value: 27.31365
+      value: 27.31446
       objectReference: {fileID: 0}
     - target: {fileID: 68253590618736912, guid: 28948dbb97867b14da84c77aa4fb4bfc,
         type: 2}
       propertyPath: m_Points.Array.data[17].x
-      value: -29.05294
+      value: -29.73026
       objectReference: {fileID: 0}
     - target: {fileID: 68253590618736912, guid: 28948dbb97867b14da84c77aa4fb4bfc,
         type: 2}
@@ -24965,7 +24965,7 @@ Prefab:
     - target: {fileID: 68253590618736912, guid: 28948dbb97867b14da84c77aa4fb4bfc,
         type: 2}
       propertyPath: m_Points.Array.data[18].y
-      value: -24.39782
+      value: -24.39781
       objectReference: {fileID: 0}
     - target: {fileID: 68253590618736912, guid: 28948dbb97867b14da84c77aa4fb4bfc,
         type: 2}
@@ -25000,17 +25000,17 @@ Prefab:
     - target: {fileID: 8633865682059915824, guid: 28948dbb97867b14da84c77aa4fb4bfc,
         type: 2}
       propertyPath: m_LocalAABB.m_Center.x
-      value: -0.4170475
+      value: -0.75226784
       objectReference: {fileID: 0}
     - target: {fileID: 8633865682059915824, guid: 28948dbb97867b14da84c77aa4fb4bfc,
         type: 2}
       propertyPath: m_LocalAABB.m_Extent.x
-      value: 28.62595
+      value: 28.96117
       objectReference: {fileID: 0}
     - target: {fileID: 114036718314886588, guid: 28948dbb97867b14da84c77aa4fb4bfc,
         type: 2}
       propertyPath: m_Spline.m_ControlPoints.Array.data[4].position.x
-      value: -28.542944
+      value: -29.213482
       objectReference: {fileID: 0}
     - target: {fileID: 114036718314886588, guid: 28948dbb97867b14da84c77aa4fb4bfc,
         type: 2}
