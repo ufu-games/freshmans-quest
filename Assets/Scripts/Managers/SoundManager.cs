@@ -36,7 +36,7 @@ public class SoundManager : MonoBehaviour {
 		Source.clip = clip;
 		Source.rolloffMode = AudioRolloffMode.Linear;
 		Source.loop = true;
-		Source.volume = 0.005f;
+		Source.volume = 0.1f;
 		Source.spatialBlend = 1;
 		Source.minDistance = 2;
 		Source.maxDistance = 6;
