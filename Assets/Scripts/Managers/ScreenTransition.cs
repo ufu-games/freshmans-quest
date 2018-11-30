@@ -8,6 +8,9 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 	[HideInInspector]
 	public bool Enabled = false;
 
+	[ReadOnly]
+	public Vector2 spawnpoint;
+
 	void Awake(){
 		StartCoroutine(Delay());
 		GetComponentInChildren<SpriteRenderer>().enabled = false;
@@ -17,6 +20,12 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 		level = GetComponentInParent<LevelTransition>();
 		if(level == null) {
 			print("LevelTransition não encontrado, o sistema de transições não vai funcionar!");
+		}
+
+		foreach(Transform t in GetComponentsInChildren<Transform>()) {
+			if(t != transform){
+				spawnpoint = t.position;
+			}
 		}
 	}
 
@@ -41,12 +50,6 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 	}
 
 	public Vector2 GetSpawnPoint(){
-		List<Vector2> l = new List<Vector2>();
-		foreach(Transform t in GetComponentsInChildren<Transform>()) {
-			if(t != transform){
-				return t.position;
-			}
-		}
-		return transform.position;
+		return spawnpoint;
 	}
 }

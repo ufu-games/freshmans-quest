@@ -97,4 +97,8 @@ public class LevelTransition : MonoBehaviour {
 		//yield return new WaitForSeconds(0.5f);
 		Transitioning = false;
 	}
+
+	public void SetSpawnPoint() {
+		m_check.LastCheckpoint = InColliders[0].GetComponent<ScreenTransition>().spawnpoint	= InColliders[0].gameObject.GetComponent<ScreenTransition>().GetSpawnPoint();
+	}
 }
