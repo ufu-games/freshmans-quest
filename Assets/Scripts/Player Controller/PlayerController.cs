@@ -65,8 +65,8 @@ public class PlayerController : MonoBehaviour {
 	private float normalizedHorizontalSpeed = 0;
 
 	private Prime31.CharacterController2D m_controller;
-	public Transform m_playerSprite;
-	private Animator m_animator;
+	public Transform[] m_playerSprites;
+	private Animator[] m_animators;
 	private RaycastHit2D m_lastControllerColliderHit;
 	private Vector3 m_velocity;
 	
@@ -90,7 +90,11 @@ public class PlayerController : MonoBehaviour {
 
 	void Awake()
 	{
-		m_animator = GetComponentInChildren<Animator>();
+		m_animators = GetComponentsInChildren<Animator>();
+		m_playerSprites = new Transform[m_animators.Length];
+		for(int i=0;i<m_animators.Length;i++) {
+			m_playerSprites[i] = m_animators[i].transform;
+		}
 
 		m_controller = GetComponent<Prime31.CharacterController2D>();
 
@@ -99,7 +103,8 @@ public class PlayerController : MonoBehaviour {
 		m_controller.onTriggerEnterEvent += onTriggerEnterEvent;
 		m_controller.onTriggerExitEvent += onTriggerExitEvent;
 		
-		m_originalScale = m_playerSprite.localScale;
+		m_originalScale = m_playerSprites[0].localScale;
+		m_playerSprites[1].localScale = m_originalScale;
 		
 		m_gravity = goingUpGravity;
 
@@ -186,8 +191,12 @@ public class PlayerController : MonoBehaviour {
 	
 		m_controller.move( deltaPosition );
 
-		m_animator.Play( "Jump" );
-		StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
+		foreach(Animator ani in m_animators) {
+			ani.Play( "Jump" );
+		}
+		foreach(Transform transf in m_playerSprites) {
+			StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
+		}
 
 		if(isInCannon)
 			Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.OrthographicSize /= this.Cannon.zoomOutMultiplier;
@@ -224,12 +233,16 @@ public class PlayerController : MonoBehaviour {
 				if(SoundManager.instance && stepClips.Length > 0) {
 					SoundManager.instance.PlaySfx(stepClips[Random.Range(0, stepClips.Length)]);
 				}
-				StartCoroutine(ChangeScale(m_playerSprite.localScale * m_groundingScaleMultiplier));
+				foreach(Transform transf in m_playerSprites) {
+					StartCoroutine(ChangeScale(transf.localScale * m_groundingScaleMultiplier));
+				}
 			}
 		}
 
 		if(m_isShowingDialogue) {
-			m_animator.Play("Idle");
+			foreach(Animator ani in m_animators) {
+				ani.Play("Idle");
+			}
 			m_velocity = Vector2.zero;
 			if(!DialogueManager.instance.isShowingDialogue) m_isShowingDialogue = false;
 			return;
@@ -283,25 +296,31 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private IEnumerator ChangeScale(Vector2 scale) {
-		m_playerSprite.localScale = scale;
+		foreach(Transform transf in m_playerSprites) {
+			transf.localScale = scale;
+		}
 		yield return new WaitForSeconds(0.075f);
-		m_playerSprite.localScale = new Vector3(Mathf.Sign(m_playerSprite.localScale.x) * Mathf.Abs(m_originalScale.x), m_originalScale.y, m_playerSprite.localScale.z);
+		foreach(Transform transf in m_playerSprites) {
+			transf.localScale = new Vector3(Mathf.Sign(transf.localScale.x) * Mathf.Abs(m_originalScale.x), m_originalScale.y, transf.localScale.z);
+		}
 	}
-
+	
 	private void AnimationLogic() {
 		if(gameObject.activeSelf){
-			if(m_isOnWall) {
-				m_animator.Play("Wall");
-			} else if(Mathf.Abs(m_velocity.y) > Mathf.Epsilon) {
-				if(m_floating) {
-					m_animator.Play("Floating");
+			foreach(Animator ani in m_animators) {
+				if(m_isOnWall) {
+					ani.Play("Wall");
+				} else if(Mathf.Abs(m_velocity.y) > Mathf.Epsilon) {
+					if(m_floating) {
+						ani.Play("Floating");
+					} else {
+						ani.Play("Jump");
+					}
+				} else if(Mathf.Abs(normalizedHorizontalSpeed) > 0 && m_controller.isGrounded) {
+					ani.Play("Running");
 				} else {
-					m_animator.Play("Jump");
+					ani.Play("Idle");
 				}
-			} else if(Mathf.Abs(normalizedHorizontalSpeed) > 0 && m_controller.isGrounded) {
-				m_animator.Play("Running");
-			} else {
-				m_animator.Play("Idle");
 			}
 		}
 	}
@@ -311,14 +330,21 @@ public class PlayerController : MonoBehaviour {
 		normalizedHorizontalSpeed = horizontalMovement;
 		
 		if(horizontalMovement != 0) {
-			if(!m_isOnWall) m_playerSprite.localScale = new Vector3(Mathf.Sign(horizontalMovement) * Mathf.Abs(m_playerSprite.localScale.x), m_playerSprite.localScale.y, m_playerSprite.localScale.z);
+			if(!m_isOnWall) 
+			foreach(Transform transf in m_playerSprites) {
+				transf.localScale = new Vector3(Mathf.Sign(horizontalMovement) * Mathf.Abs(transf.localScale.x), transf.localScale.y, transf.localScale.z);
+			} 
 		}
 
 		if(m_isOnWall) {
 			if(m_controller.isColliding(Vector2.right)){
-					m_playerSprite.localScale = new Vector3(Mathf.Abs(m_playerSprite.localScale.x), m_playerSprite.localScale.y, m_playerSprite.localScale.z);
+					foreach(Transform transf in m_playerSprites) {
+						transf.localScale = new Vector3(Mathf.Abs(transf.localScale.x), m_originalScale.y, transf.localScale.z);
+					}
 			} else{
-					m_playerSprite.localScale = new Vector3(-1 * Mathf.Abs(m_playerSprite.localScale.x), m_playerSprite.localScale.y, m_playerSprite.localScale.z);
+					foreach(Transform transf in m_playerSprites) {
+						transf.localScale = new Vector3(Mathf.Abs(transf.localScale.x)* -1, m_originalScale.y, transf.localScale.z);
+					}
 			}
 		}
 	}
@@ -351,9 +377,12 @@ public class PlayerController : MonoBehaviour {
 			if(SoundManager.instance && jumpingClip) {
 				SoundManager.instance.PlaySfx(jumpingClip);
 			}
-
-			StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
-			m_animator.Play( "Jump" );
+			foreach(Transform transf in m_playerSprites) {
+				StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
+			}
+			foreach(Animator ani in m_animators) {
+				ani.Play( "Jump" );
+			}
 		}
 	}
 
@@ -483,17 +512,22 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void ActivateSillouette() {
-		m_playerSprite.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 1.0f);
+		foreach(Transform transf in m_playerSprites) {
+			transf.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 1.0f);
+		}
 	}
 
 	public void ToggleSillouette() {
-		float value = m_playerSprite.GetComponent<SpriteRenderer>().material.GetFloat("_FlashAmount");
+		foreach(Transform transf in m_playerSprites) {
+			float value = transf.GetComponent<SpriteRenderer>().material.GetFloat("_FlashAmount");
 
-		if(value > 0) {
-			m_playerSprite.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 0.0f);
-		} else if(value == 0) {
-			m_playerSprite.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 1.0f);
-		}		
+			if(value > 0) {
+				transf.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 0.0f);
+			} else if(value == 0) {
+				transf.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 1.0f);
+			}		
+		}
+
 		
 	}
 }
