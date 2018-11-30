@@ -32345,7 +32345,6 @@ GameObject:
   - component: {fileID: 1681106944}
   - component: {fileID: 1681106943}
   - component: {fileID: 1681106946}
-  - component: {fileID: 1681106945}
   m_Layer: 19
   m_Name: "Cen\xE1rio cor original"
   m_TagString: Untagged
@@ -33758,17 +33757,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &1681106945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1681106941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2109aff4a3bd4ff4a7a76443647b12e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!19719996 &1681106946
 TilemapCollider2D:
   m_ObjectHideFlags: 0
