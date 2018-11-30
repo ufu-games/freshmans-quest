@@ -41,7 +41,7 @@ public class NewHubManager : MonoBehaviour {
 
 		float elapsedTime = 0.0f;
 		Vector3 startPosition = Camera.main.transform.position;
-		Vector3 destination = new Vector3(15 * (int)currentLevel, Camera.main.transform.position.y, Camera.main.transform.position.z);
+		Vector3 destination = new Vector3(17.5f * (int)currentLevel, Camera.main.transform.position.y, Camera.main.transform.position.z);
 		bool reachedDestination = false;
 
 		while(!reachedDestination) {
