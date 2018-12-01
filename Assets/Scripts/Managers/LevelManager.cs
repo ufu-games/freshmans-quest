@@ -34,7 +34,6 @@ namespace LevelManagement {
 		void Awake() {
 			if(instance == null) {
 				instance = this;
-				DontDestroyOnLoad(gameObject);
 				if(blackScreenToFade) {
 					blackScreenToFade.gameObject.SetActive(true);
 					blackScreenToFade.GetComponent<Image>().enabled = true;
@@ -65,6 +64,7 @@ namespace LevelManagement {
 		}
 
 		public void LoadLevel(int levelIndex) {
+			Debug.Log("Load Level: Int");
 			if(levelIndex >= 0 && levelIndex < SceneManager.sceneCountInBuildSettings) {
 				SceneManager.LoadScene(levelIndex);
 			} else {
