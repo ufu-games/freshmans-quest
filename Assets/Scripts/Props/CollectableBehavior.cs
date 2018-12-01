@@ -43,6 +43,7 @@ public class CollectableBehavior : MonoBehaviour, IInteractable {
 		PlayerController t_playerControllerReference = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 		if(Type == TypeOfCollectable.Pizza) {
 			t_playerControllerReference.PizzaCollected += Value;
+			t_playerControllerReference.UpdatePizzaCounter();
 		}
 		if(Type == TypeOfCollectable.Homework) {
 			t_playerControllerReference.HomeworkCollected += Value;
