@@ -12,9 +12,11 @@ public class DialogueTrigger : MonoBehaviour, IInteractable, IInteractableLeaveT
 
 	void IInteractable.Interact() {
 		TriggerDialogue();
+		FindObjectOfType<PlayerController>().StartDialogue();
 	}
 
 	void IInteractableLeaveTrigger.Interact() {
+		FindObjectOfType<PlayerController>().EndDialogue();
 		DialogueManager.instance.EndDialog();
 	}
 }

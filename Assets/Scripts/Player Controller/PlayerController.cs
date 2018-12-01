@@ -220,8 +220,7 @@ public class PlayerController : MonoBehaviour {
 	#endregion
 
 	void Update()
-	{
-		
+	{	
 		if(m_controller.isGrounded) {
 			m_groundedRemember = groundedRememberTime;
 			m_gravity = goingUpGravity;
@@ -244,6 +243,9 @@ public class PlayerController : MonoBehaviour {
 				ani.Play("Idle");
 			}
 			m_velocity = Vector2.zero;
+			m_velocity.y = goingDownGravity;
+			m_controller.move(m_velocity * Time.deltaTime);
+			
 			if(!DialogueManager.instance.isShowingDialogue) m_isShowingDialogue = false;
 			return;
 		}
@@ -527,7 +529,13 @@ public class PlayerController : MonoBehaviour {
 				transf.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 1.0f);
 			}		
 		}
+	}
 
-		
+	public void StartDialogue() {
+		m_isShowingDialogue = true;
+	}
+
+	public void EndDialogue() {
+		m_isShowingDialogue = false;
 	}
 }
