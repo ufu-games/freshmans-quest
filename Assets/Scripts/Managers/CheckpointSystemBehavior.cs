@@ -10,12 +10,16 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 	public bool JustSpawned = false;
 	private GameObject playerReference;
 	private LevelManagement.LevelManager levelManager;
+	private List<GameObject> all_gameObjects = new List<GameObject>();
 
 	void Start () {
 		playerReference = GameObject.FindGameObjectWithTag("Player");
 		levelManager = LevelManagement.LevelManager.instance;
 		if(playerReference == null || levelManager == null) {
 			print("Player ou LevelManager não encontrado, o Sistema de checkpoint não funcionará");
+		}
+		foreach (GameObject go in GameObject.FindGameObjectsWithTag("Prop")) {
+			all_gameObjects.Add(go);
 		}
 	}
 
@@ -33,6 +37,12 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 		}
 		yield return new WaitForSeconds(.1f);
 		playerReference.transform.position = LastCheckpoint;
+		foreach(GameObject go in all_gameObjects) {
+			IResettableProp ir = go.GetComponent<IResettableProp>();
+			if(ir != null && go.activeInHierarchy) {
+				ir.Reset();
+			}
+		}
 		yield return new WaitForSeconds(.5f);
 		playerReference.GetComponent<PlayerController>().enabled = true;
 		foreach(SpriteRenderer spr in playerReference.GetComponentsInChildren<SpriteRenderer>()) {
