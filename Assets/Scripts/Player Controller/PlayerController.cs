@@ -543,5 +543,6 @@ public class PlayerController : MonoBehaviour {
 
 	public void UpdatePizzaCounter() {
 		if(PizzaCounterUI.instance) PizzaCounterUI.instance.UpdateCounter(Mathf.RoundToInt(PizzaCollected));
+		else if(PizzaSliceCounterUI.instance) PizzaSliceCounterUI.instance.UpdateCounter(Mathf.RoundToInt(PizzaCollected));
 	}
 }
