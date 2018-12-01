@@ -113,6 +113,8 @@ public class PlayerController : MonoBehaviour {
         } else {
 			Debug.LogWarning("Não há Cinemachine presente na cena! A Cãmera não seguirá o personagem.");
 		}  
+
+		UpdatePizzaCounter();
     }
 
 
@@ -245,7 +247,7 @@ public class PlayerController : MonoBehaviour {
 			m_velocity = Vector2.zero;
 			m_velocity.y = goingDownGravity;
 			m_controller.move(m_velocity * Time.deltaTime);
-			
+
 			if(!DialogueManager.instance.isShowingDialogue) m_isShowingDialogue = false;
 			return;
 		}
@@ -537,5 +539,9 @@ public class PlayerController : MonoBehaviour {
 
 	public void EndDialogue() {
 		m_isShowingDialogue = false;
+	}
+
+	public void UpdatePizzaCounter() {
+		if(PizzaCounterUI.instance) PizzaCounterUI.instance.UpdateCounter(Mathf.RoundToInt(PizzaCollected));
 	}
 }
