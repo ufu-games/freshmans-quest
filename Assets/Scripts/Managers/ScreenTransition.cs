@@ -14,9 +14,6 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 	void Awake(){
 		StartCoroutine(Delay());
 		GetComponentInChildren<SpriteRenderer>().enabled = false;
-	}
-
-	void Start(){
 		level = GetComponentInParent<LevelTransition>();
 		if(level == null) {
 			print("LevelTransition não encontrado, o sistema de transições não vai funcionar!");
@@ -27,6 +24,9 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 				spawnpoint = t.position;
 			}
 		}
+	}
+
+	void Start(){
 	}
 
     public void Interact()
