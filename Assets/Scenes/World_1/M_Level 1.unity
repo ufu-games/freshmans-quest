@@ -8398,16 +8398,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
-        type: 2}
-      propertyPath: dialogue.Array.data[0].sentences.Array.data[0]
-      value: "Cheguei aqui primeiro que voc\xEA! Tamb\xE9m sentiu o cheiro de pizza?"
-      objectReference: {fileID: 0}
-    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
-        type: 2}
-      propertyPath: dialogue.Array.data[0].sentences.Array.data[1]
-      value: "Se pegar muitas poder\xE1 dividir comigo!"
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d12b953c191b43f7924b93327703804, type: 2}
   m_IsPrefabAsset: 0
@@ -30056,6 +30046,57 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114822902310104196, guid: 00ee9a63178964cf9863758c2ea8fb75,
+        type: 2}
+      propertyPath: m_Text
+      value: "Em algum bot\xE3o da plataforma que voc\xEA est\xE1 jogando, voc\xEA
+        vai conseguir pular o buraco a frente."
+      objectReference: {fileID: 0}
+    - target: {fileID: 224648753974053564, guid: 00ee9a63178964cf9863758c2ea8fb75,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -34.925026
+      objectReference: {fileID: 0}
+    - target: {fileID: 224648753974053564, guid: 00ee9a63178964cf9863758c2ea8fb75,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: -69.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114822902310104196, guid: 00ee9a63178964cf9863758c2ea8fb75,
+        type: 2}
+      propertyPath: m_FontData.m_VerticalOverflow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224648753974053564, guid: 00ee9a63178964cf9863758c2ea8fb75,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 15.799988
+      objectReference: {fileID: 0}
+    - target: {fileID: 224648753974053564, guid: 00ee9a63178964cf9863758c2ea8fb75,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: -8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114822902310104196, guid: 00ee9a63178964cf9863758c2ea8fb75,
+        type: 2}
+      propertyPath: m_FontData.m_BestFit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114822902310104196, guid: 00ee9a63178964cf9863758c2ea8fb75,
+        type: 2}
+      propertyPath: m_FontData.m_MinSize
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114822902310104196, guid: 00ee9a63178964cf9863758c2ea8fb75,
+        type: 2}
+      propertyPath: m_FontData.m_MaxSize
+      value: 44
+      objectReference: {fileID: 0}
+    - target: {fileID: 114822902310104196, guid: 00ee9a63178964cf9863758c2ea8fb75,
+        type: 2}
+      propertyPath: m_FontData.m_FontSize
+      value: 36
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00ee9a63178964cf9863758c2ea8fb75, type: 2}
