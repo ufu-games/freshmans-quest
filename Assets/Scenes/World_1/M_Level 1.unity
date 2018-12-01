@@ -8366,6 +8366,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1048976204}
     m_Modifications:
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 2}
+      propertyPath: dialogue.Array.data[0].sentences.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4284340748164874, guid: 4d12b953c191b43f7924b93327703804, type: 2}
       propertyPath: m_LocalPosition.x
       value: 65.939995
@@ -8397,6 +8402,21 @@ Prefab:
     - target: {fileID: 4284340748164874, guid: 4d12b953c191b43f7924b93327703804, type: 2}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 2}
+      propertyPath: dialogue.Array.data[0].sentences.Array.data[0]
+      value: "Cheguei primeiro e achei essa e sinto que h\xE1 outras por a\xED."
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 2}
+      propertyPath: dialogue.Array.data[0].sentences.Array.data[1]
+      value: "Preste aten\xE7\xE3o, voc\xEA sentira quando se aproximar."
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 2}
+      propertyPath: dialogue.Array.data[0].sentences.Array.data[2]
+      value: "N\xE3o esquece de dividir comigo."
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d12b953c191b43f7924b93327703804, type: 2}
@@ -14490,6 +14510,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1048976204}
     m_Modifications:
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 2}
+      propertyPath: dialogue.Array.data[0].sentences.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4284340748164874, guid: 4d12b953c191b43f7924b93327703804, type: 2}
       propertyPath: m_LocalPosition.x
       value: -1.13
@@ -14521,6 +14546,31 @@ Prefab:
     - target: {fileID: 4284340748164874, guid: 4d12b953c191b43f7924b93327703804, type: 2}
       propertyPath: m_RootOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 2}
+      propertyPath: dialogue.Array.data[0].sentences.Array.data[1]
+      value: "Tamb\xE9m est\xE1 sentindo o cheiro de pizza?"
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 2}
+      propertyPath: dialogue.Array.data[0].sentences.Array.data[0]
+      value: Uau Uau
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 2}
+      propertyPath: dialogue.Array.data[0].sentences.Array.data[2]
+      value: " Se voc\xEA conseguir subir at\xE9 l\xE1 em cima talvez encontre alguma."
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 2}
+      propertyPath: dialogue.Array.data[0].sentences.Array.data[3]
+      value: "E se encontrar n\xE3o esque\xE7a de dividir comigo."
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 2}
+      propertyPath: dialogue.Array.data[0].sentences.Array.data[4]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d12b953c191b43f7924b93327703804, type: 2}
@@ -25595,11 +25645,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4185171612753292, guid: cb10be46dda711745bb201c749ac5a1a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -13.32
+      value: -7.43
       objectReference: {fileID: 0}
     - target: {fileID: 4185171612753292, guid: cb10be46dda711745bb201c749ac5a1a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -6.71
+      value: -3.97
       objectReference: {fileID: 0}
     - target: {fileID: 4788983605778182, guid: cb10be46dda711745bb201c749ac5a1a, type: 2}
       propertyPath: m_LocalScale.y
