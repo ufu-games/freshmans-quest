@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 50841816223262830}
   m_Layer: 19
   m_Name: Collectable
-  m_TagString: Untagged
+  m_TagString: Prop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,8 +103,9 @@ MonoBehaviour:
   Type: 0
   collectedClip: {fileID: 8300000, guid: 5c08a8d1505ba384e9aae4a01b93e08c, type: 3}
   continuousClip: {fileID: 8300000, guid: 7ca82332b6dd93f418b7324bcb5cfecb, type: 3}
-  DampingFirstMove: 90
-  InitialVelocityFirstMove: 10
+  Collected: 0
+  DampingFirstMove: 80
+  InitialVelocityFirstMove: 20
   AccelerationSecondMove: 1.25
   InitialVelocitySecondMove: 3
 --- !u!212 &212664097221532064
