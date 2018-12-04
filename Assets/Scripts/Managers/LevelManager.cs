@@ -28,16 +28,35 @@ using UnityEngine.SceneManagement;
 namespace LevelManagement {
 	public class LevelManager : MonoBehaviour {
 		public static LevelManager instance;
-		public MaskableGraphic blackScreenToFade;
 		public float fadeDuration = .1f;
+		public int MaxFrameRate = 60;
+
+		private MaskableGraphic blackScreenToFade;
 
 		void Awake() {
+			QualitySettings.vSyncCount = 0;
+			StartCoroutine(changeFrameRate());
+
 			if(instance == null) {
 				instance = this;
-				if(blackScreenToFade) {
-					blackScreenToFade.gameObject.SetActive(true);
-					blackScreenToFade.GetComponent<Image>().enabled = true;
-					blackScreenToFade.color = new Color(blackScreenToFade.color.r,blackScreenToFade.color.g,blackScreenToFade.color.b,1);
+				GameObject go = null;
+				foreach(GameObject obj in Resources.FindObjectsOfTypeAll(typeof(GameObject))) {
+					if(obj.tag == "BlackScreen") {
+						go = obj;
+						break;
+					}
+				}
+				if(go) {
+					blackScreenToFade = go.GetComponent<MaskableGraphic>();
+					if(blackScreenToFade) {
+						blackScreenToFade.gameObject.SetActive(true);
+						blackScreenToFade.GetComponent<Image>().enabled = true;
+						blackScreenToFade.color = new Color(blackScreenToFade.color.r,blackScreenToFade.color.g,blackScreenToFade.color.b,1);
+					} else {
+						print("Tela preta não encontrada, o Fading não funcionará");
+					}
+				} else {
+					print("Tela preta não encontrada, o Fading não funcionará");
 				}
 			} else {
 				Destroy(gameObject);
@@ -48,7 +67,13 @@ namespace LevelManagement {
 			FadeOut(fadeDuration);
 		}
 
+		void Update() {
+          if(Application.targetFrameRate != MaxFrameRate)
+              Application.targetFrameRate = MaxFrameRate;
+      	}
+
 		public void ReloadLevel() { SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); }
+
 		public void LoadNextLevel() {
 			int sceneCount = SceneManager.sceneCountInBuildSettings;
 			int sceneToLoad = (SceneManager.GetActiveScene().buildIndex + 1) % sceneCount;
@@ -77,6 +102,7 @@ namespace LevelManagement {
 		// 							FADE IN / FADE OUT
 		// =============================================================================
 		// =============================================================================
+		
 		private void Fade(float targetAlpha, float duration) {
 			blackScreenToFade.CrossFadeAlpha(targetAlpha, duration, true);
 		}
@@ -93,6 +119,11 @@ namespace LevelManagement {
 
 			blackScreenToFade.canvasRenderer.SetAlpha(0f);
 			Fade(1f, duration);
+		}
+
+		public IEnumerator changeFrameRate() {
+			Application.targetFrameRate = MaxFrameRate;
+			yield return new WaitForSeconds(1f);
 		}
 
 	}
