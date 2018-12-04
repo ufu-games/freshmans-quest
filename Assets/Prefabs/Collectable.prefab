@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1364639677329940}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.83, y: -5.84, z: 0}
+  m_LocalPosition: {x: -5.13, y: -5.91, z: 0}
   m_LocalScale: {x: 0.07484093, y: 0.075349875, z: 0.29476535}
   m_Children: []
   m_Father: {fileID: 0}
@@ -103,6 +103,10 @@ MonoBehaviour:
   Type: 0
   collectedClip: {fileID: 8300000, guid: 5c08a8d1505ba384e9aae4a01b93e08c, type: 3}
   continuousClip: {fileID: 8300000, guid: 7ca82332b6dd93f418b7324bcb5cfecb, type: 3}
+  DampingFirstMove: 90
+  InitialVelocityFirstMove: 10
+  AccelerationSecondMove: 1.25
+  InitialVelocitySecondMove: 3
 --- !u!212 &212664097221532064
 SpriteRenderer:
   m_ObjectHideFlags: 1
