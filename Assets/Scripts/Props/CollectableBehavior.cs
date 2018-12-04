@@ -11,7 +11,7 @@ public class CollectableBehavior : MonoBehaviour, IInteractable {
 	[Header("Follow")]
 	[Range(0,100)]
 	public float DampingFirstMove = 90;
-	public float InitialVelocityFirstMove = 10;
+	public float InitialVelocityFirstMove = 15;
 	public float AccelerationSecondMove = 1.25f;
 	public float InitialVelocitySecondMove = 3;
 	private bool StartedFollowing = false;
@@ -53,7 +53,7 @@ public class CollectableBehavior : MonoBehaviour, IInteractable {
 
 		//---------- Depois de frear ele começa a ir rapidamente para o player
 
-		yield return new WaitForSeconds(0.02f);
+		yield return new WaitForSeconds(0.03f);
 		float increasingVel = 0;
 		while(Vector3.Distance(transform.position,playerReference.transform.position) > 0.5f) {
 			increasingVel += AccelerationSecondMove * Time.deltaTime;
