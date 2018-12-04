@@ -3,6 +3,17 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
+
+/*
+	Player States:
+	Idle,
+	Moving,
+	Jumping,
+	OnWall,
+	WallJumping (?),
+	Cannon,
+	CannotMove, (Dialogue)
+*/
 public class PlayerController : MonoBehaviour {
 	
 	[Space(5)]
@@ -257,8 +268,8 @@ public class PlayerController : MonoBehaviour {
 		Move();
 		CamHandling();
 		AnimationLogic();
-		if(!isInCannon)Jump();
-		if(hasFloat) Float();
+		if(!isInCannon) Jump();
+		// if(hasFloat) Float();
 		if(hasWallJump) WallJump();
 		
 		if(isInCannon && Input.GetButtonDown("Jump")){
@@ -293,10 +304,12 @@ public class PlayerController : MonoBehaviour {
 		// heap allocation = bad
 		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
 		
-		if(!isInCannon || !m_skipMoveOnUpdateThisFrame) m_controller.move( deltaPosition );
-		m_velocity = m_controller.velocity;
+		if(!isInCannon && !m_skipMoveOnUpdateThisFrame) {
+			m_controller.move( deltaPosition );
+			m_velocity = m_controller.velocity;
+		}
 
-		m_skipMoveOnUpdateThisFrame = true;
+		m_skipMoveOnUpdateThisFrame = false;
 	}
 
 	private IEnumerator ChangeScale(Vector2 scale) {

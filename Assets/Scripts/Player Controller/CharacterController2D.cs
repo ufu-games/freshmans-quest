@@ -549,6 +549,7 @@ public class CharacterController2D : MonoBehaviour
 			var isMovingDownSlope = Mathf.Sign( _raycastHit.normal.x ) == Mathf.Sign( deltaMovement.x );
 			if( isMovingDownSlope )
 			{
+				Debug.Log("[Character Controller 2D] Moving Down Slope");
 				// going down we want to speed up in most cases so the slopeSpeedMultiplier curve should be > 1 for negative angles
 				var slopeModifier = slopeSpeedMultiplier.Evaluate( -angle );
 				// we add the extra downward movement here to ensure we "stick" to the surface below
