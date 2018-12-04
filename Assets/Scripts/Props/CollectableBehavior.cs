@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectableBehavior : MonoBehaviour, IInteractable {
+public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp {
 
 	public float Value;
 	public TypeOfCollectable Type;
 	public AudioClip collectedClip;
 	public AudioClip continuousClip;
+	[HideInInspector]
+	public bool Collected = false;
 	[Header("Follow")]
 	[Range(0,100)]
 	public float DampingFirstMove = 90;
@@ -15,10 +17,12 @@ public class CollectableBehavior : MonoBehaviour, IInteractable {
 	public float AccelerationSecondMove = 1.25f;
 	public float InitialVelocitySecondMove = 3;
 	private bool StartedFollowing = false;
+	private Vector3 initialPosition;
 
 	public enum TypeOfCollectable{Pizza, Homework};
 
 	void Start() {
+		initialPosition = transform.position;
 		if(!continuousClip) {
 			print("Falta o AudioClip Continuo do Coletável " + this.name);
 		} else {
@@ -40,7 +44,7 @@ public class CollectableBehavior : MonoBehaviour, IInteractable {
 		Rigidbody2D rb = this.GetComponent<Rigidbody2D>();
 		if(rb == null) {
 			print("Falta Rigidbody no Coletável " + name);
-			Destroy(gameObject);
+			yield return 0;
 		}
 		rb.velocity = (new Vector3(Mathf.Cos(Mathf.Deg2Rad*randomAngle),Mathf.Sin(Mathf.Deg2Rad*randomAngle),0))*InitialVelocityFirstMove;
 		
@@ -73,7 +77,10 @@ public class CollectableBehavior : MonoBehaviour, IInteractable {
 		if(collectedClip && SoundManager.instance) {
 			SoundManager.instance.PlaySfx(collectedClip);
 		}
-		Destroy(gameObject);
+		GetComponent<SpriteRenderer>().enabled = false;
+		GetComponent<Collider2D>().enabled = false;
+		Collected = true;
+		rb.velocity = Vector2.zero;
 	}
 
 	public void Interact(){
@@ -81,6 +88,28 @@ public class CollectableBehavior : MonoBehaviour, IInteractable {
 			StartedFollowing = true;
 			PlayerController t_playerControllerReference = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 			StartCoroutine(DestroyCollectableRoutine(t_playerControllerReference));
+		}
+	}
+
+	public void Reset() {
+		if(StartedFollowing) {
+			transform.position = initialPosition;
+			PlayerController playerReference = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+			StartedFollowing = false;
+			StopAllCoroutines();
+			GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+			if(Collected) {
+				GetComponent<SpriteRenderer>().enabled = true;
+				GetComponent<Collider2D>().enabled = true;
+				Collected = false;
+				if(Type == TypeOfCollectable.Pizza) {
+					playerReference.PizzaCollected -= Value;
+					playerReference.UpdatePizzaCounter();
+				}
+				if(Type == TypeOfCollectable.Homework) {
+					playerReference.HomeworkCollected -= Value;
+				}
+			}
 		}
 	}
 }
