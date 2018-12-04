@@ -39,13 +39,7 @@ namespace LevelManagement {
 
 			if(instance == null) {
 				instance = this;
-				GameObject go = null;
-				foreach(GameObject obj in Resources.FindObjectsOfTypeAll(typeof(GameObject))) {
-					if(obj.tag == "BlackScreen") {
-						go = obj;
-						break;
-					}
-				}
+				GameObject go = GameObject.FindGameObjectWithTag("BlackScreen");
 				if(go) {
 					blackScreenToFade = go.GetComponent<MaskableGraphic>();
 					if(blackScreenToFade) {
@@ -56,7 +50,7 @@ namespace LevelManagement {
 						print("Tela preta não encontrada, o Fading não funcionará");
 					}
 				} else {
-					print("Tela preta não encontrada, o Fading não funcionará");
+					print("Tela preta não encontrada ou está desativada, o Fading não funcionará");
 				}
 			} else {
 				Destroy(gameObject);
@@ -68,8 +62,7 @@ namespace LevelManagement {
 		}
 
 		void Update() {
-          if(Application.targetFrameRate != MaxFrameRate)
-              Application.targetFrameRate = MaxFrameRate;
+			
       	}
 
 		public void ReloadLevel() { SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); }
@@ -102,7 +95,7 @@ namespace LevelManagement {
 		// 							FADE IN / FADE OUT
 		// =============================================================================
 		// =============================================================================
-		
+
 		private void Fade(float targetAlpha, float duration) {
 			blackScreenToFade.CrossFadeAlpha(targetAlpha, duration, true);
 		}
