@@ -79,6 +79,21 @@ public class LevelTransition : MonoBehaviour {
 				Allowed = true;
 			}
 			if (!Transitioning && Allowed) {
+				// Removendo Coletaveis e Breakable walls da lista de resetáveis da screen atual 
+				//, para evitar que eles sejam respawnadas caso o player sai e volte na sala e morra
+				foreach(GameObject go in m_nowCollider.GetComponent<ScreenTransition>().m_resettables) { 
+					if(go.GetComponent<CollectableBehavior>() != null) {
+						CollectableBehavior collect = go.GetComponent<CollectableBehavior>();
+						if(collect.Collected) {
+							m_nowCollider.GetComponent<ScreenTransition>().m_resettables.Remove(go);
+						}
+					}
+					if(go.tag == "BreakableWall") {
+						if(go.GetComponent<SpriteRenderer>().enabled == false) {
+							m_nowCollider.GetComponent<ScreenTransition>().m_resettables.Remove(go);
+						}
+					}
+				}
 				m_nowCollider = InColliders[0].gameObject.GetComponent<PolygonCollider2D>();
 				StartCoroutine(Transition());
 			}

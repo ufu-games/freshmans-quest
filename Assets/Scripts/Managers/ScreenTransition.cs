@@ -7,12 +7,17 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 	private LevelTransition level;
 	[HideInInspector]
 	public bool Enabled = false;
+	[HideInInspector]
+	public List<GameObject> m_resettables;
+
+	private bool checkedStay = false;
 
 	[ReadOnly]
 	public Vector2 spawnpoint;
 
 	void Awake(){
 		StartCoroutine(Delay());
+		m_resettables = new List<GameObject>();
 		GetComponentInChildren<SpriteRenderer>().enabled = false;
 		level = GetComponentInParent<LevelTransition>();
 		if(level == null) {
@@ -51,5 +56,14 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 
 	public Vector2 GetSpawnPoint(){
 		return spawnpoint;
+	}
+
+	public void OnTriggerStay2D(Collider2D col) { // Add os props e os breakable wall da screen na lista m_resettables dela
+		if(!Enabled) {
+			GameObject go = col.gameObject;
+			if(!m_resettables.Contains(go) && (go.tag == "Prop" || go.tag == "BreakableWall")) {
+				m_resettables.Add(go);
+			}
+		}
 	}
 }

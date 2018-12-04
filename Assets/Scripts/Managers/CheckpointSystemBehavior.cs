@@ -11,6 +11,7 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 	private GameObject playerReference;
 	private LevelManagement.LevelManager levelManager;
 	private List<GameObject> all_gameObjects = new List<GameObject>();
+	private LevelTransition lv;
 
 	void Start () {
 		playerReference = GameObject.FindGameObjectWithTag("Player");
@@ -20,6 +21,14 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 		}
 		foreach (GameObject go in GameObject.FindGameObjectsWithTag("Prop")) {
 			all_gameObjects.Add(go);
+		}
+		foreach (GameObject go in GameObject.FindGameObjectsWithTag("BreakableWall")) {
+			all_gameObjects.Add(go);
+		}
+		lv = GameObject.FindGameObjectWithTag("Transitioner").GetComponent<LevelTransition>();
+		if(lv == null) {
+			print("LevelTransition não encontrado, o sistema de reset de props não funcionará");
+			all_gameObjects.Clear();
 		}
 	}
 
@@ -37,10 +46,13 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 		}
 		yield return new WaitForSeconds(.1f);
 		playerReference.transform.position = LastCheckpoint;
+		ScreenTransition sc = lv.m_nowCollider.GetComponent<ScreenTransition>();
 		foreach(GameObject go in all_gameObjects) {
-			IResettableProp ir = go.GetComponent<IResettableProp>();
-			if(ir != null && go.activeInHierarchy) {
-				ir.Reset();
+			if(sc.m_resettables.Contains(go)) {
+				IResettableProp ir = go.GetComponent<IResettableProp>();
+				if(ir != null && go.activeInHierarchy) {
+					ir.Reset();
+				}
 			}
 		}
 		yield return new WaitForSeconds(.5f);

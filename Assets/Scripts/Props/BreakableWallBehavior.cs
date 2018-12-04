@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BreakableWallBehavior : MonoBehaviour {
+public class BreakableWallBehavior : MonoBehaviour, IResettableProp {
 
 	public float MinimumVelocityToBreak = 5f;
 	[SerializeField]
@@ -11,6 +11,7 @@ public class BreakableWallBehavior : MonoBehaviour {
 	private PlayerController m_player;
 	private BoxCollider2D m_bc;
 	private float gap = 0.5f;
+	private bool Destroyed = false;
 
 	void Start () {
 		m_player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
@@ -41,7 +42,17 @@ public class BreakableWallBehavior : MonoBehaviour {
 		}
 
 		if(Collided) {
-			Destroy(this.gameObject);
+			GetComponent<SpriteRenderer>().enabled = false;
+			GetComponent<BoxCollider2D>().enabled = false;
+			Destroyed = true;
+		}
+	}
+
+	public void Reset() {
+		if(Destroyed) {
+			GetComponent<SpriteRenderer>().enabled = false;
+			GetComponent<BoxCollider2D>().enabled = false;
+			Destroyed = false;
 		}
 	}
 }
