@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp {
 
@@ -81,6 +82,10 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 		GetComponent<Collider2D>().enabled = false;
 		Collected = true;
 		rb.velocity = Vector2.zero;
+		AudioSource asource = GetComponent<AudioSource>();
+		if(asource != null) {
+			Destroy(asource);
+		}
 	}
 
 	public void Interact(){
@@ -92,6 +97,8 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 	}
 
 	public void Reset() {
+		SoundManager.instance.PlayContinuousSfx(continuousClip,this.gameObject);
+		
 		if(StartedFollowing) {
 			transform.position = initialPosition;
 			PlayerController playerReference = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
