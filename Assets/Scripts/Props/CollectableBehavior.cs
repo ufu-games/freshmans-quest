@@ -80,12 +80,18 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 		}
 		GetComponent<SpriteRenderer>().enabled = false;
 		GetComponent<Collider2D>().enabled = false;
+
 		Collected = true;
 		rb.velocity = Vector2.zero;
 		AudioSource asource = GetComponent<AudioSource>();
 		if(asource != null) {
 			Destroy(asource);
 		}
+        
+		float ImpactAngle = Mathf.Rad2Deg * Mathf.Atan2(transform.position.y - playerReference.transform.position.y,transform.position.x - playerReference.transform.position.x);
+		GameObject part = Instantiate((GameObject) Resources.Load("Pizza Particles"),transform.position,Quaternion.identity);
+		part.transform.rotation = Quaternion.Euler(ImpactAngle,-90,0);
+		part.GetComponent<ParticleSystem>().Play();
 	}
 
 	public void Interact(){
