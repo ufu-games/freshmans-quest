@@ -89,7 +89,13 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 		}
         
 		float ImpactAngle = Mathf.Rad2Deg * Mathf.Atan2(transform.position.y - playerReference.transform.position.y,transform.position.x - playerReference.transform.position.x);
+		if(ImpactAngle >= 90 && ImpactAngle <= 270) { // Add uma inclinação para cima, para fazer a particula sair um pouco mais pra cima
+			ImpactAngle += 20;
+		} else {
+			ImpactAngle -= 20;
+		}
 		GameObject part = Instantiate((GameObject) Resources.Load("Pizza Particles"),transform.position,Quaternion.identity);
+		part.transform.parent = playerReference.transform;
 		part.transform.rotation = Quaternion.Euler(ImpactAngle,-90,0);
 		part.GetComponent<ParticleSystem>().Play();
 	}
