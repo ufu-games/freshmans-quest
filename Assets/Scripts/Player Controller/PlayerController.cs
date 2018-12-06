@@ -464,8 +464,11 @@ public class PlayerController : MonoBehaviour {
 		// processing gravity
 		if(m_isOnWall && m_velocity.y <= 0) {
 			if(Input.GetButton("StickToWall")) {
-				// ALMOST zero gravity
-				m_gravity = -.15f;
+				if(Input.GetAxisRaw("Vertical") == -1) {
+					m_gravity = onWallGravity * 5f;
+				} else {
+					m_gravity = -.15f;
+				}
 			} else {
 				m_gravity = onWallGravity;
 			}

@@ -552,9 +552,12 @@ public class CharacterController2D : MonoBehaviour
 				Debug.Log("[Character Controller 2D] Moving Down Slope");
 				// going down we want to speed up in most cases so the slopeSpeedMultiplier curve should be > 1 for negative angles
 				var slopeModifier = slopeSpeedMultiplier.Evaluate( -angle );
+				Debug.Log(slopeModifier);
 				// we add the extra downward movement here to ensure we "stick" to the surface below
-				deltaMovement.y += _raycastHit.point.y - slopeRay.y - skinWidth;
-				deltaMovement.x *= slopeModifier;
+				deltaMovement.y += _raycastHit.point.y;
+				// deltaMovement.y += _raycastHit.point.y - slopeRay.y - skinWidth;
+				deltaMovement.x *= 1.2f;
+				// deltaMovement.x *= slopeModifier;
 				collisionState.movingDownSlope = true;
 				collisionState.slopeAngle = angle;
 			}

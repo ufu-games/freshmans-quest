@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp {
 
@@ -79,8 +80,24 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 		}
 		GetComponent<SpriteRenderer>().enabled = false;
 		GetComponent<Collider2D>().enabled = false;
+
 		Collected = true;
 		rb.velocity = Vector2.zero;
+		AudioSource asource = GetComponent<AudioSource>();
+		if(asource != null) {
+			Destroy(asource);
+		}
+        
+		float ImpactAngle = Mathf.Rad2Deg * Mathf.Atan2(transform.position.y - playerReference.transform.position.y,transform.position.x - playerReference.transform.position.x);
+		if(ImpactAngle >= 90 && ImpactAngle <= 270) { // Add uma inclinação para cima, para fazer a particula sair um pouco mais pra cima
+			ImpactAngle += 20;
+		} else {
+			ImpactAngle -= 20;
+		}
+		GameObject part = Instantiate((GameObject) Resources.Load("Pizza Particles"),transform.position,Quaternion.identity);
+		part.transform.parent = playerReference.transform;
+		part.transform.rotation = Quaternion.Euler(ImpactAngle,-90,0);
+		part.GetComponent<ParticleSystem>().Play();
 	}
 
 	public void Interact(){
@@ -92,6 +109,8 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 	}
 
 	public void Reset() {
+		SoundManager.instance.PlayContinuousSfx(continuousClip,this.gameObject);
+		
 		if(StartedFollowing) {
 			transform.position = initialPosition;
 			PlayerController playerReference = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
