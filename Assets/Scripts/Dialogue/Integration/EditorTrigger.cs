@@ -8,7 +8,7 @@ public class EditorTrigger : MonoBehaviour {
 	public bool dialogueOnStart = false;
 
 	public void TriggerDialog() {
-		DialogueManager.instance.StartDialogue(dialogIdToLoad);
+		// DialogueManager.instance.StartDialogue(dialogIdToLoad);
 	}
 
 	void Start() {
