@@ -272,7 +272,7 @@ public class PlayerController : MonoBehaviour {
 		// if(hasFloat) Float();
 		if(hasWallJump) WallJump();
 		
-		if(isInCannon && Input.GetButtonDown("Jump")){
+		if(isInCannon && InputManager.instance.PressedJump()){
 			var angleCannon = Cannon.getAngle();
 			getsThrownTo(Cannon.getAngle(), Cannon.getThrowMultiplier());
 			isInCannon = false;
@@ -370,11 +370,11 @@ public class PlayerController : MonoBehaviour {
 		m_groundedRemember -= Time.deltaTime;
 		m_jumpPressedRemember -= Time.deltaTime;
 
-		if(Input.GetButtonDown("Jump")) {
+		if(InputManager.instance.PressedJump()) {
 			m_jumpPressedRemember = jumpPressedRememberTime;
 		}
 
-		if(Input.GetButtonUp("Jump")) {
+		if(InputManager.instance.ReleasedJump()) {
 			if(m_velocity.y > 0) {
 				m_velocity.y = m_velocity.y * cutJumpHeight;
 			}
@@ -405,7 +405,7 @@ public class PlayerController : MonoBehaviour {
 
 	private void Float() {
 		if(m_velocity.y >= 0) return;	
-		if(Input.GetButton("Jump")) {
+		if(InputManager.instance.PressedJump()) {
 			m_floating = true;
 			m_gravity = floatingGravity;
 		} else if(!m_isOnWall) {
@@ -426,7 +426,8 @@ public class PlayerController : MonoBehaviour {
 		// is colliding on left or right
 		if(!m_isOnWall 
 			&& 
-			Input.GetButton("StickToWall")
+			// Input.GetButton("StickToWall")
+			InputManager.instance.PressedWallJump()
 			&&
 			(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)))
 		{
@@ -440,7 +441,7 @@ public class PlayerController : MonoBehaviour {
 			// is colliding
 			m_isOnWall
 			&&
-			!Input.GetButton("StickToWall")
+			!InputManager.instance.PressedWallJump()
 			&&
 			(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right))
 			)
@@ -463,7 +464,7 @@ public class PlayerController : MonoBehaviour {
 		
 		// processing gravity
 		if(m_isOnWall && m_velocity.y <= 0) {
-			if(Input.GetButton("StickToWall")) {
+			if(InputManager.instance.PressedWallJump()) {
 				if(Input.GetAxisRaw("Vertical") == -1) {
 					m_gravity = onWallGravity * 5f;
 				} else {
@@ -479,7 +480,8 @@ public class PlayerController : MonoBehaviour {
 		// is pressing the jump button
 		if(m_isOnWall 
 			&& 
-			Input.GetButtonDown("Jump")
+			// Input.GetButtonDown("Jump")
+			InputManager.instance.PressedJump()
 			) {
 			m_isOnWall = false;
 			m_velocity.x = wallJumpVelocity.x * (m_controller.isColliding(Vector2.left) ? -1 : 1);
@@ -497,7 +499,7 @@ public class PlayerController : MonoBehaviour {
 	private IEnumerator letGoOfWall(){
 		yield return new WaitForSeconds(leftGoOffWalDelay);
 
-		if(m_isOnWall && !Input.GetButton("StickToWall")) {
+		if(m_isOnWall && !InputManager.instance.PressedWallJump()) {
 			Debug.Log("Droping from wall");
 			m_velocity.x = (wallJumpVelocity.x / 2f) * (m_controller.isColliding(Vector2.left) ? -1:1);
 			m_isOnWall = false;
