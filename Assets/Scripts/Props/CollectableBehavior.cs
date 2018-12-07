@@ -94,8 +94,11 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 		} else {
 			ImpactAngle -= 20;
 		}
-		GameObject part = Instantiate((GameObject) Resources.Load("Pizza Particles"),transform.position,Quaternion.identity);
-		part.transform.parent = playerReference.transform;
+		if(GetComponentInChildren<ParticleSystem>()) { //Para a particula continua
+			GetComponentInChildren<ParticleSystem>().Stop();
+		}
+		GameObject part = Instantiate((GameObject) Resources.Load("Pizza Particles 2"),transform.position,Quaternion.identity);
+		part.transform.parent = playerReference.transform; //Começa a particula de estouro
 		part.transform.rotation = Quaternion.Euler(ImpactAngle,-90,0);
 		part.GetComponent<ParticleSystem>().Play();
 	}
@@ -110,6 +113,9 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 
 	public void Reset() {
 		SoundManager.instance.PlayContinuousSfx(continuousClip,this.gameObject);
+		if(GetComponentInChildren<ParticleSystem>()) {
+			GetComponentInChildren<ParticleSystem>().Play();
+		}
 		
 		if(StartedFollowing) {
 			transform.position = initialPosition;
