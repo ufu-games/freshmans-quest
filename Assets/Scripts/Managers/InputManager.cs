@@ -70,6 +70,33 @@ public class SwitchProInput : BaseInput {
 	}
 }
 
+public class XBOXInput : BaseInput {
+	public override bool PressedJump() {
+		return(
+			Input.GetKeyDown(KeyCode.Joystick1Button0) ||
+			Input.GetKeyDown(KeyCode.Joystick1Button1) ||
+			Input.GetKeyDown(KeyCode.Joystick1Button2) ||
+			Input.GetKeyDown(KeyCode.Joystick1Button3)
+		);
+	}
+
+	public override bool ReleasedJump() {
+		return(
+			Input.GetKeyUp(KeyCode.Joystick1Button0) ||
+			Input.GetKeyUp(KeyCode.Joystick1Button1) ||
+			Input.GetKeyUp(KeyCode.Joystick1Button2) ||
+			Input.GetKeyUp(KeyCode.Joystick1Button3)
+		);
+	}
+
+	public override bool PressingWallJump() {
+		return(
+			Input.GetKey(KeyCode.Joystick1Button4) ||
+			Input.GetKey(KeyCode.Joystick1Button5)
+		);
+	}
+}
+
 public class StandardInput : BaseInput {
 	public override bool PressedJump() {
 		return Input.GetButtonDown("Jump");
@@ -155,14 +182,18 @@ public class InputManager : MonoBehaviour {
 		string[] names= Input.GetJoystickNames();
 		foreach(string name in names) {
 			Debug.Log("Connected Controller: " + name);
-			if(name == "Unknown Pro Controller") {
+			if(name.Contains("Pro Controller")) {
 				Debug.Log("Using Switch Pro Controller");
 				m_activeDevice = EInputDevice.SWITCH_controller;
 				m_inputDevice = new SwitchProInput();
-			} else if (name == "Sony Interactive Entertainment Wireless Controller") {
+			} else if (name.Contains("Sony")) {
 				Debug.Log("Using PS4 Controller");
 				m_activeDevice = EInputDevice.PS4_controller;
 				m_inputDevice = new PS4Input();
+			} else if(name.Contains("XBOX") || name.Contains("xinput")) { 
+				Debug.Log("Using PS4 Controller");
+				m_activeDevice = EInputDevice.XBOX_controller;
+				m_inputDevice = new XBOXInput();
 			} else {
 				Debug.Log("Using Standard Input");
 				m_activeDevice = EInputDevice.none;
