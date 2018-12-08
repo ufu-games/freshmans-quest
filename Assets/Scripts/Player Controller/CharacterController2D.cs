@@ -10,7 +10,7 @@ namespace Prime31 {
 public class CharacterController2D : MonoBehaviour
 {
 	public float constantDownSlopeMultiplier = 1.1f;
-	
+
 	#region internal types
 
 	struct CharacterRaycastOrigins
@@ -558,9 +558,9 @@ public class CharacterController2D : MonoBehaviour
 				// we add the extra downward movement here to ensure we "stick" to the surface below
 				deltaMovement.y += _raycastHit.point.y;
 				// deltaMovement.y += _raycastHit.point.y - slopeRay.y - skinWidth;
-				deltaMovement.x *= constantDownSlopeMultiplier;
+				// deltaMovement.x *= constantDownSlopeMultiplier;
 				// deltaMovement.x *= 1.2f;
-				// deltaMovement.x *= slopeModifier;
+				deltaMovement.x *= slopeModifier;
 				collisionState.movingDownSlope = true;
 				collisionState.slopeAngle = angle;
 			}
