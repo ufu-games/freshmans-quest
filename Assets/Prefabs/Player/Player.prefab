@@ -85,7 +85,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1233750439695320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.24, y: 4.02, z: 0}
+  m_LocalPosition: {x: -15.85, y: -75.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4572145709619722}
@@ -205,6 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b41e8e2aaa84364a9d6f1882659618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  constantDownSlopeMultiplier: 1.1
   ignoreOneWayPlatformsThisFrame: 0
   _skinWidth: 0.02
   platformMask:
@@ -231,14 +232,14 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 4.293579
-      value: 0.74038696
-      inSlope: 0.0018594232
-      outSlope: 0.0018594232
+      time: 0.330276
+      value: 1.0026019
+      inSlope: -0.0064175855
+      outSlope: -0.0064175855
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0.32177293
+      inWeight: 0.13711153
+      outWeight: 0.10597302
     - serializedVersion: 3
       time: 90
       value: 0
