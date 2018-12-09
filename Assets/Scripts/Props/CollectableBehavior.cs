@@ -88,18 +88,22 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 			Destroy(asource);
 		}
         
+		/*
 		float ImpactAngle = Mathf.Rad2Deg * Mathf.Atan2(transform.position.y - playerReference.transform.position.y,transform.position.x - playerReference.transform.position.x);
 		if(ImpactAngle >= 90 && ImpactAngle <= 270) { // Add uma inclinação para cima, para fazer a particula sair um pouco mais pra cima
 			ImpactAngle += 20;
 		} else {
 			ImpactAngle -= 20;
 		}
+
+
+		part.transform.rotation = Quaternion.Euler(ImpactAngle,-90,0);
+		*/
 		if(GetComponentInChildren<ParticleSystem>()) { //Para a particula continua
 			GetComponentInChildren<ParticleSystem>().Stop();
 		}
 		GameObject part = Instantiate((GameObject) Resources.Load("Pizza Particles 2"),transform.position,Quaternion.identity);
 		part.transform.parent = playerReference.transform; //Começa a particula de estouro
-		part.transform.rotation = Quaternion.Euler(ImpactAngle,-90,0);
 		part.GetComponent<ParticleSystem>().Play();
 	}
 

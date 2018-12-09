@@ -6,6 +6,10 @@ using UnityEngine.UI;
 public class ActivateBlackScreen : MonoBehaviour {
 
 	void Awake() {
-		GetComponentInChildren<Image>(true).gameObject.SetActive(true);
+		foreach(Image im in GetComponentsInChildren<Image>(true)) {
+			if(im.tag == "BlackScreen") {
+				im.gameObject.SetActive(true);
+			}
+		}
 	}
 }
