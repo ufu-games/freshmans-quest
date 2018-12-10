@@ -328,10 +328,10 @@ public class PlayerController : MonoBehaviour {
 				if(m_isOnWall) {
 					ani.Play("Wall");
 				} else if(Mathf.Abs(m_velocity.y) > Mathf.Epsilon) {
-					if(m_floating) {
-						ani.Play("Floating");
-					} else {
+					if(m_velocity.y > 0) {
 						ani.Play("Jump");
+					} else {
+						ani.Play("Falling");
 					}
 				} else if(Mathf.Abs(normalizedHorizontalSpeed) > 0 && m_controller.isGrounded) {
 					ani.Play("Running");
