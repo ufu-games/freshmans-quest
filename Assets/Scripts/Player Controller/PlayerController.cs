@@ -200,7 +200,7 @@ public class PlayerController : MonoBehaviour {
 		m_velocity.y = Mathf.Cos(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
 		m_velocity.x = -Mathf.Sin(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
 
-		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
+		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime,m_velocity.y*Time.deltaTime);
 	
 		m_controller.move( deltaPosition );
 
@@ -295,14 +295,14 @@ public class PlayerController : MonoBehaviour {
 		// A PARTIR DE AGORA ISSO É UMA FEATURE
 		if( m_controller.isGrounded && Input.GetKey( KeyCode.DownArrow ) )
 		{
-			m_velocity.y *= 3f;
+			m_velocity.y *= Mathf.Pow(3f,Time.deltaTime);
 			m_controller.ignoreOneWayPlatformsThisFrame = true;
 		}
 
 		// applying velocity verlet on delta position for y axis
 		// standard euler on x axis
 		// heap allocation = bad
-		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
+		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime,m_velocity.y * Time.deltaTime);
 		
 		if(!isInCannon && !m_skipMoveOnUpdateThisFrame) {
 			m_controller.move( deltaPosition );
@@ -376,7 +376,7 @@ public class PlayerController : MonoBehaviour {
 
 		if(InputManager.instance.ReleasedJump()) {
 			if(m_velocity.y > 0) {
-				m_velocity.y = m_velocity.y * cutJumpHeight;
+				m_velocity.y = m_velocity.y * Mathf.Pow(cutJumpHeight,Time.deltaTime*60);
 			}
 		}
 
@@ -522,7 +522,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void StopMovement(){
-		m_velocity = new Vector3(0f,0f,0f);
+		m_velocity = Vector3.zero;
 	}
 
 	public void SetMovement(Vector3 vect) {
