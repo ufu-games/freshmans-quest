@@ -36,7 +36,8 @@ public class PlayerController : MonoBehaviour {
 	public float goingUpGravity = -25f;
 	public float goingDownGravity = -50f;
 	public float floatingGravity = -10f;
-	private float m_gravity;
+	[ReadOnly]
+	public float m_gravity;
 	public float inAirDamping = 5f;
 	public float jumpHeight = 5f;
 	public float jumpPressedRememberTime = 0.15f;
@@ -51,9 +52,12 @@ public class PlayerController : MonoBehaviour {
 	[Header("Wall Jump Handling")]
 	public float onWallGravity = -5f;
 	public Vector2 wallJumpVelocity = new Vector2(-5f, 5f);
-	private bool m_isOnWall;
+	[ReadOnly]
+	public bool m_isOnWall;
 	private bool getingOffWall = false;
 	private bool m_skipMoveOnUpdateThisFrame = false;
+	private bool m_startedslidingwall = false;
+	private bool m_fastsliding = false;
 
 	[Space(5)]
 	[Header("Other Parameters")]
@@ -200,7 +204,7 @@ public class PlayerController : MonoBehaviour {
 		m_velocity.y = Mathf.Cos(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
 		m_velocity.x = -Mathf.Sin(rotationAngle * Mathf.Deg2Rad) * maxVelocity;
 
-		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
+		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime,m_velocity.y*Time.deltaTime);
 	
 		m_controller.move( deltaPosition );
 
@@ -283,7 +287,7 @@ public class PlayerController : MonoBehaviour {
 		var smoothedMovementFactor = m_controller.isGrounded ? t_groundDamping : inAirDamping;
 
 		if(!m_isOnWall) {
-			m_velocity.x = Mathf.Lerp( m_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
+			m_velocity.x = Mathf.Lerp(normalizedHorizontalSpeed * runSpeed, m_velocity.x,Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime*60));
 		}
 		
 		// limiting gravity
@@ -295,18 +299,23 @@ public class PlayerController : MonoBehaviour {
 		// A PARTIR DE AGORA ISSO É UMA FEATURE
 		if( m_controller.isGrounded && Input.GetKey( KeyCode.DownArrow ) )
 		{
-			m_velocity.y *= 3f;
+			m_velocity.y *= Mathf.Pow(3f,Time.deltaTime);
 			m_controller.ignoreOneWayPlatformsThisFrame = true;
 		}
 
 		// applying velocity verlet on delta position for y axis
 		// standard euler on x axis
 		// heap allocation = bad
-		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime, (m_velocity.y * Time.deltaTime));
+		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime,m_velocity.y * Time.deltaTime);
 		
 		if(!isInCannon && !m_skipMoveOnUpdateThisFrame) {
 			m_controller.move( deltaPosition );
 			m_velocity = m_controller.velocity;
+		}
+
+		if(m_controller.isGrounded) {
+			m_startedslidingwall = false;
+			m_fastsliding = false;
 		}
 
 		m_skipMoveOnUpdateThisFrame = false;
@@ -328,10 +337,10 @@ public class PlayerController : MonoBehaviour {
 				if(m_isOnWall) {
 					ani.Play("Wall");
 				} else if(Mathf.Abs(m_velocity.y) > Mathf.Epsilon) {
-					if(m_floating) {
-						ani.Play("Floating");
-					} else {
+					if(m_velocity.y > 0) {
 						ani.Play("Jump");
+					} else {
+						ani.Play("Falling");
 					}
 				} else if(Mathf.Abs(normalizedHorizontalSpeed) > 0 && m_controller.isGrounded) {
 					ani.Play("Running");
@@ -376,7 +385,7 @@ public class PlayerController : MonoBehaviour {
 
 		if(InputManager.instance.ReleasedJump()) {
 			if(m_velocity.y > 0) {
-				m_velocity.y = m_velocity.y * cutJumpHeight;
+				m_velocity.y = m_velocity.y * Mathf.Pow(cutJumpHeight,Time.deltaTime*60);
 			}
 		}
 
@@ -468,10 +477,28 @@ public class PlayerController : MonoBehaviour {
 				if(Input.GetAxisRaw("Vertical") == -1) {
 					m_gravity = onWallGravity * 5f;
 				} else {
-					m_gravity = -.15f;
+					if(m_startedslidingwall && m_fastsliding) {
+						m_gravity = -.15f;
+						m_fastsliding = false;
+					}
+					if(m_gravity != -.15f && !m_startedslidingwall) {
+						m_gravity = -.15f;
+						m_startedslidingwall = true;
+					} else {
+						m_gravity -= 0.4f*Time.deltaTime;
+					}
 				}
 			} else {
-				m_gravity = onWallGravity;
+				m_fastsliding = true;
+				if(m_startedslidingwall && m_gravity > onWallGravity) {
+					m_gravity = onWallGravity;
+				}
+				if(m_gravity != onWallGravity && !m_startedslidingwall) {
+					m_gravity = onWallGravity;
+					m_startedslidingwall = true;
+				} else {
+					m_gravity -= 1f*Time.deltaTime;
+				}
 			}
 		}
 
@@ -484,6 +511,8 @@ public class PlayerController : MonoBehaviour {
 			InputManager.instance.PressedJump()
 			) {
 			m_isOnWall = false;
+			m_fastsliding = false;
+			m_startedslidingwall = false;
 			m_velocity.x = wallJumpVelocity.x * (m_controller.isColliding(Vector2.left) ? -1 : 1);
 			m_gravity = goingUpGravity;
 			m_velocity.y = Mathf.Sqrt(2f * wallJumpVelocity.y * -m_gravity);
@@ -522,7 +551,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void StopMovement(){
-		m_velocity = new Vector3(0f,0f,0f);
+		m_velocity = Vector3.zero;
 	}
 
 	public void SetMovement(Vector3 vect) {

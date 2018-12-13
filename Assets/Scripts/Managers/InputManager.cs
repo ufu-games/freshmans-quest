@@ -191,7 +191,7 @@ public class InputManager : MonoBehaviour {
 				m_activeDevice = EInputDevice.PS4_controller;
 				m_inputDevice = new PS4Input();
 			} else if(name.Contains("XBOX") || name.Contains("xinput")) { 
-				Debug.Log("Using PS4 Controller");
+				Debug.Log("Using XBOX Controller");
 				m_activeDevice = EInputDevice.XBOX_controller;
 				m_inputDevice = new XBOXInput();
 			} else {
@@ -199,6 +199,9 @@ public class InputManager : MonoBehaviour {
 				m_activeDevice = EInputDevice.none;
 				m_inputDevice = new StandardInput();
 			}
+		}
+		if(m_inputDevice == null) {
+			m_inputDevice = new StandardInput();
 		} 	
 	}
 
