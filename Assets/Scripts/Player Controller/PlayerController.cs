@@ -36,7 +36,8 @@ public class PlayerController : MonoBehaviour {
 	public float goingUpGravity = -25f;
 	public float goingDownGravity = -50f;
 	public float floatingGravity = -10f;
-	private float m_gravity;
+	[ReadOnly]
+	public float m_gravity;
 	public float inAirDamping = 5f;
 	public float jumpHeight = 5f;
 	public float jumpPressedRememberTime = 0.15f;
@@ -51,9 +52,12 @@ public class PlayerController : MonoBehaviour {
 	[Header("Wall Jump Handling")]
 	public float onWallGravity = -5f;
 	public Vector2 wallJumpVelocity = new Vector2(-5f, 5f);
-	private bool m_isOnWall;
+	[ReadOnly]
+	public bool m_isOnWall;
 	private bool getingOffWall = false;
 	private bool m_skipMoveOnUpdateThisFrame = false;
+	private bool m_startedslidingwall = false;
+	private bool m_fastsliding = false;
 
 	[Space(5)]
 	[Header("Other Parameters")]
@@ -309,6 +313,11 @@ public class PlayerController : MonoBehaviour {
 			m_velocity = m_controller.velocity;
 		}
 
+		if(m_controller.isGrounded) {
+			m_startedslidingwall = false;
+			m_fastsliding = false;
+		}
+
 		m_skipMoveOnUpdateThisFrame = false;
 	}
 
@@ -468,10 +477,28 @@ public class PlayerController : MonoBehaviour {
 				if(Input.GetAxisRaw("Vertical") == -1) {
 					m_gravity = onWallGravity * 5f;
 				} else {
-					m_gravity = -.15f;
+					if(m_startedslidingwall && m_fastsliding) {
+						m_gravity = -.15f;
+						m_fastsliding = false;
+					}
+					if(m_gravity != -.15f && !m_startedslidingwall) {
+						m_gravity = -.15f;
+						m_startedslidingwall = true;
+					} else {
+						m_gravity -= 0.4f*Time.deltaTime;
+					}
 				}
 			} else {
-				m_gravity = onWallGravity;
+				m_fastsliding = true;
+				if(m_startedslidingwall && m_gravity > onWallGravity) {
+					m_gravity = onWallGravity;
+				}
+				if(m_gravity != onWallGravity && !m_startedslidingwall) {
+					m_gravity = onWallGravity;
+					m_startedslidingwall = true;
+				} else {
+					m_gravity -= 1f*Time.deltaTime;
+				}
 			}
 		}
 
@@ -484,6 +511,8 @@ public class PlayerController : MonoBehaviour {
 			InputManager.instance.PressedJump()
 			) {
 			m_isOnWall = false;
+			m_fastsliding = false;
+			m_startedslidingwall = false;
 			m_velocity.x = wallJumpVelocity.x * (m_controller.isColliding(Vector2.left) ? -1 : 1);
 			m_gravity = goingUpGravity;
 			m_velocity.y = Mathf.Sqrt(2f * wallJumpVelocity.y * -m_gravity);
