@@ -178,6 +178,7 @@ public class CharacterController2D : MonoBehaviour
 	// the reason is so that if we reach the end of the slope we can make an adjustment to stay grounded
 	bool _isGoingUpSlope = false;
 
+	public float downSlopeTerminalVelocity = 0.5f;
 
 	#region Monobehaviour
 
@@ -428,7 +429,7 @@ public class CharacterController2D : MonoBehaviour
 			{
 				// apply the slopeModifier to slow our movement up the slope
 				var slopeModifier = slopeSpeedMultiplier.Evaluate( angle );
-				deltaMovement.x *= slopeModifier;
+				deltaMovement.x *= Mathf.Pow(slopeModifier,Time.deltaTime*60);
 
 				// we dont set collisions on the sides for this since a slope is not technically a side collision.
 				// smooth y movement when we climb. we make the y movement equivalent to the actual y location that corresponds
@@ -560,7 +561,17 @@ public class CharacterController2D : MonoBehaviour
 				// deltaMovement.y += _raycastHit.point.y - slopeRay.y - skinWidth;
 				// deltaMovement.x *= constantDownSlopeMultiplier;
 				// deltaMovement.x *= 1.2f;
-				deltaMovement.x *= slopeModifier;
+
+				if(Mathf.Abs(deltaMovement.x) < downSlopeTerminalVelocity) {
+					deltaMovement.x *= Mathf.Pow(slopeModifier,Time.deltaTime*60);
+				} else {
+					if(deltaMovement.x > 0) {
+						deltaMovement.x = downSlopeTerminalVelocity;
+					} else {
+						deltaMovement.x = -downSlopeTerminalVelocity;
+					}
+				}
+
 				collisionState.movingDownSlope = true;
 				collisionState.slopeAngle = angle;
 			}
@@ -569,7 +580,6 @@ public class CharacterController2D : MonoBehaviour
 	public bool isColliding(Vector2 direction){
 		Vector2 initialRayOrigin;
 		Vector2 ray;
-		var isColliding = false;
 		if(direction == Vector2.right){
 			for( var i = 0; i < totalHorizontalRays; i++ ){
 				initialRayOrigin = _raycastOrigins.bottomRight;
