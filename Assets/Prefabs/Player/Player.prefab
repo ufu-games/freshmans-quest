@@ -254,6 +254,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   totalHorizontalRays: 5
   totalVerticalRays: 3
+  downSlopeTerminalVelocity: 0.5
 --- !u!114 &114715631540079370
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -275,6 +276,7 @@ MonoBehaviour:
   goingUpGravity: -70
   goingDownGravity: -40
   floatingGravity: -1
+  m_gravity: 0
   inAirDamping: 0.08333
   jumpHeight: 2
   jumpPressedRememberTime: 0.15
@@ -283,6 +285,7 @@ MonoBehaviour:
   leftGoOffWalDelay: 2
   onWallGravity: -1
   wallJumpVelocity: {x: -14, y: 1}
+  m_isOnWall: 0
   jumpingPlatformMultiplier: 3
   landingParticles: {fileID: 198417699065630864, guid: 5941734cbb31c479fbbe5fb46ba4283f,
     type: 2}
