@@ -11,12 +11,14 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 	public List<GameObject> m_resettables;
 
 	private bool checkedStay = false;
+	private PolygonCollider2D m_col;
 
 	[ReadOnly]
 	public Vector2 spawnpoint;
 
 	void Awake(){
 		StartCoroutine(Delay());
+		m_col = GetComponent<PolygonCollider2D>();
 		m_resettables = new List<GameObject>();
 		GetComponentInChildren<SpriteRenderer>().enabled = false;
 		level = GetComponentInParent<LevelTransition>();
@@ -36,15 +38,15 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 
     public void Interact()
     {
-        if (level.m_player != null && level.m_cam != null && Enabled && !level.InColliders.Contains(GetComponent<PolygonCollider2D>())) {
-			level.InColliders.Add(GetComponent<PolygonCollider2D>());
+        if (level.m_player != null && level.m_cam != null && Enabled && !level.InColliders.Contains(m_col)) {
+			level.InColliders.Add(m_col);
         }
     }
 
 	public void InteractWithPlayer(Collider2D col){ //Isso é chamado na entrada e na saida, quero filtrar e pegar somente a saida
-		if(!col.IsTouching(GetComponent<PolygonCollider2D>())) {	
+		if(!col.IsTouching(m_col)) {	
 			if(level.m_player && level.m_cam && Enabled) {
-				level.InColliders.Remove(GetComponent<PolygonCollider2D>());
+				level.InColliders.Remove(m_col);
 			}
 		}
 	}

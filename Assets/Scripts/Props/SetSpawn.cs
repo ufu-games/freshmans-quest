@@ -5,11 +5,12 @@ using UnityEngine;
 public class SetSpawn : MonoBehaviour, IInteractable {
 
 	public enum Type {OneTime, MultipleTimes}
-	public Type Modo = Type.OneTime;
+	public Type Modo = Type.MultipleTimes;
 	// Use this for initialization
 
 	private bool used = false;
 	private Transform child;
+
 	void Start () {
 		foreach(Transform transf in GetComponentsInChildren<Transform>()) {
 			if(transf != this.transform) {
@@ -20,7 +21,6 @@ public class SetSpawn : MonoBehaviour, IInteractable {
 		GetComponent<SpriteRenderer>().enabled = false;
 	}
 	
-	// Update is called once per frame
 	void Update () {
 		
 	}
@@ -36,10 +36,26 @@ public class SetSpawn : MonoBehaviour, IInteractable {
 				Leveltrans.InColliders[0].GetComponent<ScreenTransition>().spawnpoint = child.position;
 				Leveltrans.SetSpawnPoint();
 				used = true;
+			} else {
+				return;
 			}
 		} else {
 			Leveltrans.InColliders[0].GetComponent<ScreenTransition>().spawnpoint = child.position;
 			Leveltrans.SetSpawnPoint();
+		}
+
+		foreach(GameObject go in Leveltrans.m_nowCollider.GetComponent<ScreenTransition>().m_resettables) { 
+			if(go.GetComponent<CollectableBehavior>() != null) {
+				CollectableBehavior collect = go.GetComponent<CollectableBehavior>();
+				if(collect.Collected) {
+					Leveltrans.m_nowCollider.GetComponent<ScreenTransition>().m_resettables.Remove(go);
+				}
+			}
+			if(go.tag == "BreakableWall") {
+				if(go.GetComponent<SpriteRenderer>().enabled == false) {
+					Leveltrans.m_nowCollider.GetComponent<ScreenTransition>().m_resettables.Remove(go);
+				}
+			}
 		}
 	}
 }
