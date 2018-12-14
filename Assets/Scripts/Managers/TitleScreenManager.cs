@@ -131,8 +131,9 @@ public class TitleScreenManager : MonoBehaviour {
 				playText.color = selectedColor;
 				exitText.color = notSelectedColor;
 
-				if(Input.GetButtonDown("Submit")) {
+				if(InputManager.instance.PressedConfirm()) {
 					Debug.Log("JOGAR!");
+					LevelManagement.LevelManager.instance.LoadNextLevel();
 				}
 			break;
 			case EOptionState.Exit:
@@ -144,8 +145,9 @@ public class TitleScreenManager : MonoBehaviour {
 				playText.color = notSelectedColor;
 				exitText.color = selectedColor;
 
-				if(Input.GetButtonDown("Submit")) {
+				if(InputManager.instance.PressedConfirm()) {
 					Debug.Log("SAIR!");
+					Application.Quit();
 				}
 			break;
 		}
@@ -167,7 +169,7 @@ public class TitleScreenManager : MonoBehaviour {
 	void Update () {
 		ProcessCurrentState();
 
-		if(Input.GetButtonDown("Submit")) {
+		if(InputManager.instance.PressedConfirm()) {
 			switch(m_currentState) {
 				case ECurrentState.OnPressStart:
 					StartCoroutine(TransitionToMainMenuRoutine());
@@ -177,7 +179,7 @@ public class TitleScreenManager : MonoBehaviour {
 			}
 		}
 
-		if(Input.GetButtonDown("Cancel")) {
+		if(InputManager.instance.PressedCancel()) {
 			switch(m_currentState) {
 				case ECurrentState.OnMainMenu:
 					StartCoroutine(TransitionFromMainMenuRoutine());

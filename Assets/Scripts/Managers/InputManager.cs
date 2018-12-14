@@ -69,15 +69,15 @@ public class PS4Input : BaseInput {
 
 	public override bool PressedConfirm() {
 		return(
-			Input.GetKey(KeyCode.Joystick1Button1) ||
-			Input.GetKey(KeyCode.Joystick1Button9)
+			Input.GetKeyDown(KeyCode.Joystick1Button1) ||
+			Input.GetKeyDown(KeyCode.Joystick1Button9)
 		);
 	}
 
 	public override bool PressedCancel() {
 		return(
-			Input.GetKey(KeyCode.Joystick1Button3) ||
-			Input.GetKey(KeyCode.Joystick1Button9)
+			Input.GetKeyDown(KeyCode.Joystick1Button3) ||
+			Input.GetKeyDown(KeyCode.Joystick1Button9)
 		);
 	}
 }
@@ -112,15 +112,15 @@ public class SwitchProInput : BaseInput {
 
 	public override bool PressedConfirm() {
 		return(
-			Input.GetKey(KeyCode.Joystick1Button9) ||
-			Input.GetKey(KeyCode.Joystick1Button1)
+			Input.GetKeyDown(KeyCode.Joystick1Button9) ||
+			Input.GetKeyDown(KeyCode.Joystick1Button1)
 		);
 	}
 
 	public override bool PressedCancel() {
 		return(
-			Input.GetKey(KeyCode.Joystick1Button0) ||
-			Input.GetKey(KeyCode.Joystick1Button8)
+			Input.GetKeyDown(KeyCode.Joystick1Button0) ||
+			Input.GetKeyDown(KeyCode.Joystick1Button8)
 		);
 	}
 }
@@ -153,15 +153,15 @@ public class XBOXInput : BaseInput {
 
 	public override bool PressedConfirm() {
 		return(
-			Input.GetKey(KeyCode.Joystick1Button0) ||
-			Input.GetKey(KeyCode.Joystick1Button7)
+			Input.GetKeyDown(KeyCode.Joystick1Button0) ||
+			Input.GetKeyDown(KeyCode.Joystick1Button7)
 		);
 	}
 
 	public override bool PressedCancel() {
 		return(
-			Input.GetKey(KeyCode.Joystick1Button6) ||
-			Input.GetKey(KeyCode.Joystick1Button1)
+			Input.GetKeyDown(KeyCode.Joystick1Button6) ||
+			Input.GetKeyDown(KeyCode.Joystick1Button1)
 		);
 	}
 }
