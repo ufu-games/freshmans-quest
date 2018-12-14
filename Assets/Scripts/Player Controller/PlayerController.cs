@@ -280,7 +280,13 @@ public class PlayerController : MonoBehaviour {
 		
 		if(isInCannon && InputManager.instance.PressedJump()){
 			var angleCannon = Cannon.getAngle();
-			getsThrownTo(Cannon.getAngle(), Cannon.getThrowMultiplier());
+			float distanceBetweenCenterAndExplosion = 0;
+			getsThrownTo(angleCannon, Cannon.getThrowMultiplier());
+			GameObject part = (GameObject) Instantiate(Resources.Load("BeckerCannonParticle"));
+			float partangle = angleCannon+90;
+			part.transform.rotation = Quaternion.Euler(-partangle,90,0);
+			part.transform.position = new Vector3(Cannon.transform.position.x + distanceBetweenCenterAndExplosion*Mathf.Cos(Mathf.Deg2Rad*(angleCannon+90)), Cannon.transform.position.y + distanceBetweenCenterAndExplosion*Mathf.Sin(Mathf.Deg2Rad*(angleCannon+90)),0);
+			part.GetComponent<ParticleSystem>().Play();
 			isInCannon = false;
 			Cannon.setActive(false);
 		}

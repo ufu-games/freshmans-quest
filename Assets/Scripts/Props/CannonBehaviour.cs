@@ -20,7 +20,6 @@ public class CannonBehaviour : MonoBehaviour {
 			}
 			else{
 				float heading = Mathf.Atan2(-Input.GetAxisRaw("Horizontal"),Input.GetAxisRaw("Vertical"));
-				Debug.Log(heading);
 				transform.rotation=Quaternion.Euler(0f,0f,heading*Mathf.Rad2Deg);
 			}
 		}
