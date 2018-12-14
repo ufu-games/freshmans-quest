@@ -213,6 +213,7 @@ public class PlayerController : MonoBehaviour {
 		}
 		foreach(Transform transf in m_playerSprites) {
 			StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
+			break;
 		}
 
 		if(isInCannon)
@@ -251,6 +252,7 @@ public class PlayerController : MonoBehaviour {
 				}
 				foreach(Transform transf in m_playerSprites) {
 					StartCoroutine(ChangeScale(transf.localScale * m_groundingScaleMultiplier));
+					break;
 				}
 			}
 		}
@@ -405,6 +407,7 @@ public class PlayerController : MonoBehaviour {
 			}
 			foreach(Transform transf in m_playerSprites) {
 				StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
+				break;
 			}
 			foreach(Animator ani in m_animators) {
 				ani.Play( "Jump" );
@@ -441,7 +444,12 @@ public class PlayerController : MonoBehaviour {
 			(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)))
 		{
 			// wasn't on wall last frame
-			if(!m_isOnWall) StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
+			if(!m_isOnWall){
+				foreach(Transform transf in m_playerSprites) {
+					StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
+					break;
+				}
+			}
 			m_isOnWall = true;
 			getingOffWall  = false;
 		} else if(
@@ -505,11 +513,30 @@ public class PlayerController : MonoBehaviour {
 		// EFFECTIVELY JUMPING OFF WALL
 		// if is on wall AND
 		// is pressing the jump button
-		if(m_isOnWall 
+		if((m_isOnWall 
 			&& 
 			// Input.GetButtonDown("Jump")
+			InputManager.instance.PressedJump())
+
+			||
+
+			(!m_isOnWall
+			&&
 			InputManager.instance.PressedJump()
+			&&
+			((m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right))))
 			) {
+			if(!m_isOnWall) {
+				if(m_controller.isColliding(Vector2.right)){
+					foreach(Transform transf in m_playerSprites) {
+						transf.localScale = new Vector3(Mathf.Abs(transf.localScale.x)*-1, m_originalScale.y, transf.localScale.z);
+					}
+				} else{
+					foreach(Transform transf in m_playerSprites) {
+						transf.localScale = new Vector3(Mathf.Abs(transf.localScale.x), m_originalScale.y, transf.localScale.z);
+					}
+				}
+			}
 			m_isOnWall = false;
 			m_fastsliding = false;
 			m_startedslidingwall = false;
@@ -521,7 +548,10 @@ public class PlayerController : MonoBehaviour {
 				SoundManager.instance.PlaySfx(jumpingClip);
 			}
 
-			StartCoroutine(ChangeScale(m_goingUpScaleMultiplier));
+			foreach(Transform transf in m_playerSprites) {
+					StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
+					break;
+			}
 		}
 	}
 	
