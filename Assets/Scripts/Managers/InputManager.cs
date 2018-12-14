@@ -35,6 +35,8 @@ public abstract class BaseInput {
 	public abstract bool PressedJump();
 	public abstract bool ReleasedJump();
 	public abstract bool PressingWallJump();
+	public abstract bool PressedConfirm();
+	public abstract bool PressedCancel();
 }
 
 public class PS4Input : BaseInput {
@@ -64,6 +66,20 @@ public class PS4Input : BaseInput {
 			Input.GetKey(KeyCode.Joystick1Button7)
 		);
 	}
+
+	public override bool PressedConfirm() {
+		return(
+			Input.GetKey(KeyCode.Joystick1Button1) ||
+			Input.GetKey(KeyCode.Joystick1Button9)
+		);
+	}
+
+	public override bool PressedCancel() {
+		return(
+			Input.GetKey(KeyCode.Joystick1Button3) ||
+			Input.GetKey(KeyCode.Joystick1Button9)
+		);
+	}
 }
 
 public class SwitchProInput : BaseInput {
@@ -83,8 +99,6 @@ public class SwitchProInput : BaseInput {
 			Input.GetKeyUp(KeyCode.Joystick1Button2) ||
 			Input.GetKeyUp(KeyCode.Joystick1Button3)
 		);
-
-		
 	}
 
 	public override bool PressingWallJump() {
@@ -93,6 +107,20 @@ public class SwitchProInput : BaseInput {
 			Input.GetKey(KeyCode.Joystick1Button5) ||
 			Input.GetKey(KeyCode.Joystick1Button6) ||
 			Input.GetKey(KeyCode.Joystick1Button7)
+		);
+	}
+
+	public override bool PressedConfirm() {
+		return(
+			Input.GetKey(KeyCode.Joystick1Button9) ||
+			Input.GetKey(KeyCode.Joystick1Button1)
+		);
+	}
+
+	public override bool PressedCancel() {
+		return(
+			Input.GetKey(KeyCode.Joystick1Button0) ||
+			Input.GetKey(KeyCode.Joystick1Button8)
 		);
 	}
 }
@@ -122,6 +150,20 @@ public class XBOXInput : BaseInput {
 			Input.GetKey(KeyCode.Joystick1Button5)
 		);
 	}
+
+	public override bool PressedConfirm() {
+		return(
+			Input.GetKey(KeyCode.Joystick1Button0) ||
+			Input.GetKey(KeyCode.Joystick1Button7)
+		);
+	}
+
+	public override bool PressedCancel() {
+		return(
+			Input.GetKey(KeyCode.Joystick1Button6) ||
+			Input.GetKey(KeyCode.Joystick1Button1)
+		);
+	}
 }
 
 public class StandardInput : BaseInput {
@@ -135,6 +177,14 @@ public class StandardInput : BaseInput {
 
 	public override bool PressingWallJump() {
 		return Input.GetButton("StickToWall");
+	}
+
+	public override bool PressedConfirm() {
+		return Input.GetButtonDown("Submit");
+	}
+
+	public override bool PressedCancel() {
+		return Input.GetButtonDown("Cancel");
 	}
 }
 
@@ -242,6 +292,14 @@ public class InputManager : MonoBehaviour {
 
 	public bool PressedWallJump() {
 		return m_inputDevice.PressingWallJump();
+	}
+
+	public bool PressedConfirm() {
+		return m_inputDevice.PressedConfirm();
+	}
+
+	public bool PressedCancel() {
+		return m_inputDevice.PressedCancel();
 	}
 
 	public bool IsAnythingPressed() {

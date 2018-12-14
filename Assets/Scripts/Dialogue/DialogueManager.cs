@@ -52,7 +52,7 @@ public class DialogueManager : MonoBehaviour {
 	}
 
 	void Update() {
-		if(keyboardInput && Input.GetButtonDown("Submit")) {
+		if(keyboardInput && InputManager.instance.PressedConfirm()) {
 			DisplayNextSentence();
 		}
 	}
