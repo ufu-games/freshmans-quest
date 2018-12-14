@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4644525680552742}
   - component: {fileID: 61225478043651788}
   - component: {fileID: 114570535229909618}
+  - component: {fileID: 50037324454009190}
   m_Layer: 19
   m_Name: TumbleWeed Spawner
   m_TagString: Prop
@@ -41,6 +42,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &50037324454009190
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1371297408227248}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!61 &61225478043651788
 BoxCollider2D:
   m_ObjectHideFlags: 1
