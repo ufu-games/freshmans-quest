@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class EditorTrigger : MonoBehaviour {
 
-	public int dialogIdToLoad;
 	public bool dialogueOnStart = false;
+	public Dialogue[] dialogues;
 
 	public void TriggerDialog() {
-		// DialogueManager.instance.StartDialogue(dialogIdToLoad);
+		DialogueManager.instance.StartDialogue(dialogues);
 	}
 
 	void Start() {
