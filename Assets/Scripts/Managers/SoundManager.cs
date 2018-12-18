@@ -26,6 +26,10 @@ public class SoundManager : MonoBehaviour {
 		sfxSource.PlayOneShot(clip);
 	}
 
+	public void PlaySfxWithTimeOffset(AudioClip clip, float time) {
+		StartCoroutine(TimeOffsetSfx(clip,time));
+	}
+
 	public void PlayContinuousSfx(AudioClip clip, GameObject audioPlayer) {
 		StartCoroutine(ContinuousSfxCoroutine(clip,audioPlayer));
 	}
@@ -44,5 +48,18 @@ public class SoundManager : MonoBehaviour {
 			yield return null;
 		}
 		Destroy(Source);
+	}
+
+	private IEnumerator TimeOffsetSfx(AudioClip clip, float time) {
+		AudioSource source = gameObject.AddComponent<AudioSource>();
+		source.clip = clip;
+		source.time = time;
+		source.loop = false;
+		source.volume = sfxSource.volume;
+		source.Play();
+		while(source.isPlaying) {
+			yield return null;
+		}
+		Destroy(source);
 	}
 }
