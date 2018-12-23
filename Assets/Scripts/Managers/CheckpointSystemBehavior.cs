@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CheckpointSystemBehavior : MonoBehaviour {
 
+	public AudioClip HurtClip;
 	[ReadOnly]
 	public Vector2 LastCheckpoint = Vector2.zero;
 	[HideInInspector]
@@ -37,6 +38,7 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 	}
 
 	private IEnumerator ResetCoroutine(){
+		SoundManager.instance.PlaySfxWithTimeOffset(HurtClip,0.9f);
 		JustSpawned = true;
 		levelManager.FadeIn(.1f);
 		playerReference.GetComponent<PlayerController>().StopMovement();
