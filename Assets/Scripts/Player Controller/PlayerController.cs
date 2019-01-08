@@ -190,6 +190,9 @@ public class PlayerController : MonoBehaviour {
 			isInCannon = true;
 			this.transform.position = col.gameObject.transform.position;
 			m_velocity = Vector2.zero;
+			foreach(Animator ani in m_animators) {
+				ani.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+			}
 			this.Cannon = col.gameObject.GetComponent<CannonBehaviour>();
 			Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.OrthographicSize *= this.Cannon.zoomOutMultiplier;
 			this.Cannon.setActive(true);
@@ -287,6 +290,9 @@ public class PlayerController : MonoBehaviour {
 			part.transform.rotation = Quaternion.Euler(-partangle,90,0);
 			part.transform.position = new Vector3(Cannon.transform.position.x + distanceBetweenCenterAndExplosion*Mathf.Cos(Mathf.Deg2Rad*(angleCannon+90)), Cannon.transform.position.y + distanceBetweenCenterAndExplosion*Mathf.Sin(Mathf.Deg2Rad*(angleCannon+90)),0);
 			part.GetComponent<ParticleSystem>().Play();
+			foreach(Animator ani in m_animators) {
+				ani.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+			}
 			isInCannon = false;
 			Cannon.setActive(false);
 		}
