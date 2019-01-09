@@ -51,7 +51,9 @@ public class PlayerController : MonoBehaviour {
 	[Space(5)]
 	[Header("Wall Jump Handling")]
 	public float onWallGravity = -5f;
-	public Vector2 wallJumpVelocity = new Vector2(-5f, 5f);
+	//public Vector2 wallJumpVelocity = new Vector2(-5f, 5f);
+	public Vector2 wallJumpVelocity;
+	public float maxDistanceOffWall;
 	[ReadOnly]
 	public bool m_isOnWall;
 	private bool getingOffWall = false;
@@ -152,7 +154,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void onTriggerEnterEvent(Collider2D col) {
-		Debug.Log( "onTriggerEnterEvent: " + col.gameObject.name );
+		//Debug.Log( "onTriggerEnterEvent: " + col.gameObject.name );
 
 		// Interfaces
 		IDangerous dangerousInteraction = col.gameObject.GetComponent<IDangerous>();
@@ -186,7 +188,7 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("Cannon")){
-			Debug.Log("entrou no canhao");
+			//Debug.Log("entrou no canhao");
 			isInCannon = true;
 			this.transform.position = col.gameObject.transform.position;
 			m_velocity = Vector2.zero;
@@ -225,7 +227,7 @@ public class PlayerController : MonoBehaviour {
 
 
 	void onTriggerExitEvent( Collider2D col ) {
-		Debug.Log( "onTriggerExitEvent: " + col.gameObject.name );
+		//Debug.Log( "onTriggerExitEvent: " + col.gameObject.name );
 		INonHarmfulInteraction nonHarmfulInteraction = col.gameObject.GetComponent<INonHarmfulInteraction>();
 		IInteractableLeaveTrigger interactWhenLeft = col.gameObject.GetComponent<IInteractableLeaveTrigger>();
 
@@ -277,7 +279,7 @@ public class PlayerController : MonoBehaviour {
 		Move();
 		CamHandling();
 		AnimationLogic();
-		if(!isInCannon) Jump();
+		if(!isInCannon && !m_isOnWall) Jump();
 		// if(hasFloat) Float();
 		if(hasWallJump) WallJump();
 		
@@ -300,9 +302,9 @@ public class PlayerController : MonoBehaviour {
 		float t_groundDamping = m_isSlipping ? (groundDamping * slippingFrictionMultiplier) : groundDamping;
 		var smoothedMovementFactor = m_controller.isGrounded ? t_groundDamping : inAirDamping;
 
-		if(!m_isOnWall) {
+		//if(!m_isOnWall) {
 			m_velocity.x = Mathf.Lerp(normalizedHorizontalSpeed * runSpeed, m_velocity.x,Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime*60));
-		}
+		//}
 		
 		// limiting gravity
 		m_velocity.y = Mathf.Max(m_gravity, m_velocity.y + (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime))));
@@ -439,6 +441,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void WallJump() {
+		
+		//Debug.Log("right " + m_controller.isNear(Vector2.right,maxDistanceOffWall));
+
 		if(m_controller.isGrounded) {
 			m_isOnWall = false;
 			return;
@@ -448,50 +453,39 @@ public class PlayerController : MonoBehaviour {
 		// is not on wall AND
 		// is pressing the trigger AND
 		// is colliding on left or right
-		if(!m_isOnWall 
-			&& 
-			// Input.GetButton("StickToWall")
-			InputManager.instance.PressedWallJump()
+		if(!m_isOnWall
 			&&
-			(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)))
+			!m_controller.isGrounded
+			//&& 
+			// Input.GetButton("StickToWall")
+			//InputManager.instance.PressedWallJump()
+			&&
+			((m_controller.isColliding(Vector2.left) &&  m_velocity.x < 0)
+			|| 
+			(m_controller.isColliding(Vector2.right) &&  m_velocity.x > 0)))
 		{
 			// wasn't on wall last frame
-			if(!m_isOnWall){
-				foreach(Transform transf in m_playerSprites) {
-					StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
-					break;
-				}
-			}
+			
 			m_isOnWall = true;
-			getingOffWall  = false;
 		} else if(
 			// is on wall AND
 			// is not pressing AND
 			// is colliding
 			m_isOnWall
 			&&
-			!InputManager.instance.PressedWallJump()
-			&&
-			(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right))
+			!m_controller.isNear(Vector2.left,maxDistanceOffWall) && !m_controller.isNear(Vector2.right,maxDistanceOffWall)
+			//&&
+			//!InputManager.instance.PressedWallJump()
+			//&&
+			//(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right))
 			)
 		{
-			if(!getingOffWall){
-				StartCoroutine(letGoOfWall());
-				getingOffWall = true;
-			}
-		} else if(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)) {
-			// is colliding with something
-			// Debug.Log("reached the coliding else");
-			StopCoroutine(letGoOfWall());
-			getingOffWall = false;
-		} else{
-			// Debug.Log("reached the final else");
-			StopCoroutine(letGoOfWall());
-			getingOffWall = false;
 			m_isOnWall = false;
+
 		}
 		
 		// processing gravity
+		/*
 		if(m_isOnWall && m_velocity.y <= 0) {
 			if(InputManager.instance.PressedWallJump()) {
 				if(Input.GetAxisRaw("Vertical") == -1) {
@@ -520,11 +514,12 @@ public class PlayerController : MonoBehaviour {
 					m_gravity -= 1f*Time.deltaTime;
 				}
 			}
-		}
+		} */
 
 		// EFFECTIVELY JUMPING OFF WALL
 		// if is on wall AND
 		// is pressing the jump button
+
 		if((m_isOnWall 
 			&& 
 			// Input.GetButtonDown("Jump")
@@ -536,7 +531,7 @@ public class PlayerController : MonoBehaviour {
 			&&
 			InputManager.instance.PressedJump()
 			&&
-			((m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right))))
+			((m_controller.isNear(Vector2.left,maxDistanceOffWall) || m_controller.isNear(Vector2.right,maxDistanceOffWall))))
 			) {
 			if(!m_isOnWall) {
 				if(m_controller.isColliding(Vector2.right)){
@@ -549,12 +544,13 @@ public class PlayerController : MonoBehaviour {
 					}
 				}
 			}
+
 			m_isOnWall = false;
 			m_fastsliding = false;
 			m_startedslidingwall = false;
-			m_velocity.x = wallJumpVelocity.x * (m_controller.isColliding(Vector2.left) ? -1 : 1);
+			m_velocity.x = wallJumpVelocity.x * (m_controller.isNear(Vector2.left,maxDistanceOffWall) ? 1 : -1);
 			m_gravity = goingUpGravity;
-			m_velocity.y = Mathf.Sqrt(2f * wallJumpVelocity.y * -m_gravity);
+			m_velocity.y = Mathf.Sqrt(wallJumpVelocity.y * -m_gravity);
 			
 			if(SoundManager.instance && jumpingClip) {
 				SoundManager.instance.PlaySfx(jumpingClip);
@@ -569,13 +565,13 @@ public class PlayerController : MonoBehaviour {
 	
 	private IEnumerator letGoOfWall(){
 		yield return new WaitForSeconds(leftGoOffWalDelay);
-
+		/*
 		if(m_isOnWall && !InputManager.instance.PressedWallJump()) {
-			Debug.Log("Droping from wall");
+			//Debug.Log("Droping from wall");
 			m_velocity.x = (wallJumpVelocity.x / 2f) * (m_controller.isColliding(Vector2.left) ? -1:1);
 			m_isOnWall = false;
 			m_gravity = goingDownGravity;
-		}
+		}*/
 	}
 
 	private void CamHandling(){

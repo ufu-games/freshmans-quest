@@ -619,6 +619,48 @@ public class CharacterController2D : MonoBehaviour
 		}
 		return false;
 	}
+	public bool isNear(Vector2 direction, float distance){
+		Vector2 initialRayOrigin;
+		Vector2 ray;
+		if(direction == Vector2.right){
+			for( var i = 0; i < totalHorizontalRays; i++ ){
+				initialRayOrigin = _raycastOrigins.bottomRight;
+				ray = new Vector2( initialRayOrigin.x, initialRayOrigin.y + i * _verticalDistanceBetweenRays );
+				DrawRay( ray, direction * _skinWidth, Color.red );
+				if(Physics2D.Raycast( ray, direction, distance/32f, platformMask )){
+					return true;
+				}
+			}
+		} else if(direction == Vector2.down){
+			for( var i = 0; i < totalVerticalRays; i++ ){
+				initialRayOrigin = _raycastOrigins.bottomLeft;
+				ray = new Vector2( initialRayOrigin.x + i * _horizontalDistanceBetweenRays, initialRayOrigin.y );
+				DrawRay( ray, direction * _skinWidth, Color.red );
+				if(Physics2D.Raycast( ray, direction, distance/32f, platformMask )){
+					return true;
+				}
+			}
+		} else if(direction == Vector2.left){
+			for( var i = 0; i < totalHorizontalRays; i++ ){
+				initialRayOrigin = _raycastOrigins.bottomLeft;
+				ray = new Vector2( initialRayOrigin.x, initialRayOrigin.y + i * _verticalDistanceBetweenRays );
+				DrawRay( ray, direction * _skinWidth, Color.red );
+				if(Physics2D.Raycast( ray, direction,distance/32f, platformMask )){
+					return true;
+				}
+			}
+		} else if(direction == Vector2.up){
+			for( var i = 0; i < totalVerticalRays; i++ ){
+				initialRayOrigin = _raycastOrigins.topLeft;
+				ray = new Vector2( initialRayOrigin.x + i * _horizontalDistanceBetweenRays, initialRayOrigin.y );
+				DrawRay( ray, direction * _skinWidth, Color.red );
+				if(Physics2D.Raycast( ray, direction, distance/32f, platformMask )){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	#endregion
 
