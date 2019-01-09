@@ -10,7 +10,6 @@ public class TitleScreenManager : MonoBehaviour {
 	public AudioClip titleScreenMusic;
 	[Header("Title Screen Object")]
 	public GameObject pressStartObject;
-	// public TextMeshProUGUI pressStartText;
 	public GameObject optionsObject;
 	public Color selectedColor = Color.red;
 	public Color notSelectedColor = Color.white;
@@ -42,11 +41,8 @@ public class TitleScreenManager : MonoBehaviour {
 		if(SoundManager.instance) {
 			SoundManager.instance.ChangeMusic(titleScreenMusic);
 		}
-
-		// if(pressStartObject) pressStartObject.SetActive(false);
 		
 		if(optionsObject) {
-			// optionsObject.SetActive(false);
 			m_optionsGraphics = optionsObject.transform.GetComponentsInChildren<MaskableGraphic>();
 			foreach(MaskableGraphic m in m_optionsGraphics) {
 				m.canvasRenderer.SetAlpha(0);
@@ -91,6 +87,7 @@ public class TitleScreenManager : MonoBehaviour {
 			m.CrossFadeAlpha(1f, 1.0f, true);
 		}
 
+		StartCoroutine(JuiceTextSelection(playText, 50, selectedColor));
 		m_currentState = ECurrentState.OnMainMenu;
 	}
 
@@ -107,13 +104,33 @@ public class TitleScreenManager : MonoBehaviour {
 		================================================================
 	 */
 
+	private IEnumerator JuiceTextSelection(TextMeshProUGUI text, int xOffset, Color color) {
+		text.color = color;
+		RectTransform textTransform = text.gameObject.GetComponent<RectTransform>();
+		
+		Vector3 initialTextPosition = textTransform.position;
+		Vector3 futureTextPosition = initialTextPosition;
+		futureTextPosition.x += xOffset;
+
+		float timeElapsed = 0f;
+
+		while(timeElapsed < 0.1f) {
+			timeElapsed += Time.deltaTime;
+
+			float t = Interpolation.EaseOut(timeElapsed / 0.1f);
+			textTransform.position = Vector3.Lerp(initialTextPosition, futureTextPosition, t);
+			yield return null;
+		}
+		
+		textTransform.position = futureTextPosition;
+		yield return null;
+
+	}
+
 	private void ProcessMainMenuState() {
 		/* Get Input */
 		float verticalValue = 0f;
 		verticalValue = Mathf.Round(Input.GetAxisRaw("Vertical"));
-		
-		// Debug.Log("Vertical: " + verticalValue);
-		// Debug.Log("Last Frame: " + m_lastFrameVerticalInput);
 
 		if(verticalValue == m_lastFrameVerticalInput) {
 			verticalValue = 0;
@@ -124,12 +141,12 @@ public class TitleScreenManager : MonoBehaviour {
 		switch(m_currentOptionState) {
 			case EOptionState.Play:
 				if((verticalValue == 1 || verticalValue == -1)) {
-					m_currentOptionState = EOptionState.Exit;		
-				}
+					m_currentOptionState = EOptionState.Exit;
 
-				// Feedback visual para saber em qual opcao o player esta
-				playText.color = selectedColor;
-				exitText.color = notSelectedColor;
+					/* Feedback Visual para o Player */
+					StartCoroutine(JuiceTextSelection(playText, -50, notSelectedColor));		
+					StartCoroutine(JuiceTextSelection(exitText, 50, selectedColor));
+				}
 
 				if(InputManager.instance.PressedConfirm()) {
 					Debug.Log("JOGAR!");
@@ -139,11 +156,11 @@ public class TitleScreenManager : MonoBehaviour {
 			case EOptionState.Exit:
 				if((verticalValue == 1 || verticalValue == -1)) {
 					m_currentOptionState = EOptionState.Play;
-				}
 
-				// Feedback visual para saber em qual opcao o player esta
-				playText.color = notSelectedColor;
-				exitText.color = selectedColor;
+					/* Feedback Visual para o Player */
+					StartCoroutine(JuiceTextSelection(playText, 50, selectedColor));		
+					StartCoroutine(JuiceTextSelection(exitText, -50, notSelectedColor));
+				}
 
 				if(InputManager.instance.PressedConfirm()) {
 					Debug.Log("SAIR!");
@@ -161,24 +178,19 @@ public class TitleScreenManager : MonoBehaviour {
 		}
 	}
 	
-
-	/*
-		- Trocar Submit e Cancel.
-		- Incorporar eles ao InputManager.
-	*/
 	void Update () {
 		ProcessCurrentState();
 
+		/* If Press the confirm button... */
 		if(InputManager.instance.PressedConfirm()) {
 			switch(m_currentState) {
 				case ECurrentState.OnPressStart:
 					StartCoroutine(TransitionToMainMenuRoutine());
 				break;
-				case ECurrentState.OnMainMenu:
-				break;
 			}
 		}
 
+		/* When pressing the cancel button */
 		if(InputManager.instance.PressedCancel()) {
 			switch(m_currentState) {
 				case ECurrentState.OnMainMenu:
