@@ -20,6 +20,7 @@ public class TitleScreenManager : MonoBehaviour {
 
 	// odeio isso
 	private float m_lastFrameVerticalInput;
+	private bool m_canGetInput;
 	
 
 	public enum ECurrentState {
@@ -104,7 +105,10 @@ public class TitleScreenManager : MonoBehaviour {
 		================================================================
 	 */
 
+	/* Offset a text a certain amount of x */
 	private IEnumerator JuiceTextSelection(TextMeshProUGUI text, int xOffset, Color color) {
+		m_canGetInput = false;
+
 		text.color = color;
 		RectTransform textTransform = text.gameObject.GetComponent<RectTransform>();
 		
@@ -118,16 +122,24 @@ public class TitleScreenManager : MonoBehaviour {
 			timeElapsed += Time.deltaTime;
 
 			float t = Interpolation.EaseOut(timeElapsed / 0.1f);
-			textTransform.position = Vector3.Lerp(initialTextPosition, futureTextPosition, t);
+
+			/* Horizontal Offset with EaseOut and Linear Interpolation */
+			Vector3 tempPosition = Vector3.Lerp(initialTextPosition, futureTextPosition, t);
+			/* Vertical Offset with Sin */
+			tempPosition.y += (Mathf.Sin((timeElapsed / 0.1f) * Mathf.PI) * 10);
+			
+			textTransform.position = tempPosition;
 			yield return null;
 		}
 		
 		textTransform.position = futureTextPosition;
 		yield return null;
 
+		m_canGetInput = true;
 	}
 
 	private void ProcessMainMenuState() {
+		if(!m_canGetInput) return;
 		/* Get Input */
 		float verticalValue = 0f;
 		verticalValue = Mathf.Round(Input.GetAxisRaw("Vertical"));
