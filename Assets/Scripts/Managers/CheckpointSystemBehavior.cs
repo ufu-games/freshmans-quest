@@ -38,7 +38,7 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 	}
 
 	private IEnumerator ResetCoroutine(){
-		SoundManager.instance.PlaySfxWithTimeOffset(HurtClip,0.9f);
+		// SoundManager.instance.PlaySfxWithTimeOffset(HurtClip,0.9f);
 		JustSpawned = true;
 		levelManager.FadeIn(.1f);
 		playerReference.GetComponent<PlayerController>().StopMovement();

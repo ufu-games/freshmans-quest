@@ -2,13 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-
-public enum EDialogInputValue
-{
-    Next = -2,
-    Back = -1,
-}
+using TMPro;
 
 public class DialogueManager : MonoBehaviour {
 	
@@ -17,13 +11,10 @@ public class DialogueManager : MonoBehaviour {
 	[Header("UI Elements")]
 	public GameObject dialogueObject;
 	public Image dialogImage;
-	public Text nameText;
-	public Text dialogueText;
-	public GameObject continueButton;
+	public TextMeshProUGUI nameText;
+	public TextMeshProUGUI dialogueText;
 
 	[Header("Configuration")]
-	[Tooltip("If true, checks for 'SUBMIT' input instead of rendering a Continue button on screen")]
-	public bool keyboardInput = true;
 	public bool nextSceneWhenDialogueEnds = false;
 	[HideInInspector]
 	public bool isShowingDialogue;
@@ -45,14 +36,10 @@ public class DialogueManager : MonoBehaviour {
 		m_sentences = new Queue<string>();
 		m_dialogues = new Queue<Dialogue>();
 		dialogueObject.SetActive(false);
-		
-		if(keyboardInput && continueButton) {
-			continueButton.SetActive(false);
-		}
 	}
 
 	void Update() {
-		if(keyboardInput && InputManager.instance.PressedConfirm()) {
+		if(InputManager.instance.PressedConfirm()) {
 			DisplayNextSentence();
 		}
 	}
