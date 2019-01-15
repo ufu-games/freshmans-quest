@@ -20,6 +20,8 @@ public class TitleScreenManager : MonoBehaviour {
 	public Color selectedColor = Color.red;
 	public Color notSelectedColor = Color.white;
 	public TextMeshProUGUI playText;
+	public TextMeshProUGUI optionsText;
+	public TextMeshProUGUI creditsText;
 	public TextMeshProUGUI exitText;
 	private MaskableGraphic[] m_optionsGraphics;
 
@@ -90,11 +92,11 @@ public class TitleScreenManager : MonoBehaviour {
 			break;
 
 			case EOptionState.Options:
-				// TO DO
+				StartCoroutine(JuiceTextSelection(optionsText, -50, notSelectedColor));
 			break;
 
 			case EOptionState.Credits:
-				// TO DO
+				StartCoroutine(JuiceTextSelection(creditsText, -50, notSelectedColor));
 			break;
 
 			case EOptionState.Exit:
@@ -219,12 +221,16 @@ public class TitleScreenManager : MonoBehaviour {
 			case EOptionState.Play:
 
 				/* Verifica se tem que mudar de opção */
-				if((verticalValue == 1 || verticalValue == -1)) {
+				if(verticalValue == 1) {
 					m_currentOptionState = EOptionState.Exit;
-
 					/* Feedback Visual para o Player */
 					StartCoroutine(JuiceTextSelection(playText, -50, notSelectedColor));		
 					StartCoroutine(JuiceTextSelection(exitText, 50, selectedColor));
+				} else if(verticalValue == -1) {
+					m_currentOptionState = EOptionState.Options;
+					/* Feedback Visual para o Player */
+					StartCoroutine(JuiceTextSelection(playText, -50, notSelectedColor));		
+					StartCoroutine(JuiceTextSelection(optionsText, 50, selectedColor));
 				}
 
 				/* Se o Jogador apertar CONFIRMAR... */
@@ -235,22 +241,54 @@ public class TitleScreenManager : MonoBehaviour {
 			break;
 
 			case EOptionState.Options:
-				// TO DO
+				if(verticalValue == 1) {
+					m_currentOptionState = EOptionState.Play;
+					/* Feedback Visual para o Player */
+					StartCoroutine(JuiceTextSelection(playText, 50, selectedColor));
+					StartCoroutine(JuiceTextSelection(optionsText, -50, notSelectedColor));		
+				} else if(verticalValue == -1) {
+					m_currentOptionState = EOptionState.Credits;
+					/* Feedback Visual para o Player */
+					StartCoroutine(JuiceTextSelection(creditsText, 50, selectedColor));
+					StartCoroutine(JuiceTextSelection(optionsText, -50, notSelectedColor));		
+				}
+
+				if(InputManager.instance.PressedConfirm()) {
+					// TO DO
+					Debug.Log("MOSTRAR OPCOES");
+				}
 			break;
 
 			case EOptionState.Credits:
-				// TO DO
+				if(verticalValue == 1) {
+					m_currentOptionState = EOptionState.Options;
+					/* Feedback Visual para o Player */
+					StartCoroutine(JuiceTextSelection(optionsText, 50, selectedColor));
+					StartCoroutine(JuiceTextSelection(creditsText, -50, notSelectedColor));		
+				} else if(verticalValue == -1) {
+					m_currentOptionState = EOptionState.Exit;
+					/* Feedback Visual para o Player */
+					StartCoroutine(JuiceTextSelection(exitText, 50, selectedColor));
+					StartCoroutine(JuiceTextSelection(creditsText, -50, notSelectedColor));		
+				}
+
+				if(InputManager.instance.PressedConfirm()) {
+					// TO DO
+					Debug.Log("MOSTRAR CREDITOS!");
+				}
 			break;
 
 			case EOptionState.Exit:
-
-				/* Verifica se tem que mudar de opção */
-				if((verticalValue == 1 || verticalValue == -1)) {
-					m_currentOptionState = EOptionState.Play;
-
+				if(verticalValue == 1) {
+					m_currentOptionState = EOptionState.Credits;
 					/* Feedback Visual para o Player */
-					StartCoroutine(JuiceTextSelection(playText, 50, selectedColor));		
-					StartCoroutine(JuiceTextSelection(exitText, -50, notSelectedColor));
+					StartCoroutine(JuiceTextSelection(creditsText, 50, selectedColor));
+					StartCoroutine(JuiceTextSelection(exitText, -50, notSelectedColor));		
+				} else if(verticalValue == -1) {
+					m_currentOptionState = EOptionState.Play;
+					/* Feedback Visual para o Player */
+					StartCoroutine(JuiceTextSelection(playText, 50, selectedColor));
+					StartCoroutine(JuiceTextSelection(exitText, -50, notSelectedColor));		
 				}
 
 				/* Se o Jogador apertar CONFIRMAR... */
