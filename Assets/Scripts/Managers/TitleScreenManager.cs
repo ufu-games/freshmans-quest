@@ -25,12 +25,23 @@ public class TitleScreenManager : MonoBehaviour {
 	public TextMeshProUGUI exitText;
 	private MaskableGraphic[] m_optionsGraphics;
 
+	[Header("Options")]
+	public GameObject optionsGameObject;
+
+	[Header("Credits")]
+	public GameObject creditsObject;
+
 	private float m_lastFrameVerticalInput;
 	private bool m_canGetInput;
+	private bool m_canOffset;
+
+	private const int offsetOptionsCredits = -1055;
 	
 
 	public enum ECurrentState {
 		OnPressStart,
+		OnCredits,
+		OnOptions,
 		OnMainMenu
 	}
 
@@ -148,6 +159,8 @@ public class TitleScreenManager : MonoBehaviour {
 
 	/* Translada um GameObject por uma certa quantidade em um certo tempo */
 	 private IEnumerator OffsetGameObject(GameObject obj, int xOffset, int yOffset, float transitionTime) {
+		 m_canOffset = false;
+
 		 RectTransform gameobjectTransform = obj.gameObject.GetComponent<RectTransform>();
 		 
 		 Vector3 initialPosition = gameobjectTransform.position;
@@ -168,6 +181,8 @@ public class TitleScreenManager : MonoBehaviour {
 
 		 gameobjectTransform.position = futurePosition;
 		 yield return null;
+
+		 m_canOffset = true;
 	 }
 
 	/* JUICING da seleção de texto do Menu Principal */
@@ -254,8 +269,9 @@ public class TitleScreenManager : MonoBehaviour {
 				}
 
 				if(InputManager.instance.PressedConfirm()) {
-					// TO DO
-					Debug.Log("MOSTRAR OPCOES");
+					StartCoroutine(OffsetGameObject(optionsGameObject, offsetOptionsCredits, 0, 1.0f));
+					StartCoroutine(OffsetGameObject(optionsObject, -offsetOptionsCredits, 0, 1.0f));
+					m_currentState = ECurrentState.OnOptions;
 				}
 			break;
 
@@ -273,8 +289,9 @@ public class TitleScreenManager : MonoBehaviour {
 				}
 
 				if(InputManager.instance.PressedConfirm()) {
-					// TO DO
-					Debug.Log("MOSTRAR CREDITOS!");
+					StartCoroutine(OffsetGameObject(creditsObject, offsetOptionsCredits, 0, 1.0f));
+					StartCoroutine(OffsetGameObject(optionsObject, -offsetOptionsCredits, 0, 1.0f));
+					m_currentState = ECurrentState.OnCredits;
 				}
 			break;
 
@@ -324,7 +341,22 @@ public class TitleScreenManager : MonoBehaviour {
 		if(InputManager.instance.PressedCancel()) {
 			switch(m_currentState) {
 				case ECurrentState.OnMainMenu:
-					StartCoroutine(TransitionFromMainMenuRoutine());
+					if(m_canOffset) {
+						StartCoroutine(TransitionFromMainMenuRoutine());
+					}
+				break;
+				case ECurrentState.OnCredits:
+					if(m_canOffset) {
+						StartCoroutine(OffsetGameObject(creditsObject, -offsetOptionsCredits, 0, 1.0f));StartCoroutine(OffsetGameObject(optionsObject, offsetOptionsCredits, 0, 1.0f));
+						m_currentState = ECurrentState.OnMainMenu;
+					}
+				break;
+				case ECurrentState.OnOptions:
+					if(m_canOffset) {
+						StartCoroutine(OffsetGameObject(optionsGameObject, -offsetOptionsCredits, 0, 1.0f));
+						StartCoroutine(OffsetGameObject(optionsObject, offsetOptionsCredits, 0, 1.0f));
+						m_currentState = ECurrentState.OnMainMenu;
+					}
 				break;
 			}
 		}
