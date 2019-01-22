@@ -220,7 +220,7 @@ public class TitleScreenManager : MonoBehaviour {
 
 	/* Função Que Processa o Estado Atual selecionado na Cena */
 	private void ProcessMainMenuState() {
-		if(!m_canGetInput) return;
+		if(!m_canGetInput || !m_canOffset) return;
 		/* Get Input */
 		float verticalValue = 0f;
 		verticalValue = Mathf.Round(Input.GetAxisRaw("Vertical"));

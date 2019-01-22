@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        if(InputManager.instance.PressedConfirm()) {
+        if(InputManager.instance.PressedStart()) {
             TogglePause();
         }
     }

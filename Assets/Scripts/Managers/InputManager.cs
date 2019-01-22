@@ -37,6 +37,7 @@ public abstract class BaseInput {
 	public abstract bool PressingWallJump();
 	public abstract bool PressedConfirm();
 	public abstract bool PressedCancel();
+	public abstract bool PressedStart();
 }
 
 public class PS4Input : BaseInput {
@@ -69,9 +70,12 @@ public class PS4Input : BaseInput {
 
 	public override bool PressedConfirm() {
 		return(
-			Input.GetKeyDown(KeyCode.Joystick1Button1) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button9)
+			Input.GetKeyDown(KeyCode.Joystick1Button1)
 		);
+	}
+
+	public override bool PressedStart() {
+		return Input.GetKeyDown(KeyCode.Joystick1Button9);
 	}
 
 	public override bool PressedCancel() {
@@ -112,9 +116,12 @@ public class SwitchProInput : BaseInput {
 
 	public override bool PressedConfirm() {
 		return(
-			Input.GetKeyDown(KeyCode.Joystick1Button9) ||
 			Input.GetKeyDown(KeyCode.Joystick1Button1)
 		);
+	}
+
+	public override bool PressedStart() {
+		return Input.GetKeyDown(KeyCode.Joystick1Button9);
 	}
 
 	public override bool PressedCancel() {
@@ -153,9 +160,12 @@ public class XBOXInput : BaseInput {
 
 	public override bool PressedConfirm() {
 		return(
-			Input.GetKeyDown(KeyCode.Joystick1Button0) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button7)
+			Input.GetKeyDown(KeyCode.Joystick1Button0)
 		);
+	}
+
+	public override bool PressedStart() {
+		return Input.GetKeyDown(KeyCode.Joystick1Button7);
 	}
 
 	public override bool PressedCancel() {
@@ -181,6 +191,10 @@ public class StandardInput : BaseInput {
 
 	public override bool PressedConfirm() {
 		return Input.GetButtonDown("Submit");
+	}
+
+	public override bool PressedStart() {
+		return PressedConfirm();
 	}
 
 	public override bool PressedCancel() {
@@ -296,6 +310,10 @@ public class InputManager : MonoBehaviour {
 
 	public bool PressedConfirm() {
 		return m_inputDevice.PressedConfirm();
+	}
+
+	public bool PressedStart() {
+		return m_inputDevice.PressedStart();
 	}
 
 	public bool PressedCancel() {
