@@ -43,19 +43,13 @@ public abstract class BaseInput {
 public class PS4Input : BaseInput {
 	public override bool PressedJump() {
 		return(
-			Input.GetKeyDown(KeyCode.Joystick1Button0) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button1) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button2) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button3)
+			Input.GetKeyDown(KeyCode.Joystick1Button1)
 		);
 	}
 
 	public override bool ReleasedJump() {
 		return(
-			Input.GetKeyUp(KeyCode.Joystick1Button0) ||
-			Input.GetKeyUp(KeyCode.Joystick1Button1) ||
-			Input.GetKeyUp(KeyCode.Joystick1Button2) ||
-			Input.GetKeyUp(KeyCode.Joystick1Button3)
+			Input.GetKeyUp(KeyCode.Joystick1Button1)
 		);
 	}
 
@@ -89,19 +83,13 @@ public class PS4Input : BaseInput {
 public class SwitchProInput : BaseInput {
 	public override bool PressedJump() {
 		return(
-			Input.GetKeyDown(KeyCode.Joystick1Button0) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button1) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button2) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button3)
+			Input.GetKeyDown(KeyCode.Joystick1Button0)
 		);
 	}
 
 	public override bool ReleasedJump() {
 		return(
-			Input.GetKeyUp(KeyCode.Joystick1Button0) ||
-			Input.GetKeyUp(KeyCode.Joystick1Button1) ||
-			Input.GetKeyUp(KeyCode.Joystick1Button2) ||
-			Input.GetKeyUp(KeyCode.Joystick1Button3)
+			Input.GetKeyUp(KeyCode.Joystick1Button0)
 		);
 	}
 
@@ -135,19 +123,13 @@ public class SwitchProInput : BaseInput {
 public class XBOXInput : BaseInput {
 	public override bool PressedJump() {
 		return(
-			Input.GetKeyDown(KeyCode.Joystick1Button0) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button1) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button2) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button3)
+			Input.GetKeyDown(KeyCode.Joystick1Button0)
 		);
 	}
 
 	public override bool ReleasedJump() {
 		return(
-			Input.GetKeyUp(KeyCode.Joystick1Button0) ||
-			Input.GetKeyUp(KeyCode.Joystick1Button1) ||
-			Input.GetKeyUp(KeyCode.Joystick1Button2) ||
-			Input.GetKeyUp(KeyCode.Joystick1Button3)
+			Input.GetKeyUp(KeyCode.Joystick1Button0)
 		);
 	}
 
