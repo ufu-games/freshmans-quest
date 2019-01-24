@@ -942,12 +942,12 @@ PrefabInstance:
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.size
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[1].sentences.Array.size
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
@@ -957,7 +957,7 @@ PrefabInstance:
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[3].sentences.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
@@ -966,25 +966,29 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
+      propertyPath: dialogue.Array.data[4].sentences.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
       propertyPath: dialogue.Array.data[1].characterName
-      value: Shiba
+      value: Lily
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[1].characterSprite
       value: 
-      objectReference: {fileID: 21300022, guid: 5bd434965de284938b97bf28e8088ae6,
+      objectReference: {fileID: 21300022, guid: ef3cd2d06f42f45feb78a70f366fabc5,
         type: 3}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[1].sentences.Array.data[0]
-      value: "Ol\xE1 Lily! Meu nome \xE9 Noah Miller."
+      value: Er... ok, prazer em te conhecer professor Miller.
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[1].sentences.Array.data[1]
-      value: "Posso parecer um c\xE3o agora, mas na verdade sou professor e tamb\xE9m
-        coordenador do laborat\xF3rio de zoologia."
+      value: "Parece que voc\xEA j\xE1 sabe quem eu sou."
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
@@ -995,40 +999,39 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogue.Array.data[2].characterSprite
       value: 
-      objectReference: {fileID: 21300000, guid: 62b11092186e84b11b5a866f3705261f,
+      objectReference: {fileID: 21300022, guid: 5bd434965de284938b97bf28e8088ae6,
         type: 3}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[2].sentences.Array.data[0]
-      value: "Ol\xE1, tudo bem?"
+      value: Sim, sim, o professor Otis me contou tudo.
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[2].sentences.Array.data[1]
-      value: "Em algum bot\xE3o da plataforma que voc\xEA est\xE1 jogando, voc\xEA
-        vai conseguir pular o buraco a frente."
+      value: Quer dizer, me deixou um bilhete explicando, porque ele tinha uma viagem
+        urgente para a praia.
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[3].characterName
-      value: Shiba
+      value: Lily
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[3].characterSprite
       value: 
-      objectReference: {fileID: 21300000, guid: 62b11092186e84b11b5a866f3705261f,
+      objectReference: {fileID: 21300022, guid: ef3cd2d06f42f45feb78a70f366fabc5,
         type: 3}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[3].sentences.Array.data[0]
-      value: "Ol\xE1, tudo bem?"
+      value: '...'
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[3].sentences.Array.data[1]
-      value: "Em algum bot\xE3o da plataforma que voc\xEA est\xE1 jogando, voc\xEA
-        vai conseguir pular o buraco a frente."
+      value: "Parece que voc\xEA j\xE1 sabe quem eu sou."
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
@@ -1080,6 +1083,55 @@ PrefabInstance:
       propertyPath: dialogue.Array.data[1].sentences.Array.data[4]
       value: "Ter pessoas passando a m\xE3o na minha cabe\xE7a n\xE3o \xE9 t\xE3o
         ruim."
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].characterName
+      value: Shiba
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].characterSprite
+      value: 
+      objectReference: {fileID: 21300022, guid: 5bd434965de284938b97bf28e8088ae6,
+        type: 3}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].sentences.Array.data[0]
+      value: "Bom, sem mais delongas, voc\xEA j\xE1 deve estar informada sobre o incidente.\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].sentences.Array.data[1]
+      value: Parece que a invocacao causou um rompimento no tecido da realidade e
+        distorceu toda a faculdade.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].sentences.Array.data[2]
+      value: "Fiquei respons\xE1vel por te ajudar a achar o Jim, ent\xE3o vou estar
+        sempre por a\xED para te dar informacoes."
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].sentences.Array.data[3]
+      value: "A esse ponto voc\xEA deve saber todos os comandos b\xE1sicos!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].sentences.Array.data[4]
+      value: "Acho que \xE9 isso, boa sorte, te encontro em breve!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].sentences.Array.data[5]
+      value: "Ahh e por algum motivo desconhecido, h\xE1 pizzas espalhadas por toda
+        a faculdade."
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].sentences.Array.data[6]
+      value: Seria uma boa ideia pegar algumas para matar a fome.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d12b953c191b43f7924b93327703804, type: 3}
