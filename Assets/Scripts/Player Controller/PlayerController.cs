@@ -144,6 +144,9 @@ public class PlayerController : MonoBehaviour {
 		if(hit.collider.tag == "BreakableWall") {
 			hit.collider.gameObject.GetComponent<BreakableWallBehavior>().Collision(hit.point);
 		}
+
+		/* TO DO: Dropping Platform */
+		/* TO DO: Moving Platform */
 		
 		// bail out on plain old ground hits cause they arent very interesting
 		if( hit.normal.y == 1f )
