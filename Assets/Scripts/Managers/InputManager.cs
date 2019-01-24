@@ -176,7 +176,7 @@ public class StandardInput : BaseInput {
 	}
 
 	public override bool PressedStart() {
-		return PressedConfirm();
+		return PressedCancel();
 	}
 
 	public override bool PressedCancel() {
