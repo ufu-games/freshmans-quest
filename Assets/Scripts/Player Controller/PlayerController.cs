@@ -154,7 +154,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void onTriggerEnterEvent(Collider2D col) {
-		//Debug.Log( "onTriggerEnterEvent: " + col.gameObject.name );
+		Debug.LogWarning( "onTriggerEnterEvent: " + col.gameObject.name );
 
 		// Interfaces
 		IDangerous dangerousInteraction = col.gameObject.GetComponent<IDangerous>();
@@ -227,7 +227,8 @@ public class PlayerController : MonoBehaviour {
 
 
 	void onTriggerExitEvent( Collider2D col ) {
-		//Debug.Log( "onTriggerExitEvent: " + col.gameObject.name );
+		Debug.LogWarning( "onTriggerExitEvent: " + col.gameObject.name );
+
 		INonHarmfulInteraction nonHarmfulInteraction = col.gameObject.GetComponent<INonHarmfulInteraction>();
 		IInteractableLeaveTrigger interactWhenLeft = col.gameObject.GetComponent<IInteractableLeaveTrigger>();
 
