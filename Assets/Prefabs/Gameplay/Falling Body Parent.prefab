@@ -43,9 +43,10 @@ GameObject:
   - component: {fileID: 6113051943701774930}
   - component: {fileID: 6113051943701774929}
   - component: {fileID: 6113051943701774928}
+  - component: {fileID: 3398300529838165365}
   m_Layer: 19
   m_Name: Activation Trigger
-  m_TagString: Untagged
+  m_TagString: Prop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104,6 +105,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyToFall: {fileID: 6113051943916718345}
   fallGravity: 2
+  bodyFallingClip: {fileID: 8300000, guid: 20ff1803825094e91b57c28f5dd8c0ab, type: 3}
+--- !u!50 &3398300529838165365
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6113051943701774931}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &6113051943916718345
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,6 +139,7 @@ GameObject:
   - component: {fileID: 6113051943916718390}
   - component: {fileID: 6113051943916718391}
   - component: {fileID: 6113051943916718344}
+  - component: {fileID: 4709458779327746073}
   m_Layer: 9
   m_Name: Falling Body
   m_TagString: Untagged
@@ -230,5 +254,18 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &4709458779327746073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6113051943916718345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bfa2a269952a414c961c177c020f1be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDangerous: 1

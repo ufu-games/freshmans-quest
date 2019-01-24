@@ -141,8 +141,14 @@ public class PlayerController : MonoBehaviour {
 	{
 		m_isSlipping = hit.transform.gameObject.tag == "Slippery" && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right));
 
+		IDangerous dangerousInteraction = hit.collider.gameObject.GetComponent<IDangerous>();
+
 		if(hit.collider.tag == "BreakableWall") {
 			hit.collider.gameObject.GetComponent<BreakableWallBehavior>().Collision(hit.point);
+		}
+
+		if(dangerousInteraction != null) {
+			dangerousInteraction.InteractWithPlayer(this.GetComponent<Collider2D>());
 		}
 
 		/* TO DO: Dropping Platform */
@@ -153,7 +159,7 @@ public class PlayerController : MonoBehaviour {
 			return;
 
 		// logs any collider hits if uncommented. it gets noisy so it is commented out for the demo
-		//Debug.Log( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );		
+		// Debug.Log( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );		
 	}
 
 	void onTriggerEnterEvent(Collider2D col) {

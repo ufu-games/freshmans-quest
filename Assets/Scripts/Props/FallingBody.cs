@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigger {
+public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigger, IResettableProp {
 
     public GameObject bodyToFall;
     // public float timeToDrop = 1.5f;
     public float fallGravity = 2f;
+    public AudioClip bodyFallingClip;
 
     private Transform m_bodyTransform;
+    private Vector2 m_bodyOriginalPosition;
+    private KillOnCollision m_fallingBodyKillScript;
     private Rigidbody2D m_bodyRigidbody;
     
     private bool m_preparingToFall;
@@ -18,6 +21,8 @@ public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigg
     void Awake() {
         m_bodyTransform = bodyToFall.GetComponent<Transform>();
         m_bodyRigidbody = bodyToFall.GetComponent<Rigidbody2D>();
+        m_fallingBodyKillScript = bodyToFall.GetComponent<KillOnCollision>();
+        m_bodyOriginalPosition = m_bodyTransform.position;
 
         m_preparingToFall = false;
         m_isFalling = false;
@@ -28,6 +33,8 @@ public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigg
         if(bodyToFall == null) {
             Debug.LogWarning("Script FallingBody não possui um corpo atribuido!");
         }
+
+        m_fallingBodyKillScript.isDangerous = false;
     }
 
     private IEnumerator ShakeBodyRoutine() {
@@ -44,21 +51,23 @@ public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigg
 
     private IEnumerator FallBodyRoutine() {
         m_bodyRigidbody.gravityScale = fallGravity;
+        m_fallingBodyKillScript.isDangerous = true;
+        m_bodyRigidbody.velocity = new Vector2(0f, Mathf.Epsilon);
+
         /* Fancy: Adicionar som do objeto se "desprendendo" aqui */
-        bodyToFall.layer = LayerMask.NameToLayer("Hazard");
+        // if(bodyFallingClip) SoundManager.instance.PlaySfx(bodyFallingClip);
 
         while(m_isFalling) {
             yield return null;
-            Debug.Log(m_bodyRigidbody.velocity);
 
-            if(m_bodyRigidbody.velocity.y < Mathf.Epsilon) {
+            if(Mathf.Abs(m_bodyRigidbody.velocity.y) < Mathf.Epsilon) {
                 m_isFalling = false;
                 m_hasFallen = true;
+                m_fallingBodyKillScript.isDangerous = false;
+                
                 /* Fancy: adicionr som do objeto colidindo aqui */
             }
         }
-
-        bodyToFall.layer = LayerMask.NameToLayer("Platform");
     }
 
     void IInteractable.Interact() {
@@ -76,5 +85,16 @@ public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigg
 
         StopAllCoroutines();
         StartCoroutine(FallBodyRoutine());
+    }
+
+    void IResettableProp.Reset() {
+        Debug.LogError("Falling Body Reset");
+        m_bodyTransform.position = m_bodyOriginalPosition;
+        m_bodyRigidbody.gravityScale = 0f;
+        m_bodyRigidbody.velocity = Vector2.zero;
+
+        m_preparingToFall = false;
+        m_isFalling = false;
+        m_hasFallen = false;
     }
 }
