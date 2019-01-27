@@ -63,6 +63,7 @@ public class PlayerController : MonoBehaviour {
 	[Space(5)]
 	[Header("Other Parameters")]
 	public float jumpingPlatformMultiplier = 2.5f;
+	public GameObject dialogueHintObject;
 	
 	[Space(5)]
 	[Header("Particle Effects")]
@@ -113,10 +114,9 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		m_controller = GetComponent<Prime31.CharacterController2D>();
-
-		// listen to some events for illustration purposes
 		m_controller.onControllerCollidedEvent += onControllerCollider;
 		m_controller.onTriggerEnterEvent += onTriggerEnterEvent;
+		m_controller.onTriggerStayEvent += OnTriggerStayEvent;
 		m_controller.onTriggerExitEvent += onTriggerExitEvent;
 		
 		m_originalScale = m_playerSprites[0].localScale;
@@ -130,6 +130,7 @@ public class PlayerController : MonoBehaviour {
 			Debug.LogWarning("Não há Cinemachine presente na cena! A Cãmera não seguirá o personagem.");
 		}  
 
+		dialogueHintObject.SetActive(false);
 		UpdatePizzaCounter();
     }
 
@@ -161,13 +162,27 @@ public class PlayerController : MonoBehaviour {
 		// Debug.LogWarning( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );	
 	}
 
+	void OnTriggerStayEvent(Collider2D col) {
+		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
+
+		if(showDialogue != null && !m_isShowingDialogue) {
+			dialogueHintObject.SetActive(true);
+
+			if(InputManager.instance.PressedConfirm()) {
+				showDialogue.ShowDialogue();
+				m_isShowingDialogue = true;
+			}
+		} else {
+			dialogueHintObject.SetActive(false);
+		}
+	}
+
 	void onTriggerEnterEvent(Collider2D col) {
-		Debug.LogWarning( "onTriggerEnterEvent: " + col.gameObject.name );
+		// Debug.LogWarning( "onTriggerEnterEvent: " + col.gameObject.name );
 
 		// Interfaces
 		IDangerous dangerousInteraction = col.gameObject.GetComponent<IDangerous>();
 		IInteractable interaction = col.gameObject.GetComponent<IInteractable>();
-		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
 		INonHarmfulInteraction nonHarmfulInteraction = col.gameObject.GetComponent<INonHarmfulInteraction>();
 
 		if(dangerousInteraction != null) {
@@ -177,11 +192,6 @@ public class PlayerController : MonoBehaviour {
 
 		if(interaction != null) {
 			interaction.Interact();
-		}
-
-		if(showDialogue != null) {
-			showDialogue.ShowDialogue();
-			m_isShowingDialogue = true;
 		}
 
 		if(nonHarmfulInteraction != null) {

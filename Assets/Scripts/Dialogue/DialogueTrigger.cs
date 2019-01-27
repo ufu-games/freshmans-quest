@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogueTrigger : MonoBehaviour, IInteractable, IInteractableLeaveTrigger {
+public class DialogueTrigger : MonoBehaviour, IShowDialogue, IInteractableLeaveTrigger {
 
 	public Dialogue[] dialogue;
 
@@ -10,7 +10,7 @@ public class DialogueTrigger : MonoBehaviour, IInteractable, IInteractableLeaveT
 		DialogueManager.instance.StartDialogue(dialogue);
 	}
 
-	void IInteractable.Interact() {
+	void IShowDialogue.ShowDialogue() {
 		TriggerDialogue();
 		FindObjectOfType<PlayerController>().StartDialogue();
 	}
