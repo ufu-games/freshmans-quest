@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour {
 	[Space(5)]
 	[Header("General Configuration")]
 	public bool hasWallJump = false;
-	public bool hasFloat = false;
 
 	[Space(5)]
 	[Header("Collectables")]
@@ -159,7 +158,7 @@ public class PlayerController : MonoBehaviour {
 			return;
 
 		// logs any collider hits if uncommented. it gets noisy so it is commented out for the demo
-		// Debug.Log( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );		
+		// Debug.LogWarning( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );	
 	}
 
 	void onTriggerEnterEvent(Collider2D col) {
@@ -290,7 +289,6 @@ public class PlayerController : MonoBehaviour {
 		CamHandling();
 		AnimationLogic();
 		if(!isInCannon && !m_isOnWall) Jump();
-		// if(hasFloat) Float();
 		if(hasWallJump) WallJump();
 		
 		if(isInCannon && InputManager.instance.PressedJump()){
@@ -436,17 +434,6 @@ public class PlayerController : MonoBehaviour {
 			foreach(Animator ani in m_animators) {
 				ani.Play( "Jump" );
 			}
-		}
-	}
-
-	private void Float() {
-		if(m_velocity.y >= 0) return;	
-		if(InputManager.instance.PressedJump()) {
-			m_floating = true;
-			m_gravity = floatingGravity;
-		} else if(!m_isOnWall) {
-			m_floating = false;
-			m_gravity = goingDownGravity;
 		}
 	}
 

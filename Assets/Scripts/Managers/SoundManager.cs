@@ -26,6 +26,10 @@ public class SoundManager : MonoBehaviour {
 		sfxSource.PlayOneShot(clip);
 	}
 
+	public void StopSfx() {
+		sfxSource.Stop();
+	}
+
 	public void PlaySfxWithTimeOffset(AudioClip clip, float time) {
 		StartCoroutine(TimeOffsetSfx(clip,time));
 	}
