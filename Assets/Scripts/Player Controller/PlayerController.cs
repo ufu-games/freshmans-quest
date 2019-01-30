@@ -493,38 +493,6 @@ public class PlayerController : MonoBehaviour {
 			m_isOnWall = false;
 
 		}
-		
-		// processing gravity
-		/*
-		if(m_isOnWall && m_velocity.y <= 0) {
-			if(InputManager.instance.PressedWallJump()) {
-				if(Input.GetAxisRaw("Vertical") == -1) {
-					m_gravity = onWallGravity * 5f;
-				} else {
-					if(m_startedslidingwall && m_fastsliding) {
-						m_gravity = -.15f;
-						m_fastsliding = false;
-					}
-					if(m_gravity != -.15f && !m_startedslidingwall) {
-						m_gravity = -.15f;
-						m_startedslidingwall = true;
-					} else {
-						m_gravity -= 0.4f*Time.deltaTime;
-					}
-				}
-			} else {
-				m_fastsliding = true;
-				if(m_startedslidingwall && m_gravity > onWallGravity) {
-					m_gravity = onWallGravity;
-				}
-				if(m_gravity != onWallGravity && !m_startedslidingwall) {
-					m_gravity = onWallGravity;
-					m_startedslidingwall = true;
-				} else {
-					m_gravity -= 1f*Time.deltaTime;
-				}
-			}
-		} */
 
 		// EFFECTIVELY JUMPING OFF WALL
 		// if is on wall AND
@@ -573,16 +541,6 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 	
-	private IEnumerator letGoOfWall(){
-		yield return new WaitForSeconds(leftGoOffWalDelay);
-		/*
-		if(m_isOnWall && !InputManager.instance.PressedWallJump()) {
-			//Debug.Log("Droping from wall");
-			m_velocity.x = (wallJumpVelocity.x / 2f) * (m_controller.isColliding(Vector2.left) ? -1:1);
-			m_isOnWall = false;
-			m_gravity = goingDownGravity;
-		}*/
-	}
 
 	private void CamHandling(){
 		if(!m_cam) return;
