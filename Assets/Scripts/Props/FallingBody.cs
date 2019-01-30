@@ -61,11 +61,10 @@ public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigg
             yield return null;
 
             if(Mathf.Abs(m_bodyRigidbody.velocity.y) < Mathf.Epsilon) {
+                yield return null;
                 m_isFalling = false;
                 m_hasFallen = true;
                 m_fallingBodyKillScript.isDangerous = false;
-                
-                /* Fancy: adicionr som do objeto colidindo aqui */
             }
         }
     }
@@ -74,7 +73,7 @@ public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigg
         if(m_hasFallen || m_isFalling || m_preparingToFall) return;
 
         m_preparingToFall = true;
-        StartCoroutine(ShakeBodyRoutine());
+        // StartCoroutine(ShakeBodyRoutine());
     }
 
     void IInteractableLeaveTrigger.Interact() {
@@ -83,18 +82,20 @@ public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigg
         m_preparingToFall = false;
         m_isFalling = true;
 
-        StopAllCoroutines();
         StartCoroutine(FallBodyRoutine());
     }
 
     void IResettableProp.Reset() {
-        Debug.LogError("Falling Body Reset");
-        m_bodyTransform.position = m_bodyOriginalPosition;
+        StopAllCoroutines();
+        
         m_bodyRigidbody.gravityScale = 0f;
         m_bodyRigidbody.velocity = Vector2.zero;
+        m_bodyTransform.position = m_bodyOriginalPosition;
 
+        // Debug.LogError("Falling Body Reset");
         m_preparingToFall = false;
         m_isFalling = false;
         m_hasFallen = false;
+        m_fallingBodyKillScript.isDangerous = false;
     }
 }

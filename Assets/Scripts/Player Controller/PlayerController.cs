@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour {
 	[Space(5)]
 	[Header("General Configuration")]
 	public bool hasWallJump = false;
-	public bool hasFloat = false;
 
 	[Space(5)]
 	[Header("Collectables")]
@@ -64,6 +63,7 @@ public class PlayerController : MonoBehaviour {
 	[Space(5)]
 	[Header("Other Parameters")]
 	public float jumpingPlatformMultiplier = 2.5f;
+	public GameObject dialogueHintObject;
 	
 	[Space(5)]
 	[Header("Particle Effects")]
@@ -114,10 +114,9 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		m_controller = GetComponent<Prime31.CharacterController2D>();
-
-		// listen to some events for illustration purposes
 		m_controller.onControllerCollidedEvent += onControllerCollider;
 		m_controller.onTriggerEnterEvent += onTriggerEnterEvent;
+		m_controller.onTriggerStayEvent += OnTriggerStayEvent;
 		m_controller.onTriggerExitEvent += onTriggerExitEvent;
 		
 		m_originalScale = m_playerSprites[0].localScale;
@@ -131,6 +130,7 @@ public class PlayerController : MonoBehaviour {
 			Debug.LogWarning("Não há Cinemachine presente na cena! A Cãmera não seguirá o personagem.");
 		}  
 
+		dialogueHintObject.SetActive(false);
 		UpdatePizzaCounter();
     }
 
@@ -159,16 +159,30 @@ public class PlayerController : MonoBehaviour {
 			return;
 
 		// logs any collider hits if uncommented. it gets noisy so it is commented out for the demo
-		// Debug.Log( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );		
+		// Debug.LogWarning( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );	
+	}
+
+	void OnTriggerStayEvent(Collider2D col) {
+		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
+
+		if(showDialogue != null && !m_isShowingDialogue) {
+			dialogueHintObject.SetActive(true);
+
+			if(InputManager.instance.PressedConfirm()) {
+				showDialogue.ShowDialogue();
+				m_isShowingDialogue = true;
+			}
+		} else {
+			dialogueHintObject.SetActive(false);
+		}
 	}
 
 	void onTriggerEnterEvent(Collider2D col) {
-		Debug.LogWarning( "onTriggerEnterEvent: " + col.gameObject.name );
+		// Debug.LogWarning( "onTriggerEnterEvent: " + col.gameObject.name );
 
 		// Interfaces
 		IDangerous dangerousInteraction = col.gameObject.GetComponent<IDangerous>();
 		IInteractable interaction = col.gameObject.GetComponent<IInteractable>();
-		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
 		INonHarmfulInteraction nonHarmfulInteraction = col.gameObject.GetComponent<INonHarmfulInteraction>();
 
 		if(dangerousInteraction != null) {
@@ -178,11 +192,6 @@ public class PlayerController : MonoBehaviour {
 
 		if(interaction != null) {
 			interaction.Interact();
-		}
-
-		if(showDialogue != null) {
-			showDialogue.ShowDialogue();
-			m_isShowingDialogue = true;
 		}
 
 		if(nonHarmfulInteraction != null) {
@@ -290,7 +299,6 @@ public class PlayerController : MonoBehaviour {
 		CamHandling();
 		AnimationLogic();
 		if(!isInCannon && !m_isOnWall) Jump();
-		// if(hasFloat) Float();
 		if(hasWallJump) WallJump();
 		
 		if(isInCannon && InputManager.instance.PressedJump()){
@@ -436,17 +444,6 @@ public class PlayerController : MonoBehaviour {
 			foreach(Animator ani in m_animators) {
 				ani.Play( "Jump" );
 			}
-		}
-	}
-
-	private void Float() {
-		if(m_velocity.y >= 0) return;	
-		if(InputManager.instance.PressedJump()) {
-			m_floating = true;
-			m_gravity = floatingGravity;
-		} else if(!m_isOnWall) {
-			m_floating = false;
-			m_gravity = goingDownGravity;
 		}
 	}
 

@@ -5,8 +5,17 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour {
 
 	public static SoundManager instance;
+	[Header("Music")]
 	public AudioSource musicSource;
+	public bool musicEnabled = true;
+	[Range(0,1)]
+	public float musicVolume = 1f;
+	
+	[Header("Sound Effects")]
 	public AudioSource sfxSource;
+	public bool sfxEnabled = true;
+	[Range(0,1)]
+	public float sfxVolume = 1f;
 
 	void Awake() {
 		if(instance == null) {
@@ -24,6 +33,10 @@ public class SoundManager : MonoBehaviour {
 
 	public void PlaySfx(AudioClip clip) {
 		sfxSource.PlayOneShot(clip);
+	}
+
+	public void StopSfx() {
+		sfxSource.Stop();
 	}
 
 	public void PlaySfxWithTimeOffset(AudioClip clip, float time) {
