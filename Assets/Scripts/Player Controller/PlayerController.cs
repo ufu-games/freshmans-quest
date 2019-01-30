@@ -245,7 +245,7 @@ public class PlayerController : MonoBehaviour {
 
 
 	void onTriggerExitEvent( Collider2D col ) {
-		Debug.LogWarning( "onTriggerExitEvent: " + col.gameObject.name );
+		if(!this.enabled) return;
 
 		INonHarmfulInteraction nonHarmfulInteraction = col.gameObject.GetComponent<INonHarmfulInteraction>();
 		IInteractableLeaveTrigger interactWhenLeft = col.gameObject.GetComponent<IInteractableLeaveTrigger>();
