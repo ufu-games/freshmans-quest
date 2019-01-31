@@ -87,12 +87,9 @@ public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigg
 
     void IResettableProp.Reset() {
         StopAllCoroutines();
-        
         m_bodyRigidbody.gravityScale = 0f;
         m_bodyRigidbody.velocity = Vector2.zero;
         m_bodyTransform.position = m_bodyOriginalPosition;
-
-        // Debug.LogError("Falling Body Reset");
         m_preparingToFall = false;
         m_isFalling = false;
         m_hasFallen = false;
