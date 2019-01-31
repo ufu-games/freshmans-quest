@@ -150,6 +150,24 @@ public class PlayerController : MonoBehaviour {
 		if(dangerousInteraction != null) {
 			dangerousInteraction.InteractWithPlayer(this.GetComponent<Collider2D>());
 		}
+		if(hit.collider.tag == "MovingPlataform"){
+			Debug.Log(hit.normal.x);
+			var plataformDirection = hit.collider.gameObject.GetComponent<MovingPlataform>().getAngle();
+			var plataformSpeed = hit.collider.gameObject.GetComponent<MovingPlataform>().speed;
+			if(hit.normal.y > 0){
+				var newPosition = transform.position; 
+
+       			newPosition.x += Mathf.Cos(plataformDirection) * plataformSpeed;
+        		newPosition.y += Mathf.Sin(plataformDirection) * plataformSpeed;
+        		transform.position = newPosition;
+			}
+			if(hit.normal.x < 0 && transform.position.x < hit.collider.gameObject.transform.position.x){
+				var newPosition = transform.position; 
+
+       			newPosition.x += Mathf.Cos(plataformDirection) * plataformSpeed;
+        		transform.position = newPosition;
+			}
+		}
 
 		/* TO DO: Dropping Platform */
 		/* TO DO: Moving Platform */
@@ -157,7 +175,6 @@ public class PlayerController : MonoBehaviour {
 		// bail out on plain old ground hits cause they arent very interesting
 		if( hit.normal.y == 1f )
 			return;
-
 		// logs any collider hits if uncommented. it gets noisy so it is commented out for the demo
 		// Debug.LogWarning( "flags: " + m_controller.collisionState + ", hit.normal: " + hit.normal );	
 	}
