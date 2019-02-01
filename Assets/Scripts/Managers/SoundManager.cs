@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class SoundManager : MonoBehaviour {
 
@@ -16,12 +17,21 @@ public class SoundManager : MonoBehaviour {
 	public bool sfxEnabled = true;
 	[Range(0,1)]
 	public float sfxVolume = 1f;
+	StudioEventEmitter fmodEventEmitter;
 
 	void Awake() {
 		if(instance == null) {
 			instance = this;
+
+			fmodEventEmitter = GetComponent<StudioEventEmitter>();
 		} else {
 			Destroy(gameObject);
+		}
+	}
+
+	public void SetParameterFMOD(string parameter, float value) {
+		if(fmodEventEmitter) {
+			fmodEventEmitter.SetParameter(parameter, value);
 		}
 	}
 

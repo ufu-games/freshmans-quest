@@ -35,7 +35,7 @@ public class TitleScreenManager : MonoBehaviour {
 	private bool m_canGetInput;
 	private bool m_canOffset;
 
-	private const int offsetOptionsCredits = -1055;
+	private const int offsetOptionsCredits = -1255;
 	
 
 	public enum ECurrentState {
@@ -95,6 +95,7 @@ public class TitleScreenManager : MonoBehaviour {
 	/* Transição */
 	/* MainMenu => Press Start */
 	private IEnumerator TransitionFromMainMenuRoutine() {
+		SoundManager.instance.SetParameterFMOD("MainThemeTransition", -1.0f);
 
 		/* Verificando que os offsets nao vao ficar errados */
 		switch(m_currentOptionState) {
@@ -129,6 +130,8 @@ public class TitleScreenManager : MonoBehaviour {
 	/* Transição */
 	/* Press Start => Main Menu */
 	private IEnumerator TransitionToMainMenuRoutine() {
+		SoundManager.instance.SetParameterFMOD("MainThemeTransition", 1.0f);
+
 		/* Tirando da tela o Logo do Jogo e o botãozinho mostrando qual botão apertar */
 		StartCoroutine(OffsetGameObject(confirmButton, 0, -m_confirmButtonOffsetY, 1.0f));
 		yield return StartCoroutine(FadePressStartRoutine(1, 0, 1.0f));
