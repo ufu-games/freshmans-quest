@@ -35,7 +35,7 @@ public class TitleScreenManager : MonoBehaviour {
 	private bool m_canGetInput;
 	private bool m_canOffset;
 
-	private const int offsetOptionsCredits = -1055;
+	private const int offsetOptionsCredits = -1255;
 	
 
 	public enum ECurrentState {
