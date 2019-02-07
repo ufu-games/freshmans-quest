@@ -2448,10 +2448,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parallaxAmount: 0.8
-  backgrounds:
-  - {fileID: 964537057}
-  - {fileID: 662848986}
-  - {fileID: 1808853020}
 --- !u!4 &428930357
 Transform:
   m_ObjectHideFlags: 0
@@ -6826,7 +6822,7 @@ GameObject:
   - component: {fileID: 964537057}
   m_Layer: 0
   m_Name: "Pr\xE9dios fundo"
-  m_TagString: Untagged
+  m_TagString: Parallax
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28119,7 +28115,7 @@ GameObject:
   - component: {fileID: 1808853020}
   m_Layer: 0
   m_Name: "Constru\xE7\xF5es"
-  m_TagString: Untagged
+  m_TagString: Parallax
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
