@@ -130,7 +130,12 @@ public class PlayerController : MonoBehaviour {
 			Debug.LogWarning("Não há Cinemachine presente na cena! A Cãmera não seguirá o personagem.");
 		}  
 
-		dialogueHintObject.SetActive(false);
+		if(dialogueHintObject){
+			dialogueHintObject.SetActive(false);
+		} else {
+			Debug.LogWarning("Player nao possui DialogueHint!");
+		}
+
 		UpdatePizzaCounter();
     }
 
@@ -183,14 +188,14 @@ public class PlayerController : MonoBehaviour {
 		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
 
 		if(showDialogue != null && !m_isShowingDialogue) {
-			dialogueHintObject.SetActive(true);
+			if(dialogueHintObject) dialogueHintObject.SetActive(true);
 
 			if(InputManager.instance.PressedConfirm()) {
 				showDialogue.ShowDialogue();
 				m_isShowingDialogue = true;
 			}
 		} else {
-			dialogueHintObject.SetActive(false);
+			if(dialogueHintObject) dialogueHintObject.SetActive(false);
 		}
 	}
 
@@ -287,7 +292,7 @@ public class PlayerController : MonoBehaviour {
 
 			// became grounded this frame
 			if(!m_controller.collisionState.wasGroundedLastFrame) {
-				Instantiate(landingParticles, transform.position + (Vector3.down / 4f), Quaternion.identity).Play();
+				Instantiate(landingParticles, transform.position + (Vector3.down / 2f), Quaternion.identity).Play();
 				if(SoundManager.instance && stepClips.Length > 0) {
 					SoundManager.instance.PlaySfx(stepClips[Random.Range(0, stepClips.Length)]);
 				}

@@ -53,6 +53,7 @@ public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigg
         m_bodyRigidbody.gravityScale = fallGravity;
         m_fallingBodyKillScript.isDangerous = true;
         m_bodyRigidbody.velocity = new Vector2(0f, Mathf.Epsilon);
+        CameraScript.instance.AddTraumaToCamera(0.1f);
 
         /* Fancy: Adicionar som do objeto se "desprendendo" aqui */
         // if(bodyFallingClip) SoundManager.instance.PlaySfx(bodyFallingClip);
@@ -65,6 +66,7 @@ public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigg
                 m_isFalling = false;
                 m_hasFallen = true;
                 m_fallingBodyKillScript.isDangerous = false;
+                CameraScript.instance.AddTraumaToCamera(0.33f);
             }
         }
     }

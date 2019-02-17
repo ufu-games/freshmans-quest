@@ -481,7 +481,9 @@ public class CharacterController2D : MonoBehaviour
 
 		// if we are moving up, we should ignore the layers in oneWayPlatformMask
 		var mask = platformMask;
-		if( ( isGoingUp && !collisionState.wasGroundedLastFrame ) || ignoreOneWayPlatformsThisFrame )
+		// if( ( isGoingUp && !collisionState.wasGroundedLastFrame ) || ignoreOneWayPlatformsThisFrame )
+		// 	mask &= ~oneWayPlatformMask;
+		if( ( isGoingUp) || ignoreOneWayPlatformsThisFrame )
 			mask &= ~oneWayPlatformMask;
 
 		for( var i = 0; i < totalVerticalRays; i++ )
