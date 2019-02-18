@@ -6,7 +6,7 @@ public class Parallaxing : MonoBehaviour {
     
     [Header("Parallax Configurations")]
     /* How smooth the parallax is going to be */
-    [Range(0, 1)]
+    [Range(-1, 1)]
     public float parallaxAmount = 1f; 
 
     /* Array of elements that are going to be Parallaxed */
@@ -38,7 +38,7 @@ public class Parallaxing : MonoBehaviour {
         }
     }
 
-    void Update() {
+    void LateUpdate() {
         for(int i = 0; i < m_backgrounds.Length; i++) {
             /* The Parallax is the opposite of the camera movement */
             float parallax = (m_previousCameraPosition.x - m_cameraReference.position.x) * parallaxScales[i];
