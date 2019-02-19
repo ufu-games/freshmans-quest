@@ -14,8 +14,8 @@ public class MoveOverTime : MonoBehaviour {
     void Start() {
         m_initialPosition = this.transform.position;
         m_initialScale = this.transform.localScale;
-        m_fixedDeltaTimeAccumulated = 0f;
-        m_LastfixeddeltatimeAccumulated = 0f;
+        m_fixedDeltaTimeAccumulated = Random.Range(0f,Mathf.PI/2);;
+        m_LastfixeddeltatimeAccumulated = m_fixedDeltaTimeAccumulated;
     }
 
     void FixedUpdate() {
