@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour {
 	public static CameraScript instance;
-	private const float maxAngle = 5f;
-	public float maxOffset = 1f;
+	private const float maxAngle = 2.5f;
+	private const float maxOffset = 1f;
 
 	Vector3 initialRotation;
 	Cinemachine.CinemachineVirtualCamera m_virtualCamera;
