@@ -155,6 +155,7 @@ public class PlayerController : MonoBehaviour {
 		if(dangerousInteraction != null) {
 			dangerousInteraction.InteractWithPlayer(this.GetComponent<Collider2D>());
 		}
+
 		if(hit.collider.tag == "MovingPlataform"){
 			Debug.Log(hit.normal.x);
 			var plataformDirection = hit.collider.gameObject.GetComponent<MovingPlataform>().getAngle();
@@ -188,14 +189,10 @@ public class PlayerController : MonoBehaviour {
 		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
 
 		if(showDialogue != null && !m_isShowingDialogue) {
-			if(dialogueHintObject) dialogueHintObject.SetActive(true);
-
 			if(InputManager.instance.PressedConfirm()) {
 				showDialogue.ShowDialogue();
 				m_isShowingDialogue = true;
 			}
-		} else {
-			if(dialogueHintObject) dialogueHintObject.SetActive(false);
 		}
 	}
 
@@ -206,6 +203,11 @@ public class PlayerController : MonoBehaviour {
 		IDangerous dangerousInteraction = col.gameObject.GetComponent<IDangerous>();
 		IInteractable interaction = col.gameObject.GetComponent<IInteractable>();
 		INonHarmfulInteraction nonHarmfulInteraction = col.gameObject.GetComponent<INonHarmfulInteraction>();
+		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
+
+		if(showDialogue != null && dialogueHintObject) {
+			StartCoroutine(ShowDialogueHintRoutine());
+		}
 
 		if(dangerousInteraction != null) {
 			if(hurtClip && SoundManager.instance) { SoundManager.instance.PlaySfx(hurtClip); }
@@ -241,6 +243,26 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	void onTriggerExitEvent( Collider2D col ) {
+		if(!this.enabled) return;
+
+		INonHarmfulInteraction nonHarmfulInteraction = col.gameObject.GetComponent<INonHarmfulInteraction>();
+		IInteractableLeaveTrigger interactWhenLeft = col.gameObject.GetComponent<IInteractableLeaveTrigger>();
+		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
+
+		if(showDialogue != null && dialogueHintObject) {
+			 StartCoroutine(HideDialogueHintRoutine());
+		}
+
+		if(nonHarmfulInteraction != null) {
+			nonHarmfulInteraction.InteractWithPlayer(this.GetComponent<Collider2D>());
+		}
+
+		if(interactWhenLeft != null) {
+			interactWhenLeft.Interact();
+		}
+	}
+
 	public void getsThrownTo(float rotationAngle, float maxVelocity){
 		m_jumpPressedRemember = 0;
 		m_groundedRemember = 0;
@@ -264,23 +286,6 @@ public class PlayerController : MonoBehaviour {
 		if(isInCannon)
 			Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.OrthographicSize /= this.Cannon.zoomOutMultiplier;
 	}
-
-
-	void onTriggerExitEvent( Collider2D col ) {
-		if(!this.enabled) return;
-
-		INonHarmfulInteraction nonHarmfulInteraction = col.gameObject.GetComponent<INonHarmfulInteraction>();
-		IInteractableLeaveTrigger interactWhenLeft = col.gameObject.GetComponent<IInteractableLeaveTrigger>();
-
-		if(nonHarmfulInteraction != null) {
-			nonHarmfulInteraction.InteractWithPlayer(this.GetComponent<Collider2D>());
-		}
-
-		if(interactWhenLeft != null) {
-			interactWhenLeft.Interact();
-		}
-	}
-
 	#endregion
 
 	void Update()
@@ -605,7 +610,36 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	private IEnumerator GenericDialogueHintRoutine(Vector3 startingScale, Vector3 aimScale) {
+		float timeElapsed = 0f;
+		float transitionTime = 0.15f;
+		float t;
+
+		dialogueHintObject.transform.localScale = startingScale;
+
+		while(timeElapsed < transitionTime) {
+			timeElapsed += Time.deltaTime;
+			t = Interpolation.BounceEaseInOut(timeElapsed / transitionTime);
+			dialogueHintObject.transform.localScale = Vector3.Lerp(startingScale, aimScale, t);
+			yield return null;
+		}
+
+		dialogueHintObject.transform.localScale = aimScale;
+		yield return null;
+	}
+
+	private IEnumerator HideDialogueHintRoutine() {
+		yield return StartCoroutine(GenericDialogueHintRoutine(new Vector3(1,1,1), new Vector3(0,0,0)));
+		dialogueHintObject.SetActive(false);
+	}
+
+	private IEnumerator ShowDialogueHintRoutine() {
+		dialogueHintObject.SetActive(true);
+		yield return StartCoroutine(GenericDialogueHintRoutine(new Vector3(0,0,0), new Vector3(1,1,1)));
+	}
+
 	public void StartDialogue() {
+		if(dialogueHintObject) dialogueHintObject.SetActive(false);
 		m_isShowingDialogue = true;
 	}
 
