@@ -2,41 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
 
 public class TitleScreenManager : MonoBehaviour {
 
 	public AudioClip pressClip;
 	public AudioClip titleScreenMusic;
+	
 
-	[Header("Title Screen Object")]
-	[Header("Press Start Screen")]
+	[Header("Freshmans Quest (Press X To Play...) Screen")]
 	public GameObject pressStartObject;
 	public GameObject confirmButton;
 	private int m_confirmButtonOffsetY = 100;
 	
-	[Header("Main Menu")]
-	public GameObject optionsObject;
-	public Color selectedColor = Color.red;
-	public Color notSelectedColor = Color.white;
-	public TextMeshProUGUI playText;
-	public TextMeshProUGUI optionsText;
-	public TextMeshProUGUI creditsText;
-	public TextMeshProUGUI exitText;
-	private MaskableGraphic[] m_optionsGraphics;
-
-	[Header("Options")]
-	public GameObject optionsGameObject;
-
-	[Header("Credits")]
-	public GameObject creditsObject;
-
-	private float m_lastFrameVerticalInput;
-	private bool m_canGetInput;
-	private bool m_canOffset;
-
-	private const int offsetOptionsCredits = -1205;
+	[Header("Selectable Objects")]
+	public GameObject playButton;
+	// primeiro das opcoes aqui
 	
+	[Header("Menus")]
+	public GameObject optionsObject;
+	public GameObject optionsGameObject;
+	public GameObject creditsObject;
+	
+	private MaskableGraphic[] m_optionsGraphics;
+	private bool m_canOffset;
+	private const int offsetOptionsCredits = -1205;
+	private GameObject m_lastSelectedObjectByInputSystem;
 
 	public enum ECurrentState {
 		OnPressStart,
@@ -45,15 +37,7 @@ public class TitleScreenManager : MonoBehaviour {
 		OnMainMenu
 	}
 
-	public enum EOptionState {
-		Play,
-		Options,
-		Credits,
-		Exit
-	}
-
 	private ECurrentState m_currentState = ECurrentState.OnPressStart;
-	private EOptionState m_currentOptionState = EOptionState.Play;
 
 	void Start() {
 		if(SoundManager.instance) {
@@ -97,25 +81,6 @@ public class TitleScreenManager : MonoBehaviour {
 	private IEnumerator TransitionFromMainMenuRoutine() {
 		SoundManager.instance.SetParameterFMOD("MainThemeTransition", -1.0f);
 
-		/* Verificando que os offsets nao vao ficar errados */
-		switch(m_currentOptionState) {
-			case EOptionState.Play:
-				StartCoroutine(JuiceTextSelection(playText, -50, notSelectedColor));
-			break;
-
-			case EOptionState.Options:
-				StartCoroutine(JuiceTextSelection(optionsText, -50, notSelectedColor));
-			break;
-
-			case EOptionState.Credits:
-				StartCoroutine(JuiceTextSelection(creditsText, -50, notSelectedColor));
-			break;
-
-			case EOptionState.Exit:
-				StartCoroutine(JuiceTextSelection(exitText, -50, notSelectedColor));
-			break;
-		}
-
 		/* Fazendo o Fade Out de todas as imagens do menu principal */
 		foreach(MaskableGraphic m in m_optionsGraphics) {
 			m.CrossFadeAlpha(0f, 0.5f, true);
@@ -142,23 +107,15 @@ public class TitleScreenManager : MonoBehaviour {
 		}
 
 		/* Definindo os Estados Inicias do Menu Principal */
-		StartCoroutine(JuiceTextSelection(playText, 50, selectedColor));
 		m_currentState = ECurrentState.OnMainMenu;
-		m_currentOptionState = EOptionState.Play;
-	}
 
-	private IEnumerator LoadNext() {
-		yield return new WaitForSeconds(1.0f);
-		LevelManagement.LevelManager.instance.LoadNextLevel();
+		if(m_lastSelectedObjectByInputSystem == null) {
+			SelectGameObjectOnEventSystem(playButton);
+		} else {
+			SelectLastSelected();
+		}
+		
 	}
-
-	/*
-		================================================================
-		================================================================
-			PROCESSING STATES
-		================================================================
-		================================================================
-	 */
 
 	/* Translada um GameObject por uma certa quantidade em um certo tempo */
 	 private IEnumerator OffsetGameObject(GameObject obj, int xOffset, int yOffset, float transitionTime) {
@@ -188,150 +145,39 @@ public class TitleScreenManager : MonoBehaviour {
 		 m_canOffset = true;
 	 }
 
-	/* JUICING da seleção de texto do Menu Principal */
-	/* Faz um Offset no x e "balança" com seno */
-	/* Offset a text a certain amount of x */
-	private IEnumerator JuiceTextSelection(TextMeshProUGUI text, int xOffset, Color color) {
-		m_canGetInput = false;
-
-		text.color = color;
-		RectTransform textTransform = text.gameObject.GetComponent<RectTransform>();
-		
-		Vector3 initialTextPosition = textTransform.position;
-		Vector3 futureTextPosition = initialTextPosition;
-		futureTextPosition.x += xOffset;
-
-		float timeElapsed = 0f;
-
-		while(timeElapsed < 0.1f) {
-			timeElapsed += Time.deltaTime;
-			float t = Interpolation.EaseOut(timeElapsed / 0.1f);
-			/* Horizontal Offset with EaseOut and Linear Interpolation */
-			Vector3 tempPosition = Vector3.Lerp(initialTextPosition, futureTextPosition, t);
-			/* Vertical Offset with Sin */
-			tempPosition.y += (Mathf.Sin((timeElapsed / 0.1f) * Mathf.PI) * 10);
-			
-			textTransform.position = tempPosition;
-			yield return null;
-		}
-		
-		textTransform.position = futureTextPosition;
-		yield return null;
-
-		m_canGetInput = true;
+	private void SelectGameObjectOnEventSystem(GameObject obj) {
+		EventSystem.current.SetSelectedGameObject(obj);
+	}
+	private void DisselectCurrent() {
+		m_lastSelectedObjectByInputSystem = EventSystem.current.currentSelectedGameObject;
+		EventSystem.current.SetSelectedGameObject(null);
 	}
 
-	/* Função Que Processa o Estado Atual selecionado na Cena */
-	private void ProcessMainMenuState() {
-		if(!m_canGetInput || !m_canOffset) return;
-		/* Get Input */
-		float verticalValue = 0f;
-		verticalValue = Mathf.Round(Input.GetAxisRaw("Vertical"));
-
-		/* Impedindo que acontecçam mudancas indesejadas de opcoes */
-		if(verticalValue == m_lastFrameVerticalInput) {
-			verticalValue = 0;
-		} else {
-			m_lastFrameVerticalInput = verticalValue;
-		}
-
-		switch(m_currentOptionState) {
-			case EOptionState.Play:
-
-				/* Verifica se tem que mudar de opção */
-				if(verticalValue == 1) {
-					m_currentOptionState = EOptionState.Exit;
-					/* Feedback Visual para o Player */
-					StartCoroutine(JuiceTextSelection(playText, -50, notSelectedColor));		
-					StartCoroutine(JuiceTextSelection(exitText, 50, selectedColor));
-				} else if(verticalValue == -1) {
-					m_currentOptionState = EOptionState.Options;
-					/* Feedback Visual para o Player */
-					StartCoroutine(JuiceTextSelection(playText, -50, notSelectedColor));		
-					StartCoroutine(JuiceTextSelection(optionsText, 50, selectedColor));
-				}
-
-				/* Se o Jogador apertar CONFIRMAR... */
-				if(InputManager.instance.PressedConfirm()) {
-					Debug.Log("JOGAR!");
-					LevelManagement.LevelManager.instance.LoadNextLevel();
-				}
-			break;
-
-			case EOptionState.Options:
-				if(verticalValue == 1) {
-					m_currentOptionState = EOptionState.Play;
-					/* Feedback Visual para o Player */
-					StartCoroutine(JuiceTextSelection(playText, 50, selectedColor));
-					StartCoroutine(JuiceTextSelection(optionsText, -50, notSelectedColor));		
-				} else if(verticalValue == -1) {
-					m_currentOptionState = EOptionState.Credits;
-					/* Feedback Visual para o Player */
-					StartCoroutine(JuiceTextSelection(creditsText, 50, selectedColor));
-					StartCoroutine(JuiceTextSelection(optionsText, -50, notSelectedColor));		
-				}
-
-				if(InputManager.instance.PressedConfirm()) {
-					StartCoroutine(OffsetGameObject(optionsGameObject, offsetOptionsCredits, 0, 1.0f));
-					StartCoroutine(OffsetGameObject(optionsObject, -offsetOptionsCredits, 0, 1.0f));
-					m_currentState = ECurrentState.OnOptions;
-				}
-			break;
-
-			case EOptionState.Credits:
-				if(verticalValue == 1) {
-					m_currentOptionState = EOptionState.Options;
-					/* Feedback Visual para o Player */
-					StartCoroutine(JuiceTextSelection(optionsText, 50, selectedColor));
-					StartCoroutine(JuiceTextSelection(creditsText, -50, notSelectedColor));		
-				} else if(verticalValue == -1) {
-					m_currentOptionState = EOptionState.Exit;
-					/* Feedback Visual para o Player */
-					StartCoroutine(JuiceTextSelection(exitText, 50, selectedColor));
-					StartCoroutine(JuiceTextSelection(creditsText, -50, notSelectedColor));		
-				}
-
-				if(InputManager.instance.PressedConfirm()) {
-					StartCoroutine(OffsetGameObject(creditsObject, offsetOptionsCredits, 0, 1.0f));
-					StartCoroutine(OffsetGameObject(optionsObject, -offsetOptionsCredits, 0, 1.0f));
-					m_currentState = ECurrentState.OnCredits;
-				}
-			break;
-
-			case EOptionState.Exit:
-				if(verticalValue == 1) {
-					m_currentOptionState = EOptionState.Credits;
-					/* Feedback Visual para o Player */
-					StartCoroutine(JuiceTextSelection(creditsText, 50, selectedColor));
-					StartCoroutine(JuiceTextSelection(exitText, -50, notSelectedColor));		
-				} else if(verticalValue == -1) {
-					m_currentOptionState = EOptionState.Play;
-					/* Feedback Visual para o Player */
-					StartCoroutine(JuiceTextSelection(playText, 50, selectedColor));
-					StartCoroutine(JuiceTextSelection(exitText, -50, notSelectedColor));		
-				}
-
-				/* Se o Jogador apertar CONFIRMAR... */
-				if(InputManager.instance.PressedConfirm()) {
-					Debug.Log("SAIR!");
-					Application.Quit();
-				}
-			break;
-		}
+	private void SelectLastSelected() {
+		EventSystem.current.SetSelectedGameObject(m_lastSelectedObjectByInputSystem);
 	}
 
-	private void ProcessCurrentState() {
-		switch(m_currentState) {
-			case ECurrentState.OnMainMenu:
-				ProcessMainMenuState();
-			break;
-		}
+	public void ShowCredits() {
+		if(!m_canOffset) return;
+
+		StartCoroutine(OffsetGameObject(creditsObject, offsetOptionsCredits, 0, 1.0f));
+		StartCoroutine(OffsetGameObject(optionsObject, -offsetOptionsCredits, 0, 1.0f));
+		m_currentState = ECurrentState.OnCredits;
+
+		DisselectCurrent();
+	}
+
+	public void ShowOptions() {
+		if(!m_canOffset) return;
+
+		StartCoroutine(OffsetGameObject(optionsGameObject, offsetOptionsCredits, 0, 1.0f));
+		StartCoroutine(OffsetGameObject(optionsObject, -offsetOptionsCredits, 0, 1.0f));
+		m_currentState = ECurrentState.OnOptions;
+
+		DisselectCurrent();
 	}
 	
 	void Update () {
-		ProcessCurrentState();
-
-		/* If Press the confirm button... */
 		if(InputManager.instance.PressedConfirm()) {
 			switch(m_currentState) {
 				case ECurrentState.OnPressStart:
@@ -340,11 +186,11 @@ public class TitleScreenManager : MonoBehaviour {
 			}
 		}
 
-		/* When pressing the cancel button */
 		if(InputManager.instance.PressedCancel()) {
 			switch(m_currentState) {
 				case ECurrentState.OnMainMenu:
 					if(m_canOffset) {
+						DisselectCurrent();
 						StartCoroutine(TransitionFromMainMenuRoutine());
 					}
 				break;
@@ -352,6 +198,8 @@ public class TitleScreenManager : MonoBehaviour {
 					if(m_canOffset) {
 						StartCoroutine(OffsetGameObject(creditsObject, -offsetOptionsCredits, 0, 1.0f));StartCoroutine(OffsetGameObject(optionsObject, offsetOptionsCredits, 0, 1.0f));
 						m_currentState = ECurrentState.OnMainMenu;
+
+						SelectLastSelected();
 					}
 				break;
 				case ECurrentState.OnOptions:
@@ -359,6 +207,7 @@ public class TitleScreenManager : MonoBehaviour {
 						StartCoroutine(OffsetGameObject(optionsGameObject, -offsetOptionsCredits, 0, 1.0f));
 						StartCoroutine(OffsetGameObject(optionsObject, offsetOptionsCredits, 0, 1.0f));
 						m_currentState = ECurrentState.OnMainMenu;
+						SelectLastSelected();
 					}
 				break;
 			}
