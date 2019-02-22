@@ -18,12 +18,16 @@ public class TitleScreenManager : MonoBehaviour {
 	
 	[Header("Selectable Objects")]
 	public GameObject playButton;
-	// primeiro das opcoes aqui
+	public GameObject firstSelectableOptionsMenu;
 	
 	[Header("Menus")]
 	public GameObject optionsObject;
 	public GameObject optionsGameObject;
 	public GameObject creditsObject;
+
+	[Header("Options Menu Object")]
+	public Slider musicSlider;
+	public Slider sfxSlider;
 	
 	private MaskableGraphic[] m_optionsGraphics;
 	private bool m_canOffset;
@@ -56,7 +60,24 @@ public class TitleScreenManager : MonoBehaviour {
 		/* Mostrando na Tela o Logo do Jogo e o botãozinho mostrando qual botão apertar */
 		StartCoroutine(OffsetGameObject(confirmButton, 0, m_confirmButtonOffsetY, 1.0f));
 		StartCoroutine(FadePressStartRoutine(0, 1, 1.0f));
+
+		musicSlider.value = SoundManager.instance.musicVolume;
+		sfxSlider.value = SoundManager.instance.sfxVolume;
 	}
+
+	#region Options Menu Function
+	public void ChangedMusicVolume() {
+		Debug.LogWarningFormat("Changed Music Volume to {0}", musicSlider.value);
+		SoundManager.instance.musicVolume = musicSlider.value;
+		SoundManager.instance.UpdateAudioSources();
+	}
+
+	public void ChangedSoundEffectsVolume() {
+		Debug.LogWarningFormat("Changed SFX Volume to {0}", sfxSlider.value);
+		SoundManager.instance.sfxVolume = sfxSlider.value;
+		SoundManager.instance.UpdateAudioSources();
+	}
+	#endregion
 
 	/* Corrotina responsavel por exibir ou esconder o logo na tela */
 	private IEnumerator FadePressStartRoutine(int fadeFrom, int fadeTo, float fadeTime) {
@@ -175,6 +196,7 @@ public class TitleScreenManager : MonoBehaviour {
 		m_currentState = ECurrentState.OnOptions;
 
 		DisselectCurrent();
+		SelectGameObjectOnEventSystem(firstSelectableOptionsMenu);
 	}
 	
 	void Update () {
