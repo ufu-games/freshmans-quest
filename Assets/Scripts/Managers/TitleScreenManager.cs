@@ -19,6 +19,8 @@ public class TitleScreenManager : MonoBehaviour {
 	[Header("Selectable Objects")]
 	public GameObject playButton;
 	public GameObject firstSelectableOptionsMenu;
+	public Selectable[] mainMenuSelectables;
+	public Selectable[] optionsMenuSelectables;
 	
 	[Header("Menus")]
 	public GameObject optionsObject;
@@ -194,6 +196,12 @@ public class TitleScreenManager : MonoBehaviour {
 		m_currentState = ECurrentState.OnOptions;
 
 		DisselectCurrent();
+
+		// Making all Selectables from the Main Menu not being able to be selected while we are on the Options Menu
+		foreach(Selectable selectable in mainMenuSelectables) {
+			selectable.interactable = false;
+		}
+
 		SelectGameObjectOnEventSystem(firstSelectableOptionsMenu);
 	}
 	
@@ -227,6 +235,12 @@ public class TitleScreenManager : MonoBehaviour {
 						StartCoroutine(OffsetGameObject(optionsGameObject, -offsetOptionsCredits, 0, 1.0f));
 						StartCoroutine(OffsetGameObject(optionsObject, -offsetOptionsCredits, 0, 1.0f));
 						m_currentState = ECurrentState.OnMainMenu;
+
+						// Making all Selectables from the Main Menu being able to be selected again!
+						foreach(Selectable selectable in mainMenuSelectables) {
+							selectable.interactable = true;
+						}
+
 						SelectLastSelected();
 					}
 				break;
