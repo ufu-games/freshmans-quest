@@ -180,7 +180,7 @@ public class TitleScreenManager : MonoBehaviour {
 		if(!m_canOffset) return;
 
 		StartCoroutine(OffsetGameObject(creditsObject, offsetOptionsCredits, 0, 1.0f));
-		StartCoroutine(OffsetGameObject(optionsObject, -offsetOptionsCredits, 0, 1.0f));
+		StartCoroutine(OffsetGameObject(optionsObject, offsetOptionsCredits, 0, 1.0f));
 		m_currentState = ECurrentState.OnCredits;
 
 		DisselectCurrent();
@@ -190,7 +190,7 @@ public class TitleScreenManager : MonoBehaviour {
 		if(!m_canOffset) return;
 
 		StartCoroutine(OffsetGameObject(optionsGameObject, offsetOptionsCredits, 0, 1.0f));
-		StartCoroutine(OffsetGameObject(optionsObject, -offsetOptionsCredits, 0, 1.0f));
+		StartCoroutine(OffsetGameObject(optionsObject, offsetOptionsCredits, 0, 1.0f));
 		m_currentState = ECurrentState.OnOptions;
 
 		DisselectCurrent();
@@ -216,7 +216,7 @@ public class TitleScreenManager : MonoBehaviour {
 				break;
 				case ECurrentState.OnCredits:
 					if(m_canOffset) {
-						StartCoroutine(OffsetGameObject(creditsObject, -offsetOptionsCredits, 0, 1.0f));StartCoroutine(OffsetGameObject(optionsObject, offsetOptionsCredits, 0, 1.0f));
+						StartCoroutine(OffsetGameObject(creditsObject, -offsetOptionsCredits, 0, 1.0f));StartCoroutine(OffsetGameObject(optionsObject, -offsetOptionsCredits, 0, 1.0f));
 						m_currentState = ECurrentState.OnMainMenu;
 
 						SelectLastSelected();
@@ -225,7 +225,7 @@ public class TitleScreenManager : MonoBehaviour {
 				case ECurrentState.OnOptions:
 					if(m_canOffset) {
 						StartCoroutine(OffsetGameObject(optionsGameObject, -offsetOptionsCredits, 0, 1.0f));
-						StartCoroutine(OffsetGameObject(optionsObject, offsetOptionsCredits, 0, 1.0f));
+						StartCoroutine(OffsetGameObject(optionsObject, -offsetOptionsCredits, 0, 1.0f));
 						m_currentState = ECurrentState.OnMainMenu;
 						SelectLastSelected();
 					}
