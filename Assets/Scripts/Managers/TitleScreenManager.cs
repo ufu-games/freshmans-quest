@@ -14,7 +14,7 @@ public class TitleScreenManager : MonoBehaviour {
 	[Header("Freshmans Quest (Press X To Play...) Screen")]
 	public GameObject pressStartObject;
 	public GameObject confirmButton;
-	private int m_confirmButtonOffsetY = 100;
+	private int m_confirmButtonOffsetY = 150;
 	
 	[Header("Selectable Objects")]
 	public GameObject playButton;
@@ -31,7 +31,7 @@ public class TitleScreenManager : MonoBehaviour {
 	
 	private MaskableGraphic[] m_optionsGraphics;
 	private bool m_canOffset;
-	private const int offsetOptionsCredits = -1205;
+	private const int offsetOptionsCredits = -1350;
 	private GameObject m_lastSelectedObjectByInputSystem;
 
 	public enum ECurrentState {
@@ -67,13 +67,11 @@ public class TitleScreenManager : MonoBehaviour {
 
 	#region Options Menu Function
 	public void ChangedMusicVolume() {
-		Debug.LogWarningFormat("Changed Music Volume to {0}", musicSlider.value);
 		SoundManager.instance.musicVolume = musicSlider.value;
 		SoundManager.instance.UpdateAudioSources();
 	}
 
 	public void ChangedSoundEffectsVolume() {
-		Debug.LogWarningFormat("Changed SFX Volume to {0}", sfxSlider.value);
 		SoundManager.instance.sfxVolume = sfxSlider.value;
 		SoundManager.instance.UpdateAudioSources();
 	}
