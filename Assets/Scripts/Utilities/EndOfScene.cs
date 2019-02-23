@@ -5,6 +5,6 @@ using UnityEngine;
 public class EndOfScene : MonoBehaviour, IInteractable {
 
 	public void Interact(){
-		LevelManagement.LevelManager.instance.LoadLevel("DebugHub");
+		LevelManagement.LevelManager.instance.LoadLevel("Hub");
 	}
 }
