@@ -73,7 +73,6 @@ public class NewHubManager : MonoBehaviour {
 
 	public void ChooseChemistryLevel() {
 		Debug.LogWarning("Starting Chesmitry Level...");
-		LevelManagement.LevelManager.instance.LoadLevel(4);
 	}
 
 	public void ChooseMedicineLevel() {
@@ -82,5 +81,10 @@ public class NewHubManager : MonoBehaviour {
 
 	public void ChoosePhilosophyLevel() {
 		Debug.LogWarning("Starting Philosophy Level...");
+	}
+
+	public void GoToMainMenu() {
+		Debug.LogWarning("Going to Main Menu");
+		LevelManagement.LevelManager.instance.LoadLevel(0);
 	}
 }
