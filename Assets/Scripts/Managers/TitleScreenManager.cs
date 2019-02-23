@@ -14,18 +14,20 @@ public class TitleScreenManager : MonoBehaviour {
 	[Header("Freshmans Quest (Press X To Play...) Screen")]
 	public GameObject pressStartObject;
 	public GameObject confirmButton;
-	private int m_confirmButtonOffsetY = 150;
 	
 	[Header("Selectable Objects")]
 	public GameObject playButton;
 	public GameObject firstSelectableOptionsMenu;
+	public GameObject firstSelectableProfile;
 	public Selectable[] mainMenuSelectables;
 	public Selectable[] optionsMenuSelectables;
+	public Selectable[] profileSelectables;
 	
 	[Header("Menus")]
 	public GameObject optionsObject;
 	public GameObject optionsGameObject;
 	public GameObject creditsObject;
+	public GameObject selectProfileObject;
 
 	[Header("Options Menu Object")]
 	public Slider musicSlider;
@@ -33,14 +35,17 @@ public class TitleScreenManager : MonoBehaviour {
 	
 	private MaskableGraphic[] m_optionsGraphics;
 	private bool m_canOffset;
-	private const int offsetOptionsCredits = -1350;
+	private const int m_offsetOptionsCredits = -1350;
+	private const int m_offsetSelectProfile = -770;
+	private const int m_confirmButtonOffsetY = 150;
 	private GameObject m_lastSelectedObjectByInputSystem;
 
 	public enum ECurrentState {
 		OnPressStart,
 		OnCredits,
 		OnOptions,
-		OnMainMenu
+		OnMainMenu,
+		OnSelectProfile,
 	}
 
 	private ECurrentState m_currentState = ECurrentState.OnPressStart;
@@ -166,9 +171,17 @@ public class TitleScreenManager : MonoBehaviour {
 		 m_canOffset = true;
 	 }
 
+
+	private void ChangeSelectableState(Selectable[] selectableArray, bool state) {
+		foreach(Selectable selectable in selectableArray) {
+			selectable.interactable = state;
+		}
+	}
+
 	private void SelectGameObjectOnEventSystem(GameObject obj) {
 		EventSystem.current.SetSelectedGameObject(obj);
 	}
+
 	private void DisselectCurrent() {
 		m_lastSelectedObjectByInputSystem = EventSystem.current.currentSelectedGameObject;
 		EventSystem.current.SetSelectedGameObject(null);
@@ -178,31 +191,57 @@ public class TitleScreenManager : MonoBehaviour {
 		EventSystem.current.SetSelectedGameObject(m_lastSelectedObjectByInputSystem);
 	}
 
+	public void ShowSelectProfile() {
+		if(!m_canOffset) return;
+
+		StartCoroutine(OffsetGameObject(selectProfileObject, 0, m_offsetSelectProfile, 1.0f));
+		StartCoroutine(OffsetGameObject(optionsObject, 0, m_offsetSelectProfile, 1.0f));
+		m_currentState = ECurrentState.OnSelectProfile;
+		
+		DisselectCurrent();
+		ChangeSelectableState(mainMenuSelectables, false);
+		ChangeSelectableState(optionsMenuSelectables, false);
+		ChangeSelectableState(profileSelectables, true);
+		SelectGameObjectOnEventSystem(firstSelectableProfile);
+	}
+
 	public void ShowCredits() {
 		if(!m_canOffset) return;
 
-		StartCoroutine(OffsetGameObject(creditsObject, offsetOptionsCredits, 0, 1.0f));
-		StartCoroutine(OffsetGameObject(optionsObject, offsetOptionsCredits, 0, 1.0f));
+		StartCoroutine(OffsetGameObject(creditsObject, m_offsetOptionsCredits, 0, 1.0f));
+		StartCoroutine(OffsetGameObject(optionsObject, m_offsetOptionsCredits, 0, 1.0f));
 		m_currentState = ECurrentState.OnCredits;
 
 		DisselectCurrent();
+		ChangeSelectableState(mainMenuSelectables, false);
+		ChangeSelectableState(profileSelectables, false);
+		ChangeSelectableState(optionsMenuSelectables, false);
 	}
 
 	public void ShowOptions() {
 		if(!m_canOffset) return;
 
-		StartCoroutine(OffsetGameObject(optionsGameObject, offsetOptionsCredits, 0, 1.0f));
-		StartCoroutine(OffsetGameObject(optionsObject, offsetOptionsCredits, 0, 1.0f));
+		StartCoroutine(OffsetGameObject(optionsGameObject, m_offsetOptionsCredits, 0, 1.0f));
+		StartCoroutine(OffsetGameObject(optionsObject, m_offsetOptionsCredits, 0, 1.0f));
 		m_currentState = ECurrentState.OnOptions;
 
 		DisselectCurrent();
 
-		// Making all Selectables from the Main Menu not being able to be selected while we are on the Options Menu
-		foreach(Selectable selectable in mainMenuSelectables) {
-			selectable.interactable = false;
-		}
-
+		ChangeSelectableState(mainMenuSelectables, false);
+		ChangeSelectableState(profileSelectables, false);
+		ChangeSelectableState(optionsMenuSelectables, true);
 		SelectGameObjectOnEventSystem(firstSelectableOptionsMenu);
+	}
+
+	public void StartGame(int profileNumber) {
+		// Profile Number will be either 1, 2 or 3
+		// TO DO: Save System
+		Debug.LogWarningFormat("Starting game on Profile {0}", profileNumber);
+		LevelManagement.LevelManager.instance.LoadNextLevel();
+	}
+
+	public void QuitGame() {
+		Application.Quit();
 	}
 	
 	void Update () {
@@ -210,6 +249,9 @@ public class TitleScreenManager : MonoBehaviour {
 			switch(m_currentState) {
 				case ECurrentState.OnPressStart:
 					StartCoroutine(TransitionToMainMenuRoutine());
+					ChangeSelectableState(mainMenuSelectables, true);
+					ChangeSelectableState(profileSelectables, false);
+					ChangeSelectableState(optionsMenuSelectables, false);
 				break;
 			}
 		}
@@ -220,27 +262,42 @@ public class TitleScreenManager : MonoBehaviour {
 					if(m_canOffset) {
 						DisselectCurrent();
 						StartCoroutine(TransitionFromMainMenuRoutine());
+						ChangeSelectableState(mainMenuSelectables, false);
+						ChangeSelectableState(profileSelectables, false);
+						ChangeSelectableState(optionsMenuSelectables, false);
 					}
 				break;
 				case ECurrentState.OnCredits:
 					if(m_canOffset) {
-						StartCoroutine(OffsetGameObject(creditsObject, -offsetOptionsCredits, 0, 1.0f));StartCoroutine(OffsetGameObject(optionsObject, -offsetOptionsCredits, 0, 1.0f));
+						StartCoroutine(OffsetGameObject(creditsObject, -m_offsetOptionsCredits, 0, 1.0f));StartCoroutine(OffsetGameObject(optionsObject, -m_offsetOptionsCredits, 0, 1.0f));
 						m_currentState = ECurrentState.OnMainMenu;
 
+						ChangeSelectableState(mainMenuSelectables, true);
+						ChangeSelectableState(profileSelectables, false);
+						ChangeSelectableState(optionsMenuSelectables, false);
 						SelectLastSelected();
 					}
 				break;
 				case ECurrentState.OnOptions:
 					if(m_canOffset) {
-						StartCoroutine(OffsetGameObject(optionsGameObject, -offsetOptionsCredits, 0, 1.0f));
-						StartCoroutine(OffsetGameObject(optionsObject, -offsetOptionsCredits, 0, 1.0f));
+						StartCoroutine(OffsetGameObject(optionsGameObject, -m_offsetOptionsCredits, 0, 1.0f));
+						StartCoroutine(OffsetGameObject(optionsObject, -m_offsetOptionsCredits, 0, 1.0f));
 						m_currentState = ECurrentState.OnMainMenu;
 
-						// Making all Selectables from the Main Menu being able to be selected again!
-						foreach(Selectable selectable in mainMenuSelectables) {
-							selectable.interactable = true;
-						}
-
+						ChangeSelectableState(mainMenuSelectables, true);
+						ChangeSelectableState(profileSelectables, false);
+						ChangeSelectableState(optionsMenuSelectables, false);
+						SelectLastSelected();
+					}
+				break;
+				case ECurrentState.OnSelectProfile:
+					if(m_canOffset) {
+						StartCoroutine(OffsetGameObject(optionsObject, 0, -m_offsetSelectProfile, 1.0f));
+						StartCoroutine(OffsetGameObject(selectProfileObject, 0, -m_offsetSelectProfile, 1.0f));
+						m_currentState = ECurrentState.OnMainMenu;
+						ChangeSelectableState(mainMenuSelectables, true);
+						ChangeSelectableState(profileSelectables, false);
+						ChangeSelectableState(optionsMenuSelectables, false);
 						SelectLastSelected();
 					}
 				break;

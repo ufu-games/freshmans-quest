@@ -39,6 +39,9 @@ namespace LevelManagement {
 
 			if(instance == null) {
 				instance = this;
+
+				// is this bad?
+				DontDestroyOnLoad(gameObject);
 			} else {
 				Destroy(gameObject);
 			}

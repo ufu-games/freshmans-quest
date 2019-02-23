@@ -23,20 +23,20 @@ public class SoundManager : MonoBehaviour {
 	void Awake() {
 		if(instance == null) {
 			instance = this;
-
 			fmodEventEmitter = GetComponent<StudioEventEmitter>();
-		} else {
+			masterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
+
+			// is this bad?
+			DontDestroyOnLoad(gameObject);
+		} else if(instance != this) {
 			Destroy(gameObject);
 		}
-
-		masterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
 	}
 
 	public void UpdateAudioSources() {
 		if(musicSource) musicSource.volume = musicVolume;
 		if(sfxSource) sfxSource.volume = sfxVolume;
 		if(masterBus.isValid()) masterBus.setVolume(musicVolume);
-		
 	}
 
 	public void SetParameterFMOD(string parameter, float value) {
