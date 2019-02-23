@@ -19,22 +19,6 @@ public class NewHubManager : MonoBehaviour {
 		m_isMoving = false;
 	}
 
-	void Update() {
-		float inputValue = Input.GetAxisRaw("Horizontal");
-		Debug.Log(inputValue);
-		if(inputValue == -1) {
-			GoLeft();
-		} else if(inputValue == 1) {
-			GoRight();
-		} else if(Input.GetButtonDown("Submit")) {
-			if(currentLevel == ELevel.Artes) {
-				LevelManagement.LevelManager.instance.LoadLevel("M_Level 1");
-			} else if(currentLevel == ELevel.Medicina) {
-				LevelManagement.LevelManager.instance.LoadLevel("H_Level1");
-			}
-		}
-	}
-
 	IEnumerator MoveRoutine(float timeToMove) {
 		
 		m_isMoving = true;
@@ -76,5 +60,27 @@ public class NewHubManager : MonoBehaviour {
 		StopCoroutine("MoveRoutine");
 		currentLevel = (ELevel) Mathf.Min(((int)currentLevel)+1, (int) ELevel.Medicina);
 		StartCoroutine(MoveRoutine(m_transitionTime));
+	}
+
+	public void ChooseUniversityLevel() {
+		Debug.LogWarning("Starting University Level...");
+		LevelManagement.LevelManager.instance.LoadLevel(3);
+	}
+
+	public void ChooseArtsLevel() {
+		Debug.LogWarning("Starting Arts Level...");
+	}
+
+	public void ChooseChemistryLevel() {
+		Debug.LogWarning("Starting Chesmitry Level...");
+		LevelManagement.LevelManager.instance.LoadLevel(4);
+	}
+
+	public void ChooseMedicineLevel() {
+		Debug.LogWarning("Starting Medicine Level...");
+	}
+
+	public void ChoosePhilosophyLevel() {
+		Debug.LogWarning("Starting Philosophy Level...");
 	}
 }
