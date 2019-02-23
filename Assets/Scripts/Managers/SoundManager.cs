@@ -18,6 +18,7 @@ public class SoundManager : MonoBehaviour {
 	[Range(0,1)]
 	public float sfxVolume = 1f;
 	StudioEventEmitter fmodEventEmitter;
+	FMOD.Studio.Bus masterBus;
 
 	void Awake() {
 		if(instance == null) {
@@ -27,6 +28,15 @@ public class SoundManager : MonoBehaviour {
 		} else {
 			Destroy(gameObject);
 		}
+
+		masterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
+	}
+
+	public void UpdateAudioSources() {
+		if(musicSource) musicSource.volume = musicVolume;
+		if(sfxSource) sfxSource.volume = sfxVolume;
+		if(masterBus.isValid()) masterBus.setVolume(musicVolume);
+		
 	}
 
 	public void SetParameterFMOD(string parameter, float value) {

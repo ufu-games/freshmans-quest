@@ -6,7 +6,7 @@ public class Parallaxing : MonoBehaviour {
     
     [Header("Parallax Configurations")]
     /* How smooth the parallax is going to be */
-    [Range(0, 1)]
+    [Range(-1, 1)]
     public float parallaxAmount = 1f; 
 
     /* Array of elements that are going to be Parallaxed */
@@ -16,6 +16,7 @@ public class Parallaxing : MonoBehaviour {
 
     private Transform m_cameraReference;
     private Vector3 m_previousCameraPosition;
+    private Vector3 m_tempbackgroundTargetPosition;
 
     void Awake() {
         m_cameraReference = Camera.main.transform;
@@ -37,18 +38,18 @@ public class Parallaxing : MonoBehaviour {
         }
     }
 
-    void Update() {
+    void LateUpdate() {
         for(int i = 0; i < m_backgrounds.Length; i++) {
             /* The Parallax is the opposite of the camera movement */
             float parallax = (m_previousCameraPosition.x - m_cameraReference.position.x) * parallaxScales[i];
 
             /* set the target x position, which is the current position + parallax */
-            float backgroundTargetPositionX = m_backgrounds[i].position.x + parallax;
+            m_tempbackgroundTargetPosition.x = m_backgrounds[i].position.x + (parallax*parallaxAmount);
+            m_tempbackgroundTargetPosition.y = m_backgrounds[i].position.y;
+            m_tempbackgroundTargetPosition.z = m_backgrounds[i].position.z;
 
-            Vector3 backgroundTargetPosition = new Vector3(backgroundTargetPositionX, m_backgrounds[i].position.y, m_backgrounds[i].position.z);
-
-            /* Lerp between current position and the target position */
-            m_backgrounds[i].position = Vector3.Lerp(m_backgrounds[i].position, backgroundTargetPosition, parallaxAmount * Time.deltaTime);
+            /* set the target position */
+            m_backgrounds[i].position = m_tempbackgroundTargetPosition;
         }
 
         m_previousCameraPosition = m_cameraReference.position;

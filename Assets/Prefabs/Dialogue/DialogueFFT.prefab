@@ -419,8 +419,8 @@ MonoBehaviour:
   m_text: Sample Dialog... This is just a dummy text to have something here. Don't
     mind me.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 01dadbdab2ac446af9b0ecf412ed49db, type: 2}
-  m_sharedMaterial: {fileID: 21330676729611618, guid: 01dadbdab2ac446af9b0ecf412ed49db,
+  m_fontAsset: {fileID: 11400000, guid: 890a1d29792d94acb94e69e4fd208add, type: 2}
+  m_sharedMaterial: {fileID: 21804152873127598, guid: 890a1d29792d94acb94e69e4fd208add,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -446,10 +446,10 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 26
+  m_fontSizeBase: 26
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 24
   m_fontSizeMax: 36
   m_fontStyle: 0
@@ -492,7 +492,7 @@ MonoBehaviour:
     spaceCount: 14
     wordCount: 15
     linkCount: 0
-    lineCount: 3
+    lineCount: 4
     pageCount: 1
     materialCount: 1
   m_havePropertiesChanged: 0
@@ -580,8 +580,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Character Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 01dadbdab2ac446af9b0ecf412ed49db, type: 2}
-  m_sharedMaterial: {fileID: 21330676729611618, guid: 01dadbdab2ac446af9b0ecf412ed49db,
+  m_fontAsset: {fileID: 11400000, guid: 890a1d29792d94acb94e69e4fd208add, type: 2}
+  m_sharedMaterial: {fileID: 21804152873127598, guid: 890a1d29792d94acb94e69e4fd208add,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -607,8 +607,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 42
-  m_fontSizeBase: 42
+  m_fontSize: 26
+  m_fontSizeBase: 26
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -625,7 +625,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 0
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
