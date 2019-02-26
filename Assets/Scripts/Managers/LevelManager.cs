@@ -77,11 +77,17 @@ namespace LevelManagement {
 		public void LoadNextLevel() {
 			int sceneCount = SceneManager.sceneCountInBuildSettings;
 			int sceneToLoad = (SceneManager.GetActiveScene().buildIndex + 1) % sceneCount;
+			if(sceneToLoad > 2) {
+				SaveSystem.instance.OnLevelEnter(sceneToLoad);
+			}
 			SceneManager.LoadScene(sceneToLoad);
 		}
 
 		public void LoadLevel(string levelName) {
 			if(Application.CanStreamedLevelBeLoaded(levelName)) {
+				if(levelName != "Hub" && levelName != "MenuInicial" && levelName != "IntroducaoHistoria") {
+					SaveSystem.instance.OnLevelEnter(SceneManager.GetSceneByName(levelName).buildIndex);
+				}
 				SceneManager.LoadScene(levelName);
 			} else {
 				Debug.LogError("LevelManager Error: invalid scene specified (" + levelName + " )");
@@ -91,6 +97,7 @@ namespace LevelManagement {
 		public void LoadLevel(int levelIndex) {
 			Debug.Log("Load Level: Int");
 			if(levelIndex >= 0 && levelIndex < SceneManager.sceneCountInBuildSettings) {
+				SaveSystem.instance.OnLevelEnter(levelIndex);
 				SceneManager.LoadScene(levelIndex);
 			} else {
 				Debug.LogError("Level Manager Error: invalid scene index specified (" + levelIndex + ")");
