@@ -36,8 +36,6 @@ public class TitleScreenManager : MonoBehaviour {
 	
 	private MaskableGraphic[] m_optionsGraphics;
 	private bool m_canOffset;
-	private const int m_offsetOptionsCredits = -1350;
-	private const int m_offsetSelectProfile = -770;
 	private const int m_confirmButtonOffsetY = 150;
 	private Vector2 anchoredPointCenter = new Vector2(0,0);
 	private Vector2 rightAnchoredPoint = new Vector2(1600, 0);
@@ -264,9 +262,8 @@ public class TitleScreenManager : MonoBehaviour {
 
 		if(SaveSystem.instance.UISlotIsInUse(profileNumber)) {
 			SaveSystem.instance.UILoadGame(profileNumber);
-			LevelManagement.LevelManager.instance.LoadLevel("Hub");
 		} else {
-			SaveSystem.instance.UIResetGame(profileNumber);
+			SaveSystem.instance.UICreateSaveSlot(profileNumber);
 			LevelManagement.LevelManager.instance.LoadNextLevel();
 		}
 	}

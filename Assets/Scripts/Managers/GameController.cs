@@ -44,6 +44,10 @@ public class GameController : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    public void SaveAndQuit() {
+        SaveSystem.instance.UISaveGame();
+    }
+
     private void TogglePause() {
         if(!m_canPauseThisFrame) return;
 
