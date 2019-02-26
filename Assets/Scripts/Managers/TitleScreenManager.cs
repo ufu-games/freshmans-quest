@@ -53,13 +53,7 @@ public class TitleScreenManager : MonoBehaviour {
 	}
 
 	private ECurrentState m_currentState = ECurrentState.OnPressStart;
-
 	void Start() {
-		if(SoundManager.instance) {
-			SoundManager.instance.ChangeMusic(titleScreenMusic);
-		}
-		
-
 		/* Escondendo Todos os Objetos no Options Menu */
 		if(optionsObject) {
 			m_optionsGraphics = optionsObject.transform.GetComponentsInChildren<MaskableGraphic>();
@@ -74,10 +68,6 @@ public class TitleScreenManager : MonoBehaviour {
 
 		musicSlider.value = SoundManager.instance.musicVolume;
 		sfxSlider.value = SoundManager.instance.sfxVolume;
-
-		for(int i = 0; i < 3; i++) {
-			profileUIs[i].UpdateProfileUI(SaveSystem.instance.UISlotIsInUse(i), SaveSystem.instance.UIExtractInfo(i));
-		}
 	}
 
 	#region Options Menu Function
@@ -219,6 +209,11 @@ public class TitleScreenManager : MonoBehaviour {
 
 	public void ShowSelectProfile() {
 		if(!m_canOffset) return;
+		
+		for(int i = 0; i < 3; i++) {
+			profileUIs[i].UpdateProfileUI(SaveSystem.instance.UISlotIsInUse(i), SaveSystem.instance.UIExtractInfo(i));
+		}
+
 		StartCoroutine(OffsetRectTransformToAnchoredPoint(selectProfileObject.GetComponent<RectTransform>(), anchoredPointCenter, 1.0f));
 		StartCoroutine(OffsetRectTransformToAnchoredPoint(optionsObject.GetComponent<RectTransform>(), downAnchoredPoint, 1.0f));
 		m_currentState = ECurrentState.OnSelectProfile;
