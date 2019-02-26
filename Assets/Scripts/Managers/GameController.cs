@@ -45,6 +45,9 @@ public class GameController : MonoBehaviour
     }
 
     public void SaveAndQuit() {
+        // por motivos obvios, ao voltar para o menu principal precisamos despausar o jogo.
+        Time.timeScale = 1;
+        
         SaveSystem.instance.UISaveGame();
         LevelManagement.LevelManager.instance.LoadLevel(0);
     }
