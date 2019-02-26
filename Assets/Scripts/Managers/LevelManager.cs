@@ -97,7 +97,9 @@ namespace LevelManagement {
 		public void LoadLevel(int levelIndex) {
 			Debug.Log("Load Level: Int");
 			if(levelIndex >= 0 && levelIndex < SceneManager.sceneCountInBuildSettings) {
-				SaveSystem.instance.OnLevelEnter(levelIndex);
+				if(levelIndex > 2) {
+					SaveSystem.instance.OnLevelEnter(levelIndex);
+				}
 				SceneManager.LoadScene(levelIndex);
 			} else {
 				Debug.LogError("Level Manager Error: invalid scene index specified (" + levelIndex + ")");
