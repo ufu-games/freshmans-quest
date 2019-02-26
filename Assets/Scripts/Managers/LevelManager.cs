@@ -63,15 +63,6 @@ namespace LevelManagement {
 			FadeOut(fadeDuration);
 		}
 
-		void Update() {
-			if(Input.GetKeyDown(KeyCode.Escape)) {
-				Application.Quit();
-			}
-			if(Input.GetKeyDown(KeyCode.H)) {
-				LoadLevel("DebugHub");
-			}
-      	}
-
 		public void ReloadLevel() { SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); }
 
 		public void LoadNextLevel() {
