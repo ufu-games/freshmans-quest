@@ -46,6 +46,7 @@ public class GameController : MonoBehaviour
 
     public void SaveAndQuit() {
         SaveSystem.instance.UISaveGame();
+        LevelManagement.LevelManager.instance.LoadLevel("Hub");
     }
 
     private void TogglePause() {

@@ -18,8 +18,6 @@ public class DialogueManager : MonoBehaviour {
 	public bool nextSceneWhenDialogueEnds = false;
 	[HideInInspector]
 	public bool isShowingDialogue;
-	
-
 
 	private Queue<string> m_sentences;
 	private Queue<Dialogue> m_dialogues;
@@ -39,19 +37,14 @@ public class DialogueManager : MonoBehaviour {
 	}
 
 	void Update() {
-		if(InputManager.instance.PressedConfirm()) {
+		if(InputManager.instance.PressedConfirm() && ((dialogueText.text.Length > 2) || !m_isTypingSentence)) {
 			DisplayNextSentence();
 		}
 	}
 
-	// ==============================================================================
-	// ==============================================================================
-	// STARTING DIALOGUE WITH THE DIALOGUE SCRIPTABLE OBJECT
-	// ==============================================================================
-	// ==============================================================================
-
 	public void StartDialogue(Dialogue dialogue) {
 		dialogueObject.SetActive(true);
+
 		if(nameText) nameText.text = dialogue.characterName;
 		if(this.dialogImage && dialogue.characterSprite) dialogImage.sprite = dialogue.characterSprite;
 		m_sentences.Clear();
@@ -61,6 +54,7 @@ public class DialogueManager : MonoBehaviour {
 			m_sentences.Enqueue(sentence);
 		}
 
+		m_isTypingSentence = false;
 		isShowingDialogue = true;
 		DisplayNextSentence();
 	}
@@ -103,6 +97,7 @@ public class DialogueManager : MonoBehaviour {
 
 		dialogueText.text = "";
 		foreach(char letter in sentence.ToCharArray()) {
+			Debug.LogWarning("Typing Letter!");
 			dialogueText.text += letter;
 			yield return null;
 		}
