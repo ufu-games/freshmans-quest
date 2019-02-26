@@ -5772,7 +5772,7 @@ PrefabInstance:
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.size
-      value: 5
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
@@ -5782,43 +5782,73 @@ PrefabInstance:
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[2].sentences.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
-        type: 3}
-      propertyPath: dialogue.Array.data[3].sentences.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
+      propertyPath: dialogue.Array.data[3].sentences.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
       propertyPath: dialogue.Array.data[0].sentences.Array.size
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[4].sentences.Array.size
-      value: 9
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].sentences.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].sentences.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].sentences.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].sentences.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].sentences.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[10].sentences.Array.size
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[1].characterName
-      value: Lily
+      value: Shiba
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[1].characterSprite
       value: 
-      objectReference: {fileID: 21300022, guid: ef3cd2d06f42f45feb78a70f366fabc5,
+      objectReference: {fileID: 21300024, guid: 5bd434965de284938b97bf28e8088ae6,
         type: 3}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[1].sentences.Array.data[0]
-      value: Hm... Ok, it is a pleasure to meet you Professor Miller.
+      value: I might look like a dog now, but actually I'm a professor.
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[1].sentences.Array.data[1]
-      value: Looks like you already know who I am.
+      value: And also the Zoology Lab Coordinator.
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
@@ -5829,48 +5859,48 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogue.Array.data[2].characterSprite
       value: 
-      objectReference: {fileID: 21300022, guid: 5bd434965de284938b97bf28e8088ae6,
+      objectReference: {fileID: 21300018, guid: 5bd434965de284938b97bf28e8088ae6,
         type: 3}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[2].sentences.Array.data[0]
-      value: Yes, yes, Professor Otis told me everything.
+      value: Well, I should be mad, but look how amazing and cute I am hohoho.
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[2].sentences.Array.data[1]
-      value: I mean, he left a note explaining...
+      value: Having people to pet me is not that bad...
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[3].characterName
-      value: Lily
+      value: Shiba
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[3].characterSprite
       value: 
-      objectReference: {fileID: 21300022, guid: ef3cd2d06f42f45feb78a70f366fabc5,
+      objectReference: {fileID: 21300020, guid: 5bd434965de284938b97bf28e8088ae6,
         type: 3}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[3].sentences.Array.data[0]
-      value: '... Really?'
+      value: I think I can get used to looking like this!
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[3].sentences.Array.data[1]
-      value: "Parece que voc\xEA j\xE1 sabe quem eu sou."
+      value: Having people to pet me is not that bad...
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[0].sentences.Array.data[2]
-      value: And also the Zoology Lab Coordinator.
+      value: Well, I should be mad, but look how amazing and cute I am hohoho.
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[0].sentences.Array.data[3]
-      value: Well, I should be mad, but look how amazing and cute I am hohoho.
+      value: I think I can get used to looking like this!
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
@@ -5886,58 +5916,53 @@ PrefabInstance:
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[0].sentences.Array.data[1]
-      value: I might look like a dog now, but actually I'm a professor.
+      value: And also the Zoology Lab Coordinator.
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[0].sentences.Array.data[4]
-      value: I think I can get used to looking like this!
+      value: Having people to pet me is not that bad...
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[1].sentences.Array.data[2]
-      value: "Bom, eu deveria estar bravo, mas al\xE9m de fant\xE1stico agora tamb\xE9m
-        sou fofinho hohoho."
+      value: Having people to pet me is not that bad...
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[1].sentences.Array.data[3]
-      value: "Acho que posso at\xE9 me acostumar com essa nova apar\xEAncia."
+      value: Having people to pet me is not that bad...
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[1].sentences.Array.data[4]
-      value: "Ter pessoas passando a m\xE3o na minha cabe\xE7a n\xE3o \xE9 t\xE3o
-        ruim."
+      value: Having people to pet me is not that bad...
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[4].characterName
-      value: Shiba
+      value: Lily
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[4].characterSprite
       value: 
-      objectReference: {fileID: 21300022, guid: 5bd434965de284938b97bf28e8088ae6,
+      objectReference: {fileID: 21300020, guid: ef3cd2d06f42f45feb78a70f366fabc5,
         type: 3}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[4].sentences.Array.data[0]
-      value: 'Well, you should already know about the incident right now.
-
-'
+      value: Hm... Ok, it is a pleasure to meet you Professor Miller.
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[4].sentences.Array.data[1]
-      value: Looks like the summoned entity caused some serious damage on the concept
-        of reality...
+      value: Looks like you already know who I am.
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[4].sentences.Array.data[2]
-      value: and that distorted all the university!
+      value: because he had an urgent trip to the beach!
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
@@ -5969,7 +5994,7 @@ PrefabInstance:
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[2].sentences.Array.data[2]
-      value: because he had an urgent trip to the beach!
+      value: Having people to pet me is not that bad...
       objectReference: {fileID: 0}
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
@@ -5979,6 +6004,344 @@ PrefabInstance:
     - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
         type: 3}
       propertyPath: dialogue.Array.data[4].sentences.Array.data[8]
+      value: It would be a good idea to get some in case you get hungry.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[1].sentences.Array.data[5]
+      value: Having people to pet me is not that bad...
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[3].sentences.Array.data[2]
+      value: Having people to pet me is not that bad...
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].characterName
+      value: Shiba
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].characterSprite
+      value: 
+      objectReference: {fileID: 21300020, guid: 5bd434965de284938b97bf28e8088ae6,
+        type: 3}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].sentences.Array.data[0]
+      value: Yes, yes, Professor Otis told me everything.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].sentences.Array.data[1]
+      value: I mean, he left a note explaining...
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].sentences.Array.data[2]
+      value: because he had an urgent trip to the beach!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].sentences.Array.data[3]
+      value: Now I should help you find Jim.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].sentences.Array.data[4]
+      value: So I will always be around giving you information.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].sentences.Array.data[5]
+      value: 'Up to this point you should already know all the basic commands!
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].sentences.Array.data[6]
+      value: That's it, good luck, see you soon!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].sentences.Array.data[7]
+      value: Oh, and for an unknown reason there are pizza slices all around the university.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].sentences.Array.data[8]
+      value: It would be a good idea to get some in case you get hungry.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].sentences.Array.data[3]
+      value: Having people to pet me is not that bad...
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].sentences.Array.data[4]
+      value: Having people to pet me is not that bad...
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].characterName
+      value: Shiba
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].characterSprite
+      value: 
+      objectReference: {fileID: 21300018, guid: 5bd434965de284938b97bf28e8088ae6,
+        type: 3}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].sentences.Array.data[0]
+      value: because he had an urgent trip to the beach!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].sentences.Array.data[1]
+      value: because he had an urgent trip to the beach!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].sentences.Array.data[2]
+      value: because he had an urgent trip to the beach!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].sentences.Array.data[3]
+      value: Now I should help you find Jim.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].sentences.Array.data[4]
+      value: So I will always be around giving you information.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].sentences.Array.data[5]
+      value: 'Up to this point you should already know all the basic commands!
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].sentences.Array.data[6]
+      value: That's it, good luck, see you soon!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].sentences.Array.data[7]
+      value: Oh, and for an unknown reason there are pizza slices all around the university.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].sentences.Array.data[8]
+      value: It would be a good idea to get some in case you get hungry.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].characterName
+      value: Lily
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].characterSprite
+      value: 
+      objectReference: {fileID: 21300018, guid: ef3cd2d06f42f45feb78a70f366fabc5,
+        type: 3}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].sentences.Array.data[0]
+      value: '... Really?'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].sentences.Array.data[1]
+      value: Looks like the summoned entity caused some serious damage on the concept
+        of reality...
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].sentences.Array.data[2]
+      value: and that distorted all the university!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].sentences.Array.data[3]
+      value: Now I should help you find Jim.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].sentences.Array.data[4]
+      value: So I will always be around giving you information.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].sentences.Array.data[5]
+      value: 'Up to this point you should already know all the basic commands!
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].sentences.Array.data[6]
+      value: That's it, good luck, see you soon!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].sentences.Array.data[7]
+      value: Oh, and for an unknown reason there are pizza slices all around the university.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].sentences.Array.data[8]
+      value: It would be a good idea to get some in case you get hungry.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].characterName
+      value: Shiba
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].characterSprite
+      value: 
+      objectReference: {fileID: 21300020, guid: 5bd434965de284938b97bf28e8088ae6,
+        type: 3}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].sentences.Array.data[0]
+      value: 'Well, you should already know about the incident right now.
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].sentences.Array.data[1]
+      value: Looks like the summoned entity caused some serious damage on the concept
+        of reality...
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].sentences.Array.data[2]
+      value: and that distorted all the university!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].sentences.Array.data[3]
+      value: Now I should help you find Jim.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].sentences.Array.data[4]
+      value: So I will always be around giving you information.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].sentences.Array.data[5]
+      value: 'Up to this point you should already know all the basic commands!
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].sentences.Array.data[6]
+      value: That's it, good luck, see you soon!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].sentences.Array.data[7]
+      value: Oh, and for an unknown reason there are pizza slices all around the university.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].sentences.Array.data[8]
+      value: It would be a good idea to get some in case you get hungry.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].characterName
+      value: Shiba
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].characterSprite
+      value: 
+      objectReference: {fileID: 21300018, guid: 5bd434965de284938b97bf28e8088ae6,
+        type: 3}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].sentences.Array.data[0]
+      value: That's it, good luck, see you soon!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].sentences.Array.data[1]
+      value: Oh, and for an unknown reason there are pizza slices all around the university.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].sentences.Array.data[2]
+      value: It would be a good idea to get some in case you get hungry.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].sentences.Array.data[3]
+      value: It would be a good idea to get some in case you get hungry.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].sentences.Array.data[4]
+      value: It would be a good idea to get some in case you get hungry.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].sentences.Array.data[5]
+      value: It would be a good idea to get some in case you get hungry.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].sentences.Array.data[6]
+      value: It would be a good idea to get some in case you get hungry.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].sentences.Array.data[7]
+      value: It would be a good idea to get some in case you get hungry.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].sentences.Array.data[8]
+      value: It would be a good idea to get some in case you get hungry.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[10].characterName
+      value: Shiba
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[10].characterSprite
+      value: 
+      objectReference: {fileID: 21300020, guid: 5bd434965de284938b97bf28e8088ae6,
+        type: 3}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[10].sentences.Array.data[0]
+      value: Oh, and for an unknown reason there are pizza slices all around the university.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[10].sentences.Array.data[1]
+      value: It would be a good idea to get some in case you get hungry.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114618048531270598, guid: 4d12b953c191b43f7924b93327703804,
+        type: 3}
+      propertyPath: dialogue.Array.data[10].sentences.Array.data[2]
       value: It would be a good idea to get some in case you get hungry.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
