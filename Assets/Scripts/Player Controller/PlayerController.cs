@@ -454,7 +454,7 @@ public class PlayerController : MonoBehaviour {
 		if( ( (m_groundedRemember > 0) && (m_jumpPressedRemember > 0) ) ) {
 			m_jumpPressedRemember = 0;
 			m_groundedRemember = 0;
-
+			SaveSystem.instance.Jumped();
 			m_velocity.y = Mathf.Sqrt( 2f * jumpHeight * -m_gravity );
 			
 			if(SoundManager.instance && jumpingClip) {

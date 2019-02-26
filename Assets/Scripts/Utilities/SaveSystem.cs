@@ -62,7 +62,18 @@ public class SaveSystem : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    /// <summary>
+    /// This function saves the game in the current slot in the next frame
+    /// </summary>
+
+    public void UISaveGameNextFrame(){
+        StartCoroutine(SaveNextFrameCoroutine());
+    }
+
     public void UILoadGame(int slot) {
+        if(!PlayerPrefs.HasKey(slot + "_isBeingUsed")) {
+            Debug.LogError("SaveSystem: Can't load, the given slot doesn't exist.");
+        }
         if(PlayerPrefs.GetInt(slot + "_isBeingUsed") == 0) {
             Debug.LogError("SaveSystem: Can't load, the given slot isn't in use.");
             return;
@@ -90,6 +101,22 @@ public class SaveSystem : MonoBehaviour
         UISaveGame(slot);
         PlayerPrefs.SetInt(slot + "_isBeingUsed",0);
         PlayerPrefs.Save();
+    }
+
+    public void UIResetAllSaves() {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+    }
+
+    public void UICreateSaveSlot(int slot) {
+        if(PlayerPrefs.HasKey(slot + "_isBeingUsed")) {
+            if(PlayerPrefs.GetInt(slot + "_isBeingUsed") == 1){
+                Debug.LogError("SaveSystem: Can't create a save slot in this slot because it is already being used.");
+                return;
+            }
+        }
+        myData.Reset();
+        UISaveGame(slot);
     }
 
     /// <summary>
@@ -138,6 +165,11 @@ public class SaveSystem : MonoBehaviour
     void OnApplicationQuit() {
         if(currentSlot != -1)
             UISaveGame();
+    }
+
+    IEnumerator SaveNextFrameCoroutine() {
+        yield return null;
+        UISaveGame();
     }
 
     // ----------------------------
