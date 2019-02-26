@@ -28,6 +28,7 @@ public class TitleScreenManager : MonoBehaviour {
 	public GameObject optionsGameObject;
 	public GameObject creditsObject;
 	public GameObject selectProfileObject;
+	public ProfileUI[] profileUIs;
 
 	[Header("Options Menu Object")]
 	public Slider musicSlider;
@@ -76,12 +77,9 @@ public class TitleScreenManager : MonoBehaviour {
 		musicSlider.value = SoundManager.instance.musicVolume;
 		sfxSlider.value = SoundManager.instance.sfxVolume;
 
-		// Debug.LogWarningFormat("Profile Select Anchored Position: " + selectProfileObject.GetComponent<RectTransform>().anchoredPosition);
-		// Debug.LogWarningFormat("Options Object transform.position: {0}", optionsObject.transform.position);
-		// Debug.LogWarningFormat("Options Object Rect: {0}", optionsObject.GetComponent<RectTransform>().rect );
-		// Debug.LogWarningFormat("Options Object Anchored Position {0}", optionsObject.GetComponent<RectTransform>().anchoredPosition );
-		// Debug.LogWarningFormat("Options Menu Object Anchored Position {0}", optionsGameObject.GetComponent<RectTransform>().anchoredPosition );
-		// optionsGameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0,0);
+		for(int i = 0; i < 3; i++) {
+			profileUIs[i].UpdateProfileUI(SaveSystem.instance.UISlotIsInUse(i), SaveSystem.instance.UIExtractInfo(i));
+		}
 	}
 
 	#region Options Menu Function
@@ -262,10 +260,15 @@ public class TitleScreenManager : MonoBehaviour {
 	}
 
 	public void StartGame(int profileNumber) {
-		// Profile Number will be either 1, 2 or 3
-		// TO DO: Save System
 		Debug.LogWarningFormat("Starting game on Profile {0}", profileNumber);
-		LevelManagement.LevelManager.instance.LoadNextLevel();
+
+		if(SaveSystem.instance.UISlotIsInUse(profileNumber)) {
+			SaveSystem.instance.UILoadGame(profileNumber);
+			LevelManagement.LevelManager.instance.LoadLevel("Hub");
+		} else {
+			SaveSystem.instance.UIResetGame(profileNumber);
+			LevelManagement.LevelManager.instance.LoadNextLevel();
+		}
 	}
 
 	public void QuitGame() {
