@@ -38,6 +38,11 @@ public class TitleScreenManager : MonoBehaviour {
 	private const int m_offsetOptionsCredits = -1350;
 	private const int m_offsetSelectProfile = -770;
 	private const int m_confirmButtonOffsetY = 150;
+	private Vector2 anchoredPointCenter = new Vector2(0,0);
+	private Vector2 rightAnchoredPoint = new Vector2(1600, 0);
+	private Vector2 leftAnchoredPoint = new Vector2(-1600, 0);
+	private Vector2 upAnchoredPoint = new Vector2(0, 900);
+	private Vector2 downAnchoredPoint = new Vector2(0, -900);
 	private GameObject m_lastSelectedObjectByInputSystem;
 
 	public enum ECurrentState {
@@ -70,6 +75,13 @@ public class TitleScreenManager : MonoBehaviour {
 
 		musicSlider.value = SoundManager.instance.musicVolume;
 		sfxSlider.value = SoundManager.instance.sfxVolume;
+
+		// Debug.LogWarningFormat("Profile Select Anchored Position: " + selectProfileObject.GetComponent<RectTransform>().anchoredPosition);
+		// Debug.LogWarningFormat("Options Object transform.position: {0}", optionsObject.transform.position);
+		// Debug.LogWarningFormat("Options Object Rect: {0}", optionsObject.GetComponent<RectTransform>().rect );
+		// Debug.LogWarningFormat("Options Object Anchored Position {0}", optionsObject.GetComponent<RectTransform>().anchoredPosition );
+		// Debug.LogWarningFormat("Options Menu Object Anchored Position {0}", optionsGameObject.GetComponent<RectTransform>().anchoredPosition );
+		// optionsGameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0,0);
 	}
 
 	#region Options Menu Function
@@ -143,6 +155,24 @@ public class TitleScreenManager : MonoBehaviour {
 		
 	}
 
+	
+	private IEnumerator OffsetRectTransformToAnchoredPoint(RectTransform rectTransform, Vector2 anchoredPoint, float transitionTime) {
+		m_canOffset = false;
+		float timeElapsed = 0f;
+		Vector2 initialAnchorPoint = rectTransform.anchoredPosition;
+
+		while(timeElapsed < transitionTime) {
+			timeElapsed += Time.deltaTime;
+			float t = Interpolation.EaseOut(timeElapsed / transitionTime);
+			rectTransform.anchoredPosition = Vector3.Lerp(initialAnchorPoint, anchoredPoint, t);
+			yield return null;
+		}
+		
+		rectTransform.anchoredPosition = anchoredPoint;
+		yield return null;
+		m_canOffset = true;
+	}
+
 	/* Translada um GameObject por uma certa quantidade em um certo tempo */
 	 private IEnumerator OffsetGameObject(GameObject obj, int xOffset, int yOffset, float transitionTime) {
 		 m_canOffset = false;
@@ -193,9 +223,8 @@ public class TitleScreenManager : MonoBehaviour {
 
 	public void ShowSelectProfile() {
 		if(!m_canOffset) return;
-
-		StartCoroutine(OffsetGameObject(selectProfileObject, 0, m_offsetSelectProfile, 1.0f));
-		StartCoroutine(OffsetGameObject(optionsObject, 0, m_offsetSelectProfile, 1.0f));
+		StartCoroutine(OffsetRectTransformToAnchoredPoint(selectProfileObject.GetComponent<RectTransform>(), anchoredPointCenter, 1.0f));
+		StartCoroutine(OffsetRectTransformToAnchoredPoint(optionsObject.GetComponent<RectTransform>(), downAnchoredPoint, 1.0f));
 		m_currentState = ECurrentState.OnSelectProfile;
 		
 		DisselectCurrent();
@@ -208,8 +237,8 @@ public class TitleScreenManager : MonoBehaviour {
 	public void ShowCredits() {
 		if(!m_canOffset) return;
 
-		StartCoroutine(OffsetGameObject(creditsObject, m_offsetOptionsCredits, 0, 1.0f));
-		StartCoroutine(OffsetGameObject(optionsObject, m_offsetOptionsCredits, 0, 1.0f));
+		StartCoroutine(OffsetRectTransformToAnchoredPoint(creditsObject.GetComponent<RectTransform>(), anchoredPointCenter, 1.0f));
+		StartCoroutine(OffsetRectTransformToAnchoredPoint(optionsObject.GetComponent<RectTransform>(), leftAnchoredPoint, 1.0f));
 		m_currentState = ECurrentState.OnCredits;
 
 		DisselectCurrent();
@@ -220,9 +249,8 @@ public class TitleScreenManager : MonoBehaviour {
 
 	public void ShowOptions() {
 		if(!m_canOffset) return;
-
-		StartCoroutine(OffsetGameObject(optionsGameObject, m_offsetOptionsCredits, 0, 1.0f));
-		StartCoroutine(OffsetGameObject(optionsObject, m_offsetOptionsCredits, 0, 1.0f));
+		StartCoroutine(OffsetRectTransformToAnchoredPoint(optionsGameObject.GetComponent<RectTransform>(), anchoredPointCenter, 1.0f));
+		StartCoroutine(OffsetRectTransformToAnchoredPoint(optionsObject.GetComponent<RectTransform>(), leftAnchoredPoint, 1.0f));
 		m_currentState = ECurrentState.OnOptions;
 
 		DisselectCurrent();
@@ -269,7 +297,8 @@ public class TitleScreenManager : MonoBehaviour {
 				break;
 				case ECurrentState.OnCredits:
 					if(m_canOffset) {
-						StartCoroutine(OffsetGameObject(creditsObject, -m_offsetOptionsCredits, 0, 1.0f));StartCoroutine(OffsetGameObject(optionsObject, -m_offsetOptionsCredits, 0, 1.0f));
+						StartCoroutine(OffsetRectTransformToAnchoredPoint(creditsObject.GetComponent<RectTransform>(), rightAnchoredPoint, 1.0f));
+						StartCoroutine(OffsetRectTransformToAnchoredPoint(optionsObject.GetComponent<RectTransform>(), anchoredPointCenter, 1.0f));
 						m_currentState = ECurrentState.OnMainMenu;
 
 						ChangeSelectableState(mainMenuSelectables, true);
@@ -280,8 +309,8 @@ public class TitleScreenManager : MonoBehaviour {
 				break;
 				case ECurrentState.OnOptions:
 					if(m_canOffset) {
-						StartCoroutine(OffsetGameObject(optionsGameObject, -m_offsetOptionsCredits, 0, 1.0f));
-						StartCoroutine(OffsetGameObject(optionsObject, -m_offsetOptionsCredits, 0, 1.0f));
+						StartCoroutine(OffsetRectTransformToAnchoredPoint(optionsGameObject.GetComponent<RectTransform>(), rightAnchoredPoint, 1.0f));
+						StartCoroutine(OffsetRectTransformToAnchoredPoint(optionsObject.GetComponent<RectTransform>(), anchoredPointCenter, 1.0f));
 						m_currentState = ECurrentState.OnMainMenu;
 
 						ChangeSelectableState(mainMenuSelectables, true);
@@ -292,8 +321,8 @@ public class TitleScreenManager : MonoBehaviour {
 				break;
 				case ECurrentState.OnSelectProfile:
 					if(m_canOffset) {
-						StartCoroutine(OffsetGameObject(optionsObject, 0, -m_offsetSelectProfile, 1.0f));
-						StartCoroutine(OffsetGameObject(selectProfileObject, 0, -m_offsetSelectProfile, 1.0f));
+						StartCoroutine(OffsetRectTransformToAnchoredPoint(optionsObject.GetComponent<RectTransform>(), anchoredPointCenter, 1.0f));
+						StartCoroutine(OffsetRectTransformToAnchoredPoint(selectProfileObject.GetComponent<RectTransform>(), upAnchoredPoint, 1.0f));
 						m_currentState = ECurrentState.OnMainMenu;
 						ChangeSelectableState(mainMenuSelectables, true);
 						ChangeSelectableState(profileSelectables, false);
