@@ -21,11 +21,6 @@ public class PlayerController : MonoBehaviour {
 	public bool hasWallJump = false;
 
 	[Space(5)]
-	[Header("Collectables")]
-	public float PizzaCollected = 0;
-	public float HomeworkCollected = 0;
-
-	[Space(5)]
 	[Header("Movement Handling")]
 	public float runSpeed = 8f;
 	public float groundDamping = 20f; // how fast do we change direction? higher means faster
@@ -290,6 +285,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Update()
 	{	
+		SaveSystem.instance.TickTimePlayed();
 		if(m_controller.isGrounded) {
 			m_groundedRemember = groundedRememberTime;
 			m_gravity = goingUpGravity;
@@ -648,7 +644,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void UpdatePizzaCounter() {
-		if(PizzaCounterUI.instance) PizzaCounterUI.instance.UpdateCounter(Mathf.RoundToInt(PizzaCollected));
-		else if(PizzaSliceCounterUI.instance) PizzaSliceCounterUI.instance.UpdateCounter(Mathf.RoundToInt(PizzaCollected));
+		if(PizzaCounterUI.instance) PizzaCounterUI.instance.UpdateCounter(Mathf.RoundToInt(SaveSystem.instance.myData.pizzaCounter));
+		else if(PizzaSliceCounterUI.instance) PizzaSliceCounterUI.instance.UpdateCounter(Mathf.RoundToInt(SaveSystem.instance.myData.pizzaCounter));
 	}
 }

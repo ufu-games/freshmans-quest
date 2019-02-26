@@ -6,5 +6,6 @@ public class EndOfScene : MonoBehaviour, IInteractable {
 
 	public void Interact(){
 		LevelManagement.LevelManager.instance.LoadLevel("Hub");
+		SaveSystem.instance.OnLevelExit();
 	}
 }

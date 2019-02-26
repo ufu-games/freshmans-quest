@@ -86,5 +86,6 @@ public class NewHubManager : MonoBehaviour {
 	public void GoToMainMenu() {
 		Debug.LogWarning("Going to Main Menu");
 		LevelManagement.LevelManager.instance.LoadLevel(0);
+		SaveSystem.instance.OnLevelExit();
 	}
 }

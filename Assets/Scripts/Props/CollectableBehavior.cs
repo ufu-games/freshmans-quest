@@ -6,7 +6,6 @@ using UnityEngine.Audio;
 public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp {
 
 	public float Value;
-	public TypeOfCollectable Type;
 	public AudioClip collectedClip;
 	public AudioClip continuousClip;
 	[HideInInspector]
@@ -19,8 +18,6 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 	public float InitialVelocitySecondMove = 3;
 	private bool StartedFollowing = false;
 	private Vector3 initialPosition;
-
-	public enum TypeOfCollectable{Pizza, Homework};
 
 	void Start() {
 		initialPosition = transform.position;
@@ -68,13 +65,8 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 
 		//---------- O Coletável Chegou no player
 
-		if(Type == TypeOfCollectable.Pizza) {
-			playerReference.PizzaCollected += Value;
-			playerReference.UpdatePizzaCounter();
-		}
-		if(Type == TypeOfCollectable.Homework) {
-			playerReference.HomeworkCollected += Value;
-		}
+		SaveSystem.instance.GotPizza();
+		playerReference.UpdatePizzaCounter();
 		if(collectedClip && SoundManager.instance) {
 			SoundManager.instance.PlaySfx(collectedClip);
 		}
@@ -131,13 +123,8 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 				GetComponent<SpriteRenderer>().enabled = true;
 				GetComponent<Collider2D>().enabled = true;
 				Collected = false;
-				if(Type == TypeOfCollectable.Pizza) {
-					playerReference.PizzaCollected -= Value;
-					playerReference.UpdatePizzaCounter();
-				}
-				if(Type == TypeOfCollectable.Homework) {
-					playerReference.HomeworkCollected -= Value;
-				}
+				SaveSystem.instance.RemovePizza();
+				playerReference.UpdatePizzaCounter();
 			}
 		}
 	}

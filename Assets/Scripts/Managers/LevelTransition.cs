@@ -62,6 +62,7 @@ public class LevelTransition : MonoBehaviour {
 		} else {
             m_check = check.GetComponent<CheckpointSystemBehavior>();
 			m_check.LastCheckpoint = m_nowCollider.gameObject.GetComponent<ScreenTransition>().GetSpawnPoint();
+			SaveSystem.instance.SetPositionInStage(m_check.LastCheckpoint);
         }
 	}
 
@@ -75,6 +76,7 @@ public class LevelTransition : MonoBehaviour {
 					Allowed = true;
 				}
 				m_check.LastCheckpoint = InColliders[0].gameObject.GetComponent<ScreenTransition>().GetSpawnPoint();
+				SaveSystem.instance.SetPositionInStage(m_check.LastCheckpoint);
 			} else {
 				Allowed = true;
 			}
@@ -115,5 +117,6 @@ public class LevelTransition : MonoBehaviour {
 
 	public void SetSpawnPoint() {
 		m_check.LastCheckpoint = InColliders[0].GetComponent<ScreenTransition>().spawnpoint	= InColliders[0].gameObject.GetComponent<ScreenTransition>().GetSpawnPoint();
+		SaveSystem.instance.SetPositionInStage(m_check.LastCheckpoint);
 	}
 }

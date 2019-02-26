@@ -65,5 +65,6 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 		levelManager.FadeOut(.25f);
 		yield return new WaitForSeconds(.1f);
 		JustSpawned = false;
+		SaveSystem.instance.Died();
 	}
 }
