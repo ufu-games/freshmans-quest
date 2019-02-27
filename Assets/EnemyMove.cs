@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMove : MonoBehaviour
+public class EnemyMove : MonoBehaviour, IResettableProp
 {
     public enum Direction {Right, Left, Stoped};
 
@@ -13,11 +13,13 @@ public class EnemyMove : MonoBehaviour
 
     private Rigidbody2D rb;
     private float realDirection;
+    private Vector2 initialPosition;
     private GameObject player;
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>(); 
+        this.initialPosition = transform.position;
+
         if(InitialDirection == Direction.Right)realDirection = 1;
         if(InitialDirection == Direction.Left)realDirection = -1;
         if(InitialDirection == Direction.Stoped)realDirection = 0;
@@ -58,4 +60,12 @@ public class EnemyMove : MonoBehaviour
             this.realDirection = col.gameObject.GetComponent<EnemyRedirectioner>().getAngle();
         }
     }
+
+    public void Reset() {
+		Debug.Log("resetando");
+		transform.position = initialPosition;
+        if(InitialDirection == Direction.Right)realDirection = 1;
+        if(InitialDirection == Direction.Left)realDirection = -1;
+        if(InitialDirection == Direction.Stoped)realDirection = 0;
+	}
 }
