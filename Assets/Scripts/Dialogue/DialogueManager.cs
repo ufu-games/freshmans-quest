@@ -37,7 +37,7 @@ public class DialogueManager : MonoBehaviour {
 	}
 
 	void Update() {
-		if(InputManager.instance.PressedConfirm() && ((dialogueText.text.Length > 2) || !m_isTypingSentence)) {
+		if(InputManager.instance.PressedConfirm()) {
 			DisplayNextSentence();
 		}
 	}
@@ -56,7 +56,7 @@ public class DialogueManager : MonoBehaviour {
 
 		m_isTypingSentence = false;
 		isShowingDialogue = true;
-		DisplayNextSentence();
+		// DisplayNextSentence();
 	}
 
 	public void StartDialogue(Dialogue[] dialogues) {
@@ -108,6 +108,7 @@ public class DialogueManager : MonoBehaviour {
 	public void EndDialog() {
 		if(m_dialogues.Count > 0) {
 			StartDialogue(m_dialogues.Dequeue());
+			DisplayNextSentence();
 		} else {
 			isShowingDialogue = false;
 			dialogueObject.SetActive(false);

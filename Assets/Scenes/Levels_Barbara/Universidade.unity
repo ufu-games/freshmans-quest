@@ -17044,7 +17044,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1189934070}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.0864, y: -3.7809, z: 3.4433594}
+  m_LocalPosition: {x: 2, y: -3.7809, z: 3.4433594}
   m_LocalScale: {x: 1.1126, y: 1.1126, z: 1.1126}
   m_Children:
   - {fileID: 1273966040}
@@ -18766,7 +18766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue:
   - characterName: Lily
-    characterSprite: {fileID: 21300022, guid: ef3cd2d06f42f45feb78a70f366fabc5, type: 3}
+    characterSprite: {fileID: 21300020, guid: ef3cd2d06f42f45feb78a70f366fabc5, type: 3}
     sentences:
     - Hey, are you alright?
     - Did you just fell from these walls?
@@ -18777,7 +18777,7 @@ MonoBehaviour:
     - Hi, not really, I just finished a test.
     - Please, don't mind me. But take care on the way, these walls seen a little dangerous.
     dialogueClip: {fileID: 0}
-  destroySelfAfterTriggering: 1
+  destroySelfAfterTriggering: 0
 --- !u!61 &1273966042
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -18791,7 +18791,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.050635815, y: -0.08680415}
+  m_Offset: {x: -0.018038988, y: 0.2107865}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -18802,7 +18802,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.9982486, y: 1.1736083}
+  m_Size: {x: 1.7693324, y: 0.92180026}
   m_EdgeRadius: 0
 --- !u!1 &1275170591
 GameObject:
