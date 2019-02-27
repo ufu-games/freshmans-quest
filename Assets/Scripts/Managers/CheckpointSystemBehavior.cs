@@ -53,12 +53,9 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 		playerReference.transform.position = LastCheckpoint;
 		ScreenTransition sc = lv.m_nowCollider.GetComponent<ScreenTransition>();
 		foreach(GameObject go in all_gameObjects) {
-			print(go.name);
 			if(sc.m_resettables.Contains(go)) {
-				print(go.name + " contained in screen");
 				IResettableProp ir = go.GetComponent<IResettableProp>();
 				if(ir != null && go.activeInHierarchy) {
-					print(go.name + " contain resettableprop");
 					Debug.Log("1");
 					ir.Reset();
 				}
