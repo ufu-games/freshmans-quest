@@ -44,6 +44,12 @@ public class GameController : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    public void GoToHub() {
+        Time.timeScale = 1;
+        SaveSystem.instance.UISaveGame();
+        LevelManagement.LevelManager.instance.LoadLevel(2);
+    }
+
     public void SaveAndQuit() {
         // por motivos obvios, ao voltar para o menu principal precisamos despausar o jogo.
         Time.timeScale = 1;
