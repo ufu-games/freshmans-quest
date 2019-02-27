@@ -30,12 +30,13 @@ public class EnemyMove : MonoBehaviour, IResettableProp
     public float getDirection(){
         return realDirection;
     }
+
     // Update is called once per frame
     void Update()
     {
         var newPosition = transform.position;
         var playerPos = player.GetComponent<Transform>().position;
-        if(FollowPlayer == true && Mathf.Abs(transform.position.x - playerPos.x) < MinDistanceToFollowPlayer){
+        if(FollowPlayer == true && Mathf.Abs(transform.position.x - playerPos.x) < MinDistanceToFollowPlayer) {
             if(transform.position.x > playerPos.x ){
                 if(transform.position.x - speed > playerPos.x)
                     newPosition.x -= speed;
@@ -51,8 +52,14 @@ public class EnemyMove : MonoBehaviour, IResettableProp
         } else {
             newPosition.x += this.realDirection * speed;
         }
-            transform.position = newPosition;
+
+        UpdateLocalScale(transform.position - playerPos);
+        transform.position = newPosition;
         
+    }
+
+    private void UpdateLocalScale(Vector3 movement) {
+        transform.localScale = new Vector3(Mathf.Sign(movement.x) * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
 
     void OnTriggerEnter2D(Collider2D col){
