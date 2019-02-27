@@ -550,6 +550,8 @@ public class PlayerController : MonoBehaviour {
 			m_gravity = goingUpGravity;
 			m_velocity.y = Mathf.Sqrt(wallJumpVelocity.y * -m_gravity);
 			
+			SaveSystem.instance.Jumped();
+
 			if(SoundManager.instance && jumpingClip) {
 				SoundManager.instance.PlaySfx(jumpingClip);
 			}

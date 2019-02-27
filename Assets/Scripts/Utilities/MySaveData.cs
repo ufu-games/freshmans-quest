@@ -18,8 +18,6 @@ public class MySaveData
     public int lastStage = 0;
     [ReadOnly]
     public bool isInStage = false;
-    [ReadOnly]
-    public Vector3 positionInStage = Vector3.zero;
 
     public void Reset() {
         Jumps = 0;
@@ -28,6 +26,5 @@ public class MySaveData
         pizzaCounter = 0;
         lastStage = 0;
         isInStage = false;
-        positionInStage = Vector3.zero;
     }
 }

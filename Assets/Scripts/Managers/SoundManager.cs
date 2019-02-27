@@ -29,6 +29,8 @@ public class SoundManager : MonoBehaviour {
 			// is this bad?
 			DontDestroyOnLoad(gameObject);
 		} else if(instance != this) {
+			instance.fmodEventEmitter.ChangeEvent(GetComponent<StudioEventEmitter>().Event);
+			instance.fmodEventEmitter.Play();
 			Destroy(gameObject);
 		}
 	}
