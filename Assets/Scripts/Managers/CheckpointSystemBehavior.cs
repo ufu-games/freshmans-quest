@@ -26,6 +26,9 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 		foreach (GameObject go in GameObject.FindGameObjectsWithTag("BreakableWall")) {
 			all_gameObjects.Add(go);
 		}
+		foreach (GameObject go in GameObject.FindGameObjectsWithTag("Enemy")) {
+			all_gameObjects.Add(go);
+		}
 		lv = GameObject.FindGameObjectWithTag("Transitioner").GetComponent<LevelTransition>();
 		if(lv == null) {
 			print("LevelTransition não encontrado, o sistema de reset de props não funcionará");
@@ -67,5 +70,14 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 		yield return new WaitForSeconds(.1f);
 		JustSpawned = false;
 		SaveSystem.instance.Died();
+	}
+
+	public void RemovePizzaCounters() {
+		foreach(GameObject go in all_gameObjects) {
+			CollectableBehavior cb = go.GetComponent<CollectableBehavior>();
+			if(cb != null && go.activeInHierarchy) {
+				cb.Reset();
+			}
+		}
 	}
 }

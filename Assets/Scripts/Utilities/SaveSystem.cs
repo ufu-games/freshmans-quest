@@ -34,9 +34,6 @@ public class SaveSystem : MonoBehaviour
         PlayerPrefs.SetInt(slot + "_pizzaCounter",myData.pizzaCounter);
         PlayerPrefs.SetInt(slot + "_lastStage",myData.lastStage);
         PlayerPrefs.SetInt(slot + "_isInStage",myData.isInStage ? 1 : 0);
-        PlayerPrefs.SetFloat(slot + "_positionInStage_x",myData.positionInStage.x);
-        PlayerPrefs.SetFloat(slot + "_positionInStage_y",myData.positionInStage.y);
-        PlayerPrefs.SetFloat(slot + "_positionInStage_z",myData.positionInStage.z);
         PlayerPrefs.Save();
     }
 
@@ -56,9 +53,6 @@ public class SaveSystem : MonoBehaviour
         PlayerPrefs.SetInt(currentSlot + "_pizzaCounter",myData.pizzaCounter);
         PlayerPrefs.SetInt(currentSlot + "_lastStage",myData.lastStage);
         PlayerPrefs.SetInt(currentSlot + "_isInStage",myData.isInStage ? 1 : 0);
-        PlayerPrefs.SetFloat(currentSlot + "_positionInStage_x",myData.positionInStage.x);
-        PlayerPrefs.SetFloat(currentSlot + "_positionInStage_y",myData.positionInStage.y);
-        PlayerPrefs.SetFloat(currentSlot + "_positionInStage_z",myData.positionInStage.z);
         PlayerPrefs.Save();
     }
 
@@ -85,12 +79,8 @@ public class SaveSystem : MonoBehaviour
         myData.pizzaCounter = PlayerPrefs.GetInt(currentSlot + "_pizzaCounter");
         myData.lastStage = PlayerPrefs.GetInt(currentSlot + "_lastStage");
         myData.isInStage = PlayerPrefs.GetInt(currentSlot + "_isInStage") == 1;
-        myData.positionInStage.x = PlayerPrefs.GetInt(currentSlot + "_positionInStage_x");
-        myData.positionInStage.y = PlayerPrefs.GetInt(currentSlot + "_positionInStage_y");
-        myData.positionInStage.z = PlayerPrefs.GetInt(currentSlot + "_positionInStage_z");
         if(myData.isInStage) {
             LevelManagement.LevelManager.instance.LoadLevel(myData.lastStage);
-            GameObject.FindGameObjectWithTag("Checkpoint System").GetComponent<CheckpointSystemBehavior>().transform.position = myData.positionInStage;
         } else {
             LevelManagement.LevelManager.instance.LoadLevel("Hub");
         }
@@ -115,6 +105,7 @@ public class SaveSystem : MonoBehaviour
                 return;
             }
         }
+        currentSlot = slot;
         myData.Reset();
         UISaveGame(slot);
     }
@@ -145,26 +136,27 @@ public class SaveSystem : MonoBehaviour
         ms.pizzaCounter = PlayerPrefs.GetInt(slot + "_pizzaCounter");
         ms.lastStage = PlayerPrefs.GetInt(slot + "_lastStage");
         ms.isInStage = PlayerPrefs.GetInt(slot + "_isInStage") == 1;
-        ms.positionInStage.x = PlayerPrefs.GetInt(slot + "_positionInStage_x");
-        ms.positionInStage.y = PlayerPrefs.GetInt(slot + "_positionInStage_y");
-        ms.positionInStage.z = PlayerPrefs.GetInt(slot + "_positionInStage_z");
         return ms;
     }
 
 
     public void OnLevelEnter(int level) {
-        SetLastStage(level);
         SetIsInStage(true);
+        SetLastStage(level);
     }
 
     public void OnLevelExit() {
         SetIsInStage(false);
-        SetPositionInStage(Vector3.zero);
     }
 
     void OnApplicationQuit() {
-        if(currentSlot != -1)
+        if(currentSlot != -1) {
+            GameObject m_check = GameObject.FindGameObjectWithTag("Checkpoint System");
+            if(m_check) {
+                m_check.GetComponent<CheckpointSystemBehavior>().RemovePizzaCounters();
+            }
             UISaveGame();
+        }
     }
 
     IEnumerator SaveNextFrameCoroutine() {
@@ -199,9 +191,5 @@ public class SaveSystem : MonoBehaviour
 
     public void SetIsInStage(bool isInStage) {
         myData.isInStage = isInStage;
-    }
-
-    public void SetPositionInStage(Vector3 position) {
-        myData.positionInStage = position;
     }
 }

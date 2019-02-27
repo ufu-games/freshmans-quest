@@ -108,7 +108,9 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 	}
 
 	public void Reset() {
-		SoundManager.instance.PlayContinuousSfx(continuousClip,this.gameObject);
+		if(!GetComponent<AudioSource>()) {
+			SoundManager.instance.PlayContinuousSfx(continuousClip,this.gameObject);
+		}
 		if(GetComponentInChildren<ParticleSystem>()) {
 			GetComponentInChildren<ParticleSystem>().Play();
 		}
