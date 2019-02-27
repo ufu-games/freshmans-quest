@@ -114,7 +114,6 @@
             <destination>{34ff5ab5-5b06-452d-88ba-8d4d84b49db3}</destination>
             <destination>{dab71a35-4eb9-4685-81db-516f9c3b52d5}</destination>
             <destination>{24289359-8cf6-4531-b045-d356e654befb}</destination>
-            <destination>{092e2dc9-20ef-4951-91a5-c8eefb478992}</destination>
         </relationship>
     </object>
     <object class="ParameterProxy" id="{7588e756-3f7d-4399-997f-de5797cb5404}">
@@ -317,29 +316,6 @@
         </relationship>
         <relationship name="markerTrack">
             <destination>{9c0472ca-bdd4-4fe2-a121-6c79eed92357}</destination>
-        </relationship>
-    </object>
-    <object class="TransitionRegion" id="{092e2dc9-20ef-4951-91a5-c8eefb478992}">
-        <property name="triggerProbabilityEnabled">
-            <value>true</value>
-        </property>
-        <property name="triggerProbability">
-            <value>39.5</value>
-        </property>
-        <property name="position">
-            <value>35</value>
-        </property>
-        <property name="length">
-            <value>7.5</value>
-        </property>
-        <relationship name="destination">
-            <destination>{34ff5ab5-5b06-452d-88ba-8d4d84b49db3}</destination>
-        </relationship>
-        <relationship name="timeline">
-            <destination>{363bb166-5919-40ba-ad08-0ff4f8c58938}</destination>
-        </relationship>
-        <relationship name="markerTrack">
-            <destination>{0d4f9dd4-bfac-465a-942f-13b5c625861d}</destination>
         </relationship>
     </object>
     <object class="MixerBusEffectChain" id="{a480ab4c-6bb5-4b98-b622-aa7314aadaf7}">
