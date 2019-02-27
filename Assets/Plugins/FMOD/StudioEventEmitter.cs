@@ -230,6 +230,12 @@ namespace FMODUnity
 
         }
 
+        public void ChangeEvent(string newEvent) {
+            Event = newEvent;
+            Stop();
+            Lookup();
+        }
+
         public void Stop()
         {
             if (instance.isValid())

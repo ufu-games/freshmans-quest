@@ -48,6 +48,10 @@ public class GameController : MonoBehaviour
         // por motivos obvios, ao voltar para o menu principal precisamos despausar o jogo.
         Time.timeScale = 1;
         
+        GameObject m_check = GameObject.FindGameObjectWithTag("Checkpoint System");
+        if(m_check) {
+            m_check.GetComponent<CheckpointSystemBehavior>().RemovePizzaCounters();
+        }
         SaveSystem.instance.UISaveGame();
         LevelManagement.LevelManager.instance.LoadLevel(0);
     }

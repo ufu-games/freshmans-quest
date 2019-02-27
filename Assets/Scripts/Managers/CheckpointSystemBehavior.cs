@@ -71,4 +71,13 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 		JustSpawned = false;
 		SaveSystem.instance.Died();
 	}
+
+	public void RemovePizzaCounters() {
+		foreach(GameObject go in all_gameObjects) {
+			CollectableBehavior cb = go.GetComponent<CollectableBehavior>();
+			if(cb != null && go.activeInHierarchy) {
+				cb.Reset();
+			}
+		}
+	}
 }
