@@ -150,8 +150,13 @@ public class SaveSystem : MonoBehaviour
     }
 
     void OnApplicationQuit() {
-        if(currentSlot != -1)
+        if(currentSlot != -1) {
+            GameObject m_check = GameObject.FindGameObjectWithTag("Checkpoint System");
+            if(m_check) {
+                m_check.GetComponent<CheckpointSystemBehavior>().RemovePizzaCounters();
+            }
             UISaveGame();
+        }
     }
 
     IEnumerator SaveNextFrameCoroutine() {
