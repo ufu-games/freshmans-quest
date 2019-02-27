@@ -26,6 +26,9 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 		foreach (GameObject go in GameObject.FindGameObjectsWithTag("BreakableWall")) {
 			all_gameObjects.Add(go);
 		}
+		foreach (GameObject go in GameObject.FindGameObjectsWithTag("Enemy")) {
+			all_gameObjects.Add(go);
+		}
 		lv = GameObject.FindGameObjectWithTag("Transitioner").GetComponent<LevelTransition>();
 		if(lv == null) {
 			print("LevelTransition não encontrado, o sistema de reset de props não funcionará");
@@ -50,9 +53,12 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 		playerReference.transform.position = LastCheckpoint;
 		ScreenTransition sc = lv.m_nowCollider.GetComponent<ScreenTransition>();
 		foreach(GameObject go in all_gameObjects) {
+			print(go.name);
 			if(sc.m_resettables.Contains(go)) {
+				print(go.name + " contained in screen");
 				IResettableProp ir = go.GetComponent<IResettableProp>();
 				if(ir != null && go.activeInHierarchy) {
+					print(go.name + " contain resettableprop");
 					Debug.Log("1");
 					ir.Reset();
 				}
