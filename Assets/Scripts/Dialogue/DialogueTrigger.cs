@@ -5,6 +5,7 @@ using UnityEngine;
 public class DialogueTrigger : MonoBehaviour, IShowDialogue, IInteractableLeaveTrigger {
 
 	public Dialogue[] dialogue;
+	public bool destroySelfAfterTriggering = false;
 
 	public void TriggerDialogue() {
 		DialogueManager.instance.StartDialogue(dialogue);
@@ -13,6 +14,10 @@ public class DialogueTrigger : MonoBehaviour, IShowDialogue, IInteractableLeaveT
 	void IShowDialogue.ShowDialogue() {
 		TriggerDialogue();
 		FindObjectOfType<PlayerController>().StartDialogue();
+
+		if(destroySelfAfterTriggering) {
+			Destroy(gameObject);
+		}
 	}
 
 	void IInteractableLeaveTrigger.Interact() {
