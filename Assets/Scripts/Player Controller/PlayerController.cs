@@ -142,6 +142,7 @@ public class PlayerController : MonoBehaviour {
 		m_isSlipping = hit.transform.gameObject.tag == "Slippery" && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right));
 
 		IDangerous dangerousInteraction = hit.collider.gameObject.GetComponent<IDangerous>();
+		ICollisionInteraction collisionInteraction = hit.collider.gameObject.GetComponent<ICollisionInteraction>();
 
 		if(hit.collider.tag == "BreakableWall") {
 			hit.collider.gameObject.GetComponent<BreakableWallBehavior>().Collision(hit.point);
@@ -149,6 +150,12 @@ public class PlayerController : MonoBehaviour {
 
 		if(dangerousInteraction != null) {
 			dangerousInteraction.InteractWithPlayer(this.GetComponent<Collider2D>());
+		}
+
+		if(collisionInteraction != null) {
+			if(m_controller.isGrounded) {
+				collisionInteraction.Interact();
+			}
 		}
 
 		if(hit.collider.tag == "MovingPlataform"){
