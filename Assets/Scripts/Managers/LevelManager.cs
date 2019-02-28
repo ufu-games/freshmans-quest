@@ -30,6 +30,7 @@ namespace LevelManagement {
 		public static LevelManager instance;
 		public float fadeDuration = .1f;
 		public int MaxFrameRate = 60;
+		public GameObject loadingScreenPrefab;
 
 		private MaskableGraphic blackScreenToFade;
 
@@ -45,6 +46,8 @@ namespace LevelManagement {
 			} else {
 				Destroy(gameObject);
 			}
+
+			
 		}
 
 		void Start() {
@@ -74,12 +77,40 @@ namespace LevelManagement {
 			SceneManager.LoadScene(sceneToLoad);
 		}
 
+		private IEnumerator LoadSceneWithLoadingScreenRoutine(int levelIndex) {
+			// Instantiating Loading Screen Canvas;
+			GameObject loadingScreen = Instantiate(loadingScreenPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+			DontDestroyOnLoad(loadingScreen);
+			LoadingScreen loadingScreenScript = loadingScreen.GetComponent<LoadingScreen>();
+			AsyncOperation loadingOperation = SceneManager.LoadSceneAsync(levelIndex);
+
+			// Make this Fade out
+			float previousMusicVolume = SoundManager.instance.musicVolume;
+			SoundManager.instance.musicVolume = 0.0f;
+			SoundManager.instance.UpdateAudioSources();
+
+			while(!loadingOperation.isDone) {
+				// Debug.LogWarning("Loading Progress: " + loadingOperation.progress);
+				loadingScreenScript.UpdateProgressText((loadingOperation.progress / 0.9f));
+				yield return null;
+			}
+
+			// Make this Fade In
+			SoundManager.instance.musicVolume = previousMusicVolume;
+			SoundManager.instance.UpdateAudioSources();
+			Destroy(loadingScreen);
+		}
+
+		public void LoadSceneWithLoadingScreen(int levelIndex) {
+			StartCoroutine(LoadSceneWithLoadingScreenRoutine(levelIndex));
+		}
+
 		public void LoadLevel(string levelName) {
 			if(Application.CanStreamedLevelBeLoaded(levelName)) {
 				if(levelName != "Hub" && levelName != "MenuInicial" && levelName != "IntroducaoHistoria") {
 					SaveSystem.instance.OnLevelEnter(SceneManager.GetSceneByName(levelName).buildIndex);
 				}
-				SceneManager.LoadScene(levelName);
+				LoadSceneWithLoadingScreen(SceneManager.GetSceneByName(levelName).buildIndex);
 			} else {
 				Debug.LogError("LevelManager Error: invalid scene specified (" + levelName + " )");
 			}
@@ -91,7 +122,8 @@ namespace LevelManagement {
 				if(levelIndex > 2) {
 					SaveSystem.instance.OnLevelEnter(levelIndex);
 				}
-				SceneManager.LoadScene(levelIndex);
+				LoadSceneWithLoadingScreen(levelIndex);
+				// SceneManager.LoadScene(levelIndex);
 			} else {
 				Debug.LogError("Level Manager Error: invalid scene index specified (" + levelIndex + ")");
 			}
