@@ -78,6 +78,7 @@ namespace LevelManagement {
 		}
 
 		private IEnumerator LoadSceneWithLoadingScreenRoutine(int levelIndex) {
+			Debug.LogWarningFormat("Loading Scene with Level Index: {0}", levelIndex);
 			// Instantiating Loading Screen Canvas;
 			GameObject loadingScreen = Instantiate(loadingScreenPrefab, Vector3.zero, Quaternion.identity) as GameObject;
 			DontDestroyOnLoad(loadingScreen);
@@ -106,6 +107,8 @@ namespace LevelManagement {
 		}
 
 		public void LoadLevel(string levelName) {
+			Debug.LogWarningFormat("Loading Scene with Level Name: {0}", levelName);
+			Debug.LogWarningFormat("Level Index from Name: {0}", SceneManager.GetSceneByName(levelName).buildIndex);
 			if(Application.CanStreamedLevelBeLoaded(levelName)) {
 				if(levelName != "Hub" && levelName != "MenuInicial" && levelName != "IntroducaoHistoria") {
 					SaveSystem.instance.OnLevelEnter(SceneManager.GetSceneByName(levelName).buildIndex);

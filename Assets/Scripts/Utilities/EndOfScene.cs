@@ -5,7 +5,7 @@ using UnityEngine;
 public class EndOfScene : MonoBehaviour, IInteractable {
 
 	public void Interact(){
-		LevelManagement.LevelManager.instance.LoadLevel("Hub");
+		LevelManagement.LevelManager.instance.LoadLevel(2);
 		SaveSystem.instance.OnLevelExit();
 	}
 }
