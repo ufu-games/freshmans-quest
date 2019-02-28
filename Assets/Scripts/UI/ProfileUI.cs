@@ -13,7 +13,6 @@ public class ProfileUI : MonoBehaviour {
     public TextMeshProUGUI timePlayedText;
     public TextMeshProUGUI pizzasText;
     public void UpdateProfileUI(bool hasSaveData, MySaveData saveData) {
-        Debug.LogWarningFormat("Has Save Data: {0}", hasSaveData);
         if(hasSaveData) {
             hasSaveGameObject.SetActive(true);
             emptySaveGameObject.SetActive(false);

@@ -48,12 +48,13 @@ public class EnemyMove : MonoBehaviour, IResettableProp
                 else
                     newPosition.x = playerPos.x; 
             }
-            
+
+            UpdateLocalScale(transform.position - playerPos);
         } else {
             newPosition.x += this.realDirection * speed;
+            // invertendo a direcao pq o padrao do sprite do inimigo é olhando para a esquerda
+            UpdateLocalScale(new Vector3(-this.realDirection, 0, 0));
         }
-
-        UpdateLocalScale(transform.position - playerPos);
         transform.position = newPosition;
         
     }
