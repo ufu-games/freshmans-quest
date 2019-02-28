@@ -425,18 +425,6 @@ public class PlayerController : MonoBehaviour {
 				transf.localScale = new Vector3(Mathf.Sign(horizontalMovement) * Mathf.Abs(transf.localScale.x), transf.localScale.y, transf.localScale.z);
 			} 
 		}
-
-		if(m_isOnWall) {
-			if(m_controller.isColliding(Vector2.right)){
-					foreach(Transform transf in m_playerSprites) {
-						transf.localScale = new Vector3(Mathf.Abs(transf.localScale.x), m_originalScale.y, transf.localScale.z);
-					}
-			} else{
-					foreach(Transform transf in m_playerSprites) {
-						transf.localScale = new Vector3(Mathf.Abs(transf.localScale.x)* -1, m_originalScale.y, transf.localScale.z);
-					}
-			}
-		}
 	}
 
 	private void Jump() {
@@ -478,7 +466,6 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void WallJump() {
-		
 		//Debug.Log("right " + m_controller.isNear(Vector2.right,maxDistanceOffWall));
 
 		if(m_controller.isGrounded) {
@@ -502,7 +489,6 @@ public class PlayerController : MonoBehaviour {
 			(m_controller.isColliding(Vector2.right) &&  m_velocity.x > 0)))
 		{
 			// wasn't on wall last frame
-			
 			m_isOnWall = true;
 		} else if(
 			// is on wall AND
@@ -564,8 +550,8 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			foreach(Transform transf in m_playerSprites) {
-					StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
-					break;
+				StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
+				break;
 			}
 		}
 	}
