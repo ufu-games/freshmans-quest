@@ -549,6 +549,17 @@ public class PlayerController : MonoBehaviour {
 				SoundManager.instance.PlaySfx(jumpingClip);
 			}
 
+			// Instantiating Particles
+			if(m_controller.isNear(Vector2.left, maxDistanceOffWall)) {
+				ParticleSystem particle = Instantiate(landingParticles, transform.position + (Vector3.left / 2f), Quaternion.identity);
+				particle.transform.Rotate(0, 90, 0);
+				particle.Play();
+			} else if(m_controller.isNear(Vector2.right, maxDistanceOffWall)) {
+				ParticleSystem particle = Instantiate(landingParticles, transform.position + (Vector3.right / 2f), Quaternion.identity);
+				particle.transform.Rotate(0, -90, 0);
+				particle.Play();
+			}
+
 			foreach(Transform transf in m_playerSprites) {
 				StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
 				break;
