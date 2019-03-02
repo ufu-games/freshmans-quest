@@ -8,7 +8,9 @@ public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigg
     // public float timeToDrop = 1.5f;
     public float fallGravity = 2f;
     public AudioClip bodyFallingClip;
-    public ParticleSystem onFallParticle;
+    public ParticleSystem onFallRightParticle;
+    public ParticleSystem onFallLeftParticle;
+    private Vector3 km_downVector = new Vector3(0f, -1.5f, 0f);
 
     private Transform m_bodyTransform;
     private Vector2 m_bodyOriginalPosition;
@@ -64,7 +66,9 @@ public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigg
 
             if(Mathf.Abs(m_bodyRigidbody.velocity.y) < Mathf.Epsilon) {
                 // caiu
-                Instantiate(onFallParticle, bodyToFall.transform.position + Vector3.down, Quaternion.identity).Play();
+                Instantiate(onFallRightParticle, bodyToFall.transform.position + km_downVector + Vector3.right, Quaternion.identity).Play();
+                Instantiate(onFallLeftParticle, bodyToFall.transform.position + km_downVector + Vector3.left, Quaternion.identity).Play();
+
                 yield return null;
                 m_isFalling = false;
                 m_hasFallen = true;
