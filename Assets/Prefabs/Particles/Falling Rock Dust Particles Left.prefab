@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2228835832457895341}
   - component: {fileID: 3046924062644299507}
   m_Layer: 19
-  m_Name: Falling Rock Left Particles
+  m_Name: Falling Rock Dust Particles Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -607,7 +607,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -4731,8 +4731,8 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 029ceaf6a3ef54d27abe9658c81023d3, type: 2}
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 93be98e460c8d4a4d884fb509c660dc1, type: 2}
+  - {fileID: 2100000, guid: 93be98e460c8d4a4d884fb509c660dc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -10,6 +10,8 @@ public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigg
     public AudioClip bodyFallingClip;
     public ParticleSystem onFallRightParticle;
     public ParticleSystem onFallLeftParticle;
+    public ParticleSystem onFallRightDustParticle;
+    public ParticleSystem onFallLeftDustParticle;
     private Vector3 km_downVector = new Vector3(0f, -1.5f, 0f);
 
     private Transform m_bodyTransform;
@@ -68,6 +70,8 @@ public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigg
                 // caiu
                 Instantiate(onFallRightParticle, bodyToFall.transform.position + km_downVector + Vector3.right, Quaternion.identity).Play();
                 Instantiate(onFallLeftParticle, bodyToFall.transform.position + km_downVector + Vector3.left, Quaternion.identity).Play();
+                Instantiate(onFallRightDustParticle, bodyToFall.transform.position + km_downVector + Vector3.right, Quaternion.identity).Play();
+                Instantiate(onFallLeftDustParticle, bodyToFall.transform.position + km_downVector + Vector3.left, Quaternion.identity).Play();
 
                 yield return null;
                 m_isFalling = false;

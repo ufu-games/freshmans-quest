@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2228835832457895341}
   - component: {fileID: 3046924062644299507}
   m_Layer: 19
-  m_Name: Falling Rock Left Particles
+  m_Name: Falling Rock Right Dust Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -607,7 +607,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -1553,36 +1553,36 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: -1
-          inSlope: 0.3562797
-          outSlope: 0.3562797
+          value: 1
+          inSlope: -0.25169125
+          outSlope: -0.25169125
           tangentMode: 34
           weightedMode: 0
           inWeight: 0
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.33989114
-          value: -0.8789037
-          inSlope: 7.648179
-          outSlope: 7.648179
+          time: 0.35730237
+          value: 0.9100701
+          inSlope: -14.13424
+          outSlope: -14.13424
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
-          outWeight: 0.8834838
+          outWeight: 0.9980241
         - serializedVersion: 3
-          time: 0.45918238
-          value: -0.36145222
-          inSlope: 1.9985921
-          outSlope: 1.9985921
+          time: 0.37762228
+          value: 0.68401116
+          inSlope: -1.6034986
+          outSlope: -1.6034986
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
-          outWeight: 0.36504242
+          outWeight: 0.31988838
         - serializedVersion: 3
           time: 1
           value: -0.02702713
-          inSlope: 0.61836946
-          outSlope: 0.61836946
+          inSlope: -1.1424545
+          outSlope: -1.1424545
           tangentMode: 34
           weightedMode: 0
           inWeight: 0.33333334
@@ -3579,8 +3579,8 @@ ParticleSystem:
   CollisionModule:
     enabled: 0
     serializedVersion: 3
-    type: 1
-    collisionMode: 1
+    type: 0
+    collisionMode: 0
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
@@ -3755,7 +3755,7 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 4294967295
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -4731,8 +4731,8 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 029ceaf6a3ef54d27abe9658c81023d3, type: 2}
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 93be98e460c8d4a4d884fb509c660dc1, type: 2}
+  - {fileID: 2100000, guid: 93be98e460c8d4a4d884fb509c660dc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
