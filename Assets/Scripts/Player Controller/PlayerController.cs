@@ -88,8 +88,8 @@ public class PlayerController : MonoBehaviour {
 
 	// Scale Juicing
 	private Vector2 m_originalScale;
-	private Vector2 m_goingUpScaleMultiplier = new Vector2(0.8f, 1.2f);
-	private Vector2 m_groundingScaleMultiplier = new Vector2(1.2f, 0.8f);
+	private Vector2 m_goingUpScaleMultiplier = new Vector2(0.7f, 1.3f);
+	private Vector2 m_groundingScaleMultiplier = new Vector2(1.3f, 0.7f);
 
 	// easily extendable
 	private bool isInCannon = false;
