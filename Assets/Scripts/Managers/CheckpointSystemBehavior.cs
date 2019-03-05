@@ -29,6 +29,10 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 		foreach (GameObject go in GameObject.FindGameObjectsWithTag("Enemy")) {
 			all_gameObjects.Add(go);
 		}
+		foreach(GameObject go in GameObject.FindGameObjectsWithTag("Resetable")) {
+			all_gameObjects.Add(go);
+		}
+		
 		lv = GameObject.FindGameObjectWithTag("Transitioner").GetComponent<LevelTransition>();
 		if(lv == null) {
 			print("LevelTransition não encontrado, o sistema de reset de props não funcionará");

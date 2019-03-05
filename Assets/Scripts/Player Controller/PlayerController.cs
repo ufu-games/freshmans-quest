@@ -418,12 +418,21 @@ public class PlayerController : MonoBehaviour {
 	private void Move() {
 		float horizontalMovement = Input.GetAxisRaw("Horizontal");
 		normalizedHorizontalSpeed = horizontalMovement;
-		
-		if(horizontalMovement != 0) {
-			if(!m_isOnWall) 
-			foreach(Transform transf in m_playerSprites) {
-				transf.localScale = new Vector3(Mathf.Sign(horizontalMovement) * Mathf.Abs(transf.localScale.x), transf.localScale.y, transf.localScale.z);
-			} 
+
+		if(Mathf.Abs(normalizedHorizontalSpeed) > Mathf.Epsilon ||
+			Mathf.Abs(m_controller.velocity.x) > 0.05f) {
+				// tem que chegar por um valor relativamente alto no controller porque
+				// sempre tem algum resquicio de movimento nele
+
+				// Debug.LogWarningFormat("Changing Player's Scale because we have normalized horizontal speed of {0} and m_controller.velocity of {1}", normalizedHorizontalSpeed, m_controller.velocity.x);
+
+				float sign = (normalizedHorizontalSpeed != 0 ? Mathf.Sign(normalizedHorizontalSpeed) : Mathf.Sign(m_controller.velocity.x));
+
+				if(!m_isOnWall) {
+					foreach(Transform transf in m_playerSprites) {
+						transf.localScale = new Vector3(sign * Mathf.Abs(transf.localScale.x), transf.localScale.y, transf.localScale.z);	
+					}
+				}
 		}
 	}
 
@@ -525,15 +534,16 @@ public class PlayerController : MonoBehaviour {
 			((m_controller.isNear(Vector2.left,maxDistanceOffWall) || m_controller.isNear(Vector2.right,maxDistanceOffWall))))
 			) {
 			if(!m_isOnWall) {
-				if(m_controller.isColliding(Vector2.right)){
-					foreach(Transform transf in m_playerSprites) {
-						transf.localScale = new Vector3(Mathf.Abs(transf.localScale.x)*-1, m_originalScale.y, transf.localScale.z);
-					}
-				} else{
-					foreach(Transform transf in m_playerSprites) {
-						transf.localScale = new Vector3(Mathf.Abs(transf.localScale.x), m_originalScale.y, transf.localScale.z);
-					}
-				}
+				// nao precisa mais disso pois a funcao move agora lida com a escala em todas ocasioes
+				// if(m_controller.isColliding(Vector2.right)){
+				// 	foreach(Transform transf in m_playerSprites) {
+				// 		transf.localScale = new Vector3(Mathf.Abs(transf.localScale.x)*-1, m_originalScale.y, transf.localScale.z);
+				// 	}
+				// } else{
+				// 	foreach(Transform transf in m_playerSprites) {
+				// 		transf.localScale = new Vector3(Mathf.Abs(transf.localScale.x), m_originalScale.y, transf.localScale.z);
+				// 	}
+				// }
 			}
 
 			m_isOnWall = false;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FallingPlatform : MonoBehaviour, ICollisionInteraction {
+public class FallingPlatform : MonoBehaviour, ICollisionInteraction, IResettableProp {
     public float timeUntilFall = 3f;
     public float timeUntilReappear = 3f;
     public float reappearAnimationTime = 1f;
@@ -10,6 +10,7 @@ public class FallingPlatform : MonoBehaviour, ICollisionInteraction {
     private SpriteRenderer m_spriteRenderer;
     private BoxCollider2D m_boxCollider;
     private bool m_canBeInteractWith;
+    
     void Awake() {
         m_spriteRenderer = GetComponent<SpriteRenderer>();
         m_boxCollider = GetComponent<BoxCollider2D>();
@@ -19,36 +20,41 @@ public class FallingPlatform : MonoBehaviour, ICollisionInteraction {
     private IEnumerator ReappearPlatformRoutine() {
         yield return new WaitForSeconds(timeUntilReappear - reappearAnimationTime);
         m_spriteRenderer.enabled = true;
-        float step = (1.0f / (reappearAnimationTime / Time.deltaTime));
         float timeElapsed = 0f;
         
         while(timeElapsed < reappearAnimationTime) {
             timeElapsed += Time.deltaTime;
             Color tempColor = m_spriteRenderer.color;
-            tempColor.a += step;
+            tempColor.a = Mathf.Lerp(0, 1, (timeElapsed/reappearAnimationTime));
             m_spriteRenderer.color = tempColor;
             yield return null;
         }
+
+        Color t_color = m_spriteRenderer.color;
+        t_color.a = 1;
+        m_spriteRenderer.color = t_color;
+        yield return null;
 
         m_boxCollider.enabled = true;
         m_canBeInteractWith = true;
     }
 
     private IEnumerator FallPlatformRoutine() {
-        // roughly estimating 30fps;
-        float stepsInFrames = timeUntilFall / Time.deltaTime;
-        float step = (1.0f / stepsInFrames); 
         float timeElapsed = 0f;
 
         // change this later, shaders are a good idea
         while(timeElapsed < timeUntilFall) {
             timeElapsed += Time.deltaTime;
             Color tempColor = m_spriteRenderer.color;
-            tempColor.a -= step;
+            tempColor.a = Mathf.Lerp(1, 0, (timeElapsed / timeUntilFall));
             m_spriteRenderer.color = tempColor;
-
             yield return null;
         }
+
+        Color t_color = m_spriteRenderer.color;
+        t_color.a = 0;
+        m_spriteRenderer.color = t_color;
+        yield return null;
 
         m_spriteRenderer.enabled = false;
         m_boxCollider.enabled = false;
@@ -60,5 +66,19 @@ public class FallingPlatform : MonoBehaviour, ICollisionInteraction {
         Debug.LogWarning("Collision with the Falling Platform");
         m_canBeInteractWith = false;
         StartCoroutine(FallPlatformRoutine());
+    }
+
+    void IResettableProp.Reset() {
+        Debug.LogFormat("Falling Platform Reset Function");
+
+        StopAllCoroutines();
+        m_spriteRenderer.enabled = true;
+        m_boxCollider.enabled = true;
+
+        Color color = m_spriteRenderer.color;
+        color.a = 1;
+        m_spriteRenderer.color = color;
+
+        m_canBeInteractWith = true;
     }
 }

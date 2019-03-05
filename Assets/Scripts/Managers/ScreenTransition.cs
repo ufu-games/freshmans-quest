@@ -63,7 +63,8 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 	public void OnTriggerStay2D(Collider2D col) { // Add os props e os breakable wall da screen na lista m_resettables dela
 		if(!Enabled) {
 			GameObject go = col.gameObject;
-			if(!m_resettables.Contains(go) && (go.tag == "Prop" || go.tag == "BreakableWall" || go.tag == "Enemy")) {
+			Debug.LogWarningFormat("Screen Transtion On Trigger Stay 2D: go.name: {0}", go.name);
+			if(!m_resettables.Contains(go) && (go.tag == "Prop" || go.tag == "BreakableWall" || go.tag == "Enemy") || go.tag == "Resetable") {
 				m_resettables.Add(go);
 			}
 		}

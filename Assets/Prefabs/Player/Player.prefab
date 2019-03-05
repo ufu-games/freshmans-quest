@@ -98,8 +98,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasWallJump: 1
-  PizzaCollected: 0
-  HomeworkCollected: 0
   runSpeed: 7
   groundDamping: 0.25
   slippingFrictionMultiplier: 0.1
@@ -110,7 +108,7 @@ MonoBehaviour:
   inAirDamping: 0.08333
   jumpHeight: 2
   jumpPressedRememberTime: 0.1
-  groundedRememberTime: 0.1
+  groundedRememberTime: 0.075
   cutJumpHeight: 0.35
   leftGoOffWalDelay: 2
   onWallGravity: -1

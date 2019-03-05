@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: 114387728296950074}
+  - {fileID: 114609569694982554}
   EditorEvents:
   - {fileID: 114924318451097942}
   - {fileID: 114888961289976102}
@@ -25,7 +25,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: 114489664524076078}
   - {fileID: 114011588981017792}
-  stringsBankWriteTime: 636868805615193602
+  stringsBankWriteTime: 636868780070000000
   cacheVersion: 3
 --- !u!114 &114011588981017792
 MonoBehaviour:
@@ -205,7 +205,7 @@ MonoBehaviour:
   FileSizes:
   - Name: Desktop
     Value: 2815296
-  Exists: 1
+  Exists: 0
 --- !u!114 &114478930479642766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,6 +261,26 @@ MonoBehaviour:
   - Name: Desktop
     Value: 968512
   Exists: 0
+--- !u!114 &114609569694982554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: /Users/gueepo/Unity/freshmans-quest/FMOD/freshmansquest/Build/Desktop/Master
+    Bank.bank
+  lastModified: 636868780070000000
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 2815200
+  Exists: 1
 --- !u!114 &114615394019893036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,7 +316,7 @@ MonoBehaviour:
   Path: event:/Faculdade 0
   guid: 824370adf1d04d4d8cfb2addb89b345e
   Banks:
-  - {fileID: 114387728296950074}
+  - {fileID: 114609569694982554}
   IsStream: 1
   Is3D: 1
   IsOneShot: 0
@@ -304,6 +324,22 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 87272
+--- !u!114 &114746715653743032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: MainThemeTransition
+  Min: -1
+  Max: 1
+  Default: 0
 --- !u!114 &114758691298999276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -389,7 +425,7 @@ MonoBehaviour:
   Path: "event:/Qu\xEDmica"
   guid: 4d4dff4dad76004caf24a8a7b22cd1d2
   Banks:
-  - {fileID: 114387728296950074}
+  - {fileID: 114609569694982554}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -412,12 +448,12 @@ MonoBehaviour:
   Path: event:/MainTheme
   guid: 3d55e31e8cc7c640bc813316c3839e4c
   Banks:
-  - {fileID: 114387728296950074}
+  - {fileID: 114609569694982554}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114041670254192690}
+  - {fileID: 114746715653743032}
   MinDistance: 0
   MaxDistance: 0
   Length: 74213
