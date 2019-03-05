@@ -16,6 +16,10 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 	[ReadOnly]
 	public Vector2 spawnpoint;
 
+	public Vector2 screenReferenceResolution;
+
+	
+
 	void Awake(){
 		StartCoroutine(Delay());
 		m_col = GetComponent<PolygonCollider2D>();
@@ -31,6 +35,12 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 				spawnpoint = t.position;
 			}
 		}
+
+		if(screenReferenceResolution == Vector2.zero) {
+			screenReferenceResolution.x = FindObjectOfType<UnityEngine.U2D.PixelPerfectCamera>().refResolutionX;
+			screenReferenceResolution.y = FindObjectOfType<UnityEngine.U2D.PixelPerfectCamera>().refResolutionY;
+		}
+
 	}
 
 	void Start(){
@@ -63,7 +73,6 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 	public void OnTriggerStay2D(Collider2D col) { // Add os props e os breakable wall da screen na lista m_resettables dela
 		if(!Enabled) {
 			GameObject go = col.gameObject;
-			Debug.LogWarningFormat("Screen Transtion On Trigger Stay 2D: go.name: {0}", go.name);
 			if(!m_resettables.Contains(go) && (go.tag == "Prop" || go.tag == "BreakableWall" || go.tag == "Enemy") || go.tag == "Resetable") {
 				m_resettables.Add(go);
 			}

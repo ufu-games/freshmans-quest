@@ -25,8 +25,11 @@ public class LevelTransition : MonoBehaviour {
 	[HideInInspector]
 	public List<PolygonCollider2D> InColliders;
 
+	private UnityEngine.U2D.PixelPerfectCamera m_pixelPerfectCamera;
+
 	void Start () {
 		m_player = GameObject.FindGameObjectWithTag("Player");
+		m_pixelPerfectCamera = FindObjectOfType<UnityEngine.U2D.PixelPerfectCamera>();
 		
 		if(m_player == null){
 			print("Player não encontrado na cena, A transição de telas não funcionará");
@@ -109,6 +112,13 @@ public class LevelTransition : MonoBehaviour {
 		yield return new WaitForSeconds(TransitionDuration);
 		m_cam.m_Damping = 0; //É necessário que o damping volte a ser zero para que a camera respeite com rigidez o Bounding Shape
 		m_player.GetComponent<PlayerController>().enabled = true;
+
+		// Mudando o Tamanho da Camera aqui
+		// TO DO: LERPAR O TAMANHO DA CAMERA !!
+		Vector2 t_referenceResolution = m_nowCollider.GetComponent<ScreenTransition>().screenReferenceResolution;
+		m_pixelPerfectCamera.refResolutionX = Mathf.RoundToInt(t_referenceResolution.x);
+		m_pixelPerfectCamera.refResolutionY = Mathf.RoundToInt(t_referenceResolution.y);
+
 		//yield return new WaitForSeconds(0.5f);
 		Transitioning = false;
 	}
