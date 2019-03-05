@@ -69,6 +69,7 @@ public class NewHubManager : MonoBehaviour {
 
 	public void ChooseArtsLevel() {
 		Debug.LogWarning("Starting Arts Level...");
+		LevelManagement.LevelManager.instance.LoadLevel(4);
 	}
 
 	public void ChooseChemistryLevel() {
