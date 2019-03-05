@@ -25,11 +25,17 @@ public class LevelTransition : MonoBehaviour {
 	[HideInInspector]
 	public List<PolygonCollider2D> InColliders;
 
-	private UnityEngine.U2D.PixelPerfectCamera m_pixelPerfectCamera;
+	public float timeToTransitionScreenSize = 1;
+	private UnityEngine.U2D.PixelPerfectCamera[] PixelPerfectCameralist;
+	private Vector2Int m_referenceResolution;
+	private bool destroyOtherCoroutines = false;
+	private float activeZoom = 1;
 
 	void Start () {
 		m_player = GameObject.FindGameObjectWithTag("Player");
-		m_pixelPerfectCamera = FindObjectOfType<UnityEngine.U2D.PixelPerfectCamera>();
+		m_referenceResolution = new Vector2Int(FindObjectOfType<UnityEngine.U2D.PixelPerfectCamera>().refResolutionX,FindObjectOfType<UnityEngine.U2D.PixelPerfectCamera>().refResolutionY);
+		
+		PixelPerfectCameralist = FindObjectsOfType<UnityEngine.U2D.PixelPerfectCamera>();
 		
 		if(m_player == null){
 			print("Player não encontrado na cena, A transição de telas não funcionará");
@@ -55,6 +61,7 @@ public class LevelTransition : MonoBehaviour {
 		} else {
 			if(!InColliders.Contains(m_nowCollider)) {
 				InColliders.Add(m_nowCollider);
+				activeZoom = m_nowCollider.GetComponent<ScreenTransition>().screenReferenceZoom;
 			}
 		}
 		
@@ -109,15 +116,13 @@ public class LevelTransition : MonoBehaviour {
 		m_cam.m_BoundingShape2D = m_nowCollider;
 		m_cam.InvalidatePathCache(); // Denovo o Invalidade
 		m_cam.m_Damping = TransitionDamping; //Esse Damping aqui é somente para fazer a transição ser suave
+		destroyOtherCoroutines = true;
 		yield return new WaitForSeconds(TransitionDuration);
+		destroyOtherCoroutines = false;
 		m_cam.m_Damping = 0; //É necessário que o damping volte a ser zero para que a camera respeite com rigidez o Bounding Shape
 		m_player.GetComponent<PlayerController>().enabled = true;
 
-		// Mudando o Tamanho da Camera aqui
-		// TO DO: LERPAR O TAMANHO DA CAMERA !!
-		Vector2 t_referenceResolution = m_nowCollider.GetComponent<ScreenTransition>().screenReferenceResolution;
-		m_pixelPerfectCamera.refResolutionX = Mathf.RoundToInt(t_referenceResolution.x);
-		m_pixelPerfectCamera.refResolutionY = Mathf.RoundToInt(t_referenceResolution.y);
+		StartCoroutine(ScreenResolutionLerp());
 
 		//yield return new WaitForSeconds(0.5f);
 		Transitioning = false;
@@ -125,5 +130,41 @@ public class LevelTransition : MonoBehaviour {
 
 	public void SetSpawnPoint() {
 		m_check.LastCheckpoint = InColliders[0].GetComponent<ScreenTransition>().spawnpoint	= InColliders[0].gameObject.GetComponent<ScreenTransition>().GetSpawnPoint();
+	}
+
+	void OnDestroy() {
+		foreach(UnityEngine.U2D.PixelPerfectCamera m_pixelPerfectCamera in PixelPerfectCameralist){
+			m_pixelPerfectCamera.refResolutionX = m_referenceResolution.x;
+			m_pixelPerfectCamera.refResolutionY = m_referenceResolution.y;
+		}
+	}
+
+	IEnumerator ScreenResolutionLerp() {
+		float t_referenceResolution = m_nowCollider.GetComponent<ScreenTransition>().screenReferenceZoom;
+		float elapsedTime = Time.deltaTime;
+		float thisZoom = activeZoom;
+		
+		if(Mathf.Approximately(activeZoom,t_referenceResolution)) {
+			yield break;
+		}
+
+		while(elapsedTime < timeToTransitionScreenSize) {
+			if(destroyOtherCoroutines) {
+				activeZoom = thisZoom;
+				yield break;
+			}
+			thisZoom = Mathf.Lerp(activeZoom,t_referenceResolution,elapsedTime/timeToTransitionScreenSize);
+			foreach(UnityEngine.U2D.PixelPerfectCamera m_pixelPerfectCamera in PixelPerfectCameralist){
+				m_pixelPerfectCamera.refResolutionX = Mathf.RoundToInt(thisZoom* m_referenceResolution.x);
+				m_pixelPerfectCamera.refResolutionY = Mathf.RoundToInt(thisZoom* m_referenceResolution.y);
+			}
+			elapsedTime += Time.deltaTime;
+			yield return null;
+		}
+		foreach(UnityEngine.U2D.PixelPerfectCamera m_pixelPerfectCamera in PixelPerfectCameralist){
+			m_pixelPerfectCamera.refResolutionX = Mathf.RoundToInt(t_referenceResolution* m_referenceResolution.x - (t_referenceResolution* m_referenceResolution.x % 16));
+			m_pixelPerfectCamera.refResolutionY = Mathf.RoundToInt(t_referenceResolution* m_referenceResolution.y - (t_referenceResolution* m_referenceResolution.y % 9));
+		}
+		activeZoom = t_referenceResolution;
 	}
 }

@@ -16,7 +16,8 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 	[ReadOnly]
 	public Vector2 spawnpoint;
 
-	public Vector2 screenReferenceResolution;
+	[Range(0,2)]
+	public float screenReferenceZoom = 1;
 
 	
 
@@ -35,12 +36,6 @@ public class ScreenTransition : MonoBehaviour, IInteractable, INonHarmfulInterac
 				spawnpoint = t.position;
 			}
 		}
-
-		if(screenReferenceResolution == Vector2.zero) {
-			screenReferenceResolution.x = FindObjectOfType<UnityEngine.U2D.PixelPerfectCamera>().refResolutionX;
-			screenReferenceResolution.y = FindObjectOfType<UnityEngine.U2D.PixelPerfectCamera>().refResolutionY;
-		}
-
 	}
 
 	void Start(){
