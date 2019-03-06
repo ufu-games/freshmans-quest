@@ -23,9 +23,9 @@ public class ProfileUI : MonoBehaviour {
             int minutesRemainder = Mathf.CeilToInt(minutesPlayed % 60);
 
 
-            deathsText.text = "Deaths: " + saveData.Deaths;
+            deathsText.text = "x" + saveData.Deaths;
             timePlayedText.text = hoursPlayed + "h" + minutesRemainder + "min";
-            pizzasText.text = "Pizzas: " + saveData.pizzaCounter;
+            pizzasText.text = "x" + saveData.pizzaCounter;
         } else {
             hasSaveGameObject.SetActive(false);
             emptySaveGameObject.SetActive(true);
