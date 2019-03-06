@@ -14,6 +14,12 @@ public class GameController : MonoBehaviour
     private bool m_canPauseThisFrame = true;
     private EventSystem m_currentEventSystem;
 
+    private PlayerController m_playerControllerReference;
+
+
+    void Awake() {
+        m_playerControllerReference = FindObjectOfType<PlayerController>();
+    }
 
     void Start() {
         m_isPaused = false;
@@ -32,12 +38,14 @@ public class GameController : MonoBehaviour
 
     private void PauseGame() {
         pausePanel.SetActive(true);
+        m_playerControllerReference.enabled = false;
         m_isPaused = true;
         Time.timeScale = 0;
         m_currentEventSystem.SetSelectedGameObject(returnToGameText);
     }
 
     public void UnpauseGame() {
+        m_playerControllerReference.enabled = true;
         m_currentEventSystem.SetSelectedGameObject(null);
         pausePanel.SetActive(false);
         m_isPaused = false;

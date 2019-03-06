@@ -191,7 +191,7 @@ public class PlayerController : MonoBehaviour {
 		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
 
 		if(showDialogue != null && !m_isShowingDialogue) {
-			if(InputManager.instance.PressedConfirm()) {
+			if(InputManager.instance.PressedStartDialogue()) {
 				showDialogue.ShowDialogue();
 				m_isShowingDialogue = true;
 			}

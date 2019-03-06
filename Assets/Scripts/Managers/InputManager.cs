@@ -38,6 +38,7 @@ public abstract class BaseInput {
 	public abstract bool PressedConfirm();
 	public abstract bool PressedCancel();
 	public abstract bool PressedStart();
+	public abstract bool PressedStartDialogue();
 }
 
 public class PS4Input : BaseInput {
@@ -77,6 +78,10 @@ public class PS4Input : BaseInput {
 			Input.GetKeyDown(KeyCode.Joystick1Button3) ||
 			Input.GetKeyDown(KeyCode.Joystick1Button9)
 		);
+	}
+
+	public override bool PressedStartDialogue() {
+		return Input.GetKeyDown(KeyCode.Joystick1Button3);
 	}
 }
 
@@ -118,6 +123,10 @@ public class SwitchProInput : BaseInput {
 			Input.GetKeyDown(KeyCode.Joystick1Button8)
 		);
 	}
+
+	public override bool PressedStartDialogue() {
+		return Input.GetKeyDown(KeyCode.Joystick1Button3);
+	}
 }
 
 public class XBOXInput : BaseInput {
@@ -156,6 +165,10 @@ public class XBOXInput : BaseInput {
 			Input.GetKeyDown(KeyCode.Joystick1Button1)
 		);
 	}
+
+	public override bool PressedStartDialogue() {
+		return Input.GetKeyDown(KeyCode.Joystick1Button3);
+	}
 }
 
 public class StandardInput : BaseInput {
@@ -181,6 +194,10 @@ public class StandardInput : BaseInput {
 
 	public override bool PressedCancel() {
 		return Input.GetButtonDown("Cancel");
+	}
+
+	public override bool PressedStartDialogue() {
+		return PressedConfirm();
 	}
 }
 
@@ -254,21 +271,21 @@ public class InputManager : MonoBehaviour {
 	void Start () {
 		string[] names= Input.GetJoystickNames();
 		foreach(string name in names) {
-			Debug.Log("Connected Controller: " + name);
+			Debug.LogWarningFormat("Connected Controller: {0}", name);
 			if(name.Contains("Pro Controller")) {
-				Debug.Log("Using Switch Pro Controller");
+				Debug.LogWarning("Using Switch Pro Controller");
 				m_activeDevice = EInputDevice.SWITCH_controller;
 				m_inputDevice = new SwitchProInput();
 			} else if (name.Contains("Sony")) {
-				Debug.Log("Using PS4 Controller");
+				Debug.LogWarning("Using PS4 Controller");
 				m_activeDevice = EInputDevice.PS4_controller;
 				m_inputDevice = new PS4Input();
-			} else if(name.Contains("XBOX") || name.Contains("xinput")) { 
-				Debug.Log("Using XBOX Controller");
+			} else if(name.Contains("XBOX") || name.Contains("xinput") || name.Contains("Xbox")) { 
+				Debug.LogWarning("Using XBOX Controller");
 				m_activeDevice = EInputDevice.XBOX_controller;
 				m_inputDevice = new XBOXInput();
 			} else {
-				Debug.Log("Using Standard Input");
+				Debug.LogWarning("Using Standard Input");
 				m_activeDevice = EInputDevice.none;
 				m_inputDevice = new StandardInput();
 			}
@@ -304,5 +321,9 @@ public class InputManager : MonoBehaviour {
 
 	public bool IsAnythingPressed() {
 		return m_inputDevice.IsAnythingPressed();
+	}
+
+	public bool PressedStartDialogue() {
+		return m_inputDevice.PressedStartDialogue();
 	}
 }
