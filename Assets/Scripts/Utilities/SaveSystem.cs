@@ -82,7 +82,7 @@ public class SaveSystem : MonoBehaviour
         if(myData.isInStage) {
             LevelManagement.LevelManager.instance.LoadLevel(myData.lastStage);
         } else {
-            LevelManagement.LevelManager.instance.LoadLevel("Hub");
+            LevelManagement.LevelManager.instance.LoadLevel(2);
         }
     }
 

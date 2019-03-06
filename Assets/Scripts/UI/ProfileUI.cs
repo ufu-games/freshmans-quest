@@ -12,13 +12,19 @@ public class ProfileUI : MonoBehaviour {
     public TextMeshProUGUI deathsText;
     public TextMeshProUGUI timePlayedText;
     public TextMeshProUGUI pizzasText;
+
     public void UpdateProfileUI(bool hasSaveData, MySaveData saveData) {
         if(hasSaveData) {
             hasSaveGameObject.SetActive(true);
             emptySaveGameObject.SetActive(false);
 
+            int minutesPlayed = Mathf.FloorToInt(saveData.timePlayed / 60);
+            int hoursPlayed = Mathf.FloorToInt(minutesPlayed / 60);
+            int minutesRemainder = Mathf.CeilToInt(minutesPlayed % 60);
+
+
             deathsText.text = "Deaths: " + saveData.Deaths;
-            timePlayedText.text = saveData.timePlayed.ToString();
+            timePlayedText.text = hoursPlayed + "h" + minutesRemainder + "min";
             pizzasText.text = "Pizzas: " + saveData.pizzaCounter;
         } else {
             hasSaveGameObject.SetActive(false);
