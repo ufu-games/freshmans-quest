@@ -162,7 +162,8 @@ public class XBOXInput : BaseInput {
 	public override bool PressedCancel() {
 		return(
 			Input.GetKeyDown(KeyCode.Joystick1Button6) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button1)
+			Input.GetKeyDown(KeyCode.Joystick1Button1) ||
+			Input.GetKeyDown(KeyCode.Joystick1Button3)
 		);
 	}
 
