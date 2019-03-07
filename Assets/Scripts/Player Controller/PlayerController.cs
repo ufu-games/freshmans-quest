@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour {
 			Debug.LogWarning("Player nao possui DialogueHint!");
 		}
 
-		UpdatePizzaCounter();
+		// UpdatePizzaCounter();
     }
 
 
@@ -225,8 +225,10 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
+			float t_jumpingPlatformMultiplier = col.gameObject.GetComponent<JumpingPlatform>().jumpingMultiplier;
+
             float rotationAngle = col.gameObject.transform.eulerAngles.z;
-            float maxVelocity = Mathf.Sqrt(jumpingPlatformMultiplier * 2f * jumpHeight * -m_gravity);
+            float maxVelocity = Mathf.Sqrt(t_jumpingPlatformMultiplier * 2f * jumpHeight * -m_gravity);
 			this.getsThrownTo(rotationAngle, maxVelocity);
 			m_skipMoveOnUpdateThisFrame = true;
 		}
