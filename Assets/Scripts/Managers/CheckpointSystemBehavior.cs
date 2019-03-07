@@ -60,7 +60,7 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 			if(sc.m_resettables.Contains(go)) {
 				IResettableProp ir = go.GetComponent<IResettableProp>();
 				if(ir != null && go.activeInHierarchy) {
-					Debug.Log("1");
+					Debug.Log(go.name);
 					ir.Reset();
 				}
 			}
