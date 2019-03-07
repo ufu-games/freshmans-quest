@@ -99,6 +99,10 @@ public class PlayerController : MonoBehaviour {
 	//Breakable Wall Handling
 	[ReadOnly]
 	public Vector3 m_velocityLastFrame;
+	
+	// Bloqueando Direcionais no WallJump
+	private bool m_blockingHorizontalControl = false;
+	private Coroutine m_blockInputOnWallJumpCoroutine;
 
 	void Awake()
 	{
@@ -302,6 +306,7 @@ public class PlayerController : MonoBehaviour {
 
 			// became grounded this frame
 			if(!m_controller.collisionState.wasGroundedLastFrame) {
+				m_blockingHorizontalControl = false;
 				Instantiate(landingParticles, transform.position + (Vector3.down / 2f), Quaternion.identity).Play();
 				if(SoundManager.instance && stepClips.Length > 0) {
 					SoundManager.instance.PlaySfx(stepClips[Random.Range(0, stepClips.Length)]);
@@ -418,8 +423,13 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Move() {
+
 		float horizontalMovement = Input.GetAxisRaw("Horizontal");
 		normalizedHorizontalSpeed = horizontalMovement;
+
+		if(m_blockingHorizontalControl) {
+			normalizedHorizontalSpeed = 0;
+		}
 
 		if(Mathf.Abs(normalizedHorizontalSpeed) > Mathf.Epsilon ||
 			Mathf.Abs(m_controller.velocity.x) > 0.05f) {
@@ -576,6 +586,11 @@ public class PlayerController : MonoBehaviour {
 				StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
 				break;
 			}
+
+			if(m_blockInputOnWallJumpCoroutine != null) {
+				StopCoroutine(m_blockInputOnWallJumpCoroutine);
+			}
+			m_blockInputOnWallJumpCoroutine = StartCoroutine(BlockInputOnWallJumpCoroutine());
 		}
 	}
 	
@@ -664,5 +679,12 @@ public class PlayerController : MonoBehaviour {
 	public void UpdatePizzaCounter() {
 		if(PizzaCounterUI.instance) PizzaCounterUI.instance.UpdateCounter(Mathf.RoundToInt(SaveSystem.instance.myData.pizzaCounter));
 		else if(PizzaSliceCounterUI.instance) PizzaSliceCounterUI.instance.UpdateCounter(Mathf.RoundToInt(SaveSystem.instance.myData.pizzaCounter));
+	}
+
+	private IEnumerator BlockInputOnWallJumpCoroutine() {
+		m_blockingHorizontalControl = true;
+		yield return new WaitForSeconds(0.5f);
+		m_blockingHorizontalControl = false;
+		m_blockInputOnWallJumpCoroutine = null;
 	}
 }
