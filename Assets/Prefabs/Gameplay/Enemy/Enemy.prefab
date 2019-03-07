@@ -99,6 +99,9 @@ MonoBehaviour:
   speed: 0.05
   FollowPlayer: 1
   MinDistanceToFollowPlayer: 4
+  platformMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!50 &6287796586595696818
 Rigidbody2D:
   serializedVersion: 4

@@ -29,6 +29,9 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 		foreach (GameObject go in GameObject.FindGameObjectsWithTag("Enemy")) {
 			all_gameObjects.Add(go);
 		}
+		foreach (GameObject go in GameObject.FindGameObjectsWithTag("FlyingEnemy")) {
+			all_gameObjects.Add(go);
+		}
 		foreach(GameObject go in GameObject.FindGameObjectsWithTag("Resetable")) {
 			all_gameObjects.Add(go);
 		}
@@ -58,9 +61,10 @@ public class CheckpointSystemBehavior : MonoBehaviour {
 		ScreenTransition sc = lv.m_nowCollider.GetComponent<ScreenTransition>();
 		foreach(GameObject go in all_gameObjects) {
 			if(sc.m_resettables.Contains(go)) {
+				Debug.Log(go.name);
 				IResettableProp ir = go.GetComponent<IResettableProp>();
 				if(ir != null && go.activeInHierarchy) {
-					Debug.Log(go.name);
+					//Debug.Log(go.name);
 					ir.Reset();
 				}
 			}

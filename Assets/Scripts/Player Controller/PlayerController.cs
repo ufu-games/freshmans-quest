@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviour {
 
 		IDangerous dangerousInteraction = hit.collider.gameObject.GetComponent<IDangerous>();
 		ICollisionInteraction collisionInteraction = hit.collider.gameObject.GetComponent<ICollisionInteraction>();
-
+		
 		if(hit.collider.tag == "BreakableWall") {
 			hit.collider.gameObject.GetComponent<BreakableWallBehavior>().Collision(hit.point);
 		}
