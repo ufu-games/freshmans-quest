@@ -61,7 +61,6 @@ public class EnemyMove : MonoBehaviour, IResettableProp
         }
         var movementDirection = Mathf.Sign(newPosition.x - transform.position.x);
         var hit = Physics2D.Raycast(new Vector2(newPosition.x + 0.5f * movementDirection,newPosition.y - 0.5f), Vector2.down,1,platformMask);
-        Debug.DrawRay( new Vector2(newPosition.x + 0.5f * movementDirection,newPosition.y - 0.5f), Vector2.down, Color.red );
         if(hit.collider != null){
             transform.position = newPosition;
         }else{
@@ -81,7 +80,6 @@ public class EnemyMove : MonoBehaviour, IResettableProp
     }
 
     public void Reset() {
-		Debug.Log("resetando");
 		transform.position = initialPosition;
         if(InitialDirection == Direction.Right)realDirection = 1;
         if(InitialDirection == Direction.Left)realDirection = -1;
