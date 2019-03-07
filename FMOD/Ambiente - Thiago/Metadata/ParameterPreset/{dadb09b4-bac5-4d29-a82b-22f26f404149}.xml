@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="ParameterPreset" id="{dadb09b4-bac5-4d29-a82b-22f26f404149}">
+        <property name="name">
+            <value>Ambiente aberto-fechado</value>
+        </property>
+        <relationship name="folder">
+            <destination>{4912a21f-9e58-43b7-b247-cf9a18c6bca1}</destination>
+        </relationship>
+        <relationship name="parameter">
+            <destination>{7c9c966a-65c5-4c8b-9813-35abdcb038b4}</destination>
+        </relationship>
+    </object>
+    <object class="GameParameter" id="{7c9c966a-65c5-4c8b-9813-35abdcb038b4}">
+        <property name="initialValue">
+            <value>1</value>
+        </property>
+        <property name="isExposedRecursively">
+            <value>false</value>
+        </property>
+    </object>
+</objects>
