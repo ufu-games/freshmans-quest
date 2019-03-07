@@ -15,6 +15,10 @@ public class EnemyMove : MonoBehaviour, IResettableProp
     private float realDirection;
     private Vector2 initialPosition;
     private GameObject player;
+    /// <summary>
+	/// mask with all layers that the player should interact with
+	/// </summary>
+    public LayerMask platformMask = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -55,7 +59,14 @@ public class EnemyMove : MonoBehaviour, IResettableProp
             // invertendo a direcao pq o padrao do sprite do inimigo é olhando para a esquerda
             UpdateLocalScale(new Vector3(-this.realDirection, 0, 0));
         }
-        transform.position = newPosition;
+        var movementDirection = Mathf.Sign(newPosition.x - transform.position.x);
+        var hit = Physics2D.Raycast(new Vector2(newPosition.x + 0.5f * movementDirection,newPosition.y - 0.5f), Vector2.down,1,platformMask);
+        Debug.DrawRay( new Vector2(newPosition.x + 0.5f * movementDirection,newPosition.y - 0.5f), Vector2.down, Color.red );
+        if(hit.collider != null){
+            transform.position = newPosition;
+        }else{
+            this.realDirection *= -1;
+        }
         
     }
 
