@@ -92,17 +92,17 @@ namespace LevelManagement {
 			SoundManager.instance.UpdateAudioSources();
 
 			while(!loadingOperation.isDone) {
-				Debug.LogWarning("Loading Progress: " + loadingOperation.progress);
+				// Debug.LogWarning("Loading Progress: " + loadingOperation.progress);
 				loadingScreenScript.UpdateProgressText((loadingOperation.progress / 0.9f));
 				yield return null;
 			}
-			Debug.LogWarning("Destroying Loading Screen 1");
+			// Debug.LogWarning("Destroying Loading Screen 1");
 
 			// Make this Fade In
 			SoundManager.instance.musicVolume = previousMusicVolume;
 			SoundManager.instance.UpdateAudioSources();
 
-			Debug.LogWarning("Destroying Loading Screen 2");
+			// Debug.LogWarning("Destroying Loading Screen 2");
 			Destroy(loadingScreen);
 		}
 

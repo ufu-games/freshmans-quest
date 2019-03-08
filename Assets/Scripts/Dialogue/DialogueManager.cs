@@ -97,7 +97,6 @@ public class DialogueManager : MonoBehaviour {
 
 		dialogueText.text = "";
 		foreach(char letter in sentence.ToCharArray()) {
-			Debug.LogWarning("Typing Letter!");
 			dialogueText.text += letter;
 			yield return null;
 		}

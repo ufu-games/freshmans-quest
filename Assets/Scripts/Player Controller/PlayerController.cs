@@ -17,8 +17,6 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 	
 	[Space(5)]
-	[Header("General Configuration")]
-	public bool hasWallJump = false;
 
 	[Space(5)]
 	[Header("Movement Handling")]
@@ -40,12 +38,10 @@ public class PlayerController : MonoBehaviour {
 	public float leftGoOffWalDelay = 2f;
 	private float m_jumpPressedRemember;
 	private float m_groundedRemember;
-	private bool m_floating;
 	
 	[Space(5)]
 	[Header("Wall Jump Handling")]
 	public float onWallGravity = -5f;
-	//public Vector2 wallJumpVelocity = new Vector2(-5f, 5f);
 	public Vector2 wallJumpVelocity;
 	public float maxDistanceOffWall;
 	[ReadOnly]
@@ -56,8 +52,6 @@ public class PlayerController : MonoBehaviour {
 	private bool m_fastsliding = false;
 
 	[Space(5)]
-	[Header("Other Parameters")]
-	public float jumpingPlatformMultiplier = 2.5f;
 	public GameObject dialogueHintObject;
 	
 	[Space(5)]
@@ -79,7 +73,6 @@ public class PlayerController : MonoBehaviour {
 	private Prime31.CharacterController2D m_controller;
 	public Transform[] m_playerSprites;
 	private Animator[] m_animators;
-	private RaycastHit2D m_lastControllerColliderHit;
 	private Vector3 m_velocity;
 	
 	// Dialogue Handling
@@ -180,9 +173,6 @@ public class PlayerController : MonoBehaviour {
         		transform.position = newPosition;
 			}
 		}
-
-		/* TO DO: Dropping Platform */
-		/* TO DO: Moving Platform */
 		
 		// bail out on plain old ground hits cause they arent very interesting
 		if( hit.normal.y == 1f )
@@ -336,7 +326,7 @@ public class PlayerController : MonoBehaviour {
 		CamHandling();
 		AnimationLogic();
 		if(!isInCannon && !m_isOnWall) Jump();
-		if(hasWallJump) WallJump();
+		WallJump();
 		
 		if(isInCannon && InputManager.instance.PressedJump()){
 			var angleCannon = Cannon.getAngle();
@@ -357,9 +347,7 @@ public class PlayerController : MonoBehaviour {
 		float t_groundDamping = m_isSlipping ? (groundDamping * slippingFrictionMultiplier) : groundDamping;
 		var smoothedMovementFactor = m_controller.isGrounded ? t_groundDamping : inAirDamping;
 
-		//if(!m_isOnWall) {
-			m_velocity.x = Mathf.Lerp(normalizedHorizontalSpeed * runSpeed, m_velocity.x,Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime*60));
-		//}
+		m_velocity.x = Mathf.Lerp(normalizedHorizontalSpeed * runSpeed, m_velocity.x,Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime*60));
 		
 		// limiting gravity
 		m_velocity.y = Mathf.Max(m_gravity, m_velocity.y + (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime))));
