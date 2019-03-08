@@ -79,6 +79,7 @@ namespace LevelManagement {
 
 		private IEnumerator LoadSceneWithLoadingScreenRoutine(int levelIndex) {
 			Debug.LogWarningFormat("Loading Scene with Level Index: {0}", levelIndex);
+			
 			// Instantiating Loading Screen Canvas;
 			GameObject loadingScreen = Instantiate(loadingScreenPrefab, Vector3.zero, Quaternion.identity) as GameObject;
 			DontDestroyOnLoad(loadingScreen);
@@ -91,14 +92,17 @@ namespace LevelManagement {
 			SoundManager.instance.UpdateAudioSources();
 
 			while(!loadingOperation.isDone) {
-				// Debug.LogWarning("Loading Progress: " + loadingOperation.progress);
+				Debug.LogWarning("Loading Progress: " + loadingOperation.progress);
 				loadingScreenScript.UpdateProgressText((loadingOperation.progress / 0.9f));
 				yield return null;
 			}
+			Debug.LogWarning("Destroying Loading Screen 1");
 
 			// Make this Fade In
 			SoundManager.instance.musicVolume = previousMusicVolume;
 			SoundManager.instance.UpdateAudioSources();
+
+			Debug.LogWarning("Destroying Loading Screen 2");
 			Destroy(loadingScreen);
 		}
 

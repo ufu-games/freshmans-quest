@@ -7,6 +7,7 @@ using TMPro;
 public class ProfileUI : MonoBehaviour {
     public GameObject emptySaveGameObject;
     public GameObject hasSaveGameObject;
+    public int slotNumber = -1;
 
     [Header("Saved Game References")]
     public TextMeshProUGUI deathsText;

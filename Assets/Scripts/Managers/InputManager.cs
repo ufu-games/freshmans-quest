@@ -39,6 +39,7 @@ public abstract class BaseInput {
 	public abstract bool PressedCancel();
 	public abstract bool PressedStart();
 	public abstract bool PressedStartDialogue();
+	public abstract bool PressedDeleteProfile();
 }
 
 public class PS4Input : BaseInput {
@@ -82,6 +83,10 @@ public class PS4Input : BaseInput {
 
 	public override bool PressedStartDialogue() {
 		return Input.GetKeyDown(KeyCode.Joystick1Button3);
+	}
+
+	public override bool PressedDeleteProfile() {
+		return Input.GetKeyDown(KeyCode.Joystick1Button0);
 	}
 }
 
@@ -127,6 +132,10 @@ public class SwitchProInput : BaseInput {
 	public override bool PressedStartDialogue() {
 		return Input.GetKeyDown(KeyCode.Joystick1Button3);
 	}
+
+	public override bool PressedDeleteProfile() {
+		return Input.GetKeyDown(KeyCode.Joystick1Button2);
+	}
 }
 
 public class XBOXInput : BaseInput {
@@ -170,6 +179,10 @@ public class XBOXInput : BaseInput {
 	public override bool PressedStartDialogue() {
 		return Input.GetKeyDown(KeyCode.Joystick1Button3);
 	}
+
+	public override bool PressedDeleteProfile() {
+		return Input.GetKeyDown(KeyCode.Joystick1Button2);
+	}
 }
 
 public class StandardInput : BaseInput {
@@ -199,6 +212,10 @@ public class StandardInput : BaseInput {
 
 	public override bool PressedStartDialogue() {
 		return PressedConfirm();
+	}
+
+	public override bool PressedDeleteProfile() {
+		return Input.GetKeyDown(KeyCode.Delete);
 	}
 }
 
@@ -326,5 +343,9 @@ public class InputManager : MonoBehaviour {
 
 	public bool PressedStartDialogue() {
 		return m_inputDevice.PressedStartDialogue();
+	}
+
+	public bool PressedDeleteProfile() {
+		return m_inputDevice.PressedDeleteProfile();
 	}
 }
