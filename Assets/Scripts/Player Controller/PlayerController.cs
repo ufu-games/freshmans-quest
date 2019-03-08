@@ -683,7 +683,7 @@ public class PlayerController : MonoBehaviour {
 
 	private IEnumerator BlockInputOnWallJumpCoroutine() {
 		m_blockingHorizontalControl = true;
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(0.16f);
 		m_blockingHorizontalControl = false;
 		m_blockInputOnWallJumpCoroutine = null;
 	}
