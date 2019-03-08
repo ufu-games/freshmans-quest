@@ -51,18 +51,7 @@ namespace LevelManagement {
 		}
 
 		void Start() {
-			GameObject go = GameObject.FindGameObjectWithTag("BlackScreen");
-			if(go) {
-				blackScreenToFade = go.GetComponent<MaskableGraphic>();
-				if(blackScreenToFade) {
-					blackScreenToFade.GetComponent<Image>().enabled = true;
-					blackScreenToFade.color = new Color(blackScreenToFade.color.r,blackScreenToFade.color.g,blackScreenToFade.color.b,1);
-				} else {
-					print("Tela preta não encontrada, o Fading não funcionará");
-				}
-			} else {
-				print("Tela preta não encontrada, o Fading não funcionará");
-			}
+			ResetFadingScreenReference();
 			FadeOut(fadeDuration);
 		}
 
@@ -104,6 +93,8 @@ namespace LevelManagement {
 
 			// Debug.LogWarning("Destroying Loading Screen 2");
 			Destroy(loadingScreen);
+			ResetFadingScreenReference();
+			FadeOut(fadeDuration);
 		}
 
 		public void LoadSceneWithLoadingScreen(int levelIndex) {
@@ -165,6 +156,20 @@ namespace LevelManagement {
 			yield return new WaitForSeconds(1f);
 		}
 
+		public void ResetFadingScreenReference() {
+			GameObject go = GameObject.FindGameObjectWithTag("BlackScreen");
+			if(go) {
+				blackScreenToFade = go.GetComponent<MaskableGraphic>();
+				if(blackScreenToFade) {
+					blackScreenToFade.GetComponent<Image>().enabled = true;
+					blackScreenToFade.color = new Color(blackScreenToFade.color.r,blackScreenToFade.color.g,blackScreenToFade.color.b,1);
+				} else {
+					print("Tela preta não encontrada, o Fading não funcionará");
+				}
+			} else {
+				print("Tela preta não encontrada, o Fading não funcionará");
+			}
+		}
 	}
 }
 
