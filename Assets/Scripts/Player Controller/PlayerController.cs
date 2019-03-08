@@ -196,6 +196,7 @@ public class PlayerController : MonoBehaviour {
 
 		if(showDialogue != null && !m_isShowingDialogue) {
 			if(InputManager.instance.PressedStartDialogue()) {
+				SaveSystem.instance.NPCChatted();
 				showDialogue.ShowDialogue();
 				m_isShowingDialogue = true;
 			}

@@ -5,7 +5,7 @@ using UnityEngine.Audio;
 
 public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp {
 
-	public float Value;
+	public float index = 0;
 	public AudioClip collectedClip;
 	public AudioClip continuousClip;
 	[HideInInspector]

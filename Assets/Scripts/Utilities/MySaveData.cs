@@ -19,6 +19,11 @@ public class MySaveData
     [ReadOnly]
     public bool isInStage = false;
 
+    //Hidden Stats
+
+    [HideInInspector]
+    public int NPCChat = 0;
+
     public void Reset() {
         Jumps = 0;
         Deaths = 0;
@@ -26,5 +31,6 @@ public class MySaveData
         pizzaCounter = 0;
         lastStage = 0;
         isInStage = false;
+        NPCChat = 0;
     }
 }
