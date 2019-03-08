@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using System.Xml;
+using System.Xml.Serialization;
+
 
 public class SaveSystem : MonoBehaviour
 {   
@@ -15,6 +19,10 @@ public class SaveSystem : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        //later to be removed
+        if(PlayerPrefs.HasKey("0_isBeingUsed")) {
+            PlayerPrefs.DeleteAll();
+        }
         instance = this;
         myData = new MySaveData();
         myData.Reset();
@@ -27,13 +35,13 @@ public class SaveSystem : MonoBehaviour
             Debug.LogError("SaveSystem: Invalid given save slot, you cant save a game on a negative value slot.");
             return;
         }
-        PlayerPrefs.SetInt(slot + "_isBeingUsed",1);
-        PlayerPrefs.SetInt(slot + "_Jumps",myData.Jumps);
-        PlayerPrefs.SetInt(slot + "_Deaths",myData.Deaths);
-        PlayerPrefs.SetFloat(slot + "_timePlayed",myData.timePlayed);
-        PlayerPrefs.SetInt(slot + "_pizzaCounter",myData.pizzaCounter);
-        PlayerPrefs.SetInt(slot + "_lastStage",myData.lastStage);
-        PlayerPrefs.SetInt(slot + "_isInStage",myData.isInStage ? 1 : 0);
+        XmlSerializer serializer = new XmlSerializer(typeof(MySaveData));;
+        using (StringWriter sw = new StringWriter()) {
+            serializer.Serialize(sw,myData);
+            PlayerPrefs.SetString("slot_" + slot,sw.ToString());
+            PlayerPrefs.SetInt("slot_" + slot + "_isBeingUsed",1);
+        }
+        
         PlayerPrefs.Save();
     }
 
@@ -46,13 +54,14 @@ public class SaveSystem : MonoBehaviour
             Debug.LogError("SaveSystem: Invalid current save slot, are you trying to save a game without loading a game?");
             return;
         }
-        PlayerPrefs.SetInt(currentSlot + "_isBeingUsed",1);
-        PlayerPrefs.SetInt(currentSlot + "_Jumps",myData.Jumps);
-        PlayerPrefs.SetInt(currentSlot + "_Deaths",myData.Deaths);
-        PlayerPrefs.SetFloat(currentSlot + "_timePlayed",myData.timePlayed);
-        PlayerPrefs.SetInt(currentSlot + "_pizzaCounter",myData.pizzaCounter);
-        PlayerPrefs.SetInt(currentSlot + "_lastStage",myData.lastStage);
-        PlayerPrefs.SetInt(currentSlot + "_isInStage",myData.isInStage ? 1 : 0);
+
+        XmlSerializer serializer = new XmlSerializer(typeof(MySaveData));;
+        using (StringWriter sw = new StringWriter()) {
+            serializer.Serialize(sw,myData);
+            PlayerPrefs.SetString("slot_" + currentSlot,sw.ToString());
+            PlayerPrefs.SetInt("slot_" + currentSlot + "_isBeingUsed",1);
+        }
+        
         PlayerPrefs.Save();
     }
 
@@ -65,20 +74,22 @@ public class SaveSystem : MonoBehaviour
     }
 
     public void UILoadGame(int slot) {
-        if(!PlayerPrefs.HasKey(slot + "_isBeingUsed")) {
+        if(!PlayerPrefs.HasKey("slot_" + slot + "_isBeingUsed")) {
             Debug.LogError("SaveSystem: Can't load, the given slot doesn't exist.");
+            return;
         }
-        if(PlayerPrefs.GetInt(slot + "_isBeingUsed") == 0) {
+        if(PlayerPrefs.GetInt("slot_" + slot + "_isBeingUsed") == 0) {
             Debug.LogError("SaveSystem: Can't load, the given slot isn't in use.");
             return;
         }
         currentSlot = slot;
-        myData.Jumps = PlayerPrefs.GetInt(currentSlot + "_Jumps");
-        myData.Deaths = PlayerPrefs.GetInt(currentSlot + "_Deaths");
-        myData.timePlayed = PlayerPrefs.GetFloat(currentSlot + "_timePlayed");
-        myData.pizzaCounter = PlayerPrefs.GetInt(currentSlot + "_pizzaCounter");
-        myData.lastStage = PlayerPrefs.GetInt(currentSlot + "_lastStage");
-        myData.isInStage = PlayerPrefs.GetInt(currentSlot + "_isInStage") == 1;
+
+        XmlSerializer serializer = new XmlSerializer(typeof(MySaveData));
+       
+        using (StringReader reader = new StringReader(PlayerPrefs.GetString("slot_" + slot))) {
+            myData = serializer.Deserialize(reader) as MySaveData;
+        } 
+
         if(myData.isInStage) {
             LevelManagement.LevelManager.instance.LoadLevel(myData.lastStage);
         } else {
@@ -89,7 +100,7 @@ public class SaveSystem : MonoBehaviour
     public void UIResetGame(int slot) {
         myData.Reset();
         UISaveGame(slot);
-        PlayerPrefs.SetInt(slot + "_isBeingUsed",0);
+        PlayerPrefs.SetInt("slot_" + slot + "_isBeingUsed",0);
         PlayerPrefs.Save();
     }
 
@@ -99,8 +110,8 @@ public class SaveSystem : MonoBehaviour
     }
 
     public void UICreateSaveSlot(int slot) {
-        if(PlayerPrefs.HasKey(slot + "_isBeingUsed")) {
-            if(PlayerPrefs.GetInt(slot + "_isBeingUsed") == 1){
+        if(PlayerPrefs.HasKey("slot_" + slot + "_isBeingUsed")) {
+            if(PlayerPrefs.GetInt("slot_" + slot + "_isBeingUsed") == 1){
                 Debug.LogError("SaveSystem: Can't create a save slot in this slot because it is already being used.");
                 return;
             }
@@ -115,10 +126,10 @@ public class SaveSystem : MonoBehaviour
     /// </summary>
 
     public bool UISlotIsInUse(int slot) {
-        if(!PlayerPrefs.HasKey(slot + "_isBeingUsed")) {
+        if(!PlayerPrefs.HasKey("slot_" + slot + "_isBeingUsed")) {
             return false;
         }
-        if(PlayerPrefs.GetInt(slot + "_isBeingUsed") == 0) {
+        if(PlayerPrefs.GetInt("slot_" + slot + "_isBeingUsed") == 0) {
             return false;
         }
         return true;
@@ -130,12 +141,22 @@ public class SaveSystem : MonoBehaviour
 
     public MySaveData UIExtractInfo(int slot) {
         MySaveData ms = new MySaveData();
-        ms.Jumps = PlayerPrefs.GetInt(slot + "_Jumps");
-        ms.Deaths = PlayerPrefs.GetInt(slot + "_Deaths");
-        ms.timePlayed = PlayerPrefs.GetFloat(slot + "_timePlayed");
-        ms.pizzaCounter = PlayerPrefs.GetInt(slot + "_pizzaCounter");
-        ms.lastStage = PlayerPrefs.GetInt(slot + "_lastStage");
-        ms.isInStage = PlayerPrefs.GetInt(slot + "_isInStage") == 1;
+        if(!PlayerPrefs.HasKey("slot_" + slot + "_isBeingUsed")) {
+            Debug.Log("SaveSystem: Can't extract info, the given slot doesn't exist.");
+            ms.Reset();
+            return ms;
+        }
+        if(PlayerPrefs.GetInt("slot_" + slot + "_isBeingUsed") == 0) {
+            Debug.Log("SaveSystem: Can't extract info, the given slot isn't in use.");
+            ms.Reset();
+            return ms;
+        }
+        XmlSerializer serializer = new XmlSerializer(typeof(MySaveData));
+       
+        using (StringReader reader = new StringReader(PlayerPrefs.GetString("slot_" + slot))) {
+            ms = serializer.Deserialize(reader) as MySaveData;
+        } 
+
         return ms;
     }
 
@@ -191,5 +212,9 @@ public class SaveSystem : MonoBehaviour
 
     public void SetIsInStage(bool isInStage) {
         myData.isInStage = isInStage;
+    }
+
+    public void NPCChatted() {
+        myData.NPCChat++;
     }
 }
