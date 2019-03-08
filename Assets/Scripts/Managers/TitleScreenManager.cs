@@ -279,6 +279,19 @@ public class TitleScreenManager : MonoBehaviour {
 			}
 		}
 
+		if(InputManager.instance.PressedDeleteProfile()) {
+			switch(m_currentState) {
+				case ECurrentState.OnSelectProfile:
+					Debug.LogWarning("Pressed Delete Profile");
+					ProfileUI profileUI = EventSystem.current.currentSelectedGameObject.GetComponent<ProfileUI>();
+					if(profileUI.slotNumber != -1) {
+						SaveSystem.instance.UIResetGame(profileUI.slotNumber);
+						profileUI.UpdateProfileUI(false, null);
+					}
+				break;
+			}
+		}
+
 		if(InputManager.instance.PressedCancel()) {
 			switch(m_currentState) {
 				case ECurrentState.OnMainMenu:
