@@ -97,7 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fd66fcb756454e9b9b88a07f4874b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasWallJump: 1
   runSpeed: 7
   groundDamping: 0.25
   slippingFrictionMultiplier: 0.1
@@ -108,14 +107,13 @@ MonoBehaviour:
   inAirDamping: 0.08333
   jumpHeight: 2
   jumpPressedRememberTime: 0.1
-  groundedRememberTime: 0.075
+  groundedRememberTime: 0.1
   cutJumpHeight: 0.35
   leftGoOffWalDelay: 2
   onWallGravity: -1
   wallJumpVelocity: {x: 12.5, y: 2.75}
   maxDistanceOffWall: 5
   m_isOnWall: 0
-  jumpingPlatformMultiplier: 3
   dialogueHintObject: {fileID: 614540880899732709}
   landingParticles: {fileID: 198417699065630864, guid: 5941734cbb31c479fbbe5fb46ba4283f,
     type: 3}
@@ -226,7 +224,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1359669964933440}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.0165, z: 0}
+  m_LocalPosition: {x: 0, y: -0.019, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4563930203491430}

@@ -9,6 +9,8 @@ public class FallingPlatform : MonoBehaviour, ICollisionInteraction, IResettable
     public float reappearAnimationTime = 1f;
     public float alphaToReactivateCollision = 0.7f;
 
+    public ParticleSystem fallingParticle;
+
     private SpriteRenderer m_spriteRenderer;
     private BoxCollider2D m_boxCollider;
     private bool m_canBeInteractWith;
@@ -49,6 +51,8 @@ public class FallingPlatform : MonoBehaviour, ICollisionInteraction, IResettable
         float timeElapsed = 0f;
 
         // change this later, shaders are a good idea
+        Instantiate(fallingParticle, transform.position, Quaternion.identity).Play();
+        
         while(timeElapsed < timeUntilFall) {
             timeElapsed += Time.deltaTime;
             Color tempColor = m_spriteRenderer.color;

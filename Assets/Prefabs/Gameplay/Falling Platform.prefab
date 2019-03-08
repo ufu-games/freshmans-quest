@@ -51,6 +51,8 @@ MonoBehaviour:
   timeUntilReappear: 3
   reappearAnimationTime: 1
   alphaToReactivateCollision: 0.5
+  fallingParticle: {fileID: 4394595275391364807, guid: 8edd80eca8dc1c94fa2487ee48d0dba8,
+    type: 3}
 --- !u!212 &6007052266168862247
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -85,8 +87,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1438519123
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 313ce0519ae6ef647898310ef19e6e7a, type: 3}
   m_Color: {r: 0.7607844, g: 0.7607844, b: 0.7607844, a: 1}
