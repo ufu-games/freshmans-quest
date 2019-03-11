@@ -3,18 +3,6 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
-
-/*
-	Player States:
-	Idle,
-	Moving,
-	Jumping,
-	OnWall,
-	WallJumping (?),
-	Cannon,
-	CannotMove, (Dialogue)
-*/
-
 public class PlayerController : MonoBehaviour {
 	
 	// Movement Handling
@@ -23,7 +11,7 @@ public class PlayerController : MonoBehaviour {
 	private const float slippingFrictionMultiplier = .1f;
 	
 	// Jump Handling
-	private const float goingUpGravity = -30f;
+	private const float goingUpGravity = -35f;
 	private const float goingDownGravity = -60f;
 	[ReadOnly]
 	private float m_gravity;
@@ -38,7 +26,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// WALL JUMP HANDLING Handling
 	private const float onWallGravity = -1f;
-	private Vector2 wallJumpVelocity = new Vector2(10f, 3.25f);
+	private Vector2 wallJumpVelocity = new Vector2(10f, 3.0f);
 	private const float maxDistanceOffWall = 5;
 	
 	[ReadOnly]
@@ -94,13 +82,12 @@ public class PlayerController : MonoBehaviour {
 	private Coroutine m_blockInputOnWallJumpCoroutine;
 
 	public enum EPlayerState {
-		Idle,
-		Moving,
+		Normal,
 		Jumping,
 		OnWall,
 		WallJumping, // maybe this can be removed
 		Cannon,
-		MoveBlocked, // cutscenes, dialogues...
+		MoveBlockedDialogue, // cutscenes, dialogues...
 	}
 
 	private EPlayerState m_currentPlayerState;
@@ -136,7 +123,7 @@ public class PlayerController : MonoBehaviour {
 			Debug.LogWarning("Player nao possui DialogueHint!");
 		}
 
-		m_currentPlayerState = EPlayerState.Idle;
+		m_currentPlayerState = EPlayerState.Normal;
     }
 
 
@@ -196,7 +183,7 @@ public class PlayerController : MonoBehaviour {
 			if(InputManager.instance.PressedStartDialogue()) {
 				SaveSystem.instance.NPCChatted();
 				showDialogue.ShowDialogue();
-				m_isShowingDialogue = true;
+				StartDialogue();
 			}
 		}
 	}
@@ -229,15 +216,14 @@ public class PlayerController : MonoBehaviour {
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
 			float t_jumpingPlatformMultiplier = col.gameObject.GetComponent<JumpingPlatform>().jumpingMultiplier;
-
             float rotationAngle = col.gameObject.transform.eulerAngles.z;
+			m_gravity = goingUpGravity;
             float maxVelocity = Mathf.Sqrt(t_jumpingPlatformMultiplier * 2f * jumpHeight * -m_gravity);
 			this.getsThrownTo(rotationAngle, maxVelocity);
 			m_skipMoveOnUpdateThisFrame = true;
 		}
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("Cannon")){
-			//Debug.Log("entrou no canhao");
 			isInCannon = true;
 			this.transform.position = col.gameObject.transform.position;
 			m_velocity = Vector2.zero;
@@ -247,6 +233,7 @@ public class PlayerController : MonoBehaviour {
 			this.Cannon = col.gameObject.GetComponent<CannonBehaviour>();
 			Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.OrthographicSize *= this.Cannon.zoomOutMultiplier;
 			this.Cannon.setActive(true);
+			m_currentPlayerState = EPlayerState.Cannon;
 		}
 	}
 
@@ -298,14 +285,34 @@ public class PlayerController : MonoBehaviour {
 	void Update()
 	{	
 		Debug.LogWarningFormat("Current Player State: {0}", m_currentPlayerState);
+
 		SaveSystem.instance.TickTimePlayed();
 
+		// for some reason this wasn't working on the ProcessNormalState()
+		if(m_controller.isGrounded) {
+			m_groundedRemember = groundedRememberTime;
+			m_gravity = goingUpGravity;
+			m_velocity.y = 0;
+			
+			// wasn't grounded last frame
+			if(!m_controller.collisionState.wasGroundedLastFrame) {
+				m_blockingHorizontalControl = false;
+				Instantiate(landingParticles, transform.position + (Vector3.down / 2f), Quaternion.identity).Play();
+				
+				if(SoundManager.instance && stepClips.Length > 0) {
+					SoundManager.instance.PlaySfx(stepClips[Random.Range(0, stepClips.Length)]);
+				}
+
+				foreach(Transform transf in m_playerSprites) {
+					StartCoroutine(ChangeScale(transf.localScale * m_groundingScaleMultiplier));
+					break;
+				}
+			}
+		}
+
 		switch(m_currentPlayerState) {
-			case EPlayerState.Idle:
-				ProcessIdleState();
-			break;
-			case EPlayerState.Moving:
-				ProcessMovingState();
+			case EPlayerState.Normal:
+				ProcessNormalState();
 			break;
 			case EPlayerState.Jumping:
 				ProcessJumpingState();
@@ -315,13 +322,18 @@ public class PlayerController : MonoBehaviour {
 			case EPlayerState.WallJumping:
 			break;
 			case EPlayerState.Cannon:
+				ProcessCannonState();
 			break;
-			case EPlayerState.MoveBlocked:
+			case EPlayerState.MoveBlockedDialogue:
+				ProcessDialogueState();
 			break;
 		}
 
 		AnimationLogic();
+		m_velocityLastFrame = m_velocity;
+		CamHandling();
 
+		// Handling Player Velocity and Moving
 		float t_groundDamping = m_isSlipping ? (groundDamping * slippingFrictionMultiplier) : groundDamping;
 		var smoothedMovementFactor = m_controller.isGrounded ? t_groundDamping : inAirDamping;
 
@@ -336,121 +348,24 @@ public class PlayerController : MonoBehaviour {
 			m_controller.move( deltaPosition );
 			m_velocity = m_controller.velocity;
 		}
-
-		// if(m_isShowingDialogue) {
-		// 	foreach(Animator ani in m_animators) {
-		// 		ani.Play("Idle");
-		// 	}
-		// 	m_velocity = Vector2.zero;
-		// 	m_velocity.y = goingDownGravity;
-		// 	m_controller.move(m_velocity * Time.deltaTime);
-
-		// 	if(!DialogueManager.instance.isShowingDialogue) m_isShowingDialogue = false;
-		// 	return;
-		// }
-
-		// m_velocityLastFrame = m_velocity;
-
-		// Move();
-		// CamHandling();
-		// if(!isInCannon && !m_isOnWall) Jump();
-		// WallJump();
 		
-		// if(isInCannon && InputManager.instance.PressedJump()){
-		// 	var angleCannon = Cannon.getAngle();
-		// 	float distanceBetweenCenterAndExplosion = 0;
-		// 	getsThrownTo(angleCannon, Cannon.getThrowMultiplier());
-		// 	GameObject part = (GameObject) Instantiate(Resources.Load("BeckerCannonParticle"));
-		// 	float partangle = angleCannon+90;
-		// 	part.transform.rotation = Quaternion.Euler(-partangle,90,0);
-		// 	part.transform.position = new Vector3(Cannon.transform.position.x + distanceBetweenCenterAndExplosion*Mathf.Cos(Mathf.Deg2Rad*(angleCannon+90)), Cannon.transform.position.y + distanceBetweenCenterAndExplosion*Mathf.Sin(Mathf.Deg2Rad*(angleCannon+90)),0);
-		// 	part.GetComponent<ParticleSystem>().Play();
-		// 	foreach(Animator ani in m_animators) {
-		// 		ani.gameObject.GetComponent<SpriteRenderer>().enabled = true;
-		// 	}
-		// 	isInCannon = false;
-		// 	Cannon.setActive(false);
-		// }
-		
-		// // ignora as "one way platforms" por um frame (para cair delas)
-		// // ISSO AQUI DÁ UM BUG
-		// // SE VC SEGURAR PRA BAIXO E PULAR, O PERSONAGEM DÁ UM PULÃO
-		// // A PARTIR DE AGORA ISSO É UMA FEATURE
-		// if( m_controller.isGrounded && Input.GetKey( KeyCode.DownArrow ) )
-		// {
-		// 	m_velocity.y *= Mathf.Pow(3f,Time.deltaTime);
-		// 	m_controller.ignoreOneWayPlatformsThisFrame = true;
-		// }
-		
-		// if(!isInCannon && !m_skipMoveOnUpdateThisFrame) {
-		// 	m_controller.move( deltaPosition );
-		// 	m_velocity = m_controller.velocity;
-		// }
+		// ignora as "one way platforms" por um frame (para cair delas)
+		// ISSO AQUI DÁ UM BUG
+		// SE VC SEGURAR PRA BAIXO E PULAR, O PERSONAGEM DÁ UM PULÃO
+		// A PARTIR DE AGORA ISSO É UMA FEATURE
+		if( m_controller.isGrounded && Input.GetKey( KeyCode.DownArrow ) ) {
+			m_velocity.y *= Mathf.Pow(3f,Time.deltaTime);
+			m_controller.ignoreOneWayPlatformsThisFrame = true;
+		}
 
-		// if(m_controller.isGrounded) {
-		// 	m_startedslidingwall = false;
-		// 	m_fastsliding = false;
-		// }
+		if(m_controller.isGrounded) {
+			m_startedslidingwall = false;
+			m_fastsliding = false;
+		}
 
 		m_skipMoveOnUpdateThisFrame = false;
 	}
 
-	#region Processing States
-	private void ProcessIdleState() {
-		m_groundedRemember = groundedRememberTime;
-		m_gravity = goingDownGravity;
-		m_velocity.y = 0;
-		
-		if(!m_controller.collisionState.wasGroundedLastFrame) {
-			m_blockingHorizontalControl = false;
-			Instantiate(landingParticles, transform.position + (Vector3.down / 2f), Quaternion.identity).Play();
-			
-			if(SoundManager.instance && stepClips.Length > 0) {
-				SoundManager.instance.PlaySfx(stepClips[Random.Range(0, stepClips.Length)]);
-			}
-
-			foreach(Transform transf in m_playerSprites) {
-				StartCoroutine(ChangeScale(transf.localScale * m_groundingScaleMultiplier));
-				break;
-			}
-		}
-
-		Move();
-		Jump();
-
-		if(!m_controller.isGrounded) {
-			m_currentPlayerState = EPlayerState.Jumping;
-		} else if(m_velocity.x != 0) {
-			m_currentPlayerState = EPlayerState.Moving;
-		}
-	}
-
-	private void ProcessMovingState() {
-		Move();
-		Jump();
-
-		if(!m_controller.isGrounded) m_currentPlayerState = EPlayerState.Jumping;
-		else if(m_velocity.x == 0) m_currentPlayerState = EPlayerState.Idle;
-	}
-
-	private void ProcessJumpingState() {
-		Move();
-		WallJump();
-
-		if(m_controller.isGrounded) m_currentPlayerState = EPlayerState.Idle;
-	}
-	#endregion
-
-	private IEnumerator ChangeScale(Vector2 scale) {
-		foreach(Transform transf in m_playerSprites) {
-			transf.localScale = scale;
-		}
-		yield return new WaitForSeconds(0.075f);
-		foreach(Transform transf in m_playerSprites) {
-			transf.localScale = new Vector3(Mathf.Sign(transf.localScale.x) * Mathf.Abs(m_originalScale.x), m_originalScale.y, transf.localScale.z);
-		}
-	}
-	
 	private void AnimationLogic() {
 		if(gameObject.activeSelf){
 			foreach(Animator ani in m_animators) {
@@ -471,8 +386,71 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	private void Move() {
+	#region Processing States
+	private void ProcessNormalState() {
+		Move();
+		Jump();
+	}
 
+	private void ProcessJumpingState() {
+		Move();
+		WallJump();
+
+		// Cutting Jump
+		if(InputManager.instance.ReleasedJump()) {
+			if(m_velocity.y > 0) {
+				m_velocity.y = m_velocity.y * Mathf.Pow(cutJumpHeight,Time.deltaTime*60);
+			}
+		}
+
+		// Changing Gravity on Fall
+		if(m_velocity.y < 0 && !m_isOnWall) {
+			m_gravity = goingDownGravity;
+		}
+
+		if(m_controller.isGrounded) {
+			m_currentPlayerState = EPlayerState.Normal;
+		}
+	}
+
+	private void ProcessDialogueState() {
+		if(!DialogueManager.instance.isShowingDialogue) m_currentPlayerState = EPlayerState.Normal;
+	}
+
+	private void ProcessCannonState() {
+		if(InputManager.instance.PressedJump()){
+			// [TO DO] ver a possibilidade de zerar a gravidade por um tempo após o tiro
+			var angleCannon = Cannon.getAngle();
+			float distanceBetweenCenterAndExplosion = 0;
+			getsThrownTo(angleCannon, Cannon.getThrowMultiplier());
+			GameObject part = (GameObject) Instantiate(Resources.Load("BeckerCannonParticle"));
+			float partangle = angleCannon+90;
+			part.transform.rotation = Quaternion.Euler(-partangle,90,0);
+			part.transform.position = new Vector3(Cannon.transform.position.x + distanceBetweenCenterAndExplosion*Mathf.Cos(Mathf.Deg2Rad*(angleCannon+90)), Cannon.transform.position.y + distanceBetweenCenterAndExplosion*Mathf.Sin(Mathf.Deg2Rad*(angleCannon+90)),0);
+			part.GetComponent<ParticleSystem>().Play();
+			foreach(Animator ani in m_animators) {
+				ani.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+			}
+			isInCannon = false;
+			Cannon.setActive(false);
+			m_currentPlayerState = EPlayerState.Jumping;
+		}
+
+		m_skipMoveOnUpdateThisFrame = true;
+	}
+	#endregion
+
+	private IEnumerator ChangeScale(Vector2 scale) {
+		foreach(Transform transf in m_playerSprites) {
+			transf.localScale = scale;
+		}
+		yield return new WaitForSeconds(0.075f);
+		foreach(Transform transf in m_playerSprites) {
+			transf.localScale = new Vector3(Mathf.Sign(transf.localScale.x) * Mathf.Abs(m_originalScale.x), m_originalScale.y, transf.localScale.z);
+		}
+	}
+
+	private void Move() {
 		float horizontalMovement = Input.GetAxisRaw("Horizontal");
 		normalizedHorizontalSpeed = horizontalMovement;
 
@@ -485,10 +463,7 @@ public class PlayerController : MonoBehaviour {
 				// tem que chegar por um valor relativamente alto no controller porque
 				// sempre tem algum resquicio de movimento nele
 
-				// Debug.LogWarningFormat("Changing Player's Scale because we have normalized horizontal speed of {0} and m_controller.velocity of {1}", normalizedHorizontalSpeed, m_controller.velocity.x);
-
 				float sign = (normalizedHorizontalSpeed != 0 ? Mathf.Sign(normalizedHorizontalSpeed) : Mathf.Sign(m_controller.velocity.x));
-
 				if(!m_isOnWall) {
 					foreach(Transform transf in m_playerSprites) {
 						transf.localScale = new Vector3(sign * Mathf.Abs(transf.localScale.x), transf.localScale.y, transf.localScale.z);	
@@ -505,33 +480,29 @@ public class PlayerController : MonoBehaviour {
 			m_jumpPressedRemember = jumpPressedRememberTime;
 		}
 
-		if(InputManager.instance.ReleasedJump()) {
-			if(m_velocity.y > 0) {
-				m_velocity.y = m_velocity.y * Mathf.Pow(cutJumpHeight,Time.deltaTime*60);
-			}
-		}
-
-		if(m_velocity.y < 0 && !m_isOnWall) {
-			m_gravity = goingDownGravity;
-		}
-
 		// REGULAR JUMP
 		if( ( (m_groundedRemember > 0) && (m_jumpPressedRemember > 0) ) ) {
 			m_jumpPressedRemember = 0;
 			m_groundedRemember = 0;
 			SaveSystem.instance.Jumped();
+			m_gravity = goingUpGravity;
 			m_velocity.y = Mathf.Sqrt( 2f * jumpHeight * -m_gravity );
 			
 			if(SoundManager.instance && jumpingClip) {
 				SoundManager.instance.PlaySfx(jumpingClip);
 			}
+
 			foreach(Transform transf in m_playerSprites) {
 				StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
 				break;
 			}
-			foreach(Animator ani in m_animators) {
-				ani.Play( "Jump" );
-			}
+
+			// foreach(Animator ani in m_animators) {
+			// 	ani.Play( "Jump" );
+			// }
+
+			// [CHANGING STATE]
+			m_currentPlayerState = EPlayerState.Jumping;
 		}
 	}
 
@@ -670,24 +641,6 @@ public class PlayerController : MonoBehaviour {
 		return m_velocity;
 	}
 
-	public void ActivateSillouette() {
-		foreach(Transform transf in m_playerSprites) {
-			transf.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 1.0f);
-		}
-	}
-
-	public void ToggleSillouette() {
-		foreach(Transform transf in m_playerSprites) {
-			float value = transf.GetComponent<SpriteRenderer>().material.GetFloat("_FlashAmount");
-
-			if(value > 0) {
-				transf.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 0.0f);
-			} else if(value == 0) {
-				transf.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 1.0f);
-			}		
-		}
-	}
-
 	private IEnumerator GenericDialogueHintRoutine(Vector3 startingScale, Vector3 aimScale) {
 		float timeElapsed = 0f;
 		float transitionTime = 0.15f;
@@ -718,11 +671,19 @@ public class PlayerController : MonoBehaviour {
 
 	public void StartDialogue() {
 		if(dialogueHintObject) dialogueHintObject.SetActive(false);
-		m_isShowingDialogue = true;
+
+		foreach(Animator ani in m_animators) {
+			ani.Play("Idle");
+		}
+
+		m_velocity = Vector2.zero;
+		m_currentPlayerState = EPlayerState.MoveBlockedDialogue;
 	}
 
+	// this is called when the player leaves the trigger of the dialogue
+	// this isn't supposed to happen but let's keep it here for now
 	public void EndDialogue() {
-		m_isShowingDialogue = false;
+		m_currentPlayerState = EPlayerState.Normal;
 	}
 
 	public void UpdatePizzaCounter() {
