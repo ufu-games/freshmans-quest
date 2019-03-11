@@ -285,6 +285,7 @@ public class PlayerController : MonoBehaviour {
 
 		// for some reason this wasn't working on the ProcessNormalState()
 		if(m_controller.isGrounded) {
+			m_isOnWall = false;
 			m_groundedRemember = groundedRememberTime;
 			m_gravity = goingUpGravity;
 			m_velocity.y = 0;
@@ -338,13 +339,19 @@ public class PlayerController : MonoBehaviour {
 		m_velocity.x = Mathf.Lerp(normalizedHorizontalSpeed * runSpeed, m_velocity.x,Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime*60));
 		
 		// Vertical Velocity
-		// Debug.LogWarningFormat("m_velocity.y = Mathf.Max({0}, {1})", m_gravity,  m_velocity.y + (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime))));
-		m_velocity.y = Mathf.Max(-60f, m_velocity.y + (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime))));
+		// ACCELERATING with gravity
+		float thisFrameYVelocity = m_velocity.y + (m_gravity * Time.deltaTime);
+		m_velocity.y = Mathf.Max(-60f, thisFrameYVelocity);
 		
-		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime,m_velocity.y * Time.deltaTime);
+		Vector2 eulerDeltaPosition = m_velocity * Time.deltaTime;
+		// Velocity Verlet giving bad results
+		// Vector2 velocityVerletDeltaPosition = new Vector2(
+		// 	(m_velocity.x * Time.deltaTime) + (.5f * normalizedHorizontalSpeed * Time.deltaTime * Time.deltaTime), 
+		// 	(m_velocity.y * Time.deltaTime) + (.5f * m_gravity * Time.deltaTime * Time.deltaTime)
+		// );
 
 		if(!m_skipMoveOnUpdateThisFrame) {
-			m_controller.move( deltaPosition );
+			m_controller.move( eulerDeltaPosition );
 			m_velocity = m_controller.velocity;
 		}
 		
@@ -478,11 +485,6 @@ public class PlayerController : MonoBehaviour {
 				StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
 				break;
 			}
-
-			// foreach(Animator ani in m_animators) {
-			// 	ani.Play( "Jump" );
-			// }
-
 			// [CHANGING STATE]
 			m_currentPlayerState = EPlayerState.Jumping;
 		}
