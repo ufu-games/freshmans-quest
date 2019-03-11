@@ -58,10 +58,6 @@ public class PlayerController : MonoBehaviour {
 	public Transform[] m_playerSprites;
 	private Animator[] m_animators;
 	private Vector3 m_velocity;
-	
-	// Dialogue Handling
-	// se tiver dialogo rolando na tela, bloquear o input do player...
-	private bool m_isShowingDialogue;
 
 	// Scale Juicing
 	private Vector2 m_originalScale;
@@ -85,15 +81,13 @@ public class PlayerController : MonoBehaviour {
 		Normal,
 		Jumping,
 		OnWall,
-		WallJumping, // maybe this can be removed
 		Cannon,
 		MoveBlockedDialogue, // cutscenes, dialogues...
 	}
 
 	private EPlayerState m_currentPlayerState;
 
-	void Awake()
-	{
+	void Awake() {
 		m_animators = GetComponentsInChildren<Animator>();
 		m_playerSprites = new Transform[m_animators.Length];
 		for(int i=0;i<m_animators.Length;i++) {
@@ -129,9 +123,8 @@ public class PlayerController : MonoBehaviour {
 
     #region Event Listeners
 
-    void onControllerCollider( RaycastHit2D hit )
-	{
-		m_isSlipping = hit.transform.gameObject.tag == "Slippery" && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right));
+    void onControllerCollider( RaycastHit2D hit ) {
+		m_isSlipping = (hit.transform.gameObject.tag == "Slippery" && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)));
 
 		IDangerous dangerousInteraction = hit.collider.gameObject.GetComponent<IDangerous>();
 		ICollisionInteraction collisionInteraction = hit.collider.gameObject.GetComponent<ICollisionInteraction>();
@@ -150,7 +143,7 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 
-		if(hit.collider.tag == "MovingPlataform"){
+		if(hit.collider.tag == "MovingPlataform") {
 			Debug.Log(hit.normal.x);
 			var plataformDirection = hit.collider.gameObject.GetComponent<MovingPlataform>().getAngle();
 			var plataformSpeed = hit.collider.gameObject.GetComponent<MovingPlataform>().speed;
@@ -179,7 +172,8 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerStayEvent(Collider2D col) {
 		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
 
-		if(showDialogue != null && !m_isShowingDialogue) {
+		if(showDialogue != null) {
+			// [TO DO] Check if it needs to check whether or not dialogue is already playing
 			if(InputManager.instance.PressedStartDialogue()) {
 				SaveSystem.instance.NPCChatted();
 				showDialogue.ShowDialogue();
@@ -191,7 +185,6 @@ public class PlayerController : MonoBehaviour {
 	void onTriggerEnterEvent(Collider2D col) {
 		// Debug.LogWarning( "onTriggerEnterEvent: " + col.gameObject.name );
 
-		// Interfaces
 		IDangerous dangerousInteraction = col.gameObject.GetComponent<IDangerous>();
 		IInteractable interaction = col.gameObject.GetComponent<IInteractable>();
 		INonHarmfulInteraction nonHarmfulInteraction = col.gameObject.GetComponent<INonHarmfulInteraction>();
@@ -319,8 +312,6 @@ public class PlayerController : MonoBehaviour {
 			break;
 			case EPlayerState.OnWall:
 			break;
-			case EPlayerState.WallJumping:
-			break;
 			case EPlayerState.Cannon:
 				ProcessCannonState();
 			break;
@@ -440,16 +431,6 @@ public class PlayerController : MonoBehaviour {
 	}
 	#endregion
 
-	private IEnumerator ChangeScale(Vector2 scale) {
-		foreach(Transform transf in m_playerSprites) {
-			transf.localScale = scale;
-		}
-		yield return new WaitForSeconds(0.075f);
-		foreach(Transform transf in m_playerSprites) {
-			transf.localScale = new Vector3(Mathf.Sign(transf.localScale.x) * Mathf.Abs(m_originalScale.x), m_originalScale.y, transf.localScale.z);
-		}
-	}
-
 	private void Move() {
 		float horizontalMovement = Input.GetAxisRaw("Horizontal");
 		normalizedHorizontalSpeed = horizontalMovement;
@@ -508,75 +489,34 @@ public class PlayerController : MonoBehaviour {
 
 	private void WallJump() {
 		//Debug.Log("right " + m_controller.isNear(Vector2.right,maxDistanceOffWall));
-
-		if(m_controller.isGrounded) {
-			m_isOnWall = false;
-			return;
-		}
 		
-		// Stick To Wall
-		// is not on wall AND
-		// is pressing the trigger AND
-		// is colliding on left or right
+		// Sticking to the Wall
 		if(!m_isOnWall
 			&&
 			!m_controller.isGrounded
-			//&& 
-			// Input.GetButton("StickToWall")
-			//InputManager.instance.PressedWallJump()
 			&&
-			((m_controller.isColliding(Vector2.left) &&  m_velocity.x < 0)
-			|| 
-			(m_controller.isColliding(Vector2.right) &&  m_velocity.x > 0)))
+			((m_controller.isColliding(Vector2.left) &&  m_velocity.x < 0) || (m_controller.isColliding(Vector2.right) &&  m_velocity.x > 0)))
 		{
-			// wasn't on wall last frame
 			m_isOnWall = true;
 		} else if(
-			// is on wall AND
-			// is not pressing AND
-			// is colliding
 			m_isOnWall
 			&&
 			!m_controller.isNear(Vector2.left,maxDistanceOffWall) && !m_controller.isNear(Vector2.right,maxDistanceOffWall)
-			//&&
-			//!InputManager.instance.PressedWallJump()
-			//&&
-			//(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right))
 			)
 		{
 			m_isOnWall = false;
 
 		}
 
-		// EFFECTIVELY JUMPING OFF WALL
-		// if is on wall AND
-		// is pressing the jump button
-
-		if((m_isOnWall 
-			&& 
-			// Input.GetButtonDown("Jump")
-			InputManager.instance.PressedJump())
-
+		// Jumping off the wall
+		if((m_isOnWall && InputManager.instance.PressedJump())
 			||
-
 			(!m_isOnWall
 			&&
 			InputManager.instance.PressedJump()
 			&&
 			((m_controller.isNear(Vector2.left,maxDistanceOffWall) || m_controller.isNear(Vector2.right,maxDistanceOffWall))))
 			) {
-			if(!m_isOnWall) {
-				// nao precisa mais disso pois a funcao move agora lida com a escala em todas ocasioes
-				// if(m_controller.isColliding(Vector2.right)){
-				// 	foreach(Transform transf in m_playerSprites) {
-				// 		transf.localScale = new Vector3(Mathf.Abs(transf.localScale.x)*-1, m_originalScale.y, transf.localScale.z);
-				// 	}
-				// } else{
-				// 	foreach(Transform transf in m_playerSprites) {
-				// 		transf.localScale = new Vector3(Mathf.Abs(transf.localScale.x), m_originalScale.y, transf.localScale.z);
-				// 	}
-				// }
-			}
 
 			m_isOnWall = false;
 			m_fastsliding = false;
@@ -613,7 +553,23 @@ public class PlayerController : MonoBehaviour {
 			m_blockInputOnWallJumpCoroutine = StartCoroutine(BlockInputOnWallJumpCoroutine());
 		}
 	}
-	
+
+	private IEnumerator BlockInputOnWallJumpCoroutine() {
+		m_blockingHorizontalControl = true;
+		yield return new WaitForSeconds(0.16f);
+		m_blockingHorizontalControl = false;
+		m_blockInputOnWallJumpCoroutine = null;
+	}
+
+	private IEnumerator ChangeScale(Vector2 scale) {
+		foreach(Transform transf in m_playerSprites) {
+			transf.localScale = scale;
+		}
+		yield return new WaitForSeconds(0.075f);
+		foreach(Transform transf in m_playerSprites) {
+			transf.localScale = new Vector3(Mathf.Sign(transf.localScale.x) * Mathf.Abs(m_originalScale.x), m_originalScale.y, transf.localScale.z);
+		}
+	}
 
 	private void CamHandling(){
 		if(!m_cam) return;
@@ -640,6 +596,8 @@ public class PlayerController : MonoBehaviour {
 	public Vector3 GetVelocity(){
 		return m_velocity;
 	}
+
+	#region Dialogue Related Functions
 
 	private IEnumerator GenericDialogueHintRoutine(Vector3 startingScale, Vector3 aimScale) {
 		float timeElapsed = 0f;
@@ -686,15 +644,10 @@ public class PlayerController : MonoBehaviour {
 		m_currentPlayerState = EPlayerState.Normal;
 	}
 
+	#endregion
+
 	public void UpdatePizzaCounter() {
 		if(PizzaCounterUI.instance) PizzaCounterUI.instance.UpdateCounter(Mathf.RoundToInt(SaveSystem.instance.myData.pizzaCounter));
 		else if(PizzaSliceCounterUI.instance) PizzaSliceCounterUI.instance.UpdateCounter(Mathf.RoundToInt(SaveSystem.instance.myData.pizzaCounter));
-	}
-
-	private IEnumerator BlockInputOnWallJumpCoroutine() {
-		m_blockingHorizontalControl = true;
-		yield return new WaitForSeconds(0.16f);
-		m_blockingHorizontalControl = false;
-		m_blockInputOnWallJumpCoroutine = null;
 	}
 }
