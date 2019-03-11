@@ -277,6 +277,8 @@ public class PlayerController : MonoBehaviour {
 
 	void Update()
 	{	
+		m_groundedRemember -= Time.deltaTime;
+		m_jumpPressedRemember -= Time.deltaTime;
 		Debug.LogWarningFormat("Current Player State: {0}", m_currentPlayerState);
 
 		SaveSystem.instance.TickTimePlayed();
@@ -301,6 +303,10 @@ public class PlayerController : MonoBehaviour {
 					break;
 				}
 			}
+		}
+
+		if(InputManager.instance.PressedJump()) {
+			m_jumpPressedRemember = jumpPressedRememberTime;
 		}
 
 		switch(m_currentPlayerState) {
@@ -454,13 +460,6 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Jump() {
-		m_groundedRemember -= Time.deltaTime;
-		m_jumpPressedRemember -= Time.deltaTime;
-
-		if(InputManager.instance.PressedJump()) {
-			m_jumpPressedRemember = jumpPressedRememberTime;
-		}
-
 		// REGULAR JUMP
 		if( ( (m_groundedRemember > 0) && (m_jumpPressedRemember > 0) ) ) {
 			m_jumpPressedRemember = 0;
