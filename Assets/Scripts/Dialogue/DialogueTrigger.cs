@@ -19,7 +19,6 @@ public class DialogueTrigger : MonoBehaviour, IShowDialogue, IInteractableLeaveT
 
 	void IShowDialogue.ShowDialogue() {
 		TriggerDialogue();
-		FindObjectOfType<PlayerController>().StartDialogue();
 
 		if(destroySelfAfterTriggering) {
 			Destroy(gameObject);

@@ -3,50 +3,34 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
-
-/*
-	Player States:
-	Idle,
-	Moving,
-	Jumping,
-	OnWall,
-	WallJumping (?),
-	Cannon,
-	CannotMove, (Dialogue)
-*/
 public class PlayerController : MonoBehaviour {
 	
-	[Space(5)]
-
-	[Space(5)]
-	[Header("Movement Handling")]
-	public float runSpeed = 8f;
-	public float groundDamping = 20f; // how fast do we change direction? higher means faster
-	public float slippingFrictionMultiplier = .1f;
+	// Movement Handling
+	private const float runSpeed = 7f;
+	private const float groundDamping = .25f; // how fast do we change direction? higher means faster
+	private const float slippingFrictionMultiplier = .1f;
 	
-	[Header("Jump Handling")]
-	public float goingUpGravity = -25f;
-	public float goingDownGravity = -50f;
-	public float floatingGravity = -10f;
+	// Jump Handling
+	private const float goingUpGravity = -35f;
+	private const float goingDownGravity = -60f;
 	[ReadOnly]
-	public float m_gravity;
-	public float inAirDamping = 5f;
-	public float jumpHeight = 5f;
-	public float jumpPressedRememberTime = 0.15f;
-	public float groundedRememberTime = 0.15f;
-	public float cutJumpHeight = 0.35f;
-	public float leftGoOffWalDelay = 2f;
+	private float m_gravity;
+	private const float inAirDamping = 0.08333f;
+	private const float jumpHeight = 2f;
+	private const float jumpPressedRememberTime = 0.1f;
+	private const float groundedRememberTime = 0.1f;
+	private const float cutJumpHeight = 0.35f;
+
 	private float m_jumpPressedRemember;
 	private float m_groundedRemember;
 	
-	[Space(5)]
-	[Header("Wall Jump Handling")]
-	public float onWallGravity = -5f;
-	public Vector2 wallJumpVelocity;
-	public float maxDistanceOffWall;
+	// WALL JUMP HANDLING Handling
+	private const float onWallGravity = -1f;
+	private Vector2 wallJumpVelocity = new Vector2(10f, 3.0f);
+	private const float maxDistanceOffWall = 5;
+	
 	[ReadOnly]
-	public bool m_isOnWall;
-	private bool getingOffWall = false;
+	private bool m_isOnWall;
 	private bool m_skipMoveOnUpdateThisFrame = false;
 	private bool m_startedslidingwall = false;
 	private bool m_fastsliding = false;
@@ -74,10 +58,6 @@ public class PlayerController : MonoBehaviour {
 	public Transform[] m_playerSprites;
 	private Animator[] m_animators;
 	private Vector3 m_velocity;
-	
-	// Dialogue Handling
-	// se tiver dialogo rolando na tela, bloquear o input do player...
-	private bool m_isShowingDialogue;
 
 	// Scale Juicing
 	private Vector2 m_originalScale;
@@ -97,8 +77,17 @@ public class PlayerController : MonoBehaviour {
 	private bool m_blockingHorizontalControl = false;
 	private Coroutine m_blockInputOnWallJumpCoroutine;
 
-	void Awake()
-	{
+	public enum EPlayerState {
+		Normal,
+		Jumping,
+		OnWall,
+		Cannon,
+		MoveBlockedDialogue, // cutscenes, dialogues...
+	}
+
+	private EPlayerState m_currentPlayerState;
+
+	void Awake() {
 		m_animators = GetComponentsInChildren<Animator>();
 		m_playerSprites = new Transform[m_animators.Length];
 		for(int i=0;i<m_animators.Length;i++) {
@@ -128,15 +117,14 @@ public class PlayerController : MonoBehaviour {
 			Debug.LogWarning("Player nao possui DialogueHint!");
 		}
 
-		// UpdatePizzaCounter();
+		m_currentPlayerState = EPlayerState.Normal;
     }
 
 
     #region Event Listeners
 
-    void onControllerCollider( RaycastHit2D hit )
-	{
-		m_isSlipping = hit.transform.gameObject.tag == "Slippery" && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right));
+    void onControllerCollider( RaycastHit2D hit ) {
+		m_isSlipping = (hit.transform.gameObject.tag == "Slippery" && !(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right)));
 
 		IDangerous dangerousInteraction = hit.collider.gameObject.GetComponent<IDangerous>();
 		ICollisionInteraction collisionInteraction = hit.collider.gameObject.GetComponent<ICollisionInteraction>();
@@ -155,7 +143,7 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 
-		if(hit.collider.tag == "MovingPlataform"){
+		if(hit.collider.tag == "MovingPlataform") {
 			Debug.Log(hit.normal.x);
 			var plataformDirection = hit.collider.gameObject.GetComponent<MovingPlataform>().getAngle();
 			var plataformSpeed = hit.collider.gameObject.GetComponent<MovingPlataform>().speed;
@@ -184,11 +172,12 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerStayEvent(Collider2D col) {
 		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
 
-		if(showDialogue != null && !m_isShowingDialogue) {
+		if(showDialogue != null) {
+			// [TO DO] Check if it needs to check whether or not dialogue is already playing
 			if(InputManager.instance.PressedStartDialogue()) {
 				SaveSystem.instance.NPCChatted();
 				showDialogue.ShowDialogue();
-				m_isShowingDialogue = true;
+				StartDialogue();
 			}
 		}
 	}
@@ -196,7 +185,6 @@ public class PlayerController : MonoBehaviour {
 	void onTriggerEnterEvent(Collider2D col) {
 		// Debug.LogWarning( "onTriggerEnterEvent: " + col.gameObject.name );
 
-		// Interfaces
 		IDangerous dangerousInteraction = col.gameObject.GetComponent<IDangerous>();
 		IInteractable interaction = col.gameObject.GetComponent<IInteractable>();
 		INonHarmfulInteraction nonHarmfulInteraction = col.gameObject.GetComponent<INonHarmfulInteraction>();
@@ -221,15 +209,14 @@ public class PlayerController : MonoBehaviour {
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
 			float t_jumpingPlatformMultiplier = col.gameObject.GetComponent<JumpingPlatform>().jumpingMultiplier;
-
             float rotationAngle = col.gameObject.transform.eulerAngles.z;
+			m_gravity = goingUpGravity;
             float maxVelocity = Mathf.Sqrt(t_jumpingPlatformMultiplier * 2f * jumpHeight * -m_gravity);
 			this.getsThrownTo(rotationAngle, maxVelocity);
 			m_skipMoveOnUpdateThisFrame = true;
 		}
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("Cannon")){
-			//Debug.Log("entrou no canhao");
 			isInCannon = true;
 			this.transform.position = col.gameObject.transform.position;
 			m_velocity = Vector2.zero;
@@ -239,6 +226,7 @@ public class PlayerController : MonoBehaviour {
 			this.Cannon = col.gameObject.GetComponent<CannonBehaviour>();
 			Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.OrthographicSize *= this.Cannon.zoomOutMultiplier;
 			this.Cannon.setActive(true);
+			m_currentPlayerState = EPlayerState.Cannon;
 		}
 	}
 
@@ -289,19 +277,25 @@ public class PlayerController : MonoBehaviour {
 
 	void Update()
 	{	
+		Debug.LogWarningFormat("Current Player State: {0}", m_currentPlayerState);
+
 		SaveSystem.instance.TickTimePlayed();
+
+		// for some reason this wasn't working on the ProcessNormalState()
 		if(m_controller.isGrounded) {
 			m_groundedRemember = groundedRememberTime;
 			m_gravity = goingUpGravity;
 			m_velocity.y = 0;
-
-			// became grounded this frame
+			
+			// wasn't grounded last frame
 			if(!m_controller.collisionState.wasGroundedLastFrame) {
 				m_blockingHorizontalControl = false;
 				Instantiate(landingParticles, transform.position + (Vector3.down / 2f), Quaternion.identity).Play();
+				
 				if(SoundManager.instance && stepClips.Length > 0) {
 					SoundManager.instance.PlaySfx(stepClips[Random.Range(0, stepClips.Length)]);
 				}
+
 				foreach(Transform transf in m_playerSprites) {
 					StartCoroutine(ChangeScale(transf.localScale * m_groundingScaleMultiplier));
 					break;
@@ -309,68 +303,50 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 
-		if(m_isShowingDialogue) {
-			foreach(Animator ani in m_animators) {
-				ani.Play("Idle");
-			}
-			m_velocity = Vector2.zero;
-			m_velocity.y = goingDownGravity;
-			m_controller.move(m_velocity * Time.deltaTime);
-
-			if(!DialogueManager.instance.isShowingDialogue) m_isShowingDialogue = false;
-			return;
+		switch(m_currentPlayerState) {
+			case EPlayerState.Normal:
+				ProcessNormalState();
+			break;
+			case EPlayerState.Jumping:
+				ProcessJumpingState();
+			break;
+			case EPlayerState.OnWall:
+			break;
+			case EPlayerState.Cannon:
+				ProcessCannonState();
+			break;
+			case EPlayerState.MoveBlockedDialogue:
+				ProcessDialogueState();
+			break;
 		}
 
-		m_velocityLastFrame = m_velocity;
-
-		Move();
-		CamHandling();
 		AnimationLogic();
-		if(!isInCannon && !m_isOnWall) Jump();
-		WallJump();
-		
-		if(isInCannon && InputManager.instance.PressedJump()){
-			var angleCannon = Cannon.getAngle();
-			float distanceBetweenCenterAndExplosion = 0;
-			getsThrownTo(angleCannon, Cannon.getThrowMultiplier());
-			GameObject part = (GameObject) Instantiate(Resources.Load("BeckerCannonParticle"));
-			float partangle = angleCannon+90;
-			part.transform.rotation = Quaternion.Euler(-partangle,90,0);
-			part.transform.position = new Vector3(Cannon.transform.position.x + distanceBetweenCenterAndExplosion*Mathf.Cos(Mathf.Deg2Rad*(angleCannon+90)), Cannon.transform.position.y + distanceBetweenCenterAndExplosion*Mathf.Sin(Mathf.Deg2Rad*(angleCannon+90)),0);
-			part.GetComponent<ParticleSystem>().Play();
-			foreach(Animator ani in m_animators) {
-				ani.gameObject.GetComponent<SpriteRenderer>().enabled = true;
-			}
-			isInCannon = false;
-			Cannon.setActive(false);
-		}
+		m_velocityLastFrame = m_velocity;
+		CamHandling();
 
+		// Handling Player Velocity and Moving
 		float t_groundDamping = m_isSlipping ? (groundDamping * slippingFrictionMultiplier) : groundDamping;
 		var smoothedMovementFactor = m_controller.isGrounded ? t_groundDamping : inAirDamping;
 
 		m_velocity.x = Mathf.Lerp(normalizedHorizontalSpeed * runSpeed, m_velocity.x,Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime*60));
 		
-		// limiting gravity
+		// // limiting gravity
 		m_velocity.y = Mathf.Max(m_gravity, m_velocity.y + (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime))));
+		
+		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime,m_velocity.y * Time.deltaTime);
+
+		if(!m_skipMoveOnUpdateThisFrame) {
+			m_controller.move( deltaPosition );
+			m_velocity = m_controller.velocity;
+		}
 		
 		// ignora as "one way platforms" por um frame (para cair delas)
 		// ISSO AQUI DÁ UM BUG
 		// SE VC SEGURAR PRA BAIXO E PULAR, O PERSONAGEM DÁ UM PULÃO
 		// A PARTIR DE AGORA ISSO É UMA FEATURE
-		if( m_controller.isGrounded && Input.GetKey( KeyCode.DownArrow ) )
-		{
+		if( m_controller.isGrounded && Input.GetKey( KeyCode.DownArrow ) ) {
 			m_velocity.y *= Mathf.Pow(3f,Time.deltaTime);
 			m_controller.ignoreOneWayPlatformsThisFrame = true;
-		}
-
-		// applying velocity verlet on delta position for y axis
-		// standard euler on x axis
-		// heap allocation = bad
-		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime,m_velocity.y * Time.deltaTime);
-		
-		if(!isInCannon && !m_skipMoveOnUpdateThisFrame) {
-			m_controller.move( deltaPosition );
-			m_velocity = m_controller.velocity;
 		}
 
 		if(m_controller.isGrounded) {
@@ -381,16 +357,6 @@ public class PlayerController : MonoBehaviour {
 		m_skipMoveOnUpdateThisFrame = false;
 	}
 
-	private IEnumerator ChangeScale(Vector2 scale) {
-		foreach(Transform transf in m_playerSprites) {
-			transf.localScale = scale;
-		}
-		yield return new WaitForSeconds(0.075f);
-		foreach(Transform transf in m_playerSprites) {
-			transf.localScale = new Vector3(Mathf.Sign(transf.localScale.x) * Mathf.Abs(m_originalScale.x), m_originalScale.y, transf.localScale.z);
-		}
-	}
-	
 	private void AnimationLogic() {
 		if(gameObject.activeSelf){
 			foreach(Animator ani in m_animators) {
@@ -411,8 +377,61 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	private void Move() {
+	#region Processing States
+	private void ProcessNormalState() {
+		Move();
+		Jump();
+	}
 
+	private void ProcessJumpingState() {
+		Move();
+		WallJump();
+
+		// Cutting Jump
+		if(InputManager.instance.ReleasedJump()) {
+			if(m_velocity.y > 0) {
+				m_velocity.y = m_velocity.y * Mathf.Pow(cutJumpHeight,Time.deltaTime*60);
+			}
+		}
+
+		// Changing Gravity on Fall
+		if(m_velocity.y < 0 && !m_isOnWall) {
+			m_gravity = goingDownGravity;
+		}
+
+		if(m_controller.isGrounded) {
+			m_currentPlayerState = EPlayerState.Normal;
+		}
+	}
+
+	private void ProcessDialogueState() {
+		if(!DialogueManager.instance.isShowingDialogue) m_currentPlayerState = EPlayerState.Normal;
+	}
+
+	private void ProcessCannonState() {
+		if(InputManager.instance.PressedJump()){
+			// [TO DO] ver a possibilidade de zerar a gravidade por um tempo após o tiro
+			var angleCannon = Cannon.getAngle();
+			float distanceBetweenCenterAndExplosion = 0;
+			getsThrownTo(angleCannon, Cannon.getThrowMultiplier());
+			GameObject part = (GameObject) Instantiate(Resources.Load("BeckerCannonParticle"));
+			float partangle = angleCannon+90;
+			part.transform.rotation = Quaternion.Euler(-partangle,90,0);
+			part.transform.position = new Vector3(Cannon.transform.position.x + distanceBetweenCenterAndExplosion*Mathf.Cos(Mathf.Deg2Rad*(angleCannon+90)), Cannon.transform.position.y + distanceBetweenCenterAndExplosion*Mathf.Sin(Mathf.Deg2Rad*(angleCannon+90)),0);
+			part.GetComponent<ParticleSystem>().Play();
+			foreach(Animator ani in m_animators) {
+				ani.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+			}
+			isInCannon = false;
+			Cannon.setActive(false);
+			m_currentPlayerState = EPlayerState.Jumping;
+		}
+
+		m_skipMoveOnUpdateThisFrame = true;
+	}
+	#endregion
+
+	private void Move() {
 		float horizontalMovement = Input.GetAxisRaw("Horizontal");
 		normalizedHorizontalSpeed = horizontalMovement;
 
@@ -425,10 +444,7 @@ public class PlayerController : MonoBehaviour {
 				// tem que chegar por um valor relativamente alto no controller porque
 				// sempre tem algum resquicio de movimento nele
 
-				// Debug.LogWarningFormat("Changing Player's Scale because we have normalized horizontal speed of {0} and m_controller.velocity of {1}", normalizedHorizontalSpeed, m_controller.velocity.x);
-
 				float sign = (normalizedHorizontalSpeed != 0 ? Mathf.Sign(normalizedHorizontalSpeed) : Mathf.Sign(m_controller.velocity.x));
-
 				if(!m_isOnWall) {
 					foreach(Transform transf in m_playerSprites) {
 						transf.localScale = new Vector3(sign * Mathf.Abs(transf.localScale.x), transf.localScale.y, transf.localScale.z);	
@@ -445,107 +461,62 @@ public class PlayerController : MonoBehaviour {
 			m_jumpPressedRemember = jumpPressedRememberTime;
 		}
 
-		if(InputManager.instance.ReleasedJump()) {
-			if(m_velocity.y > 0) {
-				m_velocity.y = m_velocity.y * Mathf.Pow(cutJumpHeight,Time.deltaTime*60);
-			}
-		}
-
-		if(m_velocity.y < 0 && !m_isOnWall) {
-			m_gravity = goingDownGravity;
-		}
-
 		// REGULAR JUMP
 		if( ( (m_groundedRemember > 0) && (m_jumpPressedRemember > 0) ) ) {
 			m_jumpPressedRemember = 0;
 			m_groundedRemember = 0;
 			SaveSystem.instance.Jumped();
+			m_gravity = goingUpGravity;
 			m_velocity.y = Mathf.Sqrt( 2f * jumpHeight * -m_gravity );
 			
 			if(SoundManager.instance && jumpingClip) {
 				SoundManager.instance.PlaySfx(jumpingClip);
 			}
+
 			foreach(Transform transf in m_playerSprites) {
 				StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
 				break;
 			}
-			foreach(Animator ani in m_animators) {
-				ani.Play( "Jump" );
-			}
+
+			// foreach(Animator ani in m_animators) {
+			// 	ani.Play( "Jump" );
+			// }
+
+			// [CHANGING STATE]
+			m_currentPlayerState = EPlayerState.Jumping;
 		}
 	}
 
 	private void WallJump() {
 		//Debug.Log("right " + m_controller.isNear(Vector2.right,maxDistanceOffWall));
-
-		if(m_controller.isGrounded) {
-			m_isOnWall = false;
-			return;
-		}
 		
-		// Stick To Wall
-		// is not on wall AND
-		// is pressing the trigger AND
-		// is colliding on left or right
+		// Sticking to the Wall
 		if(!m_isOnWall
 			&&
 			!m_controller.isGrounded
-			//&& 
-			// Input.GetButton("StickToWall")
-			//InputManager.instance.PressedWallJump()
 			&&
-			((m_controller.isColliding(Vector2.left) &&  m_velocity.x < 0)
-			|| 
-			(m_controller.isColliding(Vector2.right) &&  m_velocity.x > 0)))
+			((m_controller.isColliding(Vector2.left) &&  m_velocity.x < 0) || (m_controller.isColliding(Vector2.right) &&  m_velocity.x > 0)))
 		{
-			// wasn't on wall last frame
 			m_isOnWall = true;
 		} else if(
-			// is on wall AND
-			// is not pressing AND
-			// is colliding
 			m_isOnWall
 			&&
 			!m_controller.isNear(Vector2.left,maxDistanceOffWall) && !m_controller.isNear(Vector2.right,maxDistanceOffWall)
-			//&&
-			//!InputManager.instance.PressedWallJump()
-			//&&
-			//(m_controller.isColliding(Vector2.left) || m_controller.isColliding(Vector2.right))
 			)
 		{
 			m_isOnWall = false;
 
 		}
 
-		// EFFECTIVELY JUMPING OFF WALL
-		// if is on wall AND
-		// is pressing the jump button
-
-		if((m_isOnWall 
-			&& 
-			// Input.GetButtonDown("Jump")
-			InputManager.instance.PressedJump())
-
+		// Jumping off the wall
+		if((m_isOnWall && InputManager.instance.PressedJump())
 			||
-
 			(!m_isOnWall
 			&&
 			InputManager.instance.PressedJump()
 			&&
 			((m_controller.isNear(Vector2.left,maxDistanceOffWall) || m_controller.isNear(Vector2.right,maxDistanceOffWall))))
 			) {
-			if(!m_isOnWall) {
-				// nao precisa mais disso pois a funcao move agora lida com a escala em todas ocasioes
-				// if(m_controller.isColliding(Vector2.right)){
-				// 	foreach(Transform transf in m_playerSprites) {
-				// 		transf.localScale = new Vector3(Mathf.Abs(transf.localScale.x)*-1, m_originalScale.y, transf.localScale.z);
-				// 	}
-				// } else{
-				// 	foreach(Transform transf in m_playerSprites) {
-				// 		transf.localScale = new Vector3(Mathf.Abs(transf.localScale.x), m_originalScale.y, transf.localScale.z);
-				// 	}
-				// }
-			}
 
 			m_isOnWall = false;
 			m_fastsliding = false;
@@ -582,7 +553,23 @@ public class PlayerController : MonoBehaviour {
 			m_blockInputOnWallJumpCoroutine = StartCoroutine(BlockInputOnWallJumpCoroutine());
 		}
 	}
-	
+
+	private IEnumerator BlockInputOnWallJumpCoroutine() {
+		m_blockingHorizontalControl = true;
+		yield return new WaitForSeconds(0.16f);
+		m_blockingHorizontalControl = false;
+		m_blockInputOnWallJumpCoroutine = null;
+	}
+
+	private IEnumerator ChangeScale(Vector2 scale) {
+		foreach(Transform transf in m_playerSprites) {
+			transf.localScale = scale;
+		}
+		yield return new WaitForSeconds(0.075f);
+		foreach(Transform transf in m_playerSprites) {
+			transf.localScale = new Vector3(Mathf.Sign(transf.localScale.x) * Mathf.Abs(m_originalScale.x), m_originalScale.y, transf.localScale.z);
+		}
+	}
 
 	private void CamHandling(){
 		if(!m_cam) return;
@@ -610,23 +597,7 @@ public class PlayerController : MonoBehaviour {
 		return m_velocity;
 	}
 
-	public void ActivateSillouette() {
-		foreach(Transform transf in m_playerSprites) {
-			transf.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 1.0f);
-		}
-	}
-
-	public void ToggleSillouette() {
-		foreach(Transform transf in m_playerSprites) {
-			float value = transf.GetComponent<SpriteRenderer>().material.GetFloat("_FlashAmount");
-
-			if(value > 0) {
-				transf.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 0.0f);
-			} else if(value == 0) {
-				transf.GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 1.0f);
-			}		
-		}
-	}
+	#region Dialogue Related Functions
 
 	private IEnumerator GenericDialogueHintRoutine(Vector3 startingScale, Vector3 aimScale) {
 		float timeElapsed = 0f;
@@ -658,22 +629,25 @@ public class PlayerController : MonoBehaviour {
 
 	public void StartDialogue() {
 		if(dialogueHintObject) dialogueHintObject.SetActive(false);
-		m_isShowingDialogue = true;
+
+		foreach(Animator ani in m_animators) {
+			ani.Play("Idle");
+		}
+
+		m_velocity = Vector2.zero;
+		m_currentPlayerState = EPlayerState.MoveBlockedDialogue;
 	}
 
+	// this is called when the player leaves the trigger of the dialogue
+	// this isn't supposed to happen but let's keep it here for now
 	public void EndDialogue() {
-		m_isShowingDialogue = false;
+		m_currentPlayerState = EPlayerState.Normal;
 	}
+
+	#endregion
 
 	public void UpdatePizzaCounter() {
 		if(PizzaCounterUI.instance) PizzaCounterUI.instance.UpdateCounter(Mathf.RoundToInt(SaveSystem.instance.myData.pizzaCounter));
 		else if(PizzaSliceCounterUI.instance) PizzaSliceCounterUI.instance.UpdateCounter(Mathf.RoundToInt(SaveSystem.instance.myData.pizzaCounter));
-	}
-
-	private IEnumerator BlockInputOnWallJumpCoroutine() {
-		m_blockingHorizontalControl = true;
-		yield return new WaitForSeconds(0.16f);
-		m_blockingHorizontalControl = false;
-		m_blockInputOnWallJumpCoroutine = null;
 	}
 }

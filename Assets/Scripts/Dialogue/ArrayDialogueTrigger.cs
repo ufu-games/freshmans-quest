@@ -32,7 +32,6 @@ public class ArrayDialogueTrigger : MonoBehaviour, IShowDialogue, IInteractableL
 
 	void IShowDialogue.ShowDialogue() {
 		TriggerDialogue();
-		FindObjectOfType<PlayerController>().StartDialogue();
 
 		if(destroySelfAfterTriggering) {
 			Destroy(gameObject);
