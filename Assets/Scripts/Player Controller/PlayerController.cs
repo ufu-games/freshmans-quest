@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
 	// Jump Handling
 	private const float goingUpGravity = -35f;
 	private const float goingDownGravity = -105;
+	private const float terminalVelocity = -30f;
 	[ReadOnly]
 	private float m_gravity;
 	private const float inAirDamping = 0.08333f;
@@ -279,7 +280,6 @@ public class PlayerController : MonoBehaviour {
 	{	
 		m_groundedRemember -= Time.deltaTime;
 		m_jumpPressedRemember -= Time.deltaTime;
-		Debug.LogWarningFormat("Current Player State: {0}", m_currentPlayerState);
 
 		SaveSystem.instance.TickTimePlayed();
 
@@ -318,6 +318,7 @@ public class PlayerController : MonoBehaviour {
 				ProcessJumpingState();
 			break;
 			case EPlayerState.OnWall:
+				// Add Wall Rest here if needed.
 			break;
 			case EPlayerState.Cannon:
 				ProcessCannonState();
@@ -341,7 +342,7 @@ public class PlayerController : MonoBehaviour {
 		// Vertical Velocity
 		// ACCELERATING with gravity
 		float thisFrameYVelocity = m_velocity.y + (m_gravity * Time.deltaTime);
-		m_velocity.y = Mathf.Max(-60f, thisFrameYVelocity);
+		m_velocity.y = Mathf.Max(terminalVelocity, thisFrameYVelocity);
 		
 		Vector2 eulerDeltaPosition = m_velocity * Time.deltaTime;
 		// Velocity Verlet giving bad results
