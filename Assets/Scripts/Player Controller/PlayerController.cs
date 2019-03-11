@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// Jump Handling
 	private const float goingUpGravity = -35f;
-	private const float goingDownGravity = -60f;
+	private const float goingDownGravity = -105;
 	[ReadOnly]
 	private float m_gravity;
 	private const float inAirDamping = 0.08333f;
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// WALL JUMP HANDLING Handling
 	private const float onWallGravity = -1f;
-	private Vector2 wallJumpVelocity = new Vector2(10f, 3.0f);
+	private Vector2 wallJumpVelocity = new Vector2(10f, 3.25f);
 	private const float maxDistanceOffWall = 5;
 	
 	[ReadOnly]
@@ -331,13 +331,15 @@ public class PlayerController : MonoBehaviour {
 		CamHandling();
 
 		// Handling Player Velocity and Moving
+
+		// Horizontal Velocity
 		float t_groundDamping = m_isSlipping ? (groundDamping * slippingFrictionMultiplier) : groundDamping;
 		var smoothedMovementFactor = m_controller.isGrounded ? t_groundDamping : inAirDamping;
-
 		m_velocity.x = Mathf.Lerp(normalizedHorizontalSpeed * runSpeed, m_velocity.x,Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime*60));
 		
-		// // limiting gravity
-		m_velocity.y = Mathf.Max(m_gravity, m_velocity.y + (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime))));
+		// Vertical Velocity
+		// Debug.LogWarningFormat("m_velocity.y = Mathf.Max({0}, {1})", m_gravity,  m_velocity.y + (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime))));
+		m_velocity.y = Mathf.Max(-60f, m_velocity.y + (m_gravity * Time.deltaTime + (.5f * m_gravity * (Time.deltaTime * Time.deltaTime))));
 		
 		Vector2 deltaPosition = new Vector2(m_velocity.x * Time.deltaTime,m_velocity.y * Time.deltaTime);
 
