@@ -42,6 +42,8 @@ public class TitleScreenManager : MonoBehaviour {
 	private Vector2 leftAnchoredPoint = new Vector2(-1600, 0);
 	private Vector2 upAnchoredPoint = new Vector2(0, 900);
 	private Vector2 downAnchoredPoint = new Vector2(0, -900);
+	private Vector2 downPressConfirmButtonAnchoredPoint = new Vector2(450, -425);
+	private Vector2 upPressCOnfirmButtonAnchoredPoint = new Vector2(450, -250);
 	private GameObject m_lastSelectedObjectByInputSystem;
 
 	public enum ECurrentState {
@@ -68,6 +70,8 @@ public class TitleScreenManager : MonoBehaviour {
 
 		musicSlider.value = SoundManager.instance.musicVolume;
 		sfxSlider.value = SoundManager.instance.sfxVolume;
+
+		m_canOffset = true;
 	}
 
 	#region Options Menu Function
@@ -105,30 +109,43 @@ public class TitleScreenManager : MonoBehaviour {
 	private IEnumerator TransitionFromMainMenuRoutine() {
 		SoundManager.instance.SetParameterFMOD("MainThemeTransition", -1.0f);
 
+		ChangeSelectableState(mainMenuSelectables, false);
+		ChangeSelectableState(profileSelectables, false);
+		ChangeSelectableState(optionsMenuSelectables, false);
+
 		/* Fazendo o Fade Out de todas as imagens do menu principal */
 		foreach(MaskableGraphic m in m_optionsGraphics) {
 			m.CrossFadeAlpha(0f, 0.5f, true);
 		}
 
+		yield return new WaitForSeconds(0.25f);
+
 		/* Mostrando na Tela o Logo do Jogo e o botãozinho mostrando qual botão apertar */
-		StartCoroutine(OffsetGameObject(confirmButton, 0, m_confirmButtonOffsetY, 1.0f));
-		yield return StartCoroutine(FadePressStartRoutine(0, 1, 1.0f));
+		StartCoroutine(OffsetRectTransformToAnchoredPoint(confirmButton.GetComponent<RectTransform>(), upPressCOnfirmButtonAnchoredPoint, 0.5f));
+		yield return StartCoroutine(FadePressStartRoutine(0, 1, 0.5f));
 		m_currentState = ECurrentState.OnPressStart;
 	}
 
 	/* Transição */
 	/* Press Start => Main Menu */
 	private IEnumerator TransitionToMainMenuRoutine() {
+		m_canOffset = false;
+
 		SoundManager.instance.SetParameterFMOD("MainThemeTransition", 1.0f);
 
 		/* Tirando da tela o Logo do Jogo e o botãozinho mostrando qual botão apertar */
-		StartCoroutine(OffsetGameObject(confirmButton, 0, -m_confirmButtonOffsetY, 1.0f));
+		StartCoroutine(OffsetRectTransformToAnchoredPoint(confirmButton.GetComponent<RectTransform>(), downPressConfirmButtonAnchoredPoint, 1.0f));
 		yield return StartCoroutine(FadePressStartRoutine(1, 0, 1.0f));
 		
 		/* Fazendo o Fade In de todas as imagens do menu Principal */
 		foreach(MaskableGraphic m in m_optionsGraphics) {
 			m.CrossFadeAlpha(1f, 1.0f, true);
 		}
+
+		// Fazendo com que o menu seja selecionavel pela UI
+		ChangeSelectableState(mainMenuSelectables, true);
+		ChangeSelectableState(profileSelectables, false);
+		ChangeSelectableState(optionsMenuSelectables, false);
 
 		/* Definindo os Estados Inicias do Menu Principal */
 		m_currentState = ECurrentState.OnMainMenu;
@@ -138,6 +155,8 @@ public class TitleScreenManager : MonoBehaviour {
 		} else {
 			SelectLastSelected();
 		}
+
+		m_canOffset = true;
 		
 	}
 
@@ -271,10 +290,9 @@ public class TitleScreenManager : MonoBehaviour {
 		if(InputManager.instance.PressedConfirm()) {
 			switch(m_currentState) {
 				case ECurrentState.OnPressStart:
-					StartCoroutine(TransitionToMainMenuRoutine());
-					ChangeSelectableState(mainMenuSelectables, true);
-					ChangeSelectableState(profileSelectables, false);
-					ChangeSelectableState(optionsMenuSelectables, false);
+					if(m_canOffset) {
+						StartCoroutine(TransitionToMainMenuRoutine());
+					}
 				break;
 			}
 		}
@@ -297,9 +315,6 @@ public class TitleScreenManager : MonoBehaviour {
 					if(m_canOffset) {
 						DisselectCurrent();
 						StartCoroutine(TransitionFromMainMenuRoutine());
-						ChangeSelectableState(mainMenuSelectables, false);
-						ChangeSelectableState(profileSelectables, false);
-						ChangeSelectableState(optionsMenuSelectables, false);
 					}
 				break;
 				case ECurrentState.OnCredits:
