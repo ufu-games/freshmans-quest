@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// WALL JUMP HANDLING Handling
 	private const float onWallGravity = -1f;
-	private Vector2 wallJumpVelocity = new Vector2(10f, 3.25f);
+	private Vector2 wallJumpVelocity = new Vector2(10.75f, 3.25f);
 	private const float maxDistanceOffWall = 5;
 	
 	[ReadOnly]
