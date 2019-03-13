@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour {
 	// Jump Handling
 	private const float goingUpGravity = -35f;
 	private const float goingDownGravity = -105;
-	private const float terminalVelocity = -30f;
+	private const float terminalVelocity = -20f;
 	[ReadOnly]
 	private float m_gravity;
 	private const float inAirDamping = 0.08333f;
