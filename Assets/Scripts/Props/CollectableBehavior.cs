@@ -96,6 +96,8 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 		}
 		GameObject part = Instantiate((GameObject) Resources.Load("Pizza Particles 2"),transform.position,Quaternion.identity);
 		part.transform.parent = playerReference.transform; //Começa a particula de estouro
+		part.transform.rotation = Quaternion.Euler(-90,0,0);
+		part.transform.position += Vector3.down*0.3f;
 		part.GetComponent<ParticleSystem>().Play();
 	}
 
