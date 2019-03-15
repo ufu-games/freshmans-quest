@@ -65,7 +65,7 @@ public class TitleScreenManager : MonoBehaviour {
 		}
 
 		/* Mostrando na Tela o Logo do Jogo e o botãozinho mostrando qual botão apertar */
-		StartCoroutine(OffsetGameObject(confirmButton, 0, m_confirmButtonOffsetY, 1.0f));
+		StartCoroutine(OffsetRectTransformToAnchoredPoint(confirmButton.GetComponent<RectTransform>(), upPressCOnfirmButtonAnchoredPoint, 1.0f));
 		StartCoroutine(FadePressStartRoutine(0, 1, 1.0f));
 
 		musicSlider.value = SoundManager.instance.musicVolume;
