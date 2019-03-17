@@ -474,7 +474,7 @@ MonoBehaviour:
   dialogueOnStart: 1
   dialogues:
   - characterName: 
-    characterSprite: {fileID: 21300000, guid: 50c07ee76a47d4e8086e2c0de4867a59, type: 3}
+    characterSprite: {fileID: 21300000, guid: 84f74353450704730b55254dfbaf3fea, type: 3}
     sentences:
     - Lily was chilling at her house, but everything changed when she received her
       grades and found out she failed a course by a single point!
@@ -482,25 +482,25 @@ MonoBehaviour:
       she was going to complain about her grade to the professor."
     dialogueClip: {fileID: 0}
   - characterName: 
-    characterSprite: {fileID: 21300000, guid: 8dad6a17daf4a48acacfa98abd19133f, type: 3}
+    characterSprite: {fileID: 21300000, guid: af12c464954a640678a6f561235cebf2, type: 3}
     sentences:
     - But something happened at the university, everything was weird and distorted.
       The Arts building was melting and everyone seemed insane.
     dialogueClip: {fileID: 8300000, guid: d2ef72eb440d94316b852b08d4e7820f, type: 3}
   - characterName: 
-    characterSprite: {fileID: 21300000, guid: f4485f3f162a6411eae47faf6400c4ca, type: 3}
+    characterSprite: {fileID: 21300000, guid: 41d5dfc6b6f6b4a1e842075548eecdbc, type: 3}
     sentences:
     - After a long time searching, she finally found her professor and finally could
       hear an explanation about what was happening.
     dialogueClip: {fileID: 8300000, guid: d2ef72eb440d94316b852b08d4e7820f, type: 3}
   - characterName: 
-    characterSprite: {fileID: 21300000, guid: b14cecd8c9cfb406c9d56d3b8d5ce115, type: 3}
+    characterSprite: {fileID: 21300000, guid: 1b25f189cc1d9467da14efc02052987f, type: 3}
     sentences:
     - Another student, Jim, was very anxious about an exam so he had the brilliant
       idea of summoning a cosmic entity of knowledge to help him!
     dialogueClip: {fileID: 8300000, guid: d2ef72eb440d94316b852b08d4e7820f, type: 3}
   - characterName: 
-    characterSprite: {fileID: 21300000, guid: 8b7b7a890668a43d9b7074a5dc8acaa7, type: 3}
+    characterSprite: {fileID: 21300000, guid: 4d30e2cff76ee4a988a7eebbdd499b59, type: 3}
     sentences:
     - So Lily and the professor made a deal, she would find Jim and end all this madness.
       The professor then would give her a point on the course.
@@ -908,8 +908,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: b515fa838a86d4badb2398648acf475f, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: d77e1fccaef7c4bc79012c92ca08f9d6, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -959,8 +959,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -140, y: -50}
+  m_AnchoredPosition: {x: 13.3, y: 0}
+  m_SizeDelta: {x: -166.5, y: -50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2090656862
 MonoBehaviour:
@@ -982,7 +982,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: HELLO WORLD
+  m_text: Hello World, this is just a text testing, don't mind me. I think everything
+    will go fine and correctly aligned with the lines so I'm checking.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 890a1d29792d94acb94e69e4fd208add, type: 2}
   m_sharedMaterial: {fileID: 21804152873127598, guid: 890a1d29792d94acb94e69e4fd208add,
@@ -1018,18 +1019,18 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_textAlignment: 520
+  m_textAlignment: 264
   m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 10.98
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
+  m_firstOverflowCharacterIndex: 129
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -1052,12 +1053,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 2090656862}
-    characterCount: 11
+    characterCount: 142
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 25
+    wordCount: 26
     linkCount: 0
-    lineCount: 1
+    lineCount: 5
     pageCount: 1
     materialCount: 1
   m_havePropertiesChanged: 0

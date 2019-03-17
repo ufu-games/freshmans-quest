@@ -34,7 +34,6 @@ public abstract class BaseInput {
 	}
 	public abstract bool PressedJump();
 	public abstract bool ReleasedJump();
-	public abstract bool PressingWallJump();
 	public abstract bool PressedConfirm();
 	public abstract bool PressedCancel();
 	public abstract bool PressedStart();
@@ -52,15 +51,6 @@ public class PS4Input : BaseInput {
 	public override bool ReleasedJump() {
 		return(
 			Input.GetKeyUp(KeyCode.Joystick1Button1)
-		);
-	}
-
-	public override bool PressingWallJump() {
-		return(
-			Input.GetKey(KeyCode.Joystick1Button4) ||
-			Input.GetKey(KeyCode.Joystick1Button5) ||
-			Input.GetKey(KeyCode.Joystick1Button6) ||
-			Input.GetKey(KeyCode.Joystick1Button7)
 		);
 	}
 
@@ -90,54 +80,6 @@ public class PS4Input : BaseInput {
 	}
 }
 
-public class SwitchProInput : BaseInput {
-	public override bool PressedJump() {
-		return(
-			Input.GetKeyDown(KeyCode.Joystick1Button0)
-		);
-	}
-
-	public override bool ReleasedJump() {
-		return(
-			Input.GetKeyUp(KeyCode.Joystick1Button0)
-		);
-	}
-
-	public override bool PressingWallJump() {
-		return(
-			Input.GetKey(KeyCode.Joystick1Button4) ||
-			Input.GetKey(KeyCode.Joystick1Button5) ||
-			Input.GetKey(KeyCode.Joystick1Button6) ||
-			Input.GetKey(KeyCode.Joystick1Button7)
-		);
-	}
-
-	public override bool PressedConfirm() {
-		return(
-			Input.GetKeyDown(KeyCode.Joystick1Button1)
-		);
-	}
-
-	public override bool PressedStart() {
-		return Input.GetKeyDown(KeyCode.Joystick1Button9);
-	}
-
-	public override bool PressedCancel() {
-		return(
-			Input.GetKeyDown(KeyCode.Joystick1Button0) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button8)
-		);
-	}
-
-	public override bool PressedStartDialogue() {
-		return Input.GetKeyDown(KeyCode.Joystick1Button3);
-	}
-
-	public override bool PressedDeleteProfile() {
-		return Input.GetKeyDown(KeyCode.Joystick1Button2);
-	}
-}
-
 public class XBOXInput : BaseInput {
 	public override bool PressedJump() {
 		return(
@@ -148,13 +90,6 @@ public class XBOXInput : BaseInput {
 	public override bool ReleasedJump() {
 		return(
 			Input.GetKeyUp(KeyCode.Joystick1Button0)
-		);
-	}
-
-	public override bool PressingWallJump() {
-		return(
-			Input.GetKey(KeyCode.Joystick1Button4) ||
-			Input.GetKey(KeyCode.Joystick1Button5)
 		);
 	}
 
@@ -194,16 +129,12 @@ public class StandardInput : BaseInput {
 		return Input.GetButtonUp("Jump");
 	}
 
-	public override bool PressingWallJump() {
-		return Input.GetButton("StickToWall");
-	}
-
 	public override bool PressedConfirm() {
 		return Input.GetButtonDown("Submit");
 	}
 
 	public override bool PressedStart() {
-		return PressedCancel();
+		return Input.GetButtonDown("Pause");
 	}
 
 	public override bool PressedCancel() {
@@ -211,11 +142,11 @@ public class StandardInput : BaseInput {
 	}
 
 	public override bool PressedStartDialogue() {
-		return PressedConfirm();
+		return Input.GetButtonDown("Dialogue");
 	}
 
 	public override bool PressedDeleteProfile() {
-		return Input.GetKeyDown(KeyCode.Delete);
+		return Input.GetButtonDown("Delete Profile");
 	}
 }
 
@@ -267,14 +198,6 @@ public class InputManager : MonoBehaviour {
 		}
 	}
 
-	public enum EInputDevice {
-		PS4_controller,
-		SWITCH_controller,
-		XBOX_controller,
-		none
-	}
-
-	private EInputDevice m_activeDevice;
 	private BaseInput m_inputDevice;
 
 	void Awake() {
@@ -288,29 +211,33 @@ public class InputManager : MonoBehaviour {
 
 	void Start () {
 		string[] names= Input.GetJoystickNames();
-		foreach(string name in names) {
-			Debug.LogWarningFormat("Connected Controller: {0}", name);
-			if(name.Contains("Pro Controller")) {
-				Debug.LogWarning("Using Switch Pro Controller");
-				m_activeDevice = EInputDevice.SWITCH_controller;
-				m_inputDevice = new SwitchProInput();
-			} else if (name.Contains("Sony")) {
-				Debug.LogWarning("Using PS4 Controller");
-				m_activeDevice = EInputDevice.PS4_controller;
-				m_inputDevice = new PS4Input();
-			} else if(name.Contains("XBOX") || name.Contains("xinput") || name.Contains("Xbox")) { 
-				Debug.LogWarning("Using XBOX Controller");
-				m_activeDevice = EInputDevice.XBOX_controller;
-				m_inputDevice = new XBOXInput();
-			} else {
-				Debug.LogWarning("Using Standard Input");
-				m_activeDevice = EInputDevice.none;
-				m_inputDevice = new StandardInput();
-			}
-		}
-		if(m_inputDevice == null) {
-			m_inputDevice = new StandardInput();
-		} 	
+		
+		// Standard Input => Suited for Keyboard and Xbox-like Controllers
+		m_inputDevice = new StandardInput();
+
+		// foreach(string name in names) {
+		// 	Debug.LogWarningFormat("Connected Controller: {0}", name);
+		// 	if (name.Contains("Sony")) {
+		// 		Debug.LogWarning("Using PS4 Controller");
+		// 		m_activeDevice = EInputDevice.PS4_controller;
+		// 		m_inputDevice = new PS4Input();
+		// 	} else if(name.Contains("XBOX") || name.Contains("xinput") || name.Contains("Xbox")) { 
+		// 		Debug.LogWarning("Using XBOX Controller");
+		// 		m_activeDevice = EInputDevice.XBOX_controller;
+		// 		m_inputDevice = new XBOXInput();
+		// 	} else {
+		// 		Debug.LogWarning("Using Standard Input");
+		// 		m_activeDevice = EInputDevice.none;
+		// 		m_inputDevice = new StandardInput();
+		// 	}
+		// }
+		// if(m_inputDevice == null) {
+		// 	m_inputDevice = new StandardInput();
+		// }
+	}
+
+	void Update() {
+		WhatIsPressed();
 	}
 
 	public bool PressedJump() {
@@ -319,10 +246,6 @@ public class InputManager : MonoBehaviour {
 
 	public bool ReleasedJump() {
 		return m_inputDevice.ReleasedJump();
-	}
-
-	public bool PressedWallJump() {
-		return m_inputDevice.PressingWallJump();
 	}
 
 	public bool PressedConfirm() {

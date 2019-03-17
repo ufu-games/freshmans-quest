@@ -174,8 +174,7 @@ public class PlayerController : MonoBehaviour {
 		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
 
 		if(showDialogue != null) {
-			// [TO DO] Check if it needs to check whether or not dialogue is already playing
-			if(InputManager.instance.PressedStartDialogue()) {
+			if(InputManager.instance.PressedStartDialogue() && m_currentPlayerState != EPlayerState.MoveBlockedDialogue) {
 				SaveSystem.instance.NPCChatted();
 				showDialogue.ShowDialogue();
 				StartDialogue();

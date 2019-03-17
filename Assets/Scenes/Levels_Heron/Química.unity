@@ -163,7 +163,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4119891488998658, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -184650
+      value: -189250
       objectReference: {fileID: 0}
     - target: {fileID: 4119891488998658, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 3}
       propertyPath: m_LocalRotation.x
@@ -569,7 +569,7 @@ TilemapRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 0.0625, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
@@ -40964,24 +40964,6 @@ Tilemap:
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 1
       m_ColliderType: 1
-  - first: {x: -9, y: -2, z: 0}
-    second:
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_ObjectToInstantiate: {fileID: 0}
-      m_TileFlags: 1
-      m_ColliderType: 1
-  - first: {x: -8, y: -2, z: 0}
-    second:
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_ObjectToInstantiate: {fileID: 0}
-      m_TileFlags: 1
-      m_ColliderType: 1
   - first: {x: -5, y: -2, z: 0}
     second:
       m_TileIndex: 0
@@ -42046,7 +42028,7 @@ Tilemap:
       m_ColliderType: 1
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 3986
+  - m_RefCount: 3984
     m_Data: {fileID: 11400000, guid: 37b791b3b0082354a8c00cfe497c7c08, type: 2}
   - m_RefCount: 3
     m_Data: {fileID: 11400000, guid: 5f1032a1553b8fd40bf3a77556599dcb, type: 2}
@@ -42055,7 +42037,7 @@ Tilemap:
   - m_RefCount: 112
     m_Data: {fileID: 11400000, guid: 22a10df352363e3488abebef7f6557a8, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 3986
+  - m_RefCount: 3984
     m_Data: {fileID: 21300000, guid: d269cbda9021416468bf4a761464ed73, type: 3}
   - m_RefCount: 3
     m_Data: {fileID: 21300000, guid: 4ad62dfae8ef901429cd985afb3b0845, type: 3}
@@ -42064,7 +42046,7 @@ Tilemap:
   - m_RefCount: 112
     m_Data: {fileID: 21300000, guid: 1c8d3d62ec8d5194aa0463923ebcd6ab, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 4103
+  - m_RefCount: 4101
     m_Data:
       e00: 1
       e01: 0
@@ -42083,7 +42065,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 4103
+  - m_RefCount: 4101
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -42445,6 +42427,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
+    - target: {fileID: 114350344350028990, guid: 720d40a98bc0b4e29a754eec4f71b470,
+        type: 3}
+      propertyPath: musicVolume
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4151952876293500, guid: 720d40a98bc0b4e29a754eec4f71b470, type: 3}
       propertyPath: m_LocalPosition.x
       value: 157.5707
@@ -42498,11 +42485,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114350344350028990, guid: 720d40a98bc0b4e29a754eec4f71b470,
-        type: 3}
-      propertyPath: musicVolume
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 698785301, guid: 720d40a98bc0b4e29a754eec4f71b470, type: 3}
       propertyPath: m_Enabled
