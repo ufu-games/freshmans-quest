@@ -26,6 +26,8 @@ public class TitleScreenManager : MonoBehaviour {
 	[Header("Menus")]
 	public GameObject optionsObject;
 	public GameObject optionsGameObject;
+	public GameObject pencilSelectorObject;
+
 	public GameObject creditsObject;
 	public GameObject selectProfileObject;
 	public ProfileUI[] profileUIs;
@@ -295,6 +297,16 @@ public class TitleScreenManager : MonoBehaviour {
 					}
 				break;
 			}
+		}
+
+		if(m_currentState == ECurrentState.OnMainMenu) {
+			pencilSelectorObject.SetActive(true);
+			RectTransform selectedObjectTransform = EventSystem.current.currentSelectedGameObject.GetComponent<RectTransform>();
+
+			pencilSelectorObject.GetComponent<RectTransform>().position = new Vector3(45f, selectedObjectTransform.position.y - 8f, 0f);
+
+		} else {
+			pencilSelectorObject.SetActive(true);
 		}
 
 		if(InputManager.instance.PressedDeleteProfile()) {
