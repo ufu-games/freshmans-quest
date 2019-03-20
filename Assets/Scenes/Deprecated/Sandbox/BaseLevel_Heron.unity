@@ -2471,23 +2471,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1189502391956319509, guid: 7dd75b632d432984cb68359f2cacfe02,
-        type: 3}
-      propertyPath: platformMask.m_Bits
-      value: 2097664
-      objectReference: {fileID: 0}
-    - target: {fileID: 1189502391956319509, guid: 7dd75b632d432984cb68359f2cacfe02,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6287796586595696818, guid: 7dd75b632d432984cb68359f2cacfe02,
-        type: 3}
-      propertyPath: m_Constraints
-      value: 4
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3975249710827544944, guid: 7dd75b632d432984cb68359f2cacfe02, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dd75b632d432984cb68359f2cacfe02, type: 3}
 --- !u!4 &540022281 stripped
 Transform:
@@ -11835,12 +11819,12 @@ PrefabInstance:
     - target: {fileID: 224643321488731614, guid: f1dc0d344c943264fbfc5c276db7d64a,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.000061035156
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224643321488731614, guid: f1dc0d344c943264fbfc5c276db7d64a,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0010681152
+      value: -0.0009765625
       objectReference: {fileID: 0}
     - target: {fileID: 224643321488731614, guid: f1dc0d344c943264fbfc5c276db7d64a,
         type: 3}
@@ -14918,7 +14902,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4119891488998658, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -28580
+      value: -28770
       objectReference: {fileID: 0}
     - target: {fileID: 4119891488998658, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 3}
       propertyPath: m_LocalRotation.x
