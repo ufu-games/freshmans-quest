@@ -301,6 +301,12 @@ public class TitleScreenManager : MonoBehaviour {
 
 		if(m_currentState == ECurrentState.OnMainMenu) {
 			pencilSelectorObject.SetActive(true);
+
+			if(EventSystem.current.currentSelectedGameObject == null) {
+				SelectLastSelected();
+			} else {
+				m_lastSelectedObjectByInputSystem = EventSystem.current.currentSelectedGameObject;
+			}
 			RectTransform selectedObjectTransform = EventSystem.current.currentSelectedGameObject.GetComponent<RectTransform>();
 
 			pencilSelectorObject.GetComponent<RectTransform>().position = new Vector3(45f, selectedObjectTransform.position.y - 8f, 0f);
