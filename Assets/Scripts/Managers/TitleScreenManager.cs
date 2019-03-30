@@ -159,7 +159,6 @@ public class TitleScreenManager : MonoBehaviour {
 		}
 
 		m_canOffset = true;
-		
 	}
 
 	
@@ -177,6 +176,7 @@ public class TitleScreenManager : MonoBehaviour {
 		
 		rectTransform.anchoredPosition = anchoredPoint;
 		yield return null;
+
 		m_canOffset = true;
 	}
 
@@ -299,8 +299,7 @@ public class TitleScreenManager : MonoBehaviour {
 			}
 		}
 
-		if(m_currentState == ECurrentState.OnMainMenu) {
-			pencilSelectorObject.SetActive(true);
+		if(m_currentState == ECurrentState.OnMainMenu && pencilSelectorObject.activeSelf) {
 
 			if(EventSystem.current.currentSelectedGameObject == null) {
 				SelectLastSelected();
@@ -309,10 +308,10 @@ public class TitleScreenManager : MonoBehaviour {
 			}
 			RectTransform selectedObjectTransform = EventSystem.current.currentSelectedGameObject.GetComponent<RectTransform>();
 
-			pencilSelectorObject.GetComponent<RectTransform>().position = new Vector3(45f, selectedObjectTransform.position.y - 8f, 0f);
-
-		} else {
-			pencilSelectorObject.SetActive(true);
+			if(m_canOffset) {
+				pencilSelectorObject.GetComponent<RectTransform>().position = new Vector3(45f, selectedObjectTransform.position.y - 8f, 0f);
+			}
+			
 		}
 
 		if(InputManager.instance.PressedDeleteProfile()) {
