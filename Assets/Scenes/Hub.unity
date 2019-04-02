@@ -153,18 +153,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b28a8747b0bb443b1ab21ee4c48e70a9, type: 3}
---- !u!114 &179643762 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114645107299380334, guid: b28a8747b0bb443b1ab21ee4c48e70a9,
-    type: 3}
-  m_PrefabInstance: {fileID: 179643761}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53f8dfcd4922944688c978b3319de604, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &200265824
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,9 +522,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 179643762}
-        m_MethodName: LoadLevel
-        m_Mode: 3
+      - m_Target: {fileID: 1788671221}
+        m_MethodName: ChooseArtsLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -744,7 +732,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1788671221}
         m_MethodName: GoToMainMenu
         m_Mode: 1
         m_Arguments:
@@ -1089,9 +1077,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 179643762}
-        m_MethodName: LoadLevel
-        m_Mode: 3
+      - m_Target: {fileID: 1788671221}
+        m_MethodName: ChooseUniversityLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
