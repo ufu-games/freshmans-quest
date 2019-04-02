@@ -121,6 +121,11 @@ public class PlayerController : MonoBehaviour {
 		m_currentPlayerState = EPlayerState.Normal;
     }
 
+	void Start() {
+		// Setting the Pizza Count
+		if(PizzaCounterUI.instance) PizzaCounterUI.instance.UpdateCounterWithoutRoutine(SaveSystem.instance.myData.pizzaCounter);
+	}
+
 
     #region Event Listeners
 
@@ -651,6 +656,5 @@ public class PlayerController : MonoBehaviour {
 
 	public void UpdatePizzaCounter() {
 		if(PizzaCounterUI.instance) PizzaCounterUI.instance.UpdateCounter(Mathf.RoundToInt(SaveSystem.instance.myData.pizzaCounter));
-		else if(PizzaSliceCounterUI.instance) PizzaSliceCounterUI.instance.UpdateCounter(Mathf.RoundToInt(SaveSystem.instance.myData.pizzaCounter));
 	}
 }
