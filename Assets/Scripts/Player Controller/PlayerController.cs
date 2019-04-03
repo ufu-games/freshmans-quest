@@ -56,8 +56,8 @@ public class PlayerController : MonoBehaviour {
 	private float normalizedHorizontalSpeed = 0;
 
 	private Prime31.CharacterController2D m_controller;
-	public Transform[] m_playerSprites;
-	private Animator[] m_animators;
+	public Transform m_playerSprite;
+	private Animator m_animator;
 	private Vector3 m_velocity;
 
 	// Scale Juicing
@@ -89,11 +89,8 @@ public class PlayerController : MonoBehaviour {
 	private EPlayerState m_currentPlayerState;
 
 	void Awake() {
-		m_animators = GetComponentsInChildren<Animator>();
-		m_playerSprites = new Transform[m_animators.Length];
-		for(int i=0;i<m_animators.Length;i++) {
-			m_playerSprites[i] = m_animators[i].transform;
-		}
+		m_animator = GetComponentInChildren<Animator>();
+		m_playerSprite = m_animator.transform;
 
 		m_controller = GetComponent<Prime31.CharacterController2D>();
 		m_controller.onControllerCollidedEvent += onControllerCollider;
@@ -101,8 +98,7 @@ public class PlayerController : MonoBehaviour {
 		m_controller.onTriggerStayEvent += OnTriggerStayEvent;
 		m_controller.onTriggerExitEvent += onTriggerExitEvent;
 		
-		m_originalScale = m_playerSprites[0].localScale;
-		m_playerSprites[1].localScale = m_originalScale;
+		m_originalScale = m_playerSprite.localScale;
 		
 		m_gravity = goingUpGravity;
 
@@ -225,9 +221,7 @@ public class PlayerController : MonoBehaviour {
 			isInCannon = true;
 			this.transform.position = col.gameObject.transform.position;
 			m_velocity = Vector2.zero;
-			foreach(Animator ani in m_animators) {
-				ani.gameObject.GetComponent<SpriteRenderer>().enabled = false;
-			}
+			m_animator.GetComponent<SpriteRenderer>().enabled = false;
 			this.Cannon = col.gameObject.GetComponent<CannonBehaviour>();
 			Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.OrthographicSize *= this.Cannon.zoomOutMultiplier;
 			this.Cannon.setActive(true);
@@ -267,13 +261,8 @@ public class PlayerController : MonoBehaviour {
 	
 		m_controller.move( deltaPosition );
 
-		foreach(Animator ani in m_animators) {
-			ani.Play( "Jump" );
-		}
-		foreach(Transform transf in m_playerSprites) {
-			StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
-			break;
-		}
+		m_animator.Play("Jump");
+		StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
 
 		if(isInCannon)
 			Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.OrthographicSize /= this.Cannon.zoomOutMultiplier;
@@ -303,10 +292,7 @@ public class PlayerController : MonoBehaviour {
 					SoundManager.instance.PlaySfx(stepClips[Random.Range(0, stepClips.Length)]);
 				}
 
-				foreach(Transform transf in m_playerSprites) {
-					StartCoroutine(ChangeScale(transf.localScale * m_groundingScaleMultiplier));
-					break;
-				}
+				StartCoroutine(ChangeScale(m_playerSprite.localScale * m_groundingScaleMultiplier));
 			}
 		}
 
@@ -379,22 +365,20 @@ public class PlayerController : MonoBehaviour {
 
 	private void AnimationLogic() {
 		if(gameObject.activeSelf){
-			foreach(Animator ani in m_animators) {
 				if(m_isOnWall) {
-					ani.Play("Wall");
+					m_animator.Play("Wall");
 				} else if(Mathf.Abs(m_velocity.y) > Mathf.Epsilon) {
 					if(m_velocity.y > 0) {
-						ani.Play("Jump");
+						m_animator.Play("Jump");
 					} else {
-						ani.Play("Falling");
+						m_animator.Play("Falling");
 					}
 				} else if(Mathf.Abs(normalizedHorizontalSpeed) > 0 && m_controller.isGrounded) {
-					ani.Play("Running");
+					m_animator.Play("Running");
 				} else {
-					ani.Play("Idle");
+					m_animator.Play("Idle");
 				}
 			}
-		}
 	}
 
 	#region Processing States
@@ -439,9 +423,7 @@ public class PlayerController : MonoBehaviour {
 			part.transform.rotation = Quaternion.Euler(-partangle,90,0);
 			part.transform.position = new Vector3(Cannon.transform.position.x + distanceBetweenCenterAndExplosion*Mathf.Cos(Mathf.Deg2Rad*(angleCannon+90)), Cannon.transform.position.y + distanceBetweenCenterAndExplosion*Mathf.Sin(Mathf.Deg2Rad*(angleCannon+90)),0);
 			part.GetComponent<ParticleSystem>().Play();
-			foreach(Animator ani in m_animators) {
-				ani.gameObject.GetComponent<SpriteRenderer>().enabled = true;
-			}
+			m_animator.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 			isInCannon = false;
 			Cannon.setActive(false);
 			m_currentPlayerState = EPlayerState.Jumping;
@@ -466,9 +448,7 @@ public class PlayerController : MonoBehaviour {
 
 				float sign = (normalizedHorizontalSpeed != 0 ? Mathf.Sign(normalizedHorizontalSpeed) : Mathf.Sign(m_controller.velocity.x));
 				if(!m_isOnWall) {
-					foreach(Transform transf in m_playerSprites) {
-						transf.localScale = new Vector3(sign * Mathf.Abs(transf.localScale.x), transf.localScale.y, transf.localScale.z);	
-					}
+					m_playerSprite.localScale = new Vector3(sign * Mathf.Abs(m_playerSprite.localScale.x), m_playerSprite.localScale.y, m_playerSprite.localScale.z);
 				}
 		}
 	}
@@ -486,10 +466,7 @@ public class PlayerController : MonoBehaviour {
 				SoundManager.instance.PlaySfx(jumpingClip);
 			}
 
-			foreach(Transform transf in m_playerSprites) {
-				StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
-				break;
-			}
+			StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
 			// [CHANGING STATE]
 			m_currentPlayerState = EPlayerState.Jumping;
 		}
@@ -550,10 +527,7 @@ public class PlayerController : MonoBehaviour {
 				particle.Play();
 			}
 
-			foreach(Transform transf in m_playerSprites) {
-				StartCoroutine(ChangeScale(transf.localScale * m_goingUpScaleMultiplier));
-				break;
-			}
+			StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
 
 			if(m_blockInputOnWallJumpCoroutine != null) {
 				StopCoroutine(m_blockInputOnWallJumpCoroutine);
@@ -570,13 +544,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private IEnumerator ChangeScale(Vector2 scale) {
-		foreach(Transform transf in m_playerSprites) {
-			transf.localScale = scale;
-		}
+		m_playerSprite.localScale = scale;
 		yield return new WaitForSeconds(0.075f);
-		foreach(Transform transf in m_playerSprites) {
-			transf.localScale = new Vector3(Mathf.Sign(transf.localScale.x) * Mathf.Abs(m_originalScale.x), m_originalScale.y, transf.localScale.z);
-		}
+		m_playerSprite.localScale = new Vector3(Mathf.Sign(m_playerSprite.localScale.x) * Mathf.Abs(m_originalScale.x), m_originalScale.y, m_playerSprite.localScale.z);
 	}
 
 	private void CamHandling(){
@@ -638,9 +608,7 @@ public class PlayerController : MonoBehaviour {
 	public void StartDialogue() {
 		if(dialogueHintObject) dialogueHintObject.SetActive(false);
 
-		foreach(Animator ani in m_animators) {
-			ani.Play("Idle");
-		}
+		m_animator.Play("Idle");
 
 		m_velocity = Vector2.zero;
 		m_currentPlayerState = EPlayerState.MoveBlockedDialogue;
