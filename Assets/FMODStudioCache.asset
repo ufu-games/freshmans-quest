@@ -13,25 +13,25 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: 114719832556719316}
-  - {fileID: 114159473525526544}
-  - {fileID: 114018722059352294}
-  - {fileID: 114066495142892394}
-  - {fileID: 114048116709170606}
-  - {fileID: 114405687466187800}
-  - {fileID: 114078141004874472}
+  - {fileID: 114834054704517808}
+  - {fileID: 114733637660940980}
+  - {fileID: 114668948953845348}
+  - {fileID: 114466595522836584}
+  - {fileID: 114958665066663004}
+  - {fileID: 114885837609870976}
   EditorEvents:
   - {fileID: 114502800603337716}
   - {fileID: 114244878215095370}
-  - {fileID: 114350262275050308}
   - {fileID: 114144822597837310}
-  - {fileID: 114151727323815862}
   - {fileID: 114486236096144478}
+  - {fileID: 114032184994888470}
   MasterBanks:
   - {fileID: 114066495142892394}
+  - {fileID: 114466595522836584}
   StringsBanks:
   - {fileID: 114719832556719316}
-  stringsBankWriteTime: 636898015870000000
+  - {fileID: 114834054704517808}
+  stringsBankWriteTime: 636895629999631717
   cacheVersion: 3
 --- !u!114 &114011588981017792
 MonoBehaviour:
@@ -87,6 +87,29 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 1
+--- !u!114 &114032184994888470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Efeitos/Efeitos
+  guid: da4ac84e01c1af4c8efef20a16a1df61
+  Banks:
+  - {fileID: 114466595522836584}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 51215
 --- !u!114 &114041670254192690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,7 +199,7 @@ MonoBehaviour:
   FileSizes:
   - Name: Desktop
     Value: 493344
-  Exists: 1
+  Exists: 0
 --- !u!114 &114078141004874472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,6 +235,22 @@ MonoBehaviour:
   Min: -1
   Max: 1
   Default: 0
+--- !u!114 &114100635485152654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Ambiente aberto-fechado
+  Min: 0
+  Max: 1
+  Default: 1
 --- !u!114 &114101752152164664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,6 +325,25 @@ MonoBehaviour:
   - Name: Desktop
     Value: 2815296
   Exists: 1
+--- !u!114 &114129049343743762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\Gabriel Solis\Desktop\CollegeLeague\FMOD\Ambiente - Thiago\Build\Desktop\Mapa.bank
+  lastModified: 636895630142917480
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1012704
+  Exists: 1
 --- !u!114 &114144822597837310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,12 +359,12 @@ MonoBehaviour:
   Path: event:/Fases/Universidade
   guid: bc7620acbc58fa4496d7c6f2f4d6ec70
   Banks:
-  - {fileID: 114048116709170606}
+  - {fileID: 114958665066663004}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114280740450503022}
+  - {fileID: 114100635485152654}
   MinDistance: 0
   MaxDistance: 0
   Length: 104769
@@ -390,6 +448,60 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1064704
   Exists: 1
+--- !u!114 &114163493724947176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: "C:\\Users\\Gabriel Solis\\Desktop\\CollegeLeague\\FMOD\\Ambiente - Thiago\\Build\\Desktop\\Qu\xEDmica.bank"
+  lastModified: 636895630210423804
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1064704
+  Exists: 1
+--- !u!114 &114173934235252110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\Gabriel Solis\Desktop\CollegeLeague\FMOD\Ambiente - Thiago\Build\Desktop\Artes.bank
+  lastModified: 636895630084011077
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 3405952
+  Exists: 1
+--- !u!114 &114175926617883728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Ambiente aberto-fechado
+  Min: 0
+  Max: 1
+  Default: 1
 --- !u!114 &114211667153969740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -487,7 +599,7 @@ MonoBehaviour:
   Path: event:/Mapa
   guid: 74e6d35f8e38f54cbe677768103ea225
   Banks:
-  - {fileID: 114018722059352294}
+  - {fileID: 114668948953845348}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -711,6 +823,26 @@ MonoBehaviour:
   - Name: Desktop
     Value: 965920
   Exists: 1
+--- !u!114 &114466595522836584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\Gabriel Solis\Desktop\CollegeLeague\FMOD\Ambiente - Thiago\Build\Desktop\Master
+    Bank.bank
+  lastModified: 636895629999509426
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 493344
+  Exists: 1
 --- !u!114 &114469807028406552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -781,7 +913,7 @@ MonoBehaviour:
   Path: event:/Fases/Artes
   guid: 580c603531c0f5448df2abe102d0f756
   Banks:
-  - {fileID: 114078141004874472}
+  - {fileID: 114885837609870976}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -846,7 +978,7 @@ MonoBehaviour:
   Path: "event:/Fases/Qu\xEDmica"
   guid: 82b9609fcddc7840b0c90ac05f9f732c
   Banks:
-  - {fileID: 114159473525526544}
+  - {fileID: 114733637660940980}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -854,6 +986,29 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 80000
+--- !u!114 &114508769336554634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Efeitos/Efeitos
+  guid: da4ac84e01c1af4c8efef20a16a1df61
+  Banks:
+  - {fileID: 114688034747119030}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 51215
 --- !u!114 &114534935251988556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1032,6 +1187,25 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 287272
+--- !u!114 &114668948953845348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\Gabriel Solis\Desktop\CollegeLeague\FMOD\Ambiente - Thiago\Build\Desktop\Mapa.bank
+  lastModified: 636895630142917480
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1012704
+  Exists: 1
 --- !u!114 &114669166931986334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1050,6 +1224,26 @@ MonoBehaviour:
   FileSizes:
   - Name: Desktop
     Value: 1064704
+  Exists: 1
+--- !u!114 &114688034747119030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\Gabriel Solis\Desktop\CollegeLeague\FMOD\Ambiente - Thiago\Build\Desktop\Master
+    Bank.bank
+  lastModified: 636895629999509426
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 493344
   Exists: 1
 --- !u!114 &114710181201335030
 MonoBehaviour:
@@ -1092,7 +1286,7 @@ MonoBehaviour:
   FileSizes:
   - Name: Desktop
     Value: 1164
-  Exists: 1
+  Exists: 0
 --- !u!114 &114722174125543832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1116,6 +1310,25 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 104769
+--- !u!114 &114733637660940980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: "C:\\Users\\Gabriel Solis\\Desktop\\CollegeLeague\\FMOD\\Ambiente - Thiago\\Build\\Desktop\\Qu\xEDmica.bank"
+  lastModified: 636895630210423804
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1064704
+  Exists: 1
 --- !u!114 &114733755338983270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1228,6 +1441,25 @@ MonoBehaviour:
   Min: -1
   Max: 1
   Default: 0
+--- !u!114 &114817972881401378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\Gabriel Solis\Desktop\CollegeLeague\FMOD\Ambiente - Thiago\Build\Desktop\Universidade.bank
+  lastModified: 636895630280937332
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1656640
+  Exists: 1
 --- !u!114 &114823917887186688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1247,6 +1479,25 @@ MonoBehaviour:
   - Name: Desktop
     Value: 2815296
   Exists: 1
+--- !u!114 &114834054704517808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: FMOD\Ambiente - Thiago\Build\Desktop\Master Bank.strings.bank
+  lastModified: 636895629999631717
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1084
+  Exists: 1
 --- !u!114 &114840994703171546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1263,6 +1514,44 @@ MonoBehaviour:
   Min: -1
   Max: 1
   Default: 0
+--- !u!114 &114875642164247022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: FMOD\Ambiente - Thiago\Build\Desktop\Master Bank.strings.bank
+  lastModified: 636895629999631717
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1084
+  Exists: 1
+--- !u!114 &114885837609870976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\Gabriel Solis\Desktop\CollegeLeague\FMOD\Ambiente - Thiago\Build\Desktop\Artes.bank
+  lastModified: 636895630084011077
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 3405952
+  Exists: 1
 --- !u!114 &114888961289976102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1351,6 +1640,25 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 74213
+--- !u!114 &114958665066663004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\Gabriel Solis\Desktop\CollegeLeague\FMOD\Ambiente - Thiago\Build\Desktop\Universidade.bank
+  lastModified: 636895630280937332
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1656640
+  Exists: 1
 --- !u!114 &114978108955545732
 MonoBehaviour:
   m_ObjectHideFlags: 0
