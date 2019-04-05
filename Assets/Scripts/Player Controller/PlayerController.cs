@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// WALL JUMP HANDLING Handling
 	private const float onWallGravity = -1f;
-	private Vector2 wallJumpVelocity = new Vector2(10.75f, 3.25f);
+	private Vector2 wallJumpVelocity = new Vector2(8f, 3.25f);
 	private const float maxDistanceOffWall = 5;
 	
 	[ReadOnly]
@@ -73,10 +73,6 @@ public class PlayerController : MonoBehaviour {
 	//Breakable Wall Handling
 	[ReadOnly]
 	public Vector3 m_velocityLastFrame;
-	
-	// Bloqueando Direcionais no WallJump
-	private bool m_blockingHorizontalControl = false;
-	private Coroutine m_blockInputOnWallJumpCoroutine;
 
 	public enum EPlayerState {
 		Normal,
@@ -285,7 +281,6 @@ public class PlayerController : MonoBehaviour {
 			
 			// wasn't grounded last frame
 			if(!m_controller.collisionState.wasGroundedLastFrame) {
-				m_blockingHorizontalControl = false;
 				Instantiate(landingParticles, transform.position + (Vector3.down / 2f), Quaternion.identity).Play();
 				
 				if(SoundManager.instance && stepClips.Length > 0) {
@@ -437,10 +432,6 @@ public class PlayerController : MonoBehaviour {
 		float horizontalMovement = Input.GetAxisRaw("Horizontal");
 		normalizedHorizontalSpeed = horizontalMovement;
 
-		if(m_blockingHorizontalControl) {
-			normalizedHorizontalSpeed = 0;
-		}
-
 		if(Mathf.Abs(normalizedHorizontalSpeed) > Mathf.Epsilon ||
 			Mathf.Abs(m_controller.velocity.x) > 0.05f) {
 				// tem que chegar por um valor relativamente alto no controller porque
@@ -528,19 +519,7 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
-
-			if(m_blockInputOnWallJumpCoroutine != null) {
-				StopCoroutine(m_blockInputOnWallJumpCoroutine);
-			}
-			m_blockInputOnWallJumpCoroutine = StartCoroutine(BlockInputOnWallJumpCoroutine());
 		}
-	}
-
-	private IEnumerator BlockInputOnWallJumpCoroutine() {
-		m_blockingHorizontalControl = true;
-		yield return new WaitForSeconds(0.16f);
-		m_blockingHorizontalControl = false;
-		m_blockInputOnWallJumpCoroutine = null;
 	}
 
 	private IEnumerator ChangeScale(Vector2 scale) {
