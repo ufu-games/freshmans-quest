@@ -48,7 +48,7 @@ public class DialogueManager : MonoBehaviour {
 		if(nameText) nameText.text = dialogue.characterName;
 		if(this.dialogImage && dialogue.characterSprite) dialogImage.sprite = dialogue.characterSprite;
 		m_sentences.Clear();
-		if(dialogue.dialogueClip) SoundManager.instance.PlaySfx(dialogue.dialogueClip);
+		if(SoundManager.instance.Settings.Cutscene_transition != "") SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Cutscene_transition);
 
 		foreach(string sentence in dialogue.sentences) {
 			m_sentences.Enqueue(sentence);

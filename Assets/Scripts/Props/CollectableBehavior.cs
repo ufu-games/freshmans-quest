@@ -25,7 +25,7 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 			print("Falta o AudioClip Continuo do Coletável " + this.name);
 		} else {
 			if(SoundManager.instance) {
-				SoundManager.instance.PlayContinuousSfx(continuousClip,this.gameObject);
+				SoundManager.instance.PlayContinuousSfx(SoundManager.instance.Settings.Collectable_continuous,this.gameObject);
 			}
 		}
 	}
@@ -68,7 +68,7 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 		SaveSystem.instance.GotPizza();
 		playerReference.UpdatePizzaCounter();
 		if(collectedClip && SoundManager.instance) {
-			SoundManager.instance.PlaySfx(collectedClip);
+			SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Collectable_pickup);
 		}
 		GetComponent<SpriteRenderer>().enabled = false;
 		GetComponent<Collider2D>().enabled = false;
@@ -111,7 +111,7 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 
 	public void Reset() {
 		if(!GetComponent<AudioSource>()) {
-			SoundManager.instance.PlayContinuousSfx(continuousClip,this.gameObject);
+			SoundManager.instance.PlayContinuousSfx(SoundManager.instance.Settings.Collectable_continuous,this.gameObject);
 		}
 		if(GetComponentInChildren<ParticleSystem>()) {
 			GetComponentInChildren<ParticleSystem>().Play();

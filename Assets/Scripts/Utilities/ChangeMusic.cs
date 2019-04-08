@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ChangeMusic : MonoBehaviour, IInteractable {
-    public AudioClip musicToChange;
+    [FMODUnity.EventRef]
+    public string musicToChange;
     private bool m_hasChangedMusic;
 
     void Awake() {

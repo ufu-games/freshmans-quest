@@ -43,12 +43,6 @@ public class PlayerController : MonoBehaviour {
 	[Header("Particle Effects")]
 	public ParticleSystem landingParticles;
 	
-	[Space(5)]
-	[Header("Audio Handling")]
-	public AudioClip hurtClip;
-	public AudioClip[] stepClips;
-	public AudioClip jumpingClip;
-	
 	//Camera Handling
 	private CinemachineFramingTransposer m_cam;
 
@@ -192,7 +186,7 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if(dangerousInteraction != null) {
-			if(hurtClip && SoundManager.instance) { SoundManager.instance.PlaySfx(hurtClip); }
+			if(SoundManager.instance.Settings.Player_death != "" && SoundManager.instance) {SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_death); }
 			dangerousInteraction.InteractWithPlayer(this.GetComponent<Collider2D>());
 		}
 
@@ -283,8 +277,8 @@ public class PlayerController : MonoBehaviour {
 			if(!m_controller.collisionState.wasGroundedLastFrame) {
 				Instantiate(landingParticles, transform.position + (Vector3.down / 2f), Quaternion.identity).Play();
 				
-				if(SoundManager.instance && stepClips.Length > 0) {
-					SoundManager.instance.PlaySfx(stepClips[Random.Range(0, stepClips.Length)]);
+				if(SoundManager.instance && SoundManager.instance.Settings.Player_walk != "") {
+					SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_walk);
 				}
 
 				StartCoroutine(ChangeScale(m_playerSprite.localScale * m_groundingScaleMultiplier));
@@ -453,8 +447,8 @@ public class PlayerController : MonoBehaviour {
 			m_gravity = goingUpGravity;
 			m_velocity.y = Mathf.Sqrt( 2f * jumpHeight * -m_gravity );
 			
-			if(SoundManager.instance && jumpingClip) {
-				SoundManager.instance.PlaySfx(jumpingClip);
+			if(SoundManager.instance && SoundManager.instance.Settings.Player_jump != "") {
+				SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_jump);
 			}
 
 			StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
@@ -503,8 +497,8 @@ public class PlayerController : MonoBehaviour {
 			
 			SaveSystem.instance.Jumped();
 
-			if(SoundManager.instance && jumpingClip) {
-				SoundManager.instance.PlaySfx(jumpingClip);
+			if(SoundManager.instance && SoundManager.instance.Settings.Player_walljump != "") {
+				SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_walljump);
 			}
 
 			// Instantiating Particles
