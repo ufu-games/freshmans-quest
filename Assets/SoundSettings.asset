@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29edcaa5907b37f48aee241bb085c86b, type: 3}
+  m_Name: SoundSettings
+  m_EditorClassIdentifier: 
+  TitleScreen: "event:/Tela de t\xEDtulo"
+  Hub: event:/Mapa
+  University: event:/Fases/Universidade
+  Arts: event:/Fases/Artes
+  Chemistry: "event:/Fases/Qu\xEDmica"
+  Philosophy: 
+  Botton_click: "event:/Efeitos/Bot\xF5es do menu"
+  Cutscene_transition: 
+  Player_walk: 
+  Player_jump: event:/Efeitos/Pulo
+  Player_walljump: event:/Efeitos/Wall Jump
+  Player_death: event:/Efeitos/Morte
+  Player_reachGround: 
+  Rock_fall: "event:/Efeitos/Pedras batendo no ch\xE3o"
+  Platform_break: event:/Efeitos/Plataforma quebrando
+  Collectable_continuous: "event:/Efeitos/Colet\xE1vel pr\xF3ximo"
+  Collectable_pickup: "event:/Efeitos/Colet\xE1vel (comendo pizza)"
