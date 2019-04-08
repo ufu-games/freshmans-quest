@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Start() {
 		// Setting the Pizza Count
-		if(PizzaCounterUI.instance) PizzaCounterUI.instance.UpdateCounterWithoutRoutine(SaveSystem.instance.myData.pizzaCounter);
+		if(PizzaCounterUI.instance && SaveSystem.instance) PizzaCounterUI.instance.UpdateCounterWithoutRoutine(SaveSystem.instance.myData.pizzaCounter);
 	}
 
 

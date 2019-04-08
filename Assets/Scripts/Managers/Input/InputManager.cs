@@ -9,7 +9,6 @@ public class InputManager : MonoBehaviour {
 
 	public static InputManager instance;
 	private InControl.InputDevice activeDevice;
-	private InControl.InControlInputModule incontrolInputModule;
 
 	void Awake() {
 		if(instance == null) {
@@ -21,46 +20,68 @@ public class InputManager : MonoBehaviour {
 	}
 
 	void Start() {
-		incontrolInputModule = FindObjectOfType<InControl.InControlInputModule>();
 	}
 
 	void Update() {
-        activeDevice = InControl.InputManager.ActiveDevice;
-		Debug.Log(activeDevice.Name);
-
-		
-		// if we are on a UI heavy page...
-		if(incontrolInputModule) {
-			// activeDevice.Action1.WasPressed = (activeDevice.Action1.WasPressed || Input.GetKeyDown(KeyCode.Return));
-		}
+    	activeDevice = InControl.InputManager.ActiveDevice;
+			Debug.Log(activeDevice.Name);
     }
 
 	public bool PressedJump() {
-		return (activeDevice.Action1.WasPressed || Input.GetKeyDown(KeyCode.Space));
+		if(activeDevice != null) {
+			return (activeDevice.Action1.WasPressed || Input.GetKeyDown(KeyCode.Space));
+		} else {
+			return Input.GetKeyDown(KeyCode.Space);
+		}
 	}
 
 	public bool ReleasedJump() {
-		return (activeDevice.Action1.WasReleased || Input.GetKeyUp(KeyCode.Space));
+		if(activeDevice != null) {
+			return (activeDevice.Action1.WasReleased || Input.GetKeyUp(KeyCode.Space));
+		} else {
+			return Input.GetKeyUp(KeyCode.Space);
+		}
 	}
 
 	public bool PressedConfirm() {
-		return activeDevice.Action1.WasPressed || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return);
+		if(activeDevice != null) {
+			return activeDevice.Action1.WasPressed || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return);
+		} else {
+			return Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return);
+		}
 	}
 
 	public bool PressedStart() {
-		return activeDevice.Command.WasPressed || Input.GetKeyDown(KeyCode.Escape);
+		if(activeDevice != null) {
+			return activeDevice.Command.WasPressed || Input.GetKeyDown(KeyCode.Escape);
+		} else {
+			return Input.GetKeyDown(KeyCode.Escape);
+		}
 	}
 
 	public bool PressedCancel() {
-		return activeDevice.Action2.WasPressed || Input.GetKeyDown(KeyCode.Escape);
+		if (activeDevice != null) {
+			return activeDevice.Action2.WasPressed || Input.GetKeyDown(KeyCode.Escape);
+		} else {
+			return Input.GetKeyDown(KeyCode.Escape);
+		}
+		
 	}
 
 	public bool PressedStartDialogue() {
-		return activeDevice.Action4.WasPressed || Input.GetKeyDown(KeyCode.E);
+		if(activeDevice != null) {
+			return activeDevice.Action4.WasPressed || Input.GetKeyDown(KeyCode.E);
+		} else {
+			return Input.GetKeyDown(KeyCode.E);
+		}
 	}
 
 	public bool PressedDeleteProfile() {
-		return activeDevice.Action3.WasPressed || Input.GetKeyDown(KeyCode.Delete);
+		if(activeDevice != null) {
+			return activeDevice.Action3.WasPressed || Input.GetKeyDown(KeyCode.Delete);
+		} else {
+			return Input.GetKeyDown(KeyCode.Delete);
+		}
 	}
 
 	public void Vibrate(float left, float right) {
