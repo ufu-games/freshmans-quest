@@ -19,8 +19,6 @@ public class CameraScript : MonoBehaviour {
 	void Awake() {
 		if(instance == null) {
 			instance = this;
-		} else {
-			DontDestroyOnLoad(gameObject);
 		}
 	}
 

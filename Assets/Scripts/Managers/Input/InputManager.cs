@@ -19,9 +19,6 @@ public class InputManager : MonoBehaviour {
 		}
 	}
 
-	void Start() {
-	}
-
 	void Update() {
     	activeDevice = InControl.InputManager.ActiveDevice;
 			Debug.Log(activeDevice.Name);
@@ -90,5 +87,15 @@ public class InputManager : MonoBehaviour {
 
 	public void Vibrate(float amount) {
 		activeDevice.Vibrate(amount);
+	}
+
+	public void VibrateWithTime(float amount, float time) {
+		StartCoroutine(VibrateWithTimeRoutine(amount, time));
+	}
+
+	private IEnumerator VibrateWithTimeRoutine(float amount, float time) {
+		Vibrate(amount);
+		yield return new WaitForSeconds(time);
+		Vibrate(0f);
 	}
 }

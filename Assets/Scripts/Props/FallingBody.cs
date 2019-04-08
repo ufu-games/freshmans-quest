@@ -72,6 +72,7 @@ public class FallingBody : MonoBehaviour, IInteractable, IInteractableLeaveTrigg
                 Instantiate(onFallLeftParticle, bodyToFall.transform.position + km_downVector + Vector3.left, Quaternion.identity).Play();
                 Instantiate(onFallRightDustParticle, bodyToFall.transform.position + km_downVector + Vector3.right, Quaternion.identity).Play();
                 Instantiate(onFallLeftDustParticle, bodyToFall.transform.position + km_downVector + Vector3.left, Quaternion.identity).Play();
+                if(InputManager.instance) InputManager.instance.VibrateWithTime(1.0f, 0.1f);
 
                 yield return null;
                 m_isFalling = false;
