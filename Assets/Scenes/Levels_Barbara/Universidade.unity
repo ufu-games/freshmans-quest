@@ -23,8 +23,8 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
-  m_AmbientMode: 3
+  m_AmbientIntensity: 0
+  m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -35,10 +35,10 @@ RenderSettings:
   m_DefaultReflectionMode: 0
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
-  m_ReflectionIntensity: 1
+  m_ReflectionIntensity: 0
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 0}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -140,7 +140,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &15109769
 GameObject:
@@ -253,15 +253,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4119891488998658, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.145779
+      value: -37.213
       objectReference: {fileID: 0}
     - target: {fileID: 4119891488998658, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.0430937
+      value: -1.4789997
       objectReference: {fileID: 0}
     - target: {fileID: 4119891488998658, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -430
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 4119891488998658, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 3}
       propertyPath: m_LocalRotation.x
@@ -317,7 +317,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4406155826804704, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 420
+      objectReference: {fileID: 0}
+    - target: {fileID: 4406155826804704, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -26.067223
+      objectReference: {fileID: 0}
+    - target: {fileID: 4406155826804704, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -6.5220933
       objectReference: {fileID: 0}
     - target: {fileID: 114579903768938338, guid: 632ec8bd2927498469e0fd10a1d85c86,
         type: 3}
@@ -339,6 +347,11 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114638008359558044, guid: 632ec8bd2927498469e0fd10a1d85c86,
+        type: 3}
+      propertyPath: m_Follow
+      value: 
+      objectReference: {fileID: 2032634087}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 3}
 --- !u!1 &39111656
@@ -2378,7 +2391,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4001053516519362, guid: 1c2dffc23926dab43a00a436e9671333, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4001053516519362, guid: 1c2dffc23926dab43a00a436e9671333, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2519,7 +2532,7 @@ Transform:
   - {fileID: 645955197}
   - {fileID: 1096613109}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &202237137
 GameObject:
@@ -5059,7 +5072,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &433875534
 PrefabInstance:
@@ -6924,7 +6937,6 @@ MonoBehaviour:
     sentences:
     - It says here it's an endangered area...
     - Risk of... collapse?
-    dialogueClip: {fileID: 0}
   destroySelfAfterTriggering: 0
 --- !u!61 &525667050
 BoxCollider2D:
@@ -8440,7 +8452,7 @@ Transform:
   - {fileID: 1276285751}
   - {fileID: 1636866355}
   m_Father: {fileID: 0}
-  m_RootOrder: 22
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &603248570
 GameObject:
@@ -9461,6 +9473,75 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 652873806}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &653595711
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 9165193224077373521, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_Name
+      value: Input Handler
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e7efd77fc2e2d874d932c7644e21bb26, type: 3}
 --- !u!1 &657037247
 GameObject:
   m_ObjectHideFlags: 0
@@ -10128,7 +10209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4097329619028912, guid: 8a1cf384ce3397a4db287d97ebf4461d, type: 3}
       propertyPath: m_RootOrder
-      value: 16
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4097329619028912, guid: 8a1cf384ce3397a4db287d97ebf4461d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11142,7 +11223,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4870095236382590, guid: ee3d2ff5569ae8949ade4964e0d38102, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4870095236382590, guid: ee3d2ff5569ae8949ade4964e0d38102, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11494,72 +11575,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &777297722
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 777297725}
-  - component: {fileID: 777297724}
-  - component: {fileID: 777297723}
-  m_Layer: 0
-  m_Name: EventSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &777297723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 777297722}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
---- !u!114 &777297724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 777297722}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
---- !u!4 &777297725
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 777297722}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &779901950
 GameObject:
   m_ObjectHideFlags: 0
@@ -12628,7 +12643,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4140643024182384, guid: b28a8747b0bb443b1ab21ee4c48e70a9, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4140643024182384, guid: b28a8747b0bb443b1ab21ee4c48e70a9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -13166,7 +13181,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &882589175
 GameObject:
@@ -13453,7 +13468,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &892676581
 GameObject:
@@ -13933,7 +13948,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 24
+  m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &938085141
 GameObject:
@@ -15030,7 +15045,7 @@ Transform:
   - {fileID: 2083112314}
   - {fileID: 1868174984}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1006737970
 GameObject:
@@ -15458,7 +15473,7 @@ Transform:
   - {fileID: 927443463}
   - {fileID: 1602606049}
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1036798111
 GameObject:
@@ -16698,7 +16713,6 @@ MonoBehaviour:
     sentences:
     - '''Try resting between the cracks''...?'
     - Maybe I could try that.
-    dialogueClip: {fileID: 0}
   destroySelfAfterTriggering: 0
 --- !u!61 &1127738166
 BoxCollider2D:
@@ -16962,7 +16976,7 @@ Transform:
   m_Children:
   - {fileID: 1353770398}
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1148894482
 GameObject:
@@ -17088,7 +17102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4097329619028912, guid: 8a1cf384ce3397a4db287d97ebf4461d, type: 3}
       propertyPath: m_RootOrder
-      value: 17
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4097329619028912, guid: 8a1cf384ce3397a4db287d97ebf4461d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -21211,7 +21225,6 @@ MonoBehaviour:
       sentences:
       - Hey, are you alright?
       - Did you just fall from these walls?
-      dialogueClip: {fileID: 0}
     - characterName: Nameless Boy
       characterSprite: {fileID: 21300000, guid: 89226363d144e4cf5a10d15bdd838359,
         type: 3}
@@ -21219,7 +21232,6 @@ MonoBehaviour:
       - Hi, not really, I just finished a test.
       - Please, don't mind me. But take care on the way, these walls seem a little
         dangerous.
-      dialogueClip: {fileID: 0}
   - descriptionName: Second Time Interacting
     dialogues:
     - characterName: Nameless Boy
@@ -21227,7 +21239,6 @@ MonoBehaviour:
         type: 3}
       sentences:
       - Zzz...
-      dialogueClip: {fileID: 0}
   destroySelfAfterTriggering: 0
 --- !u!61 &1353770400
 BoxCollider2D:
@@ -41802,7 +41813,6 @@ MonoBehaviour:
     - It says 'Try jumping between the walls'.
     - '''Proceed at your own risk'''
     - Just another regular day here.
-    dialogueClip: {fileID: 0}
   destroySelfAfterTriggering: 0
 --- !u!61 &1591621068
 BoxCollider2D:
@@ -42588,7 +42598,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4637270393706760, guid: 52e6a195742189040bcaac72e2035f90, type: 3}
       propertyPath: m_RootOrder
-      value: 23
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 4637270393706760, guid: 52e6a195742189040bcaac72e2035f90, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -44408,6 +44418,66 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 949122678, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 949122678, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 949122678, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1819976273, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1819976273, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1819976273, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1819976273, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 678299371, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 678299371, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 678299371, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 678299371, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724181741, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724181741, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724181741, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724181741, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1dc0d344c943264fbfc5c276db7d64a, type: 3}
 --- !u!1 &1671289682
@@ -45742,7 +45812,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4151952876293500, guid: 720d40a98bc0b4e29a754eec4f71b470, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4151952876293500, guid: 720d40a98bc0b4e29a754eec4f71b470, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -45764,6 +45834,11 @@ PrefabInstance:
       propertyPath: Event
       value: event:/Fases/Universidade
       objectReference: {fileID: 0}
+    - target: {fileID: 82083759713666722, guid: 720d40a98bc0b4e29a754eec4f71b470,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 82996249460041628, guid: 720d40a98bc0b4e29a754eec4f71b470,
         type: 3}
       propertyPath: m_audioClip
@@ -45773,11 +45848,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 82083759713666722, guid: 720d40a98bc0b4e29a754eec4f71b470,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 720d40a98bc0b4e29a754eec4f71b470, type: 3}
@@ -47478,7 +47548,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4242366410561536, guid: be6cfe39d95046843a8b947fcd08241c, type: 3}
       propertyPath: m_RootOrder
-      value: 21
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4242366410561536, guid: be6cfe39d95046843a8b947fcd08241c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -50181,7 +50251,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4563930203491430, guid: 934d19a4a796b7444a99b8013da28b0f, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4563930203491430, guid: 934d19a4a796b7444a99b8013da28b0f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -50201,6 +50271,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 934d19a4a796b7444a99b8013da28b0f, type: 3}
+--- !u!4 &2032634087 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4563930203491430, guid: 934d19a4a796b7444a99b8013da28b0f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2032634086}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2055902387
 GameObject:
   m_ObjectHideFlags: 0
@@ -51473,7 +51549,7 @@ Transform:
   m_Children:
   - {fileID: 8330954830567774525}
   m_Father: {fileID: 0}
-  m_RootOrder: 20
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8325305854321993769
 GameObject:
@@ -51530,53 +51606,45 @@ MonoBehaviour:
         type: 3}
       sentences:
       - Hello Lily! I am Noah Miller.
-      dialogueClip: {fileID: 0}
     - characterName: Shiba
       characterSprite: {fileID: 21300024, guid: 5bd434965de284938b97bf28e8088ae6,
         type: 3}
       sentences:
       - I might look like a dog now, but actually I'm a professor.
       - And also the Zoology Lab Coordinator.
-      dialogueClip: {fileID: 0}
     - characterName: Shiba
       characterSprite: {fileID: 21300018, guid: 5bd434965de284938b97bf28e8088ae6,
         type: 3}
       sentences:
       - Well, I should be mad, but look how amazing and cute I am hohoho.
-      dialogueClip: {fileID: 0}
     - characterName: Shiba
       characterSprite: {fileID: 21300020, guid: 5bd434965de284938b97bf28e8088ae6,
         type: 3}
       sentences:
       - I think I can get used to looking like this!
       - Having people to pet me is not that bad...
-      dialogueClip: {fileID: 0}
     - characterName: Lily
       characterSprite: {fileID: 21300020, guid: ef3cd2d06f42f45feb78a70f366fabc5,
         type: 3}
       sentences:
       - Hm... Ok, it is a pleasure to meet you Professor Miller.
       - Looks like you already know who I am.
-      dialogueClip: {fileID: 0}
     - characterName: Shiba
       characterSprite: {fileID: 21300020, guid: 5bd434965de284938b97bf28e8088ae6,
         type: 3}
       sentences:
       - Yes, yes, Professor Otis told me everything.
       - I mean, he left a note explaining...
-      dialogueClip: {fileID: 0}
     - characterName: Shiba
       characterSprite: {fileID: 21300018, guid: 5bd434965de284938b97bf28e8088ae6,
         type: 3}
       sentences:
       - because he had an urgent trip to the beach!
-      dialogueClip: {fileID: 0}
     - characterName: Lily
       characterSprite: {fileID: 21300018, guid: ef3cd2d06f42f45feb78a70f366fabc5,
         type: 3}
       sentences:
       - '... Really?'
-      dialogueClip: {fileID: 0}
     - characterName: Shiba
       characterSprite: {fileID: 21300020, guid: 5bd434965de284938b97bf28e8088ae6,
         type: 3}
@@ -51590,20 +51658,17 @@ MonoBehaviour:
       - Now I should help you find Jim.
       - So I will always be around giving you information.
       - Up to this point you should already know all the basic commands!
-      dialogueClip: {fileID: 0}
     - characterName: Shiba
       characterSprite: {fileID: 21300018, guid: 5bd434965de284938b97bf28e8088ae6,
         type: 3}
       sentences:
       - That's it, good luck, see you soon!
-      dialogueClip: {fileID: 0}
     - characterName: Shiba
       characterSprite: {fileID: 21300020, guid: 5bd434965de284938b97bf28e8088ae6,
         type: 3}
       sentences:
       - Oh, and for an unknown reason there are pizza slices all around the university.
       - It would be a good idea to get some in case you get hungry.
-      dialogueClip: {fileID: 0}
   - descriptionName: Second Interaction
     dialogues:
     - characterName: Shiba
@@ -51613,7 +51678,6 @@ MonoBehaviour:
       - Oh man, I wanted to go to the beach too.
       - I'm a good boy, I deserve it.
       - What are you doing here? Go find Jim!
-      dialogueClip: {fileID: 0}
   destroySelfAfterTriggering: 0
 --- !u!4 &8330954830567774525
 Transform:

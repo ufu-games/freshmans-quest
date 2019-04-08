@@ -112,47 +112,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &229373554
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4664091249844860, guid: 57126f8406ee5466ba45b408fc522595, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4664091249844860, guid: 57126f8406ee5466ba45b408fc522595, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4664091249844860, guid: 57126f8406ee5466ba45b408fc522595, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4664091249844860, guid: 57126f8406ee5466ba45b408fc522595, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4664091249844860, guid: 57126f8406ee5466ba45b408fc522595, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4664091249844860, guid: 57126f8406ee5466ba45b408fc522595, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4664091249844860, guid: 57126f8406ee5466ba45b408fc522595, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4664091249844860, guid: 57126f8406ee5466ba45b408fc522595, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 57126f8406ee5466ba45b408fc522595, type: 3}
 --- !u!1 &396211461
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,72 +188,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 396211461}
   m_CullTransparentMesh: 0
---- !u!1 &519294906
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 519294909}
-  - component: {fileID: 519294908}
-  - component: {fileID: 519294907}
-  m_Layer: 0
-  m_Name: EventSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &519294907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519294906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
---- !u!114 &519294908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519294906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
---- !u!4 &519294909
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519294906}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &690957442
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -332,7 +225,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4151952876293500, guid: 720d40a98bc0b4e29a754eec4f71b470, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 82996249460041628, guid: 720d40a98bc0b4e29a754eec4f71b470,
         type: 3}
@@ -341,6 +234,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 720d40a98bc0b4e29a754eec4f71b470, type: 3}
+--- !u!1001 &813085089
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 9165193224077373521, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_Name
+      value: Input Handler
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647120404895910612, guid: e7efd77fc2e2d874d932c7644e21bb26,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e7efd77fc2e2d874d932c7644e21bb26, type: 3}
 --- !u!1 &926512066
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,31 +360,26 @@ MonoBehaviour:
       grades and found out she failed a course by a single point!
     - "She couldn\u2019t accept it. Instead of recognizing her mistakes, Lily decided
       she was going to complain about her grade to the professor."
-    dialogueClip: {fileID: 0}
   - characterName: 
     characterSprite: {fileID: 21300000, guid: d67010826d0414400bb4cf7d0dd963b4, type: 3}
     sentences:
     - But something happened at the university, everything was weird and distorted.
       The Arts building was melting and everyone seemed insane.
-    dialogueClip: {fileID: 8300000, guid: d2ef72eb440d94316b852b08d4e7820f, type: 3}
   - characterName: 
     characterSprite: {fileID: 21300000, guid: e9b3909b636ca4df19ecdfb9adfd661a, type: 3}
     sentences:
     - After a long time searching, she finally found her professor and finally could
       hear an explanation about what was happening.
-    dialogueClip: {fileID: 8300000, guid: d2ef72eb440d94316b852b08d4e7820f, type: 3}
   - characterName: 
     characterSprite: {fileID: 21300000, guid: f9d95bc355c034b77b5a5b5ccf3664f8, type: 3}
     sentences:
     - Another student, Jim, was very anxious about an exam so he had the brilliant
       idea of summoning a cosmic entity of knowledge to help him!
-    dialogueClip: {fileID: 8300000, guid: d2ef72eb440d94316b852b08d4e7820f, type: 3}
   - characterName: 
     characterSprite: {fileID: 21300000, guid: 14c9e919ccee744efa09c2c3e790512d, type: 3}
     sentences:
     - So Lily and the professor made a deal, she would find Jim and end all this madness.
       The professor then would give her a point on the course.
-    dialogueClip: {fileID: 8300000, guid: d2ef72eb440d94316b852b08d4e7820f, type: 3}
 --- !u!1001 &1104878753
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -464,7 +421,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4119891488998658, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4119891488998658, guid: 632ec8bd2927498469e0fd10a1d85c86, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -671,7 +628,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4140643024182384, guid: b28a8747b0bb443b1ab21ee4c48e70a9, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b28a8747b0bb443b1ab21ee4c48e70a9, type: 3}
