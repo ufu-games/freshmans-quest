@@ -21,11 +21,16 @@ public class SoundManager : MonoBehaviour {
 	[Space(10)]
 	public SoundSettings Settings;
 
+	public static GameObject Player;
+
+	private List<emitters> emits = new List<emitters>();
+
 	void Awake() {
 		if(instance == null) {
 			instance = this;
 			fmodEventEmitter = GetComponent<StudioEventEmitter>();
 			masterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
+			Player = GameObject.FindGameObjectWithTag("Player");
 			// is this bad?
 			DontDestroyOnLoad(gameObject);
 		} else if(instance != this) {
@@ -65,12 +70,18 @@ public class SoundManager : MonoBehaviour {
 				
 			}
 			instance.fmodEventEmitter.Play();
+			Player = GameObject.FindGameObjectWithTag("Player");
 			Destroy(gameObject);
 		}
 	}
 
 	public void UpdateAudioSources() {
-		if(masterBus.isValid()) masterBus.setVolume(musicVolume);
+		if(masterBus.isValid()) {
+			masterBus.setVolume(musicVolume);
+			foreach(emitters emit in emits) {
+				emit.UpdateVolume();
+			}
+		}
 	}
 
 	public void SetParameterFMOD(string parameter, float value) {
@@ -102,11 +113,25 @@ public class SoundManager : MonoBehaviour {
 
 	private IEnumerator ContinuousSfxCoroutine(string clip, GameObject audioPlayer) {
 		StudioEventEmitter stdEmitter = audioPlayer.AddComponent<StudioEventEmitter>();
+		emitters emit = new emitters();
 		stdEmitter.Event = clip;
+		stdEmitter.PlayEvent = EmitterGameEvent.ObjectStart;
+		stdEmitter.StopEvent = EmitterGameEvent.ObjectDestroy;
 		stdEmitter.Play();
+		stdEmitter.EventInstance.setVolume(0);
+
+		emit.source = audioPlayer;
+		emit.emit = stdEmitter;
+
+		emits.Add(emit);
+		
 		while(audioPlayer) {
+			if(Player) {
+				emit.UpdateVolume();
+			}
 			yield return null;
 		}
+		emits.Remove(emit);
 		Destroy(stdEmitter);
 	}
 
@@ -122,4 +147,18 @@ public class SoundManager : MonoBehaviour {
 	// 	}
 	// 	Destroy(source);
 	// }
+	private class emitters {
+		public StudioEventEmitter emit = null;
+		public GameObject source = null;
+
+		public void UpdateVolume() {
+			if(Player) {
+					float distance = Vector2.Distance(source.transform.position,Player.transform.position);
+					if(distance <= 6) {
+						emit.EventInstance.setVolume((6-distance)/6);
+					}
+			}
+		}
+	}
+
 }
