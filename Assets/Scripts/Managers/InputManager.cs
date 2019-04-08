@@ -4,201 +4,10 @@ using UnityEngine;
 
 // PS4: Sony Interactive Entertainment Wireless Controller
 // SWITCH: Unknown Pro Controller
-public abstract class BaseInput {
-	public bool IsAnythingPressed() {
-		if(Input.GetKeyDown(KeyCode.JoystickButton0) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton1) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton2) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton3) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton4) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton5) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton6) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton7) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton8) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton9) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton10) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton11) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton12) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton13) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton14) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton15) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton16) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton17) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton18) ||
-		   Input.GetKeyDown(KeyCode.JoystickButton19)
-		) {
-			return true;
-		}
-		
-		return false;
-	}
-	public abstract bool PressedJump();
-	public abstract bool ReleasedJump();
-	public abstract bool PressedConfirm();
-	public abstract bool PressedCancel();
-	public abstract bool PressedStart();
-	public abstract bool PressedStartDialogue();
-	public abstract bool PressedDeleteProfile();
-}
-
-public class PS4Input : BaseInput {
-	public override bool PressedJump() {
-		return(
-			Input.GetKeyDown(KeyCode.Joystick1Button1)
-		);
-	}
-
-	public override bool ReleasedJump() {
-		return(
-			Input.GetKeyUp(KeyCode.Joystick1Button1)
-		);
-	}
-
-	public override bool PressedConfirm() {
-		return(
-			Input.GetKeyDown(KeyCode.Joystick1Button1)
-		);
-	}
-
-	public override bool PressedStart() {
-		return Input.GetKeyDown(KeyCode.Joystick1Button9);
-	}
-
-	public override bool PressedCancel() {
-		return(
-			Input.GetKeyDown(KeyCode.Joystick1Button3) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button9)
-		);
-	}
-
-	public override bool PressedStartDialogue() {
-		return Input.GetKeyDown(KeyCode.Joystick1Button3);
-	}
-
-	public override bool PressedDeleteProfile() {
-		return Input.GetKeyDown(KeyCode.Joystick1Button0);
-	}
-}
-
-public class XBOXInput : BaseInput {
-	public override bool PressedJump() {
-		return(
-			Input.GetKeyDown(KeyCode.Joystick1Button0)
-		);
-	}
-
-	public override bool ReleasedJump() {
-		return(
-			Input.GetKeyUp(KeyCode.Joystick1Button0)
-		);
-	}
-
-	public override bool PressedConfirm() {
-		return(
-			Input.GetKeyDown(KeyCode.Joystick1Button0)
-		);
-	}
-
-	public override bool PressedStart() {
-		return Input.GetKeyDown(KeyCode.Joystick1Button7);
-	}
-
-	public override bool PressedCancel() {
-		return(
-			Input.GetKeyDown(KeyCode.Joystick1Button6) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button1) ||
-			Input.GetKeyDown(KeyCode.Joystick1Button3)
-		);
-	}
-
-	public override bool PressedStartDialogue() {
-		return Input.GetKeyDown(KeyCode.Joystick1Button3);
-	}
-
-	public override bool PressedDeleteProfile() {
-		return Input.GetKeyDown(KeyCode.Joystick1Button2);
-	}
-}
-
-public class StandardInput : BaseInput {
-	public override bool PressedJump() {
-		return Input.GetButtonDown("Jump");
-	}
-
-	public override bool ReleasedJump() {
-		return Input.GetButtonUp("Jump");
-	}
-
-	public override bool PressedConfirm() {
-		return Input.GetButtonDown("Submit");
-	}
-
-	public override bool PressedStart() {
-		return Input.GetButtonDown("Pause");
-	}
-
-	public override bool PressedCancel() {
-		return Input.GetButtonDown("Cancel");
-	}
-
-	public override bool PressedStartDialogue() {
-		return Input.GetButtonDown("Dialogue");
-	}
-
-	public override bool PressedDeleteProfile() {
-		return Input.GetButtonDown("Delete Profile");
-	}
-}
-
 public class InputManager : MonoBehaviour {
 
 	public static InputManager instance;
-
-	public void WhatIsPressed() {
-		if(Input.GetKeyDown(KeyCode.JoystickButton0)) {
-			Debug.Log("Joystick Button 0");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton1)) {
-			Debug.Log("Joystick Button 1");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton2)) {
-			Debug.Log("Joystick Button 2");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton3)) {
-			Debug.Log("Joystick Button 3");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton4)) {
-			Debug.Log("Joystick Button 4");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton5)) {
-			Debug.Log("Joystick Button 5");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton6)) {
-			Debug.Log("Joystick Button 6");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton7)) {
-			Debug.Log("Joystick Button 7");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton8)) {
-			Debug.Log("Joystick Button 8");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton9)) {
-			Debug.Log("Joystick Button 9");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton10)) {
-			Debug.Log("Joystick Button 10");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton11)) {
-			Debug.Log("Joystick Button 11");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton12)) {
-			Debug.Log("Joystick Button 12");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton13)) {
-			Debug.Log("Joystick Button 13");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton14)) {
-			Debug.Log("Joystick Button 14");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton15)) {
-			Debug.Log("Joystick Button 15");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton16)) {
-			Debug.Log("Joystick Button 16");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton17)) {
-			Debug.Log("Joystick Button 17");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton18)) {
-			Debug.Log("Joystick Button 18");
-		} else if(Input.GetKeyDown(KeyCode.JoystickButton19)) {
-			Debug.Log("Joystick Button 19");
-		}
-	}
-
-	private BaseInput m_inputDevice;
+	private InControl.InputDevice activeDevice;
 
 	void Awake() {
 		if(instance == null) {
@@ -207,68 +16,46 @@ public class InputManager : MonoBehaviour {
 		} else {
 			Destroy(gameObject);
 		}
-	}	
-
-	void Start () {
-		string[] names= Input.GetJoystickNames();
-		
-		// Standard Input => Suited for Keyboard and Xbox-like Controllers
-		m_inputDevice = new StandardInput();
-
-		// foreach(string name in names) {
-		// 	Debug.LogWarningFormat("Connected Controller: {0}", name);
-		// 	if (name.Contains("Sony")) {
-		// 		Debug.LogWarning("Using PS4 Controller");
-		// 		m_activeDevice = EInputDevice.PS4_controller;
-		// 		m_inputDevice = new PS4Input();
-		// 	} else if(name.Contains("XBOX") || name.Contains("xinput") || name.Contains("Xbox")) { 
-		// 		Debug.LogWarning("Using XBOX Controller");
-		// 		m_activeDevice = EInputDevice.XBOX_controller;
-		// 		m_inputDevice = new XBOXInput();
-		// 	} else {
-		// 		Debug.LogWarning("Using Standard Input");
-		// 		m_activeDevice = EInputDevice.none;
-		// 		m_inputDevice = new StandardInput();
-		// 	}
-		// }
-		// if(m_inputDevice == null) {
-		// 	m_inputDevice = new StandardInput();
-		// }
 	}
 
 	void Update() {
-		WhatIsPressed();
-	}
+        activeDevice = InControl.InputManager.ActiveDevice;
+		Debug.Log(activeDevice.Name);
+    }
 
 	public bool PressedJump() {
-		return m_inputDevice.PressedJump();
+		return (activeDevice.Action1.WasPressed || Input.GetKeyDown(KeyCode.Space));
 	}
 
 	public bool ReleasedJump() {
-		return m_inputDevice.ReleasedJump();
+		return (activeDevice.Action1.WasReleased || Input.GetKeyUp(KeyCode.Space));
 	}
 
 	public bool PressedConfirm() {
-		return m_inputDevice.PressedConfirm();
+		return activeDevice.Action1.WasPressed || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return);
 	}
 
 	public bool PressedStart() {
-		return m_inputDevice.PressedStart();
+		return activeDevice.Command.WasPressed || Input.GetKeyDown(KeyCode.Escape);
 	}
 
 	public bool PressedCancel() {
-		return m_inputDevice.PressedCancel();
-	}
-
-	public bool IsAnythingPressed() {
-		return m_inputDevice.IsAnythingPressed();
+		return activeDevice.Action2.WasPressed || Input.GetKeyDown(KeyCode.Escape);
 	}
 
 	public bool PressedStartDialogue() {
-		return m_inputDevice.PressedStartDialogue();
+		return activeDevice.Action4.WasPressed || Input.GetKeyDown(KeyCode.E);
 	}
 
 	public bool PressedDeleteProfile() {
-		return m_inputDevice.PressedDeleteProfile();
+		return activeDevice.Action3.WasPressed || Input.GetKeyDown(KeyCode.Delete);
+	}
+
+	public void Vibrate(float left, float right) {
+		activeDevice.Vibrate(left, right);
+	}
+
+	public void Vibrate(float amount) {
+		activeDevice.Vibrate(amount);
 	}
 }
