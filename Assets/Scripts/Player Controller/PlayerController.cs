@@ -282,6 +282,10 @@ public class PlayerController : MonoBehaviour {
 					SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_walk);
 				}
 
+				if(Mathf.Abs(m_velocityLastFrame.y - terminalVelocity) < 0.1f) {
+					InputManager.instance.VibrateWithTime(1.5f, 0.15f);
+				}
+
 				StartCoroutine(ChangeScale(m_playerSprite.localScale * m_groundingScaleMultiplier));
 			}
 		}
