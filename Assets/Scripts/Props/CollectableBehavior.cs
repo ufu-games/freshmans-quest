@@ -67,6 +67,7 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 
 		SaveSystem.instance.GotPizza();
 		playerReference.UpdatePizzaCounter();
+		InputManager.instance.VibrateWithTime(1.5f, 0.25f);
 		if(collectedClip && SoundManager.instance) {
 			SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Collectable_pickup);
 		}

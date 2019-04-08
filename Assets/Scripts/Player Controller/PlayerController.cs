@@ -186,7 +186,8 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if(dangerousInteraction != null) {
-			if(SoundManager.instance.Settings.Player_death != "" && SoundManager.instance) {SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_death); }
+			
+			PlayerDeath();
 			dangerousInteraction.InteractWithPlayer(this.GetComponent<Collider2D>());
 		}
 
@@ -597,5 +598,12 @@ public class PlayerController : MonoBehaviour {
 
 	public void UpdatePizzaCounter() {
 		if(PizzaCounterUI.instance) PizzaCounterUI.instance.UpdateCounter(Mathf.RoundToInt(SaveSystem.instance.myData.pizzaCounter));
+	}
+
+	public void PlayerDeath() {
+		if(SoundManager.instance.Settings.Player_death != "" && SoundManager.instance) {
+				SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_death); 
+				InputManager.instance.VibrateWithTime(2f, 0.3f);
+		}
 	}
 }
