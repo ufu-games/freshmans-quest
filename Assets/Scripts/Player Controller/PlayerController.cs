@@ -79,6 +79,8 @@ public class PlayerController : MonoBehaviour {
 
 	private EPlayerState m_currentPlayerState;
 
+	private const float petTheDogDistance = 0.1f;
+
 	void Awake() {
 		m_animator = GetComponentInChildren<Animator>();
 		m_playerSprite = m_animator.transform;
@@ -180,10 +182,12 @@ public class PlayerController : MonoBehaviour {
 		// petting the dog while you are already petting the dog would result on some programming issues!
 		if(canPet != null && m_currentPlayerState != EPlayerState.IsPettingDog) {
 			if(InputManager.instance.PressedToPetTheDog()) {
+				this.m_currentPlayerState = EPlayerState.IsPettingDog;
 				canPet.Pet();
+				Vector3 difPosition = col.gameObject.transform.position - transform.position;
+				m_playerSprite.transform.localScale = new Vector3(Mathf.Sign(difPosition.x) * Mathf.Abs(m_playerSprite.transform.localScale.x), m_playerSprite.transform.localScale.y, m_playerSprite.transform.localScale.z);
 				CameraScript.instance.ForceCameraSize(3f);
 				StartCoroutine(HideDialogueHintRoutine());
-				this.m_currentPlayerState = EPlayerState.IsPettingDog;
 			}
 		}
 	}
@@ -377,6 +381,10 @@ public class PlayerController : MonoBehaviour {
 
 	private void AnimationLogic() {
 		if(gameObject.activeSelf){
+			// Handling other game events
+			if(m_currentPlayerState == EPlayerState.IsPettingDog) {
+				m_animator.Play("Running");
+			} else { // Handling normal game events
 				if(m_isOnWall) {
 					m_animator.Play("Wall");
 				} else if(Mathf.Abs(m_velocity.y) > Mathf.Epsilon) {
@@ -390,7 +398,8 @@ public class PlayerController : MonoBehaviour {
 				} else {
 					m_animator.Play("Idle");
 				}
-			}
+			}	
+		}
 	}
 
 	#region Processing States

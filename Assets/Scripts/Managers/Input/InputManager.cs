@@ -96,9 +96,9 @@ public class InputManager : MonoBehaviour {
 	// maybe in the future pet and stop petting should be the same key
 	public bool StopPettingTheDog() {
 		if(activeDevice != null) {
-			return activeDevice.Action2.WasPressed || Input.GetKeyDown(KeyCode.Escape);
+			return activeDevice.Action2.WasPressed || Input.GetKeyDown(KeyCode.T);
 		} else {
-			return Input.GetKeyDown(KeyCode.Escape);
+			return Input.GetKeyDown(KeyCode.T);
 		}
 	}
 
