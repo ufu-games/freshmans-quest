@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -77,8 +78,9 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 
 		Collected = true;
 		rb.velocity = Vector2.zero;
-		AudioSource asource = GetComponent<AudioSource>();
+		StudioEventEmitter asource = GetComponent<StudioEventEmitter>();
 		if(asource != null) {
+			asource.Stop();
 			Destroy(asource);
 		}
         
