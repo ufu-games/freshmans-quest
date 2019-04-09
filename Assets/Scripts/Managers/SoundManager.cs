@@ -41,7 +41,7 @@ public class SoundManager : MonoBehaviour {
 					if(Settings.TitleScreen != "")
 						instance.fmodEventEmitter.ChangeEvent(Settings.TitleScreen);		
 					break;
-				case 1:
+				case 1: // Isso aqui é a cutscene de começo do jogo
 					if(Settings.Hub != "")
 						instance.fmodEventEmitter.ChangeEvent(Settings.Hub);
 					break;
@@ -99,13 +99,6 @@ public class SoundManager : MonoBehaviour {
 		FMODUnity.RuntimeManager.PlayOneShot(clip, transform.position);
 	}
 
-	// public void StopSfx() {
-	// 	sfxSource.Stop();
-	// }
-
-	// public void PlaySfxWithTimeOffset(AudioClip clip, float time) {
-	// 	StartCoroutine(TimeOffsetSfx(clip,time));
-	// }
 
 	public void PlayContinuousSfx(string clip, GameObject audioPlayer) {
 		StartCoroutine(ContinuousSfxCoroutine(clip,audioPlayer));
@@ -113,27 +106,56 @@ public class SoundManager : MonoBehaviour {
 
 	private IEnumerator ContinuousSfxCoroutine(string clip, GameObject audioPlayer) {
 		StudioEventEmitter stdEmitter = audioPlayer.AddComponent<StudioEventEmitter>();
-		emitters emit = new emitters();
 		stdEmitter.Event = clip;
 		stdEmitter.PlayEvent = EmitterGameEvent.ObjectStart;
 		stdEmitter.StopEvent = EmitterGameEvent.ObjectDestroy;
 		stdEmitter.Play();
 		stdEmitter.EventInstance.setVolume(0);
 
+		emitters emit = new emitters();
 		emit.source = audioPlayer;
 		emit.emit = stdEmitter;
 
 		emits.Add(emit);
 		
-		while(audioPlayer) {
+		while(audioPlayer && stdEmitter) {
 			if(Player) {
 				emit.UpdateVolume();
 			}
 			yield return null;
 		}
 		emits.Remove(emit);
-		Destroy(stdEmitter);
+		if(stdEmitter) {
+			stdEmitter.Stop();
+			Destroy(stdEmitter);
+		}
 	}
+
+	private class emitters {
+		public StudioEventEmitter emit = null;
+		public GameObject source = null;
+
+		public void UpdateVolume() {
+			if(!emit || !source) {
+				return;
+			}
+			if(Player) {
+					float distance = Vector2.Distance(source.transform.position,Player.transform.position);
+					if(distance <= 6) {
+						emit.EventInstance.setVolume((6-distance)/6);
+					} else {
+						emit.EventInstance.setVolume(0);
+					}
+			}
+		}
+	}
+	// public void StopSfx() {
+	// 	sfxSource.Stop();
+	// }
+
+	// public void PlaySfxWithTimeOffset(AudioClip clip, float time) {
+	// 	StartCoroutine(TimeOffsetSfx(clip,time));
+	// }
 
 	// private IEnumerator TimeOffsetSfx(AudioClip clip, float time) {
 	// 	AudioSource source = gameObject.AddComponent<AudioSource>();
@@ -147,18 +169,5 @@ public class SoundManager : MonoBehaviour {
 	// 	}
 	// 	Destroy(source);
 	// }
-	private class emitters {
-		public StudioEventEmitter emit = null;
-		public GameObject source = null;
-
-		public void UpdateVolume() {
-			if(Player) {
-					float distance = Vector2.Distance(source.transform.position,Player.transform.position);
-					if(distance <= 6) {
-						emit.EventInstance.setVolume((6-distance)/6);
-					}
-			}
-		}
-	}
 
 }
