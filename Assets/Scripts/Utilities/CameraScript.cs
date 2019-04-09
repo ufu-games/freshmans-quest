@@ -33,11 +33,31 @@ public class CameraScript : MonoBehaviour {
 
 	public void ForceCameraSize(float size) {
 		m_ortographicOverride.enabled = false;
-		m_virtualCamera.m_Lens.OrthographicSize = size;
+		StartCoroutine(ForceCameraSizeRoutine(m_ortographicOverride.PixelPerfectSize, size));
+	}
+
+	private IEnumerator ForceCameraSizeRoutine(float startSize, float aimSize) {
+		float transitionTime = 0.5f;
+		float timeElapsed = 0;
+
+		while(timeElapsed <= transitionTime) {
+			timeElapsed += Time.deltaTime;
+			float t = timeElapsed / transitionTime;
+
+			m_virtualCamera.m_Lens.OrthographicSize = Mathf.Lerp(startSize, aimSize, t);
+			yield return null;
+		}
+
+		m_virtualCamera.m_Lens.OrthographicSize = aimSize;
+	}
+
+	private IEnumerator ForceCameraBackRoutine() {
+		yield return StartCoroutine(ForceCameraSizeRoutine(m_virtualCamera.m_Lens.OrthographicSize, m_ortographicOverride.PixelPerfectSize));
+		m_ortographicOverride.enabled = true;
 	}
 
 	public void UnforceCameraSize() {
-		m_ortographicOverride.enabled = true;
+		StartCoroutine(ForceCameraBackRoutine());
 	}
 
 	void Update() {

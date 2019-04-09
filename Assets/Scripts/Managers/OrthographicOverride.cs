@@ -15,6 +15,12 @@ class OrthographicOverride : MonoBehaviour
     object Internal; // PixelPerfectCameraInternal
     FieldInfo OrthoInfo;
 
+    public float PixelPerfectSize {
+        get {
+            return (float)OrthoInfo.GetValue(Internal);
+        }
+    }
+
     void Start()
     {
         CB = GetComponent<CinemachineBrain>();
