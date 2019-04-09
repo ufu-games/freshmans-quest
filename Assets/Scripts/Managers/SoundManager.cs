@@ -36,43 +36,47 @@ public class SoundManager : MonoBehaviour {
 		} else if(instance != this) {
 			// instance.fmodEventEmitter.ChangeEvent(GetComponent<StudioEventEmitter>().Event);
 			// instance.fmodEventEmitter.Play();
-			switch (SceneManager.GetActiveScene().buildIndex) {
-				case 0:
-					if(Settings.TitleScreen != "")
-						instance.fmodEventEmitter.ChangeEvent(Settings.TitleScreen);		
-					break;
-				case 1:
-					if(Settings.Hub != "")
-						instance.fmodEventEmitter.ChangeEvent(Settings.Hub);
-					break;
-				case 2:
-					if(Settings.Hub != "")
-						instance.fmodEventEmitter.ChangeEvent(Settings.Hub);
-					break;
-				case 3:
-					if(Settings.University != "")
-						instance.fmodEventEmitter.ChangeEvent(Settings.University);
-					break;
-				case 4:
-					if(Settings.Arts != "")
-						instance.fmodEventEmitter.ChangeEvent(Settings.Arts);
-					break;
-				case 5:
-					if(Settings.Chemistry != "")
-						instance.fmodEventEmitter.ChangeEvent(Settings.Chemistry);
-					break;
-				case 6:
-					instance.fmodEventEmitter.ChangeEvent(null);
-					break;
-				default:
-					Destroy(gameObject);
-					break;
-				
-			}
-			instance.fmodEventEmitter.Play();
+			ChangeMusicAccordingToScene();
 			Player = GameObject.FindGameObjectWithTag("Player");
 			Destroy(gameObject);
 		}
+	}
+
+	public void ChangeMusicAccordingToScene() {
+		switch (SceneManager.GetActiveScene().buildIndex) {
+			case 0:
+				if(Settings.TitleScreen != "")
+					instance.fmodEventEmitter.ChangeEvent(Settings.TitleScreen);		
+				break;
+			case 1:
+				if(Settings.Hub != "")
+					instance.fmodEventEmitter.ChangeEvent(Settings.Hub);
+				break;
+			case 2:
+				if(Settings.Hub != "")
+					instance.fmodEventEmitter.ChangeEvent(Settings.Hub);
+				break;
+			case 3:
+				if(Settings.University != "")
+					instance.fmodEventEmitter.ChangeEvent(Settings.University);
+				break;
+			case 4:
+				if(Settings.Arts != "")
+					instance.fmodEventEmitter.ChangeEvent(Settings.Arts);
+				break;
+			case 5:
+				if(Settings.Chemistry != "")
+					instance.fmodEventEmitter.ChangeEvent(Settings.Chemistry);
+				break;
+			case 6:
+				instance.fmodEventEmitter.ChangeEvent(null);
+				break;
+			default:
+				Destroy(gameObject);
+				break;
+		}
+
+		instance.fmodEventEmitter.Play();
 	}
 
 	public void UpdateAudioSources() {
