@@ -16,6 +16,8 @@ public class CameraScript : MonoBehaviour {
 	/* Screen Shake */
 	public float cameraTrauma;
 
+	private OrthographicOverride m_ortographicOverride;
+
 	void Awake() {
 		if(instance == null) {
 			instance = this;
@@ -23,9 +25,19 @@ public class CameraScript : MonoBehaviour {
 	}
 
 	void Start() {
+		m_ortographicOverride = FindObjectOfType<OrthographicOverride>();
 		m_virtualCamera = GameObject.FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
 		m_virtualCameraTransform = m_virtualCamera.transform;
 		cameraTrauma = 0f;
+	}
+
+	public void ForceCameraSize(float size) {
+		m_ortographicOverride.enabled = false;
+		m_virtualCamera.m_Lens.OrthographicSize = size;
+	}
+
+	public void UnforceCameraSize() {
+		m_ortographicOverride.enabled = true;
 	}
 
 	void Update() {

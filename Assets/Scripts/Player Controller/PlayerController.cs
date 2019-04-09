@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour {
 		OnWall,
 		Cannon,
 		MoveBlockedDialogue, // cutscenes, dialogues...
+		IsPettingDog, // Yes, I did it.
 	}
 
 	private EPlayerState m_currentPlayerState;
@@ -163,12 +164,26 @@ public class PlayerController : MonoBehaviour {
 
 	void OnTriggerStayEvent(Collider2D col) {
 		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
+		IPetable canPet = col.gameObject.GetComponent<IPetable>();
+
+		if(m_currentPlayerState == EPlayerState.MoveBlockedDialogue || m_currentPlayerState == EPlayerState.IsPettingDog) return;
 
 		if(showDialogue != null) {
 			if(InputManager.instance.PressedStartDialogue() && m_currentPlayerState != EPlayerState.MoveBlockedDialogue) {
 				SaveSystem.instance.NPCChatted();
 				showDialogue.ShowDialogue();
 				StartDialogue();
+			}
+		}
+
+		// as much as we would love it
+		// petting the dog while you are already petting the dog would result on some programming issues!
+		if(canPet != null && m_currentPlayerState != EPlayerState.IsPettingDog) {
+			if(InputManager.instance.PressedToPetTheDog()) {
+				canPet.Pet();
+				CameraScript.instance.ForceCameraSize(3f);
+				StartCoroutine(HideDialogueHintRoutine());
+				this.m_currentPlayerState = EPlayerState.IsPettingDog;
 			}
 		}
 	}
@@ -282,8 +297,8 @@ public class PlayerController : MonoBehaviour {
 					SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_walk);
 				}
 
-				if(Mathf.Abs(m_velocityLastFrame.y - terminalVelocity) < 0.1f) {
-					InputManager.instance.VibrateWithTime(1.5f, 0.15f);
+				if(Mathf.Abs(m_velocityLastFrame.y - terminalVelocity) < 0.01f) {
+					InputManager.instance.VibrateWithTime(.75f, 0.15f);
 				}
 
 				StartCoroutine(ChangeScale(m_playerSprite.localScale * m_groundingScaleMultiplier));
@@ -309,6 +324,9 @@ public class PlayerController : MonoBehaviour {
 			break;
 			case EPlayerState.MoveBlockedDialogue:
 				ProcessDialogueState();
+			break;
+			case EPlayerState.IsPettingDog:
+				ProcessPettingState();
 			break;
 		}
 
@@ -404,6 +422,17 @@ public class PlayerController : MonoBehaviour {
 
 	private void ProcessDialogueState() {
 		if(!DialogueManager.instance.isShowingDialogue) m_currentPlayerState = EPlayerState.Normal;
+	}
+
+	private void ProcessPettingState() {
+		if(InputManager.instance.StopPettingTheDog()) {
+			Debug.Log("You are no longer petting the dog :(");
+
+			CameraScript.instance.UnforceCameraSize();
+			SoundManager.instance.ChangeMusicAccordingToScene();
+			StartCoroutine(ShowDialogueHintRoutine());
+			m_currentPlayerState = EPlayerState.Normal;
+		}
 	}
 
 	private void ProcessCannonState() {
@@ -607,7 +636,7 @@ public class PlayerController : MonoBehaviour {
 	public void PlayerDeath() {
 		if(SoundManager.instance.Settings.Player_death != "" && SoundManager.instance) {
 				SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_death); 
-				InputManager.instance.VibrateWithTime(2f, 0.3f);
+				InputManager.instance.VibrateWithTime(1f, 0.3f);
 		}
 	}
 }

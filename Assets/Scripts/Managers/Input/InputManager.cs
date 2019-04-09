@@ -10,6 +10,10 @@ public class InputManager : MonoBehaviour {
 	public static InputManager instance;
 	private InControl.InputDevice activeDevice;
 
+	private const KeyCode jumpKey = KeyCode.Space;
+	private const KeyCode startDialogueKey = KeyCode.E;
+	private const KeyCode petTheDogKey = KeyCode.R;
+
 	void Awake() {
 		if(instance == null) {
 			instance = this;
@@ -26,7 +30,7 @@ public class InputManager : MonoBehaviour {
 
 	public bool PressedJump() {
 		if(activeDevice != null) {
-			return (activeDevice.Action1.WasPressed || Input.GetKeyDown(KeyCode.Space));
+			return (activeDevice.Action1.WasPressed || Input.GetKeyDown(jumpKey));
 		} else {
 			return Input.GetKeyDown(KeyCode.Space);
 		}
@@ -34,7 +38,7 @@ public class InputManager : MonoBehaviour {
 
 	public bool ReleasedJump() {
 		if(activeDevice != null) {
-			return (activeDevice.Action1.WasReleased || Input.GetKeyUp(KeyCode.Space));
+			return (activeDevice.Action1.WasReleased || Input.GetKeyUp(jumpKey));
 		} else {
 			return Input.GetKeyUp(KeyCode.Space);
 		}
@@ -67,9 +71,9 @@ public class InputManager : MonoBehaviour {
 
 	public bool PressedStartDialogue() {
 		if(activeDevice != null) {
-			return activeDevice.Action4.WasPressed || Input.GetKeyDown(KeyCode.E);
+			return activeDevice.Action4.WasPressed || Input.GetKeyDown(startDialogueKey);
 		} else {
-			return Input.GetKeyDown(KeyCode.E);
+			return Input.GetKeyDown(startDialogueKey);
 		}
 	}
 
@@ -78,6 +82,23 @@ public class InputManager : MonoBehaviour {
 			return activeDevice.Action3.WasPressed || Input.GetKeyDown(KeyCode.Delete);
 		} else {
 			return Input.GetKeyDown(KeyCode.Delete);
+		}
+	}
+
+	public bool PressedToPetTheDog() {
+		if(activeDevice != null) {
+			return activeDevice.Action3.WasPressed || Input.GetKeyDown(petTheDogKey);
+		} else {
+			return Input.GetKeyDown(petTheDogKey);
+		}
+	}
+
+	// maybe in the future pet and stop petting should be the same key
+	public bool StopPettingTheDog() {
+		if(activeDevice != null) {
+			return activeDevice.Action2.WasPressed || Input.GetKeyDown(KeyCode.Escape);
+		} else {
+			return Input.GetKeyDown(KeyCode.Escape);
 		}
 	}
 

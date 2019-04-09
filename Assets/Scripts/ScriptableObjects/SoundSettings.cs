@@ -20,6 +20,8 @@ public class SoundSettings: ScriptableObject {
     public string Chemistry;
     [FMODUnity.EventRef]
     public string Philosophy;
+    [FMODUnity.EventRef]
+    public string ShibasTheme;
 
     [Space(5)]
     [Header("UI")]

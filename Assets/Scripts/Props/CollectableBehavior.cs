@@ -47,7 +47,7 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 		rb.velocity = (new Vector3(Mathf.Cos(Mathf.Deg2Rad*randomAngle),Mathf.Sin(Mathf.Deg2Rad*randomAngle),0))*InitialVelocityFirstMove;
 		
 		//---------- O coletável é jogado numa direção aleatória e começa a freiar
-		InputManager.instance.VibrateWithTime(1f, 0.1f);
+		InputManager.instance.VibrateWithTime(.1f, 0.1f);
 		
 		while(Mathf.Abs(rb.velocity.magnitude) > 0.05f) {
 			yield return null;
@@ -68,7 +68,7 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 
 		SaveSystem.instance.GotPizza();
 		playerReference.UpdatePizzaCounter();
-		InputManager.instance.VibrateWithTime(1f, 0.25f);
+		InputManager.instance.VibrateWithTime(.3f, 0.2f);
 		if(collectedClip && SoundManager.instance) {
 			SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Collectable_pickup);
 		}

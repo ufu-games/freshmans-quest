@@ -45814,7 +45814,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 698785301, guid: 720d40a98bc0b4e29a754eec4f71b470, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 698785301, guid: 720d40a98bc0b4e29a754eec4f71b470, type: 3}
       propertyPath: Event
@@ -51565,6 +51565,7 @@ GameObject:
   - component: {fileID: 8330954830567774525}
   - component: {fileID: 8310868643709939785}
   - component: {fileID: 8325728061096755422}
+  - component: {fileID: 8325728061096755423}
   m_Layer: 19
   m_Name: Dialogue Interaction
   m_TagString: Untagged
@@ -51665,6 +51666,18 @@ MonoBehaviour:
       - I'm a good boy, I deserve it.
       - What are you doing here? Go find Jim!
   destroySelfAfterTriggering: 0
+--- !u!114 &8325728061096755423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8325728061096755421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1f75da6aff78746ac2222742634407, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8330954830567774525
 Transform:
   m_ObjectHideFlags: 0
