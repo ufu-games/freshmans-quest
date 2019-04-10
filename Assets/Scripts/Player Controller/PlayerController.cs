@@ -383,7 +383,7 @@ public class PlayerController : MonoBehaviour {
 		if(gameObject.activeSelf){
 			// Handling other game events
 			if(m_currentPlayerState == EPlayerState.IsPettingDog) {
-				m_animator.Play("Running");
+				m_animator.Play("Petting");
 			} else { // Handling normal game events
 				if(m_isOnWall) {
 					m_animator.Play("Wall");
