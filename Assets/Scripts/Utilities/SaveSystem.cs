@@ -19,10 +19,6 @@ public class SaveSystem : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        //later to be removed
-        if(PlayerPrefs.HasKey("0_isBeingUsed")) {
-            PlayerPrefs.DeleteAll();
-        }
         instance = this;
         myData = new MySaveData();
         myData.Reset();

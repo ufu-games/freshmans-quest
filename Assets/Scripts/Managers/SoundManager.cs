@@ -45,27 +45,27 @@ public class SoundManager : MonoBehaviour {
 	public void ChangeMusicAccordingToScene() {
 		switch (SceneManager.GetActiveScene().buildIndex) {
 			case 0:
-				if(Settings.TitleScreen != "")
+				if(!string.IsNullOrEmpty(Settings.TitleScreen))
 					instance.fmodEventEmitter.ChangeEvent(Settings.TitleScreen);		
 				break;
 			case 1:
-				if(Settings.Hub != "")
+				if(!string.IsNullOrEmpty(Settings.Hub))
 					instance.fmodEventEmitter.ChangeEvent(Settings.Hub);
 				break;
 			case 2:
-				if(Settings.Hub != "")
+				if(!string.IsNullOrEmpty(Settings.Hub))
 					instance.fmodEventEmitter.ChangeEvent(Settings.Hub);
 				break;
 			case 3:
-				if(Settings.University != "")
+				if(!string.IsNullOrEmpty(Settings.University))
 					instance.fmodEventEmitter.ChangeEvent(Settings.University);
 				break;
 			case 4:
-				if(Settings.Arts != "")
+				if(!string.IsNullOrEmpty(Settings.Arts))
 					instance.fmodEventEmitter.ChangeEvent(Settings.Arts);
 				break;
 			case 5:
-				if(Settings.Chemistry != "")
+				if(!string.IsNullOrEmpty(Settings.Chemistry))
 					instance.fmodEventEmitter.ChangeEvent(Settings.Chemistry);
 				break;
 			case 6:
