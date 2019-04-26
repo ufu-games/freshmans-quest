@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class TogglePlatform : MonoBehaviour
+public class TogglePlatform : MonoBehaviour, IResettableProp
 {
+    [Header("Variables")]
     public bool IsActivatedByDefault = true;
     [ReadOnly]
     public bool IsActivatedNow;
+    [Header("Sprites")]
     public Sprite ActivatedSprite;
     public Sprite DeactivatedSprite;
 
@@ -77,5 +79,13 @@ public class TogglePlatform : MonoBehaviour
         m_collider.enabled = false;
         m_renderer.sprite = DeactivatedSprite;
         IsActivatedNow = false;
+    }
+
+    public void Reset() {
+        if(IsActivatedByDefault) {
+            Activate();
+        } else {
+            Deactivate();
+        }
     }
 }
