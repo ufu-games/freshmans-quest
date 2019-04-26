@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviour {
 
 	private float m_jumpPressedRemember;
 	private float m_groundedRemember;
+
+	[ReadOnly]
+	public bool m_jumpedLastFrame = false;
 	
 	// WALL JUMP HANDLING Handling
 	private const float onWallGravity = -1f;
@@ -315,9 +318,11 @@ public class PlayerController : MonoBehaviour {
 
 		switch(m_currentPlayerState) {
 			case EPlayerState.Normal:
+				m_jumpedLastFrame = false;
 				ProcessNormalState();
 			break;
 			case EPlayerState.Jumping:
+				m_jumpedLastFrame = false;
 				ProcessJumpingState();
 			break;
 			case EPlayerState.OnWall:
@@ -486,6 +491,7 @@ public class PlayerController : MonoBehaviour {
 		if( ( (m_groundedRemember > 0) && (m_jumpPressedRemember > 0) ) ) {
 			m_jumpPressedRemember = 0;
 			m_groundedRemember = 0;
+			m_jumpedLastFrame = true;
 			SaveSystem.instance.Jumped();
 			m_gravity = goingUpGravity;
 			m_velocity.y = Mathf.Sqrt( 2f * jumpHeight * -m_gravity );
