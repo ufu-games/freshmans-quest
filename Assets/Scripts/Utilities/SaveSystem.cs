@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using System.Xml;
 using System.Xml.Serialization;
+using UnityEngine.SceneManagement;
 
 
 public class SaveSystem : MonoBehaviour
@@ -13,6 +14,7 @@ public class SaveSystem : MonoBehaviour
     [HideInInspector]
     public int currentSlot = -1;
     private GameObject player;
+    private float m_tempTime = 0;
 
     void Start() {
         if(instance) {
@@ -87,9 +89,9 @@ public class SaveSystem : MonoBehaviour
         } 
 
         if(myData.isInStage) {
-            LevelManagement.LevelManager.instance.LoadLevel(myData.lastStage);
+            LevelManagement.LevelManager.instance.LoadLevel(myData.lastStage,false);
         } else {
-            LevelManagement.LevelManager.instance.LoadLevel(2);
+            LevelManagement.LevelManager.instance.LoadLevel(2,false);
         }
     }
 
@@ -156,10 +158,23 @@ public class SaveSystem : MonoBehaviour
         return ms;
     }
 
+    public void UpdateSectionTime() {
+        int Index = SceneManager.GetActiveScene().buildIndex;
+
+        if(myData.LowestTime[Index] > m_tempTime) {
+            myData.LowestTime[Index] = m_tempTime; // this code section saves the ammount of time that the player took to beat a level
+        }
+
+        m_tempTime = 0;
+    }
+
+    public void ResetSectionTime() {
+        m_tempTime = 0;
+    }
 
     public void OnLevelEnter(int level) {
         SetIsInStage(true);
-        SetLastStage(level);
+        SetLastStage(level);        
     }
 
     public void OnLevelExit() {
@@ -192,6 +207,7 @@ public class SaveSystem : MonoBehaviour
     }
     public void TickTimePlayed() {
         myData.timePlayed += Time.deltaTime;
+        m_tempTime += Time.deltaTime;
     }
 
     public void GotPizza() {

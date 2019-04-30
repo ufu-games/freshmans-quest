@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour
     public void GoToHub() {
         Time.timeScale = 1;
         SaveSystem.instance.UISaveGame();
-        LevelManagement.LevelManager.instance.LoadLevel(2);
+        LevelManagement.LevelManager.instance.LoadLevel(2,false);
     }
 
     public void SaveAndQuit() {
@@ -67,7 +67,7 @@ public class GameController : MonoBehaviour
             m_check.GetComponent<CheckpointSystemBehavior>().RemovePizzaCounters();
         }
         SaveSystem.instance.UISaveGame();
-        LevelManagement.LevelManager.instance.LoadLevel(0);
+        LevelManagement.LevelManager.instance.LoadLevel(0,false);
     }
 
     private void TogglePause() {

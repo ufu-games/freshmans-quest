@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class MySaveData
@@ -13,6 +14,9 @@ public class MySaveData
     public float timePlayed = 0;
     [ReadOnly]
     public int pizzaCounter = 0;
+
+    [ReadOnly]
+    public float[] LowestTime;
 
     [ReadOnly]
     public int lastStage = 0;
@@ -29,6 +33,10 @@ public class MySaveData
         Deaths = 0;
         timePlayed = 0;
         pizzaCounter = 0;
+        LowestTime = new float[SceneManager.sceneCountInBuildSettings];
+        for(int i=0; i<LowestTime.Length ;i++) {
+            LowestTime[i] = float.MaxValue;
+        }
         lastStage = 0;
         isInStage = false;
         NPCChat = 0;
