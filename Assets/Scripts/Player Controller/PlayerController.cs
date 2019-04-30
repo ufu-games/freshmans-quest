@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// Jump Handling
 	private const float goingUpGravity = -35f;
-	private const float goingDownGravity = -105;
+	private const float goingDownGravity = -95;
 	private const float terminalVelocity = -20f;
 	[ReadOnly]
 	private float m_gravity;
@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// WALL JUMP HANDLING Handling
 	private const float onWallGravity = -1f;
-	private Vector2 wallJumpVelocity = new Vector2(8f, 3.25f);
+	private Vector2 wallJumpVelocity = new Vector2(8f, 5.25f);
 	private const float maxDistanceOffWall = 5;
 	
 	[ReadOnly]
