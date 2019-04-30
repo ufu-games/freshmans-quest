@@ -64,17 +64,17 @@ public class NewHubManager : MonoBehaviour {
 
 	public void ChooseUniversityLevel() {
 		Debug.LogWarning("Starting University Level...");
-		LevelManagement.LevelManager.instance.LoadLevel(3);
+		LevelManagement.LevelManager.instance.LoadLevel(3,false);
 	}
 
 	public void ChooseArtsLevel() {
 		Debug.LogWarning("Starting Arts Level...");
-		LevelManagement.LevelManager.instance.LoadLevel(4);
+		LevelManagement.LevelManager.instance.LoadLevel(4,false);
 	}
 
 	public void ChooseChemistryLevel() {
 		Debug.LogWarning("Starting Chesmitry Level...");
-		LevelManagement.LevelManager.instance.LoadLevel(5);
+		LevelManagement.LevelManager.instance.LoadLevel(5,false);
 	}
 
 	public void ChooseMedicineLevel() {
@@ -89,6 +89,6 @@ public class NewHubManager : MonoBehaviour {
 		Debug.LogWarning("Going to Main Menu");
 		SaveSystem.instance.OnLevelExit();
 		SaveSystem.instance.UISaveGameNextFrame();
-		LevelManagement.LevelManager.instance.LoadLevel(0);
+		LevelManagement.LevelManager.instance.LoadLevel(0,false);
 	}
 }

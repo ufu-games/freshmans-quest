@@ -16,12 +16,12 @@ using UnityEngine.SceneManagement;
 	LoadNextLevel()
 		- Carrega a próxima cena na build, se a cena atual for a útlima, carrega a primeira cena.
 		Ex: LevelManagement.LevelManager.instance.LoadNextLevel();
-	LoadLevel(string)
-		- Carrega a cena com o nome passado por parâmetro.
-		Ex: LevelManagement.LevelManager.instance.LoadLevel("Hub");
-	LoadLevel(int)
-		- Carrega a cena com o indice passado por parâmetro
-		Ex: LevelManagement.LevelManager.instance.LoadLevel(2);
+	LoadLevel(string,bool)
+		- Carrega a cena com o nome passado por parâmetro, o bool indica se deve ou não salvar o tempo gasto na ultima fase.
+		Ex: LevelManagement.LevelManager.instance.LoadLevel("Hub",true);
+	LoadLevel(int,bool)
+		- Carrega a cena com o indice passado por parâmetro, o bool indica se deve ou não salvar o tempo gasto na ultima fase.
+		Ex: LevelManagement.LevelManager.instance.LoadLevel(2,true);
  */
 
 
@@ -101,10 +101,16 @@ namespace LevelManagement {
 			StartCoroutine(LoadSceneWithLoadingScreenRoutine(levelIndex));
 		}
 
-		public void LoadLevel(string levelName) {
+		public void LoadLevel(string levelName, bool SaveTimeSection) {
 			Debug.LogWarningFormat("Loading Scene with Level Name: {0}", levelName);
 			Debug.LogWarningFormat("Level Index from Name: {0}", SceneManager.GetSceneByName(levelName).buildIndex);
 			if(Application.CanStreamedLevelBeLoaded(levelName)) {
+				if(SaveTimeSection) {
+					SaveSystem.instance.UpdateSectionTime();
+				} else {
+					SaveSystem.instance.ResetSectionTime();
+				}
+				
 				if(levelName != "Hub" && levelName != "MenuInicial" && levelName != "IntroducaoHistoria") {
 					SaveSystem.instance.OnLevelEnter(SceneManager.GetSceneByName(levelName).buildIndex);
 				}
@@ -114,9 +120,14 @@ namespace LevelManagement {
 			}
 		}
 
-		public void LoadLevel(int levelIndex) {
+		public void LoadLevel(int levelIndex, bool SaveTimeSection) {
 			Debug.Log("Load Level: Int");
 			if(levelIndex >= 0 && levelIndex < SceneManager.sceneCountInBuildSettings) {
+				if(SaveTimeSection) {
+					SaveSystem.instance.UpdateSectionTime();
+				} else {
+					SaveSystem.instance.ResetSectionTime();
+				}
 				if(levelIndex > 2) {
 					SaveSystem.instance.OnLevelEnter(levelIndex);
 				}
