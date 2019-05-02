@@ -120,7 +120,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1728434700802616}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1100}
+  m_LocalPosition: {x: -37.213, y: -1.4789997, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4406155826804704}
@@ -231,8 +231,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AssetsPPU: 32
-  m_RefResolutionX: 512
-  m_RefResolutionY: 288
+  m_RefResolutionX: 640
+  m_RefResolutionY: 360
   m_UpscaleRT: 1
   m_PixelSnapping: 1
   m_CropFrameX: 0
@@ -337,7 +337,7 @@ MonoBehaviour:
     m_Bits: 33554432
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 1
-  antialiasingMode: 2
+  antialiasingMode: 0
   temporalAntialiasing:
     jitterSpread: 0.75
     sharpness: 0.25
