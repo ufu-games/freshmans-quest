@@ -36,9 +36,7 @@ public class PlayerController : MonoBehaviour {
 	[ReadOnly]
 	private bool m_isOnWall;
 	private bool m_skipMoveOnUpdateThisFrame = false;
-	private bool m_startedslidingwall = false;
-	private bool m_fastsliding = false;
-
+	
 	[Space(5)]
 	public GameObject dialogueHintObject;
 	
@@ -376,11 +374,6 @@ public class PlayerController : MonoBehaviour {
 			m_controller.ignoreOneWayPlatformsThisFrame = true;
 		}
 
-		if(m_controller.isGrounded) {
-			m_startedslidingwall = false;
-			m_fastsliding = false;
-		}
-
 		m_skipMoveOnUpdateThisFrame = false;
 	}
 
@@ -538,8 +531,6 @@ public class PlayerController : MonoBehaviour {
 			) {
 
 			m_isOnWall = false;
-			m_fastsliding = false;
-			m_startedslidingwall = false;
 			m_velocity.x = wallJumpVelocity.x * (m_controller.isNear(Vector2.left,maxDistanceOffWall) ? 1 : -1);
 			m_gravity = goingUpGravity;
 			m_velocity.y = Mathf.Sqrt(wallJumpVelocity.y * -m_gravity);
