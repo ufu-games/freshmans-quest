@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6774785082105375446}
   - component: {fileID: 6774785082105375447}
   - component: {fileID: 6774785082105375444}
+  - component: {fileID: 3200687453511890948}
   m_Layer: 0
   m_Name: Pizza VFX Graph test
   m_TagString: Untagged
@@ -89,7 +90,7 @@ VFXRenderer:
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
-  m_RenderingLayerMask: 511
+  m_RenderingLayerMask: 1
   m_RendererPriority: 229
   m_Materials:
   - {fileID: 0}
@@ -113,3 +114,14 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!210 &3200687453511890948
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6774785082105375445}
+  m_Enabled: 1
+  m_SortingLayerID: 993910923
+  m_SortingLayer: 6
+  m_SortingOrder: 1
