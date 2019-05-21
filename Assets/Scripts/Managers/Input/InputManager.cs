@@ -25,7 +25,6 @@ public class InputManager : MonoBehaviour {
 
 	void Update() {
     	activeDevice = InControl.InputManager.ActiveDevice;
-			Debug.Log(activeDevice.Name);
     }
 
 	public bool PressedJump() {

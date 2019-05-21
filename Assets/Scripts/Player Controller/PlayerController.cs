@@ -418,8 +418,12 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		// Changing Gravity on Fall
-		if(m_velocity.y < 0 && !m_isOnWall) {
-			m_gravity = goingDownGravity;
+		if(m_velocity.y < 0) {
+			if(!m_isOnWall) {
+				m_gravity = goingDownGravity;
+			} else {
+				m_gravity = goingUpGravity;
+			}
 		}
 
 		if(m_controller.isGrounded) {
@@ -507,7 +511,7 @@ public class PlayerController : MonoBehaviour {
 			&&
 			!m_controller.isGrounded
 			&&
-			((m_controller.isColliding(Vector2.left) &&  m_velocity.x < 0) || (m_controller.isColliding(Vector2.right) &&  m_velocity.x > 0)))
+			((m_controller.isColliding(Vector2.left) &&  Input.GetAxisRaw("Horizontal") == -1) || (m_controller.isColliding(Vector2.right) &&  Input.GetAxisRaw("Horizontal") == 1)))
 		{
 			m_isOnWall = true;
 		} else if(
