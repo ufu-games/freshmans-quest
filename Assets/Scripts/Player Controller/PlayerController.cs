@@ -6,13 +6,13 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 	
 	// Movement Handling
-	private const float runSpeed = 7f;
+	private const float runSpeed = 8.5f;
 	private const float groundDamping = .25f; // how fast do we change direction? higher means faster
 	private const float slippingFrictionMultiplier = .1f;
 	
 	// Jump Handling
 	private const float goingUpGravity = -35f;
-	private const float goingDownGravity = -95;
+	private const float goingDownGravity = -62;
 	private const float terminalVelocity = -20f;
 	[ReadOnly]
 	private float m_gravity;
@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// WALL JUMP HANDLING Handling
 	private const float onWallGravity = -1f;
-	private Vector2 wallJumpVelocity = new Vector2(8f, 5.25f);
+	private Vector2 wallJumpVelocity = new Vector2(12f, 7f);
 	private const float maxDistanceOffWall = 5;
 	
 	[ReadOnly]
