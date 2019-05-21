@@ -44,21 +44,21 @@ Tilemap:
   - first: {x: -11, y: 0, z: 0}
     second:
       m_TileIndex: 4
-      m_TileSpriteIndex: 4294967295
+      m_TileSpriteIndex: 3
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 2
-      m_ColliderType: 1
+      m_ColliderType: 2
   - first: {x: -9, y: 0, z: 0}
     second:
       m_TileIndex: 3
-      m_TileSpriteIndex: 4294967295
+      m_TileSpriteIndex: 4
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 2
-      m_ColliderType: 1
+      m_ColliderType: 2
   - first: {x: -7, y: 0, z: 0}
     second:
       m_TileIndex: 2
@@ -67,7 +67,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 2
-      m_ColliderType: 1
+      m_ColliderType: 2
   - first: {x: -5, y: 0, z: 0}
     second:
       m_TileIndex: 0
@@ -95,7 +95,7 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 1f07d5266ba5a2a459723f8d3ab22c76, type: 2}
   - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: 66dc43ffa745e514ea74fbb81b86a7b4, type: 2}
+    m_Data: {fileID: 11400000, guid: 07269b3a47b5e9549bc1094b60a17433, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 09f02d47f3759434faa88070e6963f87, type: 2}
   m_TileSpriteArray:
@@ -105,6 +105,10 @@ Tilemap:
     m_Data: {fileID: 21300036, guid: 710253fb9fc2d474fb55905ac2594509, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 21300168, guid: 710253fb9fc2d474fb55905ac2594509, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300026, guid: 54bf0da43df63cb4da0ba97d8dda48b8, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300322, guid: 54bf0da43df63cb4da0ba97d8dda48b8, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 5
     m_Data:
@@ -127,6 +131,8 @@ Tilemap:
   m_TileColorArray:
   - m_RefCount: 5
     m_Data: {r: 1, g: 1, b: 1, a: 1}
+  - m_RefCount: 0
+    m_Data: {r: 8.784359e-39, g: 8.784359e-39, b: 8.784359e-39, a: 8.784359e-39}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -11, y: 0, z: 0}
