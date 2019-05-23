@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour {
 	private const float jumpPressedRememberTime = 0.1f;
 	private const float groundedRememberTime = 0.1f;
 	private const float cutJumpHeight = 0.35f;
+	private float nextJumpHeight = 2f;
 
 	private float m_jumpPressedRemember;
 	private float m_groundedRemember;
@@ -220,12 +221,10 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
-			float t_jumpingPlatformMultiplier = col.gameObject.GetComponent<JumpingPlatform>().jumpingMultiplier;
-            float rotationAngle = col.gameObject.transform.eulerAngles.z;
-			m_gravity = goingUpGravity;
-            float maxVelocity = Mathf.Sqrt(t_jumpingPlatformMultiplier * 2f * jumpHeight * -m_gravity);
-			this.getsThrownTo(rotationAngle, maxVelocity);
-			m_skipMoveOnUpdateThisFrame = true;
+			m_jumpPressedRemember = jumpPressedRememberTime;
+			m_groundedRemember = groundedRememberTime;
+			m_currentPlayerState = EPlayerState.Normal;
+			nextJumpHeight = jumpHeight * col.GetComponent<JumpingPlatform>().jumpingMultiplier;
 		}
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("Cannon")){
@@ -491,7 +490,8 @@ public class PlayerController : MonoBehaviour {
 			m_jumpedLastFrame = true;
 			SaveSystem.instance.Jumped();
 			m_gravity = goingUpGravity;
-			m_velocity.y = Mathf.Sqrt( 2f * jumpHeight * -m_gravity );
+			m_velocity.y = Mathf.Sqrt( 2f * nextJumpHeight * -m_gravity );
+			nextJumpHeight = jumpHeight;
 			
 			if(SoundManager.instance && SoundManager.instance.Settings.Player_jump != "") {
 				SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_jump);
