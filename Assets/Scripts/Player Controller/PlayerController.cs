@@ -221,10 +221,16 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
-			m_jumpPressedRemember = jumpPressedRememberTime;
-			m_groundedRemember = groundedRememberTime;
-			m_currentPlayerState = EPlayerState.Normal;
-			nextJumpHeight = jumpHeight * col.GetComponent<JumpingPlatform>().jumpingMultiplier;
+			m_gravity = goingUpGravity;
+			m_velocity.y = Mathf.Sqrt( 2f * jumpHeight * col.GetComponent<JumpingPlatform>().jumpingMultiplier * -m_gravity );
+			
+			if(SoundManager.instance && SoundManager.instance.Settings.Player_jump != "") {
+				SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_jump);
+			}
+
+			StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
+			// [CHANGING STATE]
+			m_currentPlayerState = EPlayerState.Jumping;
 		}
 
 		if(col.gameObject.layer == LayerMask.NameToLayer("Cannon")){
@@ -306,6 +312,10 @@ public class PlayerController : MonoBehaviour {
 				}
 
 				StartCoroutine(ChangeScale(m_playerSprite.localScale * m_groundingScaleMultiplier));
+			}
+		} else {
+			if(m_currentPlayerState == EPlayerState.Normal) {
+				m_currentPlayerState = EPlayerState.Jumping;
 			}
 		}
 
