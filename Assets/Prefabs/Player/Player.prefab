@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &830246111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 830246113}
+  - component: {fileID: 830246112}
+  m_Layer: 0
+  m_Name: CamTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &830246113
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830246111}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4563930203491430}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &830246112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830246111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a24b4afa7df7f045a19967cbe25c9a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_pointsInView: []
+  m_pointsOfInterest: []
 --- !u!1 &1233750439695320
 GameObject:
   m_ObjectHideFlags: 0
@@ -34,6 +79,7 @@ Transform:
   m_Children:
   - {fileID: 4148326263093062}
   - {fileID: 7239271842702600517}
+  - {fileID: 830246113}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -96,19 +142,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fd66fcb756454e9b9b88a07f4874b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_jumpedLastFrame: 0
   dialogueHintObject: {fileID: 614540880899732709}
   landingParticles: {fileID: 198417699065630864, guid: 5941734cbb31c479fbbe5fb46ba4283f,
     type: 3}
-  hurtClip: {fileID: 0}
-  stepClips:
-  - {fileID: 8300000, guid: 4cea7f97648b647c29ea2d1780888c4a, type: 3}
-  - {fileID: 8300000, guid: 851bea01e990242f0a1eb7c210e5541c, type: 3}
-  - {fileID: 8300000, guid: 2a8ac63d7c4b64575bca137b0bfcf543, type: 3}
-  - {fileID: 8300000, guid: d2176a6b6bffe44109b2ba1c456d781a, type: 3}
-  - {fileID: 8300000, guid: 53ef73605fcbb4e979bcb2e1c1f707e1, type: 3}
-  - {fileID: 8300000, guid: 49f4b34e0092443a09b2b90560c884cc, type: 3}
-  jumpingClip: {fileID: 0}
-  m_playerSprites: []
+  m_playerSprite: {fileID: 0}
   m_velocityLastFrame: {x: 0, y: 0, z: 0}
 --- !u!114 &114306318740557262
 MonoBehaviour:
