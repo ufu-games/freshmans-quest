@@ -25,14 +25,11 @@ public class CamTarget : MonoBehaviour
 
         m_cam = Camera.main.GetComponentInChildren<CinemachineVirtualCamera>();
         m_player = GameObject.FindGameObjectWithTag("Player");
-        GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>() ;
-        foreach(GameObject go in allObjects) {
-            if (go.activeInHierarchy) {
-                PointOfInterest point = go.GetComponent<PointOfInterest>();
-                if(point != null) {
-                    m_pointsOfInterest.Add(point);
-                }
-            }
+
+        Object[] allobj = GameObject.FindObjectsOfType(typeof(PointOfInterest));
+        
+        foreach(Object obj in allobj) {
+            m_pointsOfInterest.Add((PointOfInterest) obj);
         }
 }
 
