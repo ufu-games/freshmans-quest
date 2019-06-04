@@ -577,6 +577,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void CamHandling(){
+		return;
 		if(!m_cam) return;
 
 		if(m_controller.isGrounded) {

@@ -7,6 +7,8 @@ public class CamTarget : MonoBehaviour
 {
     public static CamTarget instance = null;
 
+    public float Speed = 10;
+
     [ReadOnly]
     public List<PointOfInterest> m_pointsInView = new List<PointOfInterest>();
     [ReadOnly]
@@ -38,7 +40,9 @@ public class CamTarget : MonoBehaviour
         if(m_cam.Follow != transform) {
             m_cam.Follow = transform;
         }
-        Vector2 point = FindPoint();
+        Vector2 destinationpoint = FindPoint();
+        float distance = Vector2.Distance(transform.position,destinationpoint);
+        Vector2 point = Vector2.Lerp(transform.position,destinationpoint,Speed*Time.deltaTime/distance);
         transform.position = new Vector3(point.x,point.y,transform.position.z);
     }
 
