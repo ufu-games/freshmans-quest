@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a24b4afa7df7f045a19967cbe25c9a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Speed: 10
   m_pointsInView: []
   m_pointsOfInterest: []
 --- !u!1 &1233750439695320
@@ -142,6 +143,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fd66fcb756454e9b9b88a07f4874b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  runSpeed: 7.5
+  jumpPeakHeight: 4.5
+  horizontalDistanceToJumpPeak: 5
+  jumpingPlatformJumpingVelocityMultiplier: 1.25
   m_jumpedLastFrame: 0
   dialogueHintObject: {fileID: 614540880899732709}
   landingParticles: {fileID: 198417699065630864, guid: 5941734cbb31c479fbbe5fb46ba4283f,
