@@ -51,9 +51,6 @@ public class PlayerController : MonoBehaviour {
 	[Space(5)]
 	[Header("Particle Effects")]
 	public ParticleSystem landingParticles;
-	
-	//Camera Handling
-	private CinemachineFramingTransposer m_cam;
 
 	[HideInInspector]
 	private float normalizedHorizontalSpeed = 0;
@@ -106,14 +103,6 @@ public class PlayerController : MonoBehaviour {
 		m_controller.onTriggerStayEvent += OnTriggerStayEvent;
 		m_controller.onTriggerExitEvent += onTriggerExitEvent;
 		m_originalScale = m_playerSprite.localScale;
-		
-		
-
-        if(Camera.main.GetComponentInChildren<CinemachineVirtualCamera>()) {
-			m_cam = Camera.main.GetComponentInChildren<CinemachineFramingTransposer>();
-        } else {
-			Debug.LogWarning("Não há Cinemachine presente na cena! A Cãmera não seguirá o personagem.");
-		}  
 
 		if(dialogueHintObject){
 			dialogueHintObject.SetActive(false);
@@ -567,23 +556,6 @@ public class PlayerController : MonoBehaviour {
 		m_playerSprite.localScale = scale;
 		yield return new WaitForSeconds(0.075f);
 		m_playerSprite.localScale = new Vector3(Mathf.Sign(m_playerSprite.localScale.x) * Mathf.Abs(m_originalScale.x), m_originalScale.y, m_playerSprite.localScale.z);
-	}
-
-	private void CamHandling(){
-		return;
-
-        // nice
-		if(!m_cam) return;
-
-		if(m_controller.isGrounded) {
-			m_cam.m_DeadZoneHeight = 0.02f;
-			m_cam.m_ScreenY = 0.6f;
-			m_cam.m_YDamping = 0.8f;
-		} else {
-			m_cam.m_DeadZoneHeight = 0.2f;
-			m_cam.m_ScreenY = 0.5f;
-			m_cam.m_YDamping = 0.1f;
-		}
 	}
 
 	public void StopMovement(){
