@@ -55,7 +55,7 @@ MonoBehaviour:
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 40
-    OrthographicSize: 7
+    OrthographicSize: 6.25
     NearClipPlane: 0.1
     FarClipPlane: 5008.81
     Dutch: 0
@@ -97,9 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4119891488998658}
   - component: {fileID: 20591783606155818}
-  - component: {fileID: 114316749703648158}
   - component: {fileID: 114786163368753942}
-  - component: {fileID: 114579903768938338}
   - component: {fileID: 4081078857310572773}
   - component: {fileID: 1395437142716791535}
   - component: {fileID: 1371185280}
@@ -153,7 +151,7 @@ Camera:
   far clip plane: 5008.81
   field of view: 40
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 6.25
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -169,18 +167,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &114316749703648158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1728434700802616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7ed6e047b04e7446aba3f9b7a8711e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114786163368753942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,26 +204,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: Cinemachine.CinemachineBrain+VcamActivatedEvent, Cinemachine, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114579903768938338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1728434700802616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AssetsPPU: 32
-  m_RefResolutionX: 512
-  m_RefResolutionY: 288
-  m_UpscaleRT: 1
-  m_PixelSnapping: 1
-  m_CropFrameX: 1
-  m_CropFrameY: 0
-  m_StretchFill: 1
 --- !u!114 &4081078857310572773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,7 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Version: 1
   clearColorMode: 0
-  backgroundColorHDR: {r: 0.025, g: 0.07, b: 0.19, a: 0}
+  backgroundColorHDR: {r: 0.40899786, g: 0.81037354, b: 0.9528302, a: 0}
   clearDepth: 1
   renderingPath: 0
   volumeLayerMask:
