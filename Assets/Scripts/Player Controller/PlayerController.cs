@@ -349,7 +349,6 @@ public class PlayerController : MonoBehaviour {
 
 		AnimationLogic();
         ProcessSpriteScale();
-		CamHandling();
         m_velocityLastFrame = m_velocity;
 
 		// Handling Player Velocity and Moving
