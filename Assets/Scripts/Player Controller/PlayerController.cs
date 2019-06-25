@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// WALL JUMP HANDLING Handling
 	private const float onWallGravity = -1f;
-	private Vector2 wallJumpVelocity = new Vector2(12f, 5f);
+	private Vector2 wallJumpVelocity = new Vector2(10f, 12f);
 	private const float maxDistanceOffWall = 5;
 	
 	[ReadOnly]
@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour {
         // Calculating Gravity and Jump Initial Velocity...
         m_jumpInitialVelocity = (2 * jumpPeakHeight * runSpeed) / (horizontalDistanceToJumpPeak);
         m_goingUpGravity = -((2 * jumpPeakHeight * runSpeed * runSpeed) / (horizontalDistanceToJumpPeak * horizontalDistanceToJumpPeak));
-        m_goingDownGravity = m_goingUpGravity * 2.75f;
+        m_goingDownGravity = m_goingUpGravity * 1.5f;
         m_gravity = m_goingUpGravity;
 
         // Caching Components
