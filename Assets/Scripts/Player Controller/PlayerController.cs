@@ -14,8 +14,10 @@ public class PlayerController : MonoBehaviour {
     public float jumpingPlatformJumpingVelocityMultiplier = 1.25f;
 
     // Movement Handling
-    private const float groundDamping = .25f; // how fast do we change direction? higher means faster
-	private const float slippingFrictionMultiplier = .1f;
+    [Header("Movement Damping")]
+    public float groundDamping = .25f;
+    public float inAirDamping = 0.08333f;
+    private const float slippingFrictionMultiplier = .1f;
 
     // Jump Handling
     [ReadOnly]
@@ -25,10 +27,9 @@ public class PlayerController : MonoBehaviour {
     private float m_jumpInitialVelocity;
 
 	private const float terminalVelocity = -20f;
-	private const float inAirDamping = 0.08333f;
-	private const float jumpPressedRememberTime = 0.125f;
-	private const float groundedRememberTime = 0.125f;
-	private const float cutJumpHeight = 0.35f;
+	private const float jumpPressedRememberTime = 0.15f;
+	private const float groundedRememberTime = 0.15f;
+	private const float cutJumpHeight = 0.5f;
 
 	private float m_jumpPressedRemember;
 	private float m_groundedRemember;
@@ -355,8 +356,11 @@ public class PlayerController : MonoBehaviour {
 		// Horizontal Velocity
 		float t_groundDamping = m_isSlipping ? (groundDamping * slippingFrictionMultiplier) : groundDamping;
 		var smoothedMovementFactor = m_controller.isGrounded ? t_groundDamping : inAirDamping;
-		// m_velocity.x = Mathf.Lerp(normalizedHorizontalSpeed * runSpeed, m_velocity.x , Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime*60));
-        m_velocity.x = Mathf.Lerp(m_velocity.x, normalizedHorizontalSpeed * runSpeed, Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime * 60));
+        // m_velocity.x = Mathf.Lerp(normalizedHorizontalSpeed * runSpeed, m_velocity.x , Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime*60));
+        // m_velocity.x = Mathf.Lerp(m_velocity.x, normalizedHorizontalSpeed * runSpeed, Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime * 60));
+        float t_xVelocityLerp = Mathf.Clamp01(smoothedMovementFactor * Time.deltaTime);
+        m_velocity.x = Mathf.Lerp(m_velocity.x, normalizedHorizontalSpeed * runSpeed, t_xVelocityLerp);
+
         // Vertical Velocity
         // ACCELERATING with gravity
         m_velocity.y += m_gravity * Time.deltaTime;

@@ -33,9 +33,11 @@ public class LevelTransition : MonoBehaviour {
 
 	void Start () {
 		m_player = GameObject.FindGameObjectWithTag("Player");
+        /*
 		m_referenceResolution = new Vector2Int(FindObjectOfType<UnityEngine.U2D.PixelPerfectCamera>().refResolutionX,FindObjectOfType<UnityEngine.U2D.PixelPerfectCamera>().refResolutionY);
 		
 		PixelPerfectCameralist = FindObjectsOfType<UnityEngine.U2D.PixelPerfectCamera>();
+        */
 		
 		if(m_player == null){
 			print("Player não encontrado na cena, A transição de telas não funcionará");
@@ -133,10 +135,12 @@ public class LevelTransition : MonoBehaviour {
 	}
 
 	void OnDestroy() {
+        /*
 		foreach(UnityEngine.U2D.PixelPerfectCamera m_pixelPerfectCamera in PixelPerfectCameralist){
 			m_pixelPerfectCamera.refResolutionX = m_referenceResolution.x;
 			m_pixelPerfectCamera.refResolutionY = m_referenceResolution.y;
 		}
+        */
 	}
 
 	IEnumerator ScreenResolutionLerp() {
