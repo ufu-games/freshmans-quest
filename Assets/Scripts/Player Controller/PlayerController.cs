@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour {
     [Header("Movement Damping")]
     public float groundDamping = .25f;
     public float inAirDamping = 0.08333f;
-    private const float slippingFrictionMultiplier = .1f;
+    private const float km_slippingFrictionMultiplier = .1f;
 
     // Jump Handling
     [ReadOnly]
@@ -26,10 +26,12 @@ public class PlayerController : MonoBehaviour {
 	private float m_goingDownGravity;
     private float m_jumpInitialVelocity;
 
-	private const float terminalVelocity = -20f;
-	private const float jumpPressedRememberTime = 0.15f;
-	private const float groundedRememberTime = 0.15f;
-	private const float cutJumpHeight = 0.5f;
+	private const float km_terminalVelocity = -20f;
+	private const float km_jumpPressedRememberTime = 0.15f;
+	private const float km_groundedRememberTime = 0.15f;
+	private const float km_cutJumpHeight = 0.5f;
+
+    private float m_timeToJumpPeak;
 
 	private float m_jumpPressedRemember;
 	private float m_groundedRemember;
@@ -38,9 +40,9 @@ public class PlayerController : MonoBehaviour {
 	public bool m_jumpedLastFrame = false;
 	
 	// WALL JUMP HANDLING Handling
-	private const float onWallGravity = -1f;
-	private Vector2 wallJumpVelocity = new Vector2(12f, 5f);
-	private const float maxDistanceOffWall = 5;
+	private const float km_onWallGravity = -1f;
+	private Vector2 m_wallJumpVelocity;
+	private const float km_maxDistanceOffWall = 5;
 	
 	[ReadOnly]
 	private bool m_isOnWall;
@@ -79,6 +81,7 @@ public class PlayerController : MonoBehaviour {
 		Normal,
 		Jumping,
 		OnWall,
+        JumpingFromWall,
 		Cannon,
 		MoveBlockedDialogue, // cutscenes, dialogues...
 		IsPettingDog, // Yes, I did it.
@@ -94,6 +97,8 @@ public class PlayerController : MonoBehaviour {
         m_goingUpGravity = -((2 * jumpPeakHeight * runSpeed * runSpeed) / (horizontalDistanceToJumpPeak * horizontalDistanceToJumpPeak));
         m_goingDownGravity = m_goingUpGravity * 2.75f;
         m_gravity = m_goingUpGravity;
+        m_wallJumpVelocity = new Vector2(runSpeed, m_jumpInitialVelocity);
+        m_timeToJumpPeak = horizontalDistanceToJumpPeak / runSpeed;
 
         // Caching Components
         m_animator = GetComponentInChildren<Animator>();
@@ -298,7 +303,7 @@ public class PlayerController : MonoBehaviour {
 		// for some reason this wasn't working on the ProcessNormalState()
 		if(m_controller.isGrounded) {
 			m_isOnWall = false;
-			m_groundedRemember = groundedRememberTime;
+			m_groundedRemember = km_groundedRememberTime;
 			m_velocity.y = 0;
 			
 			// wasn't grounded last frame
@@ -309,7 +314,7 @@ public class PlayerController : MonoBehaviour {
 					SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_walk);
 				}
 
-				if(Mathf.Abs(m_velocityLastFrame.y - terminalVelocity) < 0.01f) {
+				if(Mathf.Abs(m_velocityLastFrame.y - km_terminalVelocity) < 0.01f) {
 					InputManager.instance.VibrateWithTime(.75f, 0.15f);
 				}
 
@@ -322,7 +327,7 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if(InputManager.instance.PressedJump()) {
-			m_jumpPressedRemember = jumpPressedRememberTime;
+			m_jumpPressedRemember = km_jumpPressedRememberTime;
 		}
 
 		switch(m_currentPlayerState) {
@@ -337,6 +342,9 @@ public class PlayerController : MonoBehaviour {
 			case EPlayerState.OnWall:
 				// Add Wall Rest here if needed.
 			break;
+            case EPlayerState.JumpingFromWall:
+                ProcessJumpingFromWallState();
+                break;
 			case EPlayerState.Cannon:
 				ProcessCannonState();
 			break;
@@ -354,7 +362,7 @@ public class PlayerController : MonoBehaviour {
 
 		// Handling Player Velocity and Moving
 		// Horizontal Velocity
-		float t_groundDamping = m_isSlipping ? (groundDamping * slippingFrictionMultiplier) : groundDamping;
+		float t_groundDamping = m_isSlipping ? (groundDamping * km_slippingFrictionMultiplier) : groundDamping;
 		var smoothedMovementFactor = m_controller.isGrounded ? t_groundDamping : inAirDamping;
         // m_velocity.x = Mathf.Lerp(normalizedHorizontalSpeed * runSpeed, m_velocity.x , Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime*60));
         // m_velocity.x = Mathf.Lerp(m_velocity.x, normalizedHorizontalSpeed * runSpeed, Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime * 60));
@@ -364,12 +372,11 @@ public class PlayerController : MonoBehaviour {
         // Vertical Velocity
         // ACCELERATING with gravity
         m_velocity.y += m_gravity * Time.deltaTime;
-		m_velocity.y = Mathf.Max(terminalVelocity, m_velocity.y);
+		m_velocity.y = Mathf.Max(km_terminalVelocity, m_velocity.y);
+        Vector2 velocityVerlet = new Vector2(m_velocity.x, m_velocity.y + (.5f * m_gravity * Time.deltaTime * Time.deltaTime));
 		
 		Vector2 eulerDeltaPosition = m_velocity * Time.deltaTime;
-		Vector2 velocityVerletDeltaPosition = new Vector2(
-		 	(eulerDeltaPosition.x), (eulerDeltaPosition.y) + (.5f * m_gravity * Time.deltaTime * Time.deltaTime)
-		 );
+        Vector2 velocityVerletDeltaPosition = velocityVerlet * Time.deltaTime;
 
 		if(!m_skipMoveOnUpdateThisFrame) {
 			m_controller.move(velocityVerletDeltaPosition);
@@ -429,13 +436,13 @@ public class PlayerController : MonoBehaviour {
 		// Cutting Jump
 		if(InputManager.instance.ReleasedJump()) {
 			if(m_velocity.y > 0) {
-				m_velocity.y *= Mathf.Pow(cutJumpHeight,Time.deltaTime*60);
+				m_velocity.y *= Mathf.Pow(km_cutJumpHeight , Time.deltaTime*60);
 			}
 		}
 
 		// Changing Gravity on Fall
         if(m_isOnWall) {
-            m_gravity = onWallGravity; 
+            m_gravity = km_onWallGravity; 
         } else if(m_velocity.y > 0) {
             m_gravity = m_goingUpGravity;
 		} else {
@@ -447,7 +454,14 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	private void ProcessDialogueState() {
+    private void ProcessJumpingFromWallState() {
+        if(m_controller.isGrounded) {
+            m_currentPlayerState = EPlayerState.Normal;
+        }
+    }
+
+
+    private void ProcessDialogueState() {
         if (!DialogueManager.instance.isShowingDialogue) {
             m_currentPlayerState = EPlayerState.Normal;
         }
@@ -514,7 +528,7 @@ public class PlayerController : MonoBehaviour {
 		} else if(
 			m_isOnWall
 			&&
-			!m_controller.isNear(Vector2.left,maxDistanceOffWall) && !m_controller.isNear(Vector2.right,maxDistanceOffWall)
+			!m_controller.isNear(Vector2.left,km_maxDistanceOffWall) && !m_controller.isNear(Vector2.right,km_maxDistanceOffWall)
 			)
 		{
 			m_isOnWall = false;
@@ -528,13 +542,19 @@ public class PlayerController : MonoBehaviour {
 			&&
 			InputManager.instance.PressedJump()
 			&&
-			((m_controller.isNear(Vector2.left,maxDistanceOffWall) || m_controller.isNear(Vector2.right,maxDistanceOffWall))))
+			((m_controller.isNear(Vector2.left,km_maxDistanceOffWall) || m_controller.isNear(Vector2.right,km_maxDistanceOffWall))))
 			) {
 
 			m_isOnWall = false;
-			m_velocity.x = wallJumpVelocity.x * (m_controller.isNear(Vector2.left,maxDistanceOffWall) ? 1 : -1);
+			m_velocity.x = m_wallJumpVelocity.x * (m_controller.isNear(Vector2.left,km_maxDistanceOffWall) ? 1 : -1);
+			m_velocity.y = m_wallJumpVelocity.y;
 			m_gravity = m_goingUpGravity;
-			m_velocity.y = Mathf.Sqrt(wallJumpVelocity.y * -m_gravity);
+
+            
+            // Changing to Jumping From Wall
+            // But after a while we want to go for our regular jumping code because we might want to wall jump again
+            m_currentPlayerState = EPlayerState.JumpingFromWall;
+            StartCoroutine(ChangeStateWithDelay(EPlayerState.Jumping, ( m_timeToJumpPeak / 2.0f) ));
 			
 			SaveSystem.instance.Jumped();
 
@@ -543,11 +563,11 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			// Instantiating Particles
-			if(m_controller.isNear(Vector2.left, maxDistanceOffWall)) {
+			if(m_controller.isNear(Vector2.left, km_maxDistanceOffWall)) {
 				ParticleSystem particle = Instantiate(landingParticles, transform.position + (Vector3.left / 2f), Quaternion.identity);
 				particle.transform.Rotate(0, 90, 0);
 				particle.Play();
-			} else if(m_controller.isNear(Vector2.right, maxDistanceOffWall)) {
+			} else if(m_controller.isNear(Vector2.right, km_maxDistanceOffWall)) {
 				ParticleSystem particle = Instantiate(landingParticles, transform.position + (Vector3.right / 2f), Quaternion.identity);
 				particle.transform.Rotate(0, -90, 0);
 				particle.Play();
@@ -556,6 +576,11 @@ public class PlayerController : MonoBehaviour {
 			StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
 		}
 	}
+
+    private IEnumerator ChangeStateWithDelay(EPlayerState _playerState, float _delay) {
+        yield return new WaitForSeconds(_delay);
+        m_currentPlayerState = _playerState;
+    }
 
 	private IEnumerator ChangeScale(Vector2 scale) {
 		m_playerSprite.localScale = scale;
