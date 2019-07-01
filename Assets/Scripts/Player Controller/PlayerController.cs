@@ -195,7 +195,7 @@ public class PlayerController : MonoBehaviour {
 				canPet.Pet();
 				Vector3 difPosition = col.gameObject.transform.position - transform.position;
 				m_playerSprite.transform.localScale = new Vector3(Mathf.Sign(difPosition.x) * Mathf.Abs(m_playerSprite.transform.localScale.x), m_playerSprite.transform.localScale.y, m_playerSprite.transform.localScale.z);
-				CameraScript.instance.ForceCameraSize(3f);
+                // CameraScript.instance.ForceCameraSize(3f);
 				StartCoroutine(HideDialogueHintRoutine());
 			}
 		}
@@ -471,7 +471,7 @@ public class PlayerController : MonoBehaviour {
 		if(InputManager.instance.StopPettingTheDog()) {
 			Debug.Log("You are no longer petting the dog :(");
 
-			CameraScript.instance.UnforceCameraSize();
+			// CameraScript.instance.UnforceCameraSize();
 			SoundManager.instance.ChangeMusicAccordingToScene();
 			StartCoroutine(ShowDialogueHintRoutine());
 			m_currentPlayerState = EPlayerState.Normal;
