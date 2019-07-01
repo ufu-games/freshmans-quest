@@ -492,6 +492,7 @@ public class PlayerController : MonoBehaviour {
 			m_animator.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 			isInCannon = false;
 			Cannon.setActive(false);
+
 			m_currentPlayerState = EPlayerState.Jumping;
 		}
 
