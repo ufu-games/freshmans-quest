@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: 114294492297695794}
-  - {fileID: 114141361055380062}
-  - {fileID: 114288831224570444}
-  - {fileID: 114039365005684482}
-  - {fileID: 114516906858871864}
-  - {fileID: 114580889540070532}
-  - {fileID: 114058304176303004}
+  - {fileID: 114253957997240464}
+  - {fileID: 114938689821976146}
+  - {fileID: 114175228236309826}
+  - {fileID: 114643620193790424}
+  - {fileID: 114277089696367192}
+  - {fileID: 114103423442912212}
   EditorEvents:
   - {fileID: 114502800603337716}
   - {fileID: 114244878215095370}
@@ -42,12 +42,29 @@ MonoBehaviour:
   - {fileID: 114466595522836584}
   - {fileID: 114371645884409722}
   - {fileID: 114768106075050230}
+  - {fileID: 114175228236309826}
   StringsBanks:
   - {fileID: 114719832556719316}
   - {fileID: 114834054704517808}
   - {fileID: 114294492297695794}
-  stringsBankWriteTime: 636906886737336774
+  stringsBankWriteTime: 636917204183514555
   cacheVersion: 3
+--- !u!114 &114004853761812092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Ambiente aberto-fechado
+  Min: 0
+  Max: 1
+  Default: 1
 --- !u!114 &114011588981017792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,7 +324,7 @@ MonoBehaviour:
   Path: event:/Efeitos/Morte
   guid: 790e79a9b83e224bab50d09db7a1be00
   Banks:
-  - {fileID: 114039365005684482}
+  - {fileID: 114175228236309826}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -330,7 +347,7 @@ MonoBehaviour:
   Path: event:/Efeitos/Wall Jump
   guid: b108ad64a120c2468d5e39e2d531cf73
   Banks:
-  - {fileID: 114039365005684482}
+  - {fileID: 114175228236309826}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -404,7 +421,7 @@ MonoBehaviour:
   Path: event:/Efeitos/Pulo
   guid: b15ab0588da7f343a0b3cbbba39b8013
   Banks:
-  - {fileID: 114039365005684482}
+  - {fileID: 114175228236309826}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -444,6 +461,25 @@ MonoBehaviour:
   Min: -1
   Max: 1
   Default: 0
+--- !u!114 &114103423442912212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: E:\CollegeLeague\FMOD\Freshman's Quest\Build\Desktop\Artes.bank
+  lastModified: 636917204233371925
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 3405952
+  Exists: 1
 --- !u!114 &114111590304072046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,12 +623,12 @@ MonoBehaviour:
   Path: event:/Fases/Universidade
   guid: bc7620acbc58fa4496d7c6f2f4d6ec70
   Banks:
-  - {fileID: 114516906858871864}
+  - {fileID: 114643620193790424}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114121229445021236}
+  - {fileID: 114004853761812092}
   MinDistance: 0
   MaxDistance: 0
   Length: 104769
@@ -713,6 +749,25 @@ MonoBehaviour:
   FileSizes:
   - Name: Desktop
     Value: 3405952
+  Exists: 1
+--- !u!114 &114175228236309826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: E:\CollegeLeague\FMOD\Freshman's Quest\Build\Desktop\Master Bank.bank
+  lastModified: 636917204183464686
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 964736
   Exists: 1
 --- !u!114 &114175926617883728
 MonoBehaviour:
@@ -866,7 +921,7 @@ MonoBehaviour:
   Path: "event:/Tela de t\xEDtulo"
   guid: 71e486514ff4ad489322dc0edb5c3274
   Banks:
-  - {fileID: 114580889540070532}
+  - {fileID: 114277089696367192}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -889,7 +944,7 @@ MonoBehaviour:
   Path: event:/Mapa
   guid: 74e6d35f8e38f54cbe677768103ea225
   Banks:
-  - {fileID: 114288831224570444}
+  - {fileID: 114938689821976146}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -897,6 +952,25 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 68571
+--- !u!114 &114253957997240464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: "E:\\CollegeLeague\\FMOD\\Freshman's Quest\\Build\\Desktop\\Qu\xEDmica.bank"
+  lastModified: 636917204277897004
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1064704
+  Exists: 1
 --- !u!114 &114269520582767916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -912,7 +986,7 @@ MonoBehaviour:
   Path: event:/Efeitos
   guid: da4ac84e01c1af4c8efef20a16a1df61
   Banks:
-  - {fileID: 114039365005684482}
+  - {fileID: 114175228236309826}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -958,6 +1032,25 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 1
+--- !u!114 &114277089696367192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: E:\CollegeLeague\FMOD\Freshman's Quest\Build\Desktop\Title Screen.bank
+  lastModified: 636917204299238851
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 965920
+  Exists: 1
 --- !u!114 &114280740450503022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1047,7 +1140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: FMOD\Freshman's Quest\Build\Desktop\Master Bank.strings.bank
-  lastModified: 636906886737336774
+  lastModified: 636917204183514555
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -1141,7 +1234,7 @@ MonoBehaviour:
   Path: event:/Efeitos/Plataforma quebrando
   guid: 176ba65ed329854a832af67c1d064c60
   Banks:
-  - {fileID: 114039365005684482}
+  - {fileID: 114175228236309826}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -1307,7 +1400,7 @@ MonoBehaviour:
   Path: event:/Efeitos/Porta abrindo-fechando
   guid: 0b34d62495a6cb42ba1b677127f8e425
   Banks:
-  - {fileID: 114039365005684482}
+  - {fileID: 114175228236309826}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -1388,7 +1481,7 @@ MonoBehaviour:
   Path: "event:/Efeitos/Colet\xE1vel pr\xF3ximo"
   guid: 638ded6d3d222344ae72e5b92af680cc
   Banks:
-  - {fileID: 114039365005684482}
+  - {fileID: 114175228236309826}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -1486,7 +1579,7 @@ MonoBehaviour:
   Path: event:/Fases/Artes
   guid: 580c603531c0f5448df2abe102d0f756
   Banks:
-  - {fileID: 114058304176303004}
+  - {fileID: 114103423442912212}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -1551,7 +1644,7 @@ MonoBehaviour:
   Path: "event:/Fases/Qu\xEDmica"
   guid: 82b9609fcddc7840b0c90ac05f9f732c
   Banks:
-  - {fileID: 114141361055380062}
+  - {fileID: 114253957997240464}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -1597,7 +1690,7 @@ MonoBehaviour:
   Path: "event:/Efeitos/Colet\xE1vel (comendo pizza)"
   guid: a4ccf61d1bbebd4da7cd8243b7077bb9
   Banks:
-  - {fileID: 114039365005684482}
+  - {fileID: 114175228236309826}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -1639,10 +1732,10 @@ MonoBehaviour:
   Path: event:/Efeitos/Carinho no Shiba
   guid: 9c85f2bec16b5d46b69d182789cbc882
   Banks:
-  - {fileID: 114039365005684482}
+  - {fileID: 114175228236309826}
   IsStream: 1
   Is3D: 0
-  IsOneShot: 0
+  IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
@@ -1862,6 +1955,25 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1656640
   Exists: 0
+--- !u!114 &114643620193790424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: E:\CollegeLeague\FMOD\Freshman's Quest\Build\Desktop\Universidade.bank
+  lastModified: 636917204323799719
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1656640
+  Exists: 1
 --- !u!114 &114665801747239202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2443,7 +2555,7 @@ MonoBehaviour:
   Path: "event:/Efeitos/Pedras batendo no ch\xE3o"
   guid: c891300d93f06d4792745d0c5e88f998
   Banks:
-  - {fileID: 114039365005684482}
+  - {fileID: 114175228236309826}
   IsStream: 1
   Is3D: 0
   IsOneShot: 1
@@ -2516,6 +2628,25 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1064704
   Exists: 1
+--- !u!114 &114938689821976146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: E:\CollegeLeague\FMOD\Freshman's Quest\Build\Desktop\Mapa.bank
+  lastModified: 636917204254136782
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1012704
+  Exists: 1
 --- !u!114 &114958665066663004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2582,7 +2713,7 @@ MonoBehaviour:
   Path: "event:/Efeitos/Bot\xF5es do menu"
   guid: 7c442a4c94fa6246883dc51e17f94f16
   Banks:
-  - {fileID: 114039365005684482}
+  - {fileID: 114175228236309826}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
