@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class IslandMapsManager : MonoBehaviour {
     public enum EPlayerAnimation {
@@ -16,9 +18,13 @@ public class IslandMapsManager : MonoBehaviour {
         Moving
     }
 
+    [Header("Configuration")]
     public Transform playerCharacter;
     public IslandData[] islands;
     public IslandPath[] islandPaths;
+
+    [Header("User Interface")]
+    public TextMeshProUGUI levelName;
 
     private int m_previousIslandIndex;
     private int m_currentIslandIndex = 0;
@@ -64,6 +70,9 @@ public class IslandMapsManager : MonoBehaviour {
     }
 
     private void MovePlayer(IslandData _from, IslandData _to) {
+        // Updating Level Name on UI
+        levelName.text = _to.islandName;
+
         m_currentMovementState = EMovementState.Moving;
         IslandPath[] desiredPaths = islandPaths.Where((path) => {
             return (path.origin == _from.island && path.destination == _to.island);
