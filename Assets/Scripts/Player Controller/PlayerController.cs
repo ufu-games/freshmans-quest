@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    [Header("Jumping Parameters")]
+    [Header("Movement Parameters")]
     public float runSpeed = 7.5f;
+	public float dashSpeed = 10f;
     public float jumpPeakHeight = 4.5f;
     public float horizontalDistanceToJumpPeak = 4.5f;
 
@@ -30,11 +31,14 @@ public class PlayerController : MonoBehaviour {
 	private const float km_jumpPressedRememberTime = 0.15f;
 	private const float km_groundedRememberTime = 0.15f;
 	private const float km_cutJumpHeight = 0.5f;
+	private const float km_dashTime = 0.3f;
 
     private float m_timeToJumpPeak;
 
 	private float m_jumpPressedRemember;
 	private float m_groundedRemember;
+	private float m_dashingRemainingTime;
+	private bool m_pressedDownArrowLastFrame = false;
 
 	[ReadOnly]
 	public bool m_jumpedLastFrame = false;
@@ -85,6 +89,7 @@ public class PlayerController : MonoBehaviour {
 		Cannon,
 		MoveBlockedDialogue, // cutscenes, dialogues...
 		IsPettingDog, // Yes, I did it.
+		Dashing,
 	}
 
 	private EPlayerState m_currentPlayerState;
@@ -181,7 +186,7 @@ public class PlayerController : MonoBehaviour {
 
 		if(showDialogue != null) {
 			if(InputManager.instance.PressedStartDialogue() && m_currentPlayerState != EPlayerState.MoveBlockedDialogue) {
-				SaveSystem.instance.NPCChatted();
+				SaveSystem.instance?.NPCChatted();
 				showDialogue.ShowDialogue();
 				StartDialogue();
 			}
@@ -298,7 +303,7 @@ public class PlayerController : MonoBehaviour {
 		m_jumpPressedRemember -= Time.deltaTime;
         normalizedHorizontalSpeed = Input.GetAxisRaw("Horizontal");
 
-        SaveSystem.instance.TickTimePlayed();
+        SaveSystem.instance?.TickTimePlayed();
 
 		// for some reason this wasn't working on the ProcessNormalState()
 		if(m_controller.isGrounded) {
@@ -354,11 +359,14 @@ public class PlayerController : MonoBehaviour {
 			case EPlayerState.IsPettingDog:
 				ProcessPettingState();
 			break;
+			case EPlayerState.Dashing:
+				ProcessDashingState();
+			break;
 		}
-
 		AnimationLogic();
         ProcessSpriteScale();
         m_velocityLastFrame = m_velocity;
+		m_pressedDownArrowLastFrame = Input.GetAxisRaw("Vertical") == -1;
 
 		// Handling Player Velocity and Moving
 		// Horizontal Velocity
@@ -391,6 +399,8 @@ public class PlayerController : MonoBehaviour {
 			// Handling other game events
 			if(m_currentPlayerState == EPlayerState.IsPettingDog) {
 				m_animator.Play("Petting");
+			} else if(m_currentPlayerState == EPlayerState.Dashing) {
+				m_animator.Play("Dashing");
 			} else { // Handling normal game events
 				if(m_isOnWall) {
 					m_animator.Play("Wall");
@@ -428,6 +438,12 @@ public class PlayerController : MonoBehaviour {
             StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
             m_currentPlayerState = EPlayerState.Jumping;
         }
+
+		// DASH
+		if(m_groundedRemember > 0 && Input.GetAxisRaw("Vertical") == -1 && !m_pressedDownArrowLastFrame) {
+			m_dashingRemainingTime = km_dashTime;
+			m_currentPlayerState = EPlayerState.Dashing;
+		}
     }
 
 	private void ProcessJumpingState() {
@@ -498,6 +514,24 @@ public class PlayerController : MonoBehaviour {
 
 		m_skipMoveOnUpdateThisFrame = true;
 	}
+
+	private void ProcessDashingState() {
+		m_dashingRemainingTime -= Time.deltaTime;
+
+		if(m_dashingRemainingTime > 0) {
+			m_controller.move(m_velocity.x > 0 ? new Vector3(dashSpeed * Time.deltaTime,0,0) : new Vector3(-dashSpeed * Time.deltaTime,0,0));
+
+			m_skipMoveOnUpdateThisFrame = true;
+		} else {
+			m_dashingRemainingTime = 0;
+			if(m_groundedRemember > 0) {
+				m_currentPlayerState = EPlayerState.Normal;
+			} else {
+				m_currentPlayerState = EPlayerState.Jumping;
+				m_gravity = m_goingUpGravity;
+			}
+		}
+	}
 	#endregion
 
 	private void ProcessSpriteScale() {
@@ -506,7 +540,12 @@ public class PlayerController : MonoBehaviour {
 				// tem que chegar por um valor relativamente alto no controller porque
 				// sempre tem algum resquicio de movimento nele
 
-				float sign = (normalizedHorizontalSpeed != 0 ? Mathf.Sign(normalizedHorizontalSpeed) : Mathf.Sign(m_controller.velocity.x));
+				float sign;
+				if(m_currentPlayerState == EPlayerState.Dashing) {
+					sign = Mathf.Sign(m_controller.velocity.x);
+				} else {
+					sign = (normalizedHorizontalSpeed != 0 ? Mathf.Sign(normalizedHorizontalSpeed) : Mathf.Sign(m_controller.velocity.x));
+				}				
 				if(!m_isOnWall) {
 					m_playerSprite.localScale = new Vector3(sign * Mathf.Abs(m_playerSprite.localScale.x), m_playerSprite.localScale.y, m_playerSprite.localScale.z);
 				}
@@ -557,7 +596,7 @@ public class PlayerController : MonoBehaviour {
             m_currentPlayerState = EPlayerState.JumpingFromWall;
             StartCoroutine(ChangeStateWithDelay(EPlayerState.Jumping, ( m_timeToJumpPeak / 2.0f) ));
 			
-			SaveSystem.instance.Jumped();
+			SaveSystem.instance?.Jumped();
 
 			if(SoundManager.instance && SoundManager.instance.Settings.Player_walljump != "") {
 				SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_walljump);
@@ -653,9 +692,11 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void PlayerDeath() {
-		if(SoundManager.instance.Settings.Player_death != "" && SoundManager.instance) {
-				SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_death); 
-				InputManager.instance.VibrateWithTime(1f, 0.3f);
+		if(SoundManager.instance != null) {
+			if(SoundManager.instance.Settings.Player_death != "" && SoundManager.instance) {
+					SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_death); 
+					InputManager.instance.VibrateWithTime(1f, 0.3f);
+			}
 		}
 	}
 }
