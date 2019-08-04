@@ -80,6 +80,7 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 		rb.velocity = Vector2.zero;
 		StudioEventEmitter asource = GetComponent<StudioEventEmitter>();
 		if(asource != null) {
+			print(asource.Event);
 			asource.Stop();
 			Destroy(asource);
 		}
@@ -116,7 +117,7 @@ public class CollectableBehavior : MonoBehaviour, IInteractable, IResettableProp
 	}
 
 	public void Reset() {
-		if(!GetComponent<AudioSource>()) {
+		if(!GetComponent<StudioEventEmitter>()) {
 			SoundManager.instance.PlayContinuousSfx(SoundManager.instance.Settings.Collectable_continuous,this.gameObject);
 		}
 		if(GetComponentInChildren<ParticleSystem>()) {
