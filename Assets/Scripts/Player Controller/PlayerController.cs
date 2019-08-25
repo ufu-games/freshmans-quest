@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour {
     [Header("Movement Parameters")]
     public float runSpeed = 7.5f;
 	public float dashSpeed = 10f;
+	public float heightWhileDashing = 0.45f; 
     public float jumpPeakHeight = 4.5f;
     public float horizontalDistanceToJumpPeak = 4.5f;
 
@@ -96,6 +97,10 @@ public class PlayerController : MonoBehaviour {
 
 	private const float petTheDogDistance = 0.1f;
 
+	//Dash Handling
+	private Vector2 normalColliderSize;
+	private Vector2 normalColliderOffset;
+
 	void Awake() {
         // Calculating Gravity and Jump Initial Velocity...
         m_jumpInitialVelocity = (2 * jumpPeakHeight * runSpeed) / (horizontalDistanceToJumpPeak);
@@ -127,6 +132,10 @@ public class PlayerController : MonoBehaviour {
 	void Start() {
 		// Setting the Pizza Count
 		if(PizzaCounterUI.instance && SaveSystem.instance) PizzaCounterUI.instance.UpdateCounterWithoutRoutine(SaveSystem.instance.myData.pizzaCounter);
+
+		// Setting the normal Collider numbers to handle dash
+		normalColliderSize = GetComponent<BoxCollider2D>().size;
+		normalColliderOffset = GetComponent<BoxCollider2D>().offset;
 	}
 
 
@@ -443,6 +452,11 @@ public class PlayerController : MonoBehaviour {
 		if(m_groundedRemember > 0 && Input.GetAxisRaw("Vertical") == -1 && !m_pressedDownArrowLastFrame) {
 			m_dashingRemainingTime = km_dashTime;
 			m_currentPlayerState = EPlayerState.Dashing;
+			BoxCollider2D m_collider = GetComponent<BoxCollider2D>();
+			var heightDifference = m_collider.size.y - heightWhileDashing;
+			m_collider.size = new Vector2(m_collider.size.x,heightWhileDashing);
+			m_collider.offset = new Vector2(m_collider.offset.x,m_collider.offset.y - heightDifference/2);
+
 		}
     }
 
@@ -517,13 +531,24 @@ public class PlayerController : MonoBehaviour {
 
 	private void ProcessDashingState() {
 		m_dashingRemainingTime -= Time.deltaTime;
+		BoxCollider2D m_collider = GetComponent<BoxCollider2D>();
+		
+		Vector2 pos = (Vector2)transform.position + m_collider.offset;
+		RaycastHit2D hitWallWhileDashing1 = Physics2D.Raycast(pos + new Vector2(m_collider.size.x/2,m_collider.size.y/2), Vector2.up,normalColliderSize.y - m_collider.size.y,LayerMask.GetMask("Platform"));
+		RaycastHit2D hitWallWhileDashing2 = Physics2D.Raycast(pos - new Vector2(m_collider.size.x/2,-m_collider.size.y/2), Vector2.up,normalColliderSize.y - m_collider.size.y,LayerMask.GetMask("Platform"));
+		Debug.DrawRay(pos + new Vector2(m_collider.size.x/2,m_collider.size.y/2), Vector2.up * (normalColliderSize.y - m_collider.size.y),Color.green);
+		Debug.DrawRay(pos - new Vector2(m_collider.size.x/2,-m_collider.size.y/2), Vector2.up * (normalColliderSize.y - m_collider.size.y),Color.green);
 
-		if(m_dashingRemainingTime > 0) {
+		if(m_dashingRemainingTime > 0 || hitWallWhileDashing1.collider != null || hitWallWhileDashing2.collider != null) {
 			m_controller.move(m_velocity.x > 0 ? new Vector3(dashSpeed * Time.deltaTime,0,0) : new Vector3(-dashSpeed * Time.deltaTime,0,0));
 
 			m_skipMoveOnUpdateThisFrame = true;
 		} else {
+			
 			m_dashingRemainingTime = 0;
+			//BoxCollider2D m_collider = GetComponent<BoxCollider2D>();
+			m_collider.size = normalColliderSize;
+			m_collider.offset = normalColliderOffset;
 			if(m_groundedRemember > 0) {
 				m_currentPlayerState = EPlayerState.Normal;
 			} else {
