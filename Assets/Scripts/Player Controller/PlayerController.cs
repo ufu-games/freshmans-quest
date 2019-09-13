@@ -52,6 +52,8 @@ public class PlayerController : MonoBehaviour {
 	[ReadOnly]
 	private bool m_isOnWall;
 	private bool m_skipMoveOnUpdateThisFrame = false;
+    // beware with this
+    private bool m_skipUpdateThisFrame;
 	
 	[Space(5)]
 	public GameObject dialogueHintObject;
@@ -215,51 +217,33 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	void onTriggerEnterEvent(Collider2D col) {
-		// Debug.LogWarning( "onTriggerEnterEvent: " + col.gameObject.name );
+	void onTriggerEnterEvent(Collider2D _collider) {
+		IDangerous dangerousInteraction = _collider.gameObject.GetComponent<IDangerous>();
+		IInteractable regularInteraction = _collider.gameObject.GetComponent<IInteractable>();
+		INonHarmfulInteraction nonHarmfulInteraction = _collider.gameObject.GetComponent<INonHarmfulInteraction>();
+		IShowDialogue showDialogueInteraction = _collider.gameObject.GetComponent<IShowDialogue>();
 
-		IDangerous dangerousInteraction = col.gameObject.GetComponent<IDangerous>();
-		IInteractable interaction = col.gameObject.GetComponent<IInteractable>();
-		INonHarmfulInteraction nonHarmfulInteraction = col.gameObject.GetComponent<INonHarmfulInteraction>();
-		IShowDialogue showDialogue = col.gameObject.GetComponent<IShowDialogue>();
-
-		if(showDialogue != null && dialogueHintObject) {
+		if(showDialogueInteraction != null && dialogueHintObject) {
 			StartCoroutine(ShowDialogueHintRoutine());
-		}
-
-		if(dangerousInteraction != null) {
-			
+		} else if(dangerousInteraction != null) {
 			PlayerDeath();
 			dangerousInteraction.InteractWithPlayer(this.GetComponent<Collider2D>());
-		}
-
-		if(interaction != null) {
-			interaction.Interact();
-		}
-
-		if(nonHarmfulInteraction != null) {
+		} else if(regularInteraction != null) {
+			regularInteraction.Interact();
+		} else if(nonHarmfulInteraction != null) {
 			nonHarmfulInteraction.InteractWithPlayer(this.GetComponent<Collider2D>());
-		}
-
-		if(col.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
-			m_gravity = m_goingUpGravity;
-			m_velocity.y = jumpingPlatformJumpingVelocityMultiplier * m_jumpInitialVelocity;
-			
-			if(SoundManager.instance && SoundManager.instance.Settings.Player_jump != "") {
-				SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_jump);
-			}
-
-			StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
-			// [CHANGING STATE]
-			m_currentPlayerState = EPlayerState.Jumping;
-		}
-
-		if(col.gameObject.layer == LayerMask.NameToLayer("Cannon")){
+		} else if(_collider.gameObject.layer == LayerMask.NameToLayer("JumpingPlatform")) {
+            // We take the update priority in this frame
+            m_skipUpdateThisFrame = true;
+            Jump(jumpingPlatformJumpingVelocityMultiplier);
+            m_velocity = CalculatePlayerVelocity();
+            MovePlayer();
+        } else if(_collider.gameObject.layer == LayerMask.NameToLayer("Cannon")){
 			isInCannon = true;
-			this.transform.position = col.gameObject.transform.position;
+			this.transform.position = _collider.gameObject.transform.position;
 			m_velocity = Vector2.zero;
 			m_animator.GetComponent<SpriteRenderer>().enabled = false;
-			this.Cannon = col.gameObject.GetComponent<CannonBehaviour>();
+			this.Cannon = _collider.gameObject.GetComponent<CannonBehaviour>();
 			Camera.main.GetComponentInChildren<CinemachineVirtualCamera>().m_Lens.OrthographicSize *= this.Cannon.zoomOutMultiplier;
 			this.Cannon.setActive(true);
 			m_currentPlayerState = EPlayerState.Cannon;
@@ -306,8 +290,12 @@ public class PlayerController : MonoBehaviour {
 	}
 	#endregion
 
-	void Update()
-	{	
+	void Update() {	
+        if(m_skipUpdateThisFrame) {
+            m_skipUpdateThisFrame = false;
+            return;
+        }
+
 		m_groundedRemember -= Time.deltaTime;
 		m_jumpPressedRemember -= Time.deltaTime;
         normalizedHorizontalSpeed = Input.GetAxisRaw("Horizontal");
@@ -372,36 +360,50 @@ public class PlayerController : MonoBehaviour {
 				ProcessDashingState();
 			break;
 		}
+
 		AnimationLogic();
         ProcessSpriteScale();
         m_velocityLastFrame = m_velocity;
 		m_pressedDownArrowLastFrame = Input.GetAxisRaw("Vertical") == -1;
 
-		// Handling Player Velocity and Moving
-		// Horizontal Velocity
-		float t_groundDamping = m_isSlipping ? (groundDamping * km_slippingFrictionMultiplier) : groundDamping;
-		var smoothedMovementFactor = m_controller.isGrounded ? t_groundDamping : inAirDamping;
-        // m_velocity.x = Mathf.Lerp(normalizedHorizontalSpeed * runSpeed, m_velocity.x , Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime*60));
-        // m_velocity.x = Mathf.Lerp(m_velocity.x, normalizedHorizontalSpeed * runSpeed, Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime * 60));
-        float t_xVelocityLerp = Mathf.Clamp01(smoothedMovementFactor * Time.deltaTime);
-        m_velocity.x = Mathf.Lerp(m_velocity.x, normalizedHorizontalSpeed * runSpeed, t_xVelocityLerp);
-
-        // Vertical Velocity
-        // ACCELERATING with gravity
-        m_velocity.y += m_gravity * Time.deltaTime;
-		m_velocity.y = Mathf.Max(km_terminalVelocity, m_velocity.y);
-        Vector2 velocityVerlet = new Vector2(m_velocity.x, m_velocity.y + (.5f * m_gravity * Time.deltaTime * Time.deltaTime));
-		
-		Vector2 eulerDeltaPosition = m_velocity * Time.deltaTime;
-        Vector2 velocityVerletDeltaPosition = velocityVerlet * Time.deltaTime;
+        m_velocity = CalculatePlayerVelocity();
+        
 
 		if(!m_skipMoveOnUpdateThisFrame) {
-			m_controller.move(velocityVerletDeltaPosition);
-			m_velocity = m_controller.velocity;
+            MovePlayer();
 		}
 
 		m_skipMoveOnUpdateThisFrame = false;
 	}
+
+    private Vector2 CalculatePlayerVelocity() {
+        Vector2 playerVelocity = m_velocity;
+
+        // Handling Player Velocity and Moving
+        // Horizontal Velocity
+        float t_groundDamping = m_isSlipping ? (groundDamping * km_slippingFrictionMultiplier) : groundDamping;
+        var smoothedMovementFactor = m_controller.isGrounded ? t_groundDamping : inAirDamping;
+        // m_velocity.x = Mathf.Lerp(normalizedHorizontalSpeed * runSpeed, m_velocity.x , Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime*60));
+        // m_velocity.x = Mathf.Lerp(m_velocity.x, normalizedHorizontalSpeed * runSpeed, Mathf.Pow(1 - smoothedMovementFactor, Time.deltaTime * 60));
+        float t_xVelocityLerp = Mathf.Clamp01(smoothedMovementFactor * Time.deltaTime);
+        playerVelocity.x = Mathf.Lerp(playerVelocity.x, normalizedHorizontalSpeed * runSpeed, t_xVelocityLerp);
+
+        // Vertical Velocity
+        // ACCELERATING with gravity
+        playerVelocity.y += m_gravity * Time.deltaTime;
+        playerVelocity.y = Mathf.Max(km_terminalVelocity, playerVelocity.y);
+
+        return playerVelocity;
+    }
+
+    private void MovePlayer() {
+        Vector2 velocityVerlet = new Vector2(m_velocity.x, m_velocity.y + (.5f * m_gravity * Time.deltaTime * Time.deltaTime));
+        Vector2 eulerDeltaPosition = m_velocity * Time.deltaTime;
+        Vector2 velocityVerletDeltaPosition = velocityVerlet * Time.deltaTime;
+
+        m_controller.move(velocityVerletDeltaPosition);
+        m_velocity = m_controller.velocity;
+    }
 
 	private void AnimationLogic() {
 		if(gameObject.activeSelf){
@@ -432,20 +434,7 @@ public class PlayerController : MonoBehaviour {
 	private void ProcessNormalState() {
         // REGULAR JUMP
         if (((m_groundedRemember > 0) && (m_jumpPressedRemember > 0))) {
-            m_jumpPressedRemember = 0;
-            m_groundedRemember = 0;
-            m_jumpedLastFrame = true;
-            SaveSystem.instance?.Jumped();
-
-            m_gravity = m_goingUpGravity;
-            m_velocity.y = m_jumpInitialVelocity;
-
-            if (SoundManager.instance && SoundManager.instance.Settings.Player_jump != "") {
-                SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_jump);
-            }
-
-            StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
-            m_currentPlayerState = EPlayerState.Jumping;
+            Jump();
         }
 
 		// DASH
@@ -458,6 +447,24 @@ public class PlayerController : MonoBehaviour {
 			m_collider.offset = new Vector2(m_collider.offset.x,m_collider.offset.y - heightDifference/2);
 
 		}
+    }
+
+    private void Jump(float _multiplier = 1.0f) {
+        m_jumpPressedRemember = 0;
+        m_groundedRemember = 0;
+        m_jumpedLastFrame = true;
+        SaveSystem.instance?.Jumped();
+
+        m_gravity = m_goingUpGravity;
+        m_velocity.y = m_jumpInitialVelocity * _multiplier;
+
+        if (SoundManager.instance && SoundManager.instance.Settings.Player_jump != "") {
+            SoundManager.instance.PlaySfx(SoundManager.instance.Settings.Player_jump);
+        }
+
+        StartCoroutine(ChangeScale(m_playerSprite.localScale * m_goingUpScaleMultiplier));
+        m_currentPlayerState = EPlayerState.Jumping;
+        //
     }
 
 	private void ProcessJumpingState() {
