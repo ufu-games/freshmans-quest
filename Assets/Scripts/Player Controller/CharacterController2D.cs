@@ -594,7 +594,11 @@ public class CharacterController2D : MonoBehaviour
 				initialRayOrigin = _raycastOrigins.bottomRight;
 				ray = new Vector2( initialRayOrigin.x, initialRayOrigin.y + i * _verticalDistanceBetweenRays );
 				//DrawRay( ray, direction * _skinWidth, Color.red );
-				if(Physics2D.Raycast( ray, direction, _skinWidth*1.5f, platformMask )){
+				RaycastHit2D hit = Physics2D.Raycast( ray, direction, _skinWidth*1.5f, platformMask );
+				if(hit){
+					if(hit.collider.gameObject.layer == LayerMask.NameToLayer("NonWallJumpablePlatform")) {
+						return false;
+					}
 					return true;
 				}
 			}
@@ -612,7 +616,11 @@ public class CharacterController2D : MonoBehaviour
 				initialRayOrigin = _raycastOrigins.bottomLeft;
 				ray = new Vector2( initialRayOrigin.x, initialRayOrigin.y + i * _verticalDistanceBetweenRays );
 				//DrawRay( ray, direction * _skinWidth, Color.red );
-				if(Physics2D.Raycast( ray, direction, _skinWidth*1.5f, platformMask )){
+				RaycastHit2D hit = Physics2D.Raycast( ray, direction, _skinWidth*1.5f, platformMask );
+				if(hit){
+					if(hit.collider.gameObject.layer == LayerMask.NameToLayer("NonWallJumpablePlatform")) {
+						return false;
+					}
 					return true;
 				}
 			}
@@ -636,7 +644,11 @@ public class CharacterController2D : MonoBehaviour
 				initialRayOrigin = _raycastOrigins.bottomRight;
 				ray = new Vector2( initialRayOrigin.x, initialRayOrigin.y + i * _verticalDistanceBetweenRays );
 				DrawRay( ray, direction * _skinWidth, Color.red );
-				if(Physics2D.Raycast( ray, direction, distance/32f, platformMask )){
+				RaycastHit2D hit = Physics2D.Raycast( ray, direction, distance/32f, platformMask );
+				if(hit){
+					if(hit.collider.gameObject.layer == LayerMask.NameToLayer("NonWallJumpablePlatform")) {
+						return false;
+					}
 					return true;
 				}
 			}
@@ -654,7 +666,11 @@ public class CharacterController2D : MonoBehaviour
 				initialRayOrigin = _raycastOrigins.bottomLeft;
 				ray = new Vector2( initialRayOrigin.x, initialRayOrigin.y + i * _verticalDistanceBetweenRays );
 				DrawRay( ray, direction * _skinWidth, Color.red );
-				if(Physics2D.Raycast( ray, direction,distance/32f, platformMask )){
+				RaycastHit2D hit = Physics2D.Raycast( ray, direction, distance/32f, platformMask );
+				if(hit){
+					if(hit.collider.gameObject.layer == LayerMask.NameToLayer("NonWallJumpablePlatform")) {
+						return false;
+					}
 					return true;
 				}
 			}

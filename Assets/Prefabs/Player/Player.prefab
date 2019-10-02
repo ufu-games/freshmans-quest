@@ -144,6 +144,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runSpeed: 6
+  dashSpeed: 10
+  heightWhileDashing: 0.45
   jumpPeakHeight: 3
   horizontalDistanceToJumpPeak: 2.5
   jumpingPlatformJumpingVelocityMultiplier: 1.25
@@ -172,7 +174,7 @@ MonoBehaviour:
   _skinWidth: 0.05
   platformMask:
     serializedVersion: 2
-    m_Bits: 2097664
+    m_Bits: 69206528
   triggerMask:
     serializedVersion: 2
     m_Bits: 1622016
