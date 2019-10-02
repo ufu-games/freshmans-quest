@@ -445,6 +445,7 @@ public class PlayerController : MonoBehaviour {
 			var heightDifference = m_collider.size.y - heightWhileDashing;
 			m_collider.size = new Vector2(m_collider.size.x,heightWhileDashing);
 			m_collider.offset = new Vector2(m_collider.offset.x,m_collider.offset.y - heightDifference/2);
+			m_controller.recalculateDistanceBetweenRays();
 
 		}
     }
@@ -556,6 +557,7 @@ public class PlayerController : MonoBehaviour {
 			//BoxCollider2D m_collider = GetComponent<BoxCollider2D>();
 			m_collider.size = normalColliderSize;
 			m_collider.offset = normalColliderOffset;
+			m_controller.recalculateDistanceBetweenRays();
 			if(m_groundedRemember > 0) {
 				m_currentPlayerState = EPlayerState.Normal;
 			} else {
