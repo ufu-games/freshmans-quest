@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour {
 	void Awake() {
         // Calculating Gravity and Jump Initial Velocity...
         m_jumpInitialVelocity = (2 * jumpPeakHeight * runSpeed) / (horizontalDistanceToJumpPeak);
-        m_goingUpGravity = -((2 * jumpPeakHeight * runSpeed * runSpeed) / (horizontalDistanceToJumpPeak * horizontalDistanceToJumpPeak));
+        m_goingUpGravity = -((1.3f * jumpPeakHeight * runSpeed * runSpeed) / (horizontalDistanceToJumpPeak * horizontalDistanceToJumpPeak));
         m_goingDownGravity = m_goingUpGravity * 1.75f;
         m_gravity = m_goingUpGravity;
         m_wallJumpVelocity = new Vector2(runSpeed, m_jumpInitialVelocity);
