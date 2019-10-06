@@ -143,14 +143,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fd66fcb756454e9b9b88a07f4874b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 6
+  runSpeed: 9
   dashSpeed: 10
   heightWhileDashing: 0.45
-  jumpPeakHeight: 3
-  horizontalDistanceToJumpPeak: 2.5
+  jumpPeakHeight: 3.5
+  horizontalDistanceToJumpPeak: 3.25
   jumpingPlatformJumpingVelocityMultiplier: 1.25
   groundDamping: 5
-  inAirDamping: 3
+  inAirDamping: 5
   m_jumpedLastFrame: 0
   dialogueHintObject: {fileID: 614540880899732709}
   landingParticles: {fileID: 198417699065630864, guid: 5941734cbb31c479fbbe5fb46ba4283f,
@@ -171,7 +171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   constantDownSlopeMultiplier: 1.1
   ignoreOneWayPlatformsThisFrame: 0
-  _skinWidth: 0.05
+  _skinWidth: 0.1
   platformMask:
     serializedVersion: 2
     m_Bits: 69206528
