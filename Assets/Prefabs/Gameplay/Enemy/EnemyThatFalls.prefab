@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -60,6 +60,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -80,7 +81,7 @@ SpriteRenderer:
   m_Size: {x: 3.375, y: 3.3125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &4449850212845440883
@@ -154,3 +155,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d87aad87059fc8d47bde78d1fb5e8ef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InitialDirection: 0
+  speed: 0
+  FollowPlayer: 0
+  MinDistanceToFollowPlayer: 0
+  platformMask:
+    serializedVersion: 2
+    m_Bits: 0
