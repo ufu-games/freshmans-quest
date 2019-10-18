@@ -411,7 +411,7 @@ public class PlayerController : MonoBehaviour {
 			if(m_currentPlayerState == EPlayerState.IsPettingDog) {
 				m_animator.Play("Petting");
 			} else if(m_currentPlayerState == EPlayerState.Dashing) {
-				m_animator.Play("Dashing");
+				// m_animator.Play("Rasteira");
 			} else { // Handling normal game events
 				if(m_isOnWall) {
 					m_animator.Play("Wall");
@@ -446,8 +446,8 @@ public class PlayerController : MonoBehaviour {
 			m_collider.size = new Vector2(m_collider.size.x,heightWhileDashing);
 			m_collider.offset = new Vector2(m_collider.offset.x,m_collider.offset.y - heightDifference/2);
 			m_controller.recalculateDistanceBetweenRays();
-
-		}
+            m_animator.Play("Rasteira");
+        }
     }
 
     private void Jump(float _multiplier = 1.0f) {
